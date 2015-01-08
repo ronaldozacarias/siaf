@@ -1,7 +1,9 @@
 package ufc.quixada.npi.afastamento.model;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,17 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Usuario {
+public class Professor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String login;
-
+	private String nome;
+	
 	@Column(nullable = false)
 	private String password;
 
@@ -35,9 +37,14 @@ public class Usuario {
 	
 	private String siape;
 
-	private String nome;
-
 	private String email;
+	
+	private Date dataNascimento;
+	
+	private Date dataExercicio;
+	
+	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
+	private List<Afastamento> afastamentos;
 
 	public String getCpf() {
 		return cpf;
@@ -79,14 +86,6 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
 	public boolean isHabilitado() {
 		return habilitado;
 	}
@@ -111,21 +110,55 @@ public class Usuario {
 		this.siape = siape;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Usuario) {
-			Usuario other = (Usuario) obj;
-			if (other != null && other.getId() != null && this.id != null
-					&& other.getId().equals(this.id)) {
-				return true;
-			}
-		}
-		return false;
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public Date getDataExercicio() {
+		return dataExercicio;
+	}
+
+	public void setDataExercicio(Date dataExercicio) {
+		this.dataExercicio = dataExercicio;
+	}
+
+	public List<Afastamento> getAfastamentos() {
+		return afastamentos;
+	}
+
+	public void setAfastamentos(List<Afastamento> afastamentos) {
+		this.afastamentos = afastamentos;
 	}
 
 	@Override
-	public String toString() {
-		return "Pessoa [id=" + id + ", nome=" + nome + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Professor other = (Professor) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	
 
 }

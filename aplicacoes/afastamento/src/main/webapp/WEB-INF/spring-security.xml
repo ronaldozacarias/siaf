@@ -25,11 +25,11 @@
 			<password-encoder hash="sha-256"/>
 			<jdbc-user-service data-source-ref="afastamento"
 				users-by-username-query="
-                    SELECT login, password, habilitado
-                    FROM usuario WHERE login = ?"
+                    SELECT siape, password, habilitado
+                    FROM professor WHERE siape = ?"
 
 				authorities-by-username-query=
-                    "SELECT u.login, p.nome FROM usuario AS u, papel_usuario AS pu, papel AS p WHERE u.id = pu.usuario_id AND pu.papel_id = p.id AND u.login=?" 
+                    "SELECT u.siape, p.nome FROM professor AS u, papel_usuario AS pu, papel AS p WHERE u.id = pu.usuario_id AND pu.papel_id = p.id AND u.siape=?" 
                     />
 		</authentication-provider>
  	</authentication-manager>

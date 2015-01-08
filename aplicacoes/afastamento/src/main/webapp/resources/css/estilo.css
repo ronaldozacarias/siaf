@@ -1,0 +1,142 @@
+
+body {
+	background: none repeat scroll 0% 0% #F6F6F6;
+	font-family: Optima,Segoe,Segoe UI,Candara,Calibri,Arial,sans-serif;
+}
+#wrapper {
+	padding: 0px;
+	width: 1140px;
+	margin: 0px auto;
+}
+
+.headerMain {
+	background: none repeat scroll 0% 0% #FFF;
+	width: 100%;
+}
+
+.brand {
+	float: left;
+	width: 240px;
+	height: 148px;
+}
+
+.brand img {
+	width: 100%;
+	height: 100%;
+}
+
+.accessTop {
+	float: right;
+	width: 900px;
+	height: 81px;
+	border-bottom: 2px solid #E5E5E5;
+}
+
+.menuTop {
+	float: right;
+	width: 900px;
+	height: 67px;
+	background: none repeat scroll 0% 0% #FFF;
+	border-bottom: 2px solid #E5E5E5;
+	border-right: 2px solid #E5E5E5;
+}
+
+.menuTop ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none outside none;
+}
+
+.menuTop ul li {
+	line-height: initial;
+	float: left;
+	border-right: 2px solid #EAECED;
+	position: relative;
+	display: block;
+}
+
+.menuTop ul li a {
+	color: #555;
+	font: bold 13px "arial", sans-serif;
+	padding: 25px 26px 21px 31px;
+	text-decoration: none;
+	display: block;
+	outline: none;
+}
+
+.menuTop ul li a:hover {
+	color: #F47920;
+	text-decoration: underline !important;
+}
+
+.menuTop ul li a span {
+	display: inline-table;
+	padding-bottom: 3px;
+}
+
+div#content {
+	width: 100%;
+	height: auto;
+	display: table;
+	float: left;
+	color: #7C7C7C;
+}
+
+div.title {
+	float: left;
+	width: 100%;
+	padding: 20px 0px 20px 10px;
+	font-size: 20px;
+	color: #7C7C7C;
+	letter-spacing: 3px;
+}
+
+form {
+	
+}
+
+form input, .bootstrap-select button {
+	width: auto !important;
+	display: inline !important;
+	
+	/* border-width: 0px 0px 2px;
+	border-style: none none solid;
+	border-color: -moz-use-text-color -moz-use-text-color #F36825;
+	float: left;
+	font-size: 16px;
+	color: #F36825;
+	border-radius: 0px;
+	padding: 0px;
+	margin-left: 5px; */
+}
+
+form label.value-label {
+	color: #F36825;
+}
+
+.bootstrap-select {
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.075) inset !important;
+	width: auto !important;
+}
+
+.bootstrap-select button:HOVER, .bootstrap-select button:FOCUS {
+	background-color: white !important;
+}
+
+a {
+	outline: none !important;
+	outline-offset:0 !important;
+}
+
+span.line {
+	border: 1px solid #E5E5E5;
+	float: left;
+	width: 100%;
+	margin: -15px 0px 30px 0px;
+}
+
+div.controls {
+	text-align: center;
+	margin-top: 50px;
+}
+

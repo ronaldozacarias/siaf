@@ -1,0 +1,161 @@
+package ufc.quixada.npi.afastamento.model;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+@Entity
+public class Afastamento {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private Integer anoInicio;
+	
+	private Integer semestreInicio;
+	
+	private Integer anoTermino;
+	
+	private Integer semestreTermino;
+	
+	private Date dataSolicitacao;
+	
+	@Enumerated(EnumType.STRING)
+	private Formacao formacao;
+	
+	private String instituicao;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento cartaAceitacao;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento termoCompromisso;
+	
+	@ManyToOne
+	private Professor professor;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getAnoInicio() {
+		return anoInicio;
+	}
+
+	public void setAnoInicio(Integer anoInicio) {
+		this.anoInicio = anoInicio;
+	}
+
+	public Integer getSemestreInicio() {
+		return semestreInicio;
+	}
+
+	public void setSemestreInicio(Integer semestreInicio) {
+		this.semestreInicio = semestreInicio;
+	}
+
+	public Integer getAnoTermino() {
+		return anoTermino;
+	}
+
+	public void setAnoTermino(Integer anoTermino) {
+		this.anoTermino = anoTermino;
+	}
+
+	public Integer getSemestreTermino() {
+		return semestreTermino;
+	}
+
+	public void setSemestreTermino(Integer semestreTermino) {
+		this.semestreTermino = semestreTermino;
+	}
+
+	public Date getDataSolicitacao() {
+		return dataSolicitacao;
+	}
+
+	public void setDataSolicitacao(Date dataSolicitacao) {
+		this.dataSolicitacao = dataSolicitacao;
+	}
+
+	public Formacao getFormacao() {
+		return formacao;
+	}
+
+	public void setFormacao(Formacao formacao) {
+		this.formacao = formacao;
+	}
+
+	public String getInstituicao() {
+		return instituicao;
+	}
+
+	public void setInstituicao(String instituicao) {
+		this.instituicao = instituicao;
+	}
+
+	public Documento getCartaAceitacao() {
+		return cartaAceitacao;
+	}
+
+	public void setCartaAceitacao(Documento cartaAceitacao) {
+		this.cartaAceitacao = cartaAceitacao;
+	}
+
+	public Documento getTermoCompromisso() {
+		return termoCompromisso;
+	}
+
+	public void setTermoCompromisso(Documento termoCompromisso) {
+		this.termoCompromisso = termoCompromisso;
+	}
+
+	public Professor getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Afastamento other = (Afastamento) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
+
+}
