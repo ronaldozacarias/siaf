@@ -11,17 +11,14 @@
     
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
-    		<li role="presentation">
-    			<a class="" href="#"><span>Ranking</span></a>
+    		<li>
+    			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
-    		<li role="presentation">
-    			<a class="" href="<c:url value="/afastamento/solicitar" />"><span>Solicitar Reserva de Afastamento</span></a>
+    		<li>
+    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
     		</li>
-    		<li role="presentation">
-    			<a class="" href="#"><span>Professores Afastados</span></a>
-    		</li>
-    		<li role="presentation">
-    			<a class="" href="#"><span>Sair</span></a>
+    		<li>
+    			<a class="" href="<c:url value="/j_spring_security_logout" />"><span>Sair</span></a>
     		</li>
     	</ul>
     </nav>

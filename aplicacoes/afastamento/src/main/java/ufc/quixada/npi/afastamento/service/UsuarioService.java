@@ -5,6 +5,8 @@ import ufc.quixada.npi.afastamento.model.Professor;
 public interface UsuarioService {
 
 	Professor getUsuarioByLogin(String login);
+	
+	int getQuantidadeProfessor();
 
 
 }

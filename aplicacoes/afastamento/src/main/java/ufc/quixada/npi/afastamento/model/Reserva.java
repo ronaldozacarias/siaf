@@ -2,7 +2,6 @@ package ufc.quixada.npi.afastamento.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,10 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
-public class Afastamento {
+public class Reserva {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +28,13 @@ public class Afastamento {
 	private Date dataSolicitacao;
 	
 	@Enumerated(EnumType.STRING)
-	private Formacao formacao;
-	
-	private String instituicao;
-	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Documento cartaAceitacao;
-	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Documento termoCompromisso;
+	private Programa programa;
 	
 	@ManyToOne
 	private Professor professor;
+	
+	@Enumerated(EnumType.STRING)
+	private StatusReserva status;
 
 	public Long getId() {
 		return id;
@@ -91,36 +84,12 @@ public class Afastamento {
 		this.dataSolicitacao = dataSolicitacao;
 	}
 
-	public Formacao getFormacao() {
-		return formacao;
+	public Programa getPrograma() {
+		return programa;
 	}
 
-	public void setFormacao(Formacao formacao) {
-		this.formacao = formacao;
-	}
-
-	public String getInstituicao() {
-		return instituicao;
-	}
-
-	public void setInstituicao(String instituicao) {
-		this.instituicao = instituicao;
-	}
-
-	public Documento getCartaAceitacao() {
-		return cartaAceitacao;
-	}
-
-	public void setCartaAceitacao(Documento cartaAceitacao) {
-		this.cartaAceitacao = cartaAceitacao;
-	}
-
-	public Documento getTermoCompromisso() {
-		return termoCompromisso;
-	}
-
-	public void setTermoCompromisso(Documento termoCompromisso) {
-		this.termoCompromisso = termoCompromisso;
+	public void setPrograma(Programa programa) {
+		this.programa = programa;
 	}
 
 	public Professor getProfessor() {
@@ -129,6 +98,14 @@ public class Afastamento {
 
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
+	}
+
+	public StatusReserva getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusReserva status) {
+		this.status = status;
 	}
 
 	@Override
@@ -147,7 +124,7 @@ public class Afastamento {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Afastamento other = (Afastamento) obj;
+		Reserva other = (Reserva) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

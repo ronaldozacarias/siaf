@@ -41,10 +41,12 @@ public class Professor {
 	
 	private Date dataNascimento;
 	
-	private Date dataExercicio;
+	private Integer anoAdmissao;
+	
+	private Integer semestreAdmissao;
 	
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
-	private List<Afastamento> afastamentos;
+	private List<Reserva> reservas;
 
 	public String getCpf() {
 		return cpf;
@@ -118,20 +120,28 @@ public class Professor {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Date getDataExercicio() {
-		return dataExercicio;
+	public Integer getAnoAdmissao() {
+		return anoAdmissao;
 	}
 
-	public void setDataExercicio(Date dataExercicio) {
-		this.dataExercicio = dataExercicio;
+	public void setAnoAdmissao(Integer anoAdmissao) {
+		this.anoAdmissao = anoAdmissao;
 	}
 
-	public List<Afastamento> getAfastamentos() {
-		return afastamentos;
+	public Integer getSemestreAdmissao() {
+		return semestreAdmissao;
 	}
 
-	public void setAfastamentos(List<Afastamento> afastamentos) {
-		this.afastamentos = afastamentos;
+	public void setSemestreAdmissao(Integer semestreAdmissao) {
+		this.semestreAdmissao = semestreAdmissao;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 
 	@Override

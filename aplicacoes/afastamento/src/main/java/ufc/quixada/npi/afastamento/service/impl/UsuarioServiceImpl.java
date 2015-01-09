@@ -24,4 +24,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioRepository.find(QueryType.JPQL, "from Professor where siape = :siape", params).get(0);
 	}
 
+	@Override
+	public int getQuantidadeProfessor() {
+		return (Integer) usuarioRepository.find(QueryType.JPQL, "select count(*) from Professor", null).size();
+	}
+
 }

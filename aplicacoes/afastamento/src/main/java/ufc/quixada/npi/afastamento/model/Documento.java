@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
 
@@ -20,6 +21,9 @@ public class Documento {
 	
 	@Type(type="org.hibernate.type.BinaryType") 
 	private byte[] arquivo;
+	
+	@ManyToOne
+	private Reserva afastamento;
 
 	public Long getId() {
 		return id;
@@ -51,6 +55,14 @@ public class Documento {
 
 	public void setExtensao(String extensao) {
 		this.extensao = extensao;
+	}
+
+	public Reserva getAfastamento() {
+		return afastamento;
+	}
+
+	public void setAfastamento(Reserva afastamento) {
+		this.afastamento = afastamento;
 	}
 
 	@Override

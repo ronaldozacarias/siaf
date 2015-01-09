@@ -30,6 +30,10 @@
 				</div>
 			</c:if>
 			
+			<c:forEach items="${ranking }" var="r">
+				<label>Professor: ${r.professor.nome } | Sem. na UFC: ${r.semestresAtivos } | Afast.: ${r.semestresAfastados } | Solicit.: ${r.semestresSolicitados } | Pont.: ${r.pontuacao }</label><br>
+			</c:forEach>
+			
 		</div>
 		
 		<jsp:include page="../modulos/footer.jsp" />
