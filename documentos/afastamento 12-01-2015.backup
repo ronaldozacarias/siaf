@@ -1,0 +1,258 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.4
+-- Dumped by pg_dump version 9.3.4
+-- Started on 2015-01-12 13:59:30
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 2012 (class 0 OID 33061)
+-- Dependencies: 182
+-- Data for Name: afastamento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO afastamento (id, reserva_id) VALUES (1, 16);
+
+
+--
+-- TOC entry 2013 (class 0 OID 33067)
+-- Dependencies: 183
+-- Data for Name: afastamento_documento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2028 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: afastamento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('afastamento_id_seq', 1, false);
+
+
+--
+-- TOC entry 2006 (class 0 OID 33018)
+-- Dependencies: 176
+-- Data for Name: documento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2029 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: documento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('documento_id_seq', 1, false);
+
+
+--
+-- TOC entry 2001 (class 0 OID 32611)
+-- Dependencies: 171
+-- Data for Name: papel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO papel (id, nome) VALUES (1, 'ROLE_DIRETOR');
+INSERT INTO papel (id, nome) VALUES (2, 'ROLE_PROFESSOR');
+
+
+--
+-- TOC entry 2030 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: papel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('papel_id_seq', 1, false);
+
+
+--
+-- TOC entry 2004 (class 0 OID 32952)
+-- Dependencies: 174
+-- Data for Name: papel_usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (27, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (28, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (29, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (30, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (31, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (32, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (33, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (34, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (35, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (36, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (37, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (38, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (39, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (40, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (41, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (42, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (43, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (44, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (45, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (46, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (47, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (48, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (49, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (50, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (51, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (52, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (53, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (54, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (55, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (56, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (57, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (58, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (59, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (60, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (61, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (62, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (63, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (64, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (65, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (66, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (67, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (68, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (69, 2);
+INSERT INTO papel_usuario (usuario_id, papel_id) VALUES (70, 2);
+
+
+--
+-- TOC entry 2008 (class 0 OID 33029)
+-- Dependencies: 178
+-- Data for Name: periodo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (1, 2016, NULL, 1, 'ABERTO', 1);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (2, 2016, NULL, 2, 'ABERTO', 1);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (5, 2017, NULL, 1, 'ABERTO', 1);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (6, 2014, NULL, 2, 'ENCERRADO', 3);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (7, 2015, NULL, 1, 'ENCERRADO', 6);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (8, 2015, NULL, 2, 'ENCERRADO', 6);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (9, 2017, NULL, 2, 'ABERTO', 6);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (10, 2018, NULL, 1, 'ABERTO', 6);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (11, 2019, NULL, 2, 'ABERTO', 6);
+INSERT INTO periodo (id, ano, encerramento, semestre, status, vagas) VALUES (12, 2014, NULL, 1, 'ENCERRADO', 1);
+
+
+--
+-- TOC entry 2031 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: periodo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('periodo_id_seq', 5, true);
+
+
+--
+-- TOC entry 2003 (class 0 OID 32935)
+-- Dependencies: 173
+-- Data for Name: professor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (27, 2008, '25885626391', '1967-09-20 00:00:00', 'albertosampaio@ufc.br', true, 'ALBERTO SAMPAIO LIMA', '16508c7923f3644b79629d05b155d121598fd20cdadbdc6c814ae61c35c96623', 1, '1585912');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (28, 2014, '02059472393', '1987-10-15 00:00:00', 'alisson.uece@gmail.com ', true, 'ALISSON BARBOSA DE SOUZA', 'ac5a52e1c3741a3e6f2e4fa726727d5031c976f1dc8d7b082bf4661fcf0ac9d3', 1, '2085132');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (29, 2010, '61914100344', '1975-02-15 00:00:00', 'andreia.ufc@gmail.com', true, 'ANDREIA LIBORIO SAMPAIO', '7081bb46a04dd35b8246d28d37604e75e3d924758558b9863fefdfda4f00266f', 2, '1235456');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (30, 2010, '64789969304', '1981-07-19 00:00:00', 'dianabraga@gmail.com', true, 'ANTONIA DIANA BRAGA NOGUEIRA', '55a93ee439dcbce8e8538bfa29ff7f02e86000a6f827259285c2c17f14932143', 1, '1764573');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (31, 2010, '84031131372', '1979-03-24 00:00:00', 'arthurcallado@gmail.com', true, 'ARTHUR DE CASTRO CALLADO', 'c7244a760664c13d6e63ef8b0f7750fb3e57e6234c15a7d3a307be853cb3a1a0', 1, '1763340');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (32, 2013, '00884821382', '1989-09-27 00:00:00', 'ararunaufc@gmail.com', true, 'ARTHUR RODRIGUES ARARUNA', 'af2e4e1d56934f1fea22becbcbe0b9417ba0ed16bbb5395fca20d5cc0adfc893', 2, '2053313');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (33, 2014, '02054721336', '1986-03-17 00:00:00', 'brunomateus@gmail.com', true, 'BRUNO GÓIS MATEUS', '4cf4aaed5f075d3ddcaa803acc5cc265e15fca58d5b7c1877fda4b22f0ccbc4f', 2, '2142315');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (34, 2010, '76875083353', '1978-01-20 00:00:00', 'camilo@es.ufc.br', true, 'CAMILO CAMILO ALMENDRA', '1be7274b39415fa3a57027226e7b9ea51c88552c33708338ba787212cb18c27e', 2, '1803594');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (35, 2010, '67054790359', '1981-11-03 00:00:00', 'carlailane@gmail.com', true, 'CARLA ILANE MOREIRA BEZERRA', '0aa87ad5a70e7bd3ed8ceb7f5ac3b9dbba86552b0a13b86e49e8a42563c4eb8c', 2, '1803303');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (36, 2013, '02039091351', '1986-08-15 00:00:00', 'carlosdiegoa@gmail.com', true, 'CARLOS DIEGO ANDRADE DE ALMEIDA', '98f0f1e8c73537af07979fe056e10b116b05a8ab94c5773cd471d4b20ec4b501', 1, '1999325');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (37, 2014, '99958201372', '1985-06-07 00:00:00', 'carlosigorbandeira@yahoo.com.br', true, 'CARLOS IGOR RAMOS BANDEIRA', '430362f5f45585544a030ff762f1a20e5fe0dce6bbe4d0df207f4ccc6afa2466', 1, '2084941');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (38, 2010, '89883217587', '1977-06-04 00:00:00', 'criston@ufc.br', true, 'CRISTON PEREIRA DE SOUZA', '2fa9e0be664f4b3bf1181594e5273b979370140586a6b43009e76be33070b50c', 2, '1455908');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (39, 2007, '62793179353', '1979-01-29 00:00:00', 'daviromero@ufc.br ', true, 'DAVI ROMERO DE VASCONCELOS', 'a389f5df2ab3cb2bbc046791e7a10a9e7c7c154c38d97839ff20b1fdc4c60f68', 2, '1572350');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (40, 2011, '00427166322', '1984-04-25 00:00:00', 'sena@ufc.br', true, 'DAVID SENA OLIVEIRA', 'bd052d51fbfe0a26b1466a9afe00c76513166bfe967ff9b6586bfd4be5ccfc7e', 2, '1872862');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (41, 2013, '03306484970', '1979-02-06 00:00:00', 'elvis.stancanelli@gmail.com', true, 'ELVIS MIGUEL GALEAS STANCANELLI', 'c9c5ded01f64bc2a63038bb02fd1ea14cb56a9876dc81c86c00ac0f6e62a0f4f', 2, '2053291');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (42, 2010, '00104294337', '1984-05-10 00:00:00', 'enyo.goncalves@gmail.com', true, 'ENYO JOSE TAVARES GONCALVES', '7a0dcd7f66a0e013da3c6fc02fc50bbaf4cf57702447fc505b0b4cbe40f47de7', 2, '1666906');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (43, 2009, '79793053372', '1979-12-16 00:00:00', 'fabiodias@ufc.br', true, 'FABIO CARLOS SOUSA DIAS', 'e94d761e57d514a752491e5293a36056e485591554508e11d1824038d069928b', 2, '1714903');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (44, 2007, '32319215387', '1963-06-21 00:00:00', 'aragao@ufc.br', true, 'FRANCISCO ERIVELTON FERNANDES DE ARAGAO', 'a3831cf67681c27a42ba7b577ee46f1fd7dbda6c6413b4644fc2d3761876397a', 2, '1580961');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (45, 2013, '54551110353', '1979-07-20 00:00:00', 'germana.rolim@ufc.br', true, 'GERMANA FERREIRA ROLIM', '0ae679bda4736d22470986f15bef7dd6cdcc8d36da3bcd522a893c2a784a374e', 1, '2939699');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (46, NULL, '95131922372', '1984-04-07 00:00:00', 'ingridtm@gmail.com', true, 'INGRID TEIXEIRA MONTEIRO', 'acec78d6ed20b8b4187fbf077ebf7fba9a088fac3e5e61be617bd30e6e2b15df', NULL, '2142386');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (47, 2010, '76561046315', '1977-01-27 00:00:00', 'jeandro@gmail.com', true, 'JEANDRO DE MESQUITA BEZERRA', '38b8b52a673a97a09d7434e83e2fc0d55130b9b1a3a69c135e4878238eee3de0', 1, '1762602');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (48, 2009, '92242480391', '1982-03-02 00:00:00', 'jeffersoncarvalho@ufc.br', true, 'JEFFERSON DE CARVALHO SILVA', '7352c6b173af4b92eeb1e92590591989303b84eaae1ad04fff801ae06c5e5310', 1, '1669723');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (49, 2009, '11906561320', '1959-12-27 00:00:00', 'joaolavor@ufc.br', true, 'JOAO FERREIRA DE LAVOR', '3d9d8552cb48f37dd30f6a639e4810465c373c0012be5ae2ed7f580ad4783a17', 1, '2582082');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (52, 2014, NULL, '1987-07-04 00:00:00', 'ismailybf@gmail.com', true, 'LUCAS ISMAILY', '0ae164309caf44018118c274a3717f54612757bc9700dcfcf4adfd098c3b3584', 2, '2144164');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (53, 2010, '61705110363', '1980-04-07 00:00:00', 'marcioefmaia@gmail.com', true, 'MARCIO ESPINDOLA FREIRE MAIA', '2b4058f82f28f78403c935883d43beae55b6e3e6bf39b6cacc8dbb22788c7700', 1, '1764820');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (55, 2010, '89708440310', '1981-12-02 00:00:00', 'marcosdantas@gmail.com', true, 'MARCOS DANTAS ORTIZ', '68009e46f8e9915c4c965061f9f6a3abe6c10b7744fe1d9bbbae6595b9b75505', 1, '1763371');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (56, 2013, '01454644311', '1985-12-31 00:00:00', 'michelsb@gmail.com', true, 'MICHEL SALES BONFIM', '8570183f7afc89d6800f9261ec02e559c40b4db2d45772beb83941be4d959f8e', 1, '1998191');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (57, 2014, '01398758329', '1987-06-09 00:00:00', 'paulodetarso@gmail.com', true, 'PAULO DE TARSO GUERRA OLIVEIRA', '2e2a36540a4b23407832eabf289d83d7822650fe3523b4be9a776cddf2116adc', 1, '2090450');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (58, 2013, '67242227372', '1986-11-08 00:00:00', 'pauloalr@gmail.com', true, 'PAULO ANTONIO LEAL REGO', '1db3a2bec2cd31b08bb74724878cbf0c2e60d923631ee92fcd9f28c6c780d3ff', 1, '1998175');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (59, 2014, '04376484350', '1990-08-02 00:00:00', 'phmacedoaraujo@gmail.com', true, 'PAULO HENRIQUE MACEDO DE ARAUJO', 'ccb67c4d8271ee93042c52501f4cde1722f0dc24795a8c96c868ddea025bb913', 1, '2090451');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (60, 2013, '45631697300', '1973-02-11 00:00:00', 'regispiresmag@gmail.com ', true, 'REGIS PIRES MAGALHÃES', '34e49e77f4ab88a8b781ad473342b998cc7f4d7e8fe9eb62ff539aecfe5ff4b0', 1, '1561335');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (61, 2009, '75692651300', '1978-03-03 00:00:00', 'ricardoreispereira@gmail.com ', true, 'RICARDO REIS PEREIRA', 'df8f41bb979a6702b2765660f31018fc72291d67e0662ab91ec45b807b574781', 2, '3513595');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (62, 2013, '96791489391', '1983-04-22 00:00:00', 'rubensfn@gmail.com', true, 'RUBENS FERNANDES NUNES', 'e6544658d1ce74a11f43b0c4d20de986b4711a71699df0b3f6078f448a74b685', 2, '2981314');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (63, 2007, '48924202472', '1966-03-13 00:00:00', 'taniapinheiro@ufc.br', true, 'TANIA SARAIVA DE MELO PINHEIRO', 'd25ec01f23e70951b12af8eb99e327d0c49658854bfb303e3ac46456ff63309d', 2, '3165319');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (64, 2014, '88851290300', '1981-07-12 00:00:00', 'valdemirpsiqueiroz@gmail.com', true, 'VALDEMIR PEREIRA DE QUEIROZ NETO', '7791872ca0ed1b62387c19962f8042bc56b5768cfb3a91a242abef3c6b51b950', 2, '3998365');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (65, 2009, '65685300344', '1984-02-08 00:00:00', 'wladimirufc@gmail.com', true, 'WLADIMIR ARAUJO TAVARES', '7588df8284edf64689f52cf669ad3a9f24cd86844ed1b5b4d04a57e07423f4cf', 2, '1707628');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (66, 2014, NULL, '1985-04-30 00:00:00', 'rafaelbraga@ufc.br', true, 'ANTÔNIO RAFAEL BRAGA', 'bb5c8144fa8bf67516e7faa042cb3b64d3449498086cfdb487b8ec9dbe5b8aee', 2, '2142309');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (67, 2010, '77014308300', '1978-04-19 00:00:00', 'paulynejuca@gmail.com', true, 'PAULYNE MATTHEWS JUCA', '99452c3d2d7b1dc6b9f4471160e19855714e8e465c0e530c3fc16106a643109b', 1, '1512591');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (68, 2009, '00255406371', '1983-07-29 00:00:00', 'samy@ufc.br', true, 'SAMY SOARES PASSOS DE SA', '89e80d366ca79bdb466f29ca202d275dd8d84027fe59a8b377d63bac308af247', 1, '2650679');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (69, 2013, '03591503304', '1989-07-17 00:00:00', 'ticianalc@ufc.br', true, 'TICIANA LINHARES COELHO DA SILVA', 'f0247296a6da2464174061fcf276ddb96892082356102581a2713fe768e11399', 1, '1998121');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (70, NULL, '01746255374', NULL, 'rodolforbcoutinho@hotmail.com', true, 'LUIS RODOLFO REBOUÇAS COUTINHO', 'edf10d60331f6bacb92ced9aec8da18b5cd8962f40dbffbcc4f2b56cfdfeb258', NULL, 'rodolfo');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (54, 2011, '82880050472', '1973-07-02 00:00:00', 'marcos.oliveira@ufc.br', true, 'MARCOS ANTONIO DE OLIVEIRA', '0753d48bdffcd543be611d03e9df22090fe496a7c3e5d7e0763f763c5815d1d4', 1, '1323899');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (50, 2011, '93912072353', '1984-01-22 00:00:00', 'joao.marcelo@ufc.br', true, 'JOAO MARCELO UCHOA DE ALENCAR', '82d0c9e0557085675dba5af9a452b180b421b60bac1ff84e92a3d2a74d0e8ccd', 1, '1821988');
+INSERT INTO professor (id, anoadmissao, cpf, datanascimento, email, habilitado, nome, password, semestreadmissao, siape) VALUES (51, 2013, '42989540300', '1972-05-29 00:00:00', 'contato@netofeitosa.com.br', true, 'JOSE MORAES FEITOSA', '5cc833f7a0dd92260bb426036df665c93eb8a8db223e36a97be456c46949075f', 2, '5485597');
+
+
+--
+-- TOC entry 2032 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: professor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('professor_id_seq', 70, true);
+
+
+--
+-- TOC entry 2010 (class 0 OID 33037)
+-- Dependencies: 180
+-- Data for Name: reserva; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (1, 2014, 2015, NULL, 'DOUTORADO', 2, 1, 'ABERTO', 54);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (2, 2014, 2016, NULL, 'DOUTORADO', 2, 1, 'ABERTO', 50);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (4, 2014, 2015, NULL, 'DOUTORADO', 2, 2, 'ABERTO', 51);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (5, 2015, 2018, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 61);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (6, 2015, 2018, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 47);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (7, 2015, 2018, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 42);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (8, 2015, 2015, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 58);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (9, 2015, 2015, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 69);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (10, 2015, 2015, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 35);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (11, 2016, 2019, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 34);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (12, 2016, 2019, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 45);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (13, 2016, 2019, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 56);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (14, 2016, 2016, NULL, 'DOUTORADO', 1, 2, 'ABERTO', 60);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (15, 2017, 2018, NULL, 'POS_DOUTORADO', 1, 2, 'ABERTO', 27);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (3, 2014, 2014, NULL, 'DOUTORADO', 2, 2, 'ABERTO', 65);
+INSERT INTO reserva (id, anoinicio, anotermino, datasolicitacao, programa, semestreinicio, semestretermino, status, professor_id) VALUES (16, 2014, 2014, NULL, 'DOUTORADO', 1, 2, 'ENCERRADO', 35);
+
+
+--
+-- TOC entry 2033 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: reserva_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reserva_id_seq', 2, true);
+
+
+-- Completed on 2015-01-12 13:59:30
+
+--
+-- PostgreSQL database dump complete
+--
+
