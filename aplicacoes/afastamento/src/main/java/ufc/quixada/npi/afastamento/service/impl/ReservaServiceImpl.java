@@ -34,7 +34,7 @@ public class ReservaServiceImpl implements ReservaService {
 		int vagas = usuarioService.getQuantidadeProfessor();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
 			Periodo periodo = new Periodo();
-			periodo.setVagas(vagas);
+			periodo.setVagas((int)(vagas * 0.15));
 			periodo.setAno(ano);
 			periodo.setStatus(StatusReserva.ABERTO);
 			if (ano == reserva.getAnoInicio() && reserva.getSemestreInicio() == 2) {
