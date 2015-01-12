@@ -140,3 +140,8 @@ div.controls {
 	margin-top: 50px;
 }
 
+input{
+	display: inline !important;
+	border: 2px red;
+}
+
