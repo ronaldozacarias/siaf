@@ -23,7 +23,7 @@ public class Documento {
 	private byte[] arquivo;
 	
 	@ManyToOne
-	private Reserva afastamento;
+	private Afastamento afastamento;
 
 	public Long getId() {
 		return id;
@@ -57,11 +57,11 @@ public class Documento {
 		this.extensao = extensao;
 	}
 
-	public Reserva getAfastamento() {
+	public Afastamento getAfastamento() {
 		return afastamento;
 	}
 
-	public void setAfastamento(Reserva afastamento) {
+	public void setAfastamento(Afastamento afastamento) {
 		this.afastamento = afastamento;
 	}
 

@@ -7,7 +7,7 @@ import ufc.quixada.npi.afastamento.model.Ranking;
 
 public interface RankingService {
 
-	List<Ranking> gerarRanking(Integer ano, Integer semestre);
+	List<Ranking> visualizarRanking(Integer ano, Integer semestre);
 
 
 }

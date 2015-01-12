@@ -37,7 +37,7 @@ public class ReservaController {
 	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String ranking(Model model, HttpSession session) {
-		model.addAttribute("ranking", rankingService.gerarRanking(2015, 1));
+		model.addAttribute("ranking", rankingService.visualizarRanking(2015, 1));
 		return "reserva/ranking";
 	}
 	
