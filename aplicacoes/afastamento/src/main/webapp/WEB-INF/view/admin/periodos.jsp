@@ -46,41 +46,50 @@
 			</div>
 			
 			
-			<div id="viewPeriodo">
-				<form:form id="update-periodo" commandName="periodo" action="/afastamento/administracao/update-periodo" method="POST" class="form-horizontal">
-					<input id="chave" type="hidden" value="${periodo.ano}">
-					<div class="form-group">
-						<label class="col-sm-1 control-label">Ano:</label>
-						<div class="col-sm-1">
-							<label class="control-label value-label">${periodo.ano }</label>
-						</div>
-						<label class="col-sm-1 control-label">Semestre:</label>
-						<div class="col-sm-1">
-							<label class="control-label value-label">${periodo.semestre }</label>
-						</div>
+			<div id="viewPeriodo"  class="form-horizontal" align="center">
+				<form:form id="update-periodo" commandName="periodo" action="/afastamento/administracao/update-periodo" method="POST" >
+					<form:hidden id="chave" path="id"/>
+					<form:hidden id="chave" path="ano"/>
+					<form:hidden id="semestre" path="semestre"/>
+					<div class="form-group center">
+						<label class="control-label">Periodo:</label>
+						<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
 					</div>
 					
-					<div class="form-group">
-						<div class="col-sm-5">
+					<div class="form-group center">
+						<label class="col-sm-1 control-label">Status:</label>
+						<div class="col-sm-2">
 							<form:select id="status" name="status" path="status" class="form-control selectpicker" >
-								<option>Status</option>
 								<form:options items="${status}" itemLabel="descricao" />
 							</form:select>
+							<div class="error-validation">
+								<form:errors path="status"></form:errors>
+							</div>
 						</div>
 
-
-						<label for="vagas" class="col-sm-1 control-label">Vagas:</label>
-						<div class="col-sm-1">
+						<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
+						<div class="col-sm-2">
 							<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control"/>
+							<div class="error-validation">
+								<form:errors path="vagas"></form:errors>
+							</div>
 						</div>
-
-						<label for="encerramento" class="col-sm-3 control-label">Encerramento:</label>
-						<div class="col-sm-1">
+<h1>${teste}</h1>
+						<label for="encerramento" class="col-sm-2 control-label">Encerramento:</label>
+						<div class="col-sm-2">
 							<form:input id="encerramento" name="encerramento" type="text" path="encerramento" cssClass="form-control"/>
+							<div class="error-validation">
+								<form:errors path="encerramento"></form:errors>
+							</div>
 						</div>
 					</div>
+
+				<div class="controls">
+					<input name="Cadastrar" type="submit" class="btn btn-primary" value="Cadastrar" />
+					<a href="<c:url value="#"></c:url>" class="btn btn-default">Cancelar</a>
+				</div>
+					
 				</form:form>
-				<h1>${periodos}</h1>
 			</div>
 
 		</div>

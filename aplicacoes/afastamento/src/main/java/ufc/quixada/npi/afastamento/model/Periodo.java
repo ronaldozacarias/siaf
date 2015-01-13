@@ -10,6 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(uniqueConstraints= @UniqueConstraint(columnNames = {"ano", "semestre"}))
@@ -19,12 +25,19 @@ public class Periodo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull(message = "Ano obrigatório")
 	private Integer ano;
 	
+	@NotNull(message = "Semestre Obrigatório")
+	@Min(message = "Semestre inválido", value = 1)
+	@Max(message = "Semestre inválido", value = 2)	
 	private Integer semestre;
 	
 	private Integer vagas;
 	
+	//@NotNull(message = "Obrigatório")
+	@NotEmpty(message = "Obj")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date encerramento;
 	
 	@Enumerated(EnumType.STRING)

@@ -10,9 +10,10 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
-public class PeriodoServiceImpl implements PeriodoService {
+public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements PeriodoService {
 
 	@Inject
 	private GenericRepository<Periodo> periodoRepository;

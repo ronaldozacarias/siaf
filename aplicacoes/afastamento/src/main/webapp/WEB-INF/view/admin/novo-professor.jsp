@@ -81,10 +81,12 @@
 						<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker">
 							<option>Semestre</option>
 							<option value="1">1</option>
+							<option value="3">3</option>
 							<option value="2">2</option>
 						</form:select>
 						<div class="error-validation">
 							<form:errors path="anoAdmissao"></form:errors>
+							<form:errors path="semestreAdmissao"></form:errors>
 						</div>
 					</div>
 					

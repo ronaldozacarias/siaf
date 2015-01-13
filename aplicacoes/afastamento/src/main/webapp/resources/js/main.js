@@ -1,6 +1,18 @@
 $(document).ready(function() {
 	
+	console.log('atualizando');
+	
 	$('.selectpicker').selectpicker();
+	
+	$("#filtroSemestre").val(sessionStorage.getItem('semestre'));
+	$("#filtroAno").val(sessionStorage.getItem('ano'));
+	$(".filtroSemestre").selectpicker('refresh');
+	
+	if(sessionStorage.getItem('ano') && sessionStorage.getItem('semestre')){
+		filtroPeriodo();
+	}
+	
+	$("#dataNascimento").datepicker();
 	
 	$(".file").fileinput({
 		showUpload: false,
@@ -16,19 +28,26 @@ $(document).ready(function() {
 	$("#viewPeriodo").hide();
 	
 	$(".filtroSemestre").change(function(event) {
-		var ano = $("#filtroAno").val();
-		var semestre = $("#filtroSemestre").val();
-		console.log(isNaN(ano) + " - " + semestre);
-		
-		if( (ano.length > 3 && !isNaN(ano)) && (!isNaN(semestre) && (semestre == '1' || semestre == '2')) ){
-			console.log("loading...");
-			loadPeriodo(ano, semestre);
-		}
-		
+		filtroPeriodo();
 	});
 	
 });
 
+function filtroPeriodo(){
+	var ano = $("#filtroAno").val();
+	var semestre = $("#filtroSemestre").val();
+
+	sessionStorage.setItem("ano", ano);
+	sessionStorage.setItem("semestre", semestre);
+
+	console.log(isNaN(ano) + " - " + semestre);
+	
+	if( (ano.length > 3 && !isNaN(ano)) && (!isNaN(semestre) && (semestre == '1' || semestre == '2')) ){
+		console.log("loading...");
+		loadPeriodo(ano, semestre);
+	}
+
+}
 
 function loadPeriodo(ano, semestre) {
 	var filtro = {
@@ -58,6 +77,8 @@ function showPeriodo(result) {
 		console.log("não é numero");
 	}else{
 		console.log('é numero');
+		$("#encerramento").datepicker();
+		$("#status").selectpicker();
 		$("#viewPeriodo").show();
 	}
 }
