@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
@@ -64,7 +65,7 @@ public class AdministracaoController {
 		return "admin/lista-professores";
 	}
 	
-	@RequestMapping(value = "/periodos", method = RequestMethod.GET)
+	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodo", new Periodo());
 		return "admin/periodos";
@@ -72,21 +73,34 @@ public class AdministracaoController {
 
 	@RequestMapping(value = "/periodo", method = RequestMethod.POST)
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
-		
-		model.addAttribute("periodo", periodoService.getPeriodo(ano, semestre));
+		Periodo periodo = periodoService.getPeriodo(ano, semestre);
+		model.addAttribute("periodo", periodo);
 		return "admin/periodos";
 	}
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
-	public String listarPeriodos(Model model, @Valid @ModelAttribute("periodo") Periodo periodo, BindingResult result) {
+	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @ModelAttribute("periodo") Periodo periodo, BindingResult result) {
 
-		if (result.hasErrors()) {
-			model.addAttribute("teste", "teste");
+		if (result.hasErrors() || periodo.getEncerramento() == null) {
+			model.addAttribute("errorData", periodo.getEncerramento() == null ? "Preencha a data": "");
 			return "admin/periodos";
 		}
 		
 		periodoService.update(periodo);
-		return "admin/periodos";
+		redirectAttributes.addFlashAttribute("info", "Atualizado com sucesso!");
+		return "redirect:/administracao/periodo";
+	}
+	@RequestMapping(value = "/update-periodo2", method = RequestMethod.POST)
+	public String updatePeriodos(Model model, RedirectAttributes redirectAttributes, @Valid Periodo periodo, BindingResult result) {
+
+		if (result.hasErrors() || periodo.getEncerramento() == null) {
+			model.addAttribute("errorData", periodo.getEncerramento() == null ? "Preencha a data": "");
+			return "admin/periodos";
+		}
+		
+		periodoService.update(periodo);
+		redirectAttributes.addFlashAttribute("info", "Atualizado com sucesso!");
+		return "redirect:/administracao/periodo";
 	}
 
 }

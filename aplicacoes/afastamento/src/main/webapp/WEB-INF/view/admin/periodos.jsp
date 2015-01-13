@@ -49,8 +49,9 @@
 			<div id="viewPeriodo"  class="form-horizontal" align="center">
 				<form:form id="update-periodo" commandName="periodo" action="/afastamento/administracao/update-periodo" method="POST" >
 					<form:hidden id="chave" path="id"/>
-					<form:hidden id="chave" path="ano"/>
+					<form:hidden id="anoHidden" path="ano"/>
 					<form:hidden id="semestre" path="semestre"/>
+					<form:hidden id="encerramentoHidden" path="encerramento"/>					
 					<div class="form-group center">
 						<label class="control-label">Periodo:</label>
 						<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
@@ -74,12 +75,13 @@
 								<form:errors path="vagas"></form:errors>
 							</div>
 						</div>
-<h1>${teste}</h1>
 						<label for="encerramento" class="col-sm-2 control-label">Encerramento:</label>
 						<div class="col-sm-2">
-							<form:input id="encerramento" name="encerramento" type="text" path="encerramento" cssClass="form-control"/>
+							<fmt:formatDate type="both" value="${periodo.encerramento}" var="dataFormatada" />
+							<span>dataFormatada : ${dataFormatada}</span>
+							<input id="encerramento" type="text" value="${dataFormatada}" class="form-control" />
 							<div class="error-validation">
-								<form:errors path="encerramento"></form:errors>
+								<span>${errorData }</span>
 							</div>
 						</div>
 					</div>
@@ -87,6 +89,7 @@
 				<div class="controls">
 					<input name="Cadastrar" type="submit" class="btn btn-primary" value="Cadastrar" />
 					<a href="<c:url value="#"></c:url>" class="btn btn-default">Cancelar</a>
+					<a  id="updatePeriodo" class="btn btn-primary">Update</a>
 				</div>
 					
 				</form:form>

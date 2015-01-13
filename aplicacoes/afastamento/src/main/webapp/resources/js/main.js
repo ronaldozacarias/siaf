@@ -12,7 +12,16 @@ $(document).ready(function() {
 		filtroPeriodo();
 	}
 	
-	$("#dataNascimento").datepicker();
+	$("#dataNascimento").datepicker({
+		 autoclose: true,
+	});
+	
+	$("#encerramento").datepicker({
+		autoclose: true,
+	}).on("changeDate", function(e){
+		console.log("Selected date: " + this.value);
+    });
+		
 	
 	$(".file").fileinput({
 		showUpload: false,
@@ -29,7 +38,7 @@ $(document).ready(function() {
 	
 	$(".filtroSemestre").change(function(event) {
 		filtroPeriodo();
-	});
+	});	
 	
 });
 
@@ -70,6 +79,22 @@ function loadPeriodo(ano, semestre) {
 	});
 }
 
+function submitPeriodo(periodo) {
+	$.ajax({
+		url: '/afastamento/administracao/update-periodo2',
+		type: "POST",
+		dataType: "html",
+		data: periodo,
+		success: function(result) {
+			console.log('Update');
+		},
+		error: function(error) {
+			console.log('ErrorPeriodo: ' + error);
+		}
+	});
+}
+
+
 function showPeriodo(result) {
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
@@ -77,7 +102,37 @@ function showPeriodo(result) {
 		console.log("não é numero");
 	}else{
 		console.log('é numero');
-		$("#encerramento").datepicker();
+		$("#encerramento").datepicker({
+			autoclose: true,
+		}).on("changeDate", function(e){
+			$("#encerramentoHidden").val(this.value);
+			console.log("Selected date: " + this.value);
+	    });
+
+		$("#updatePeriodo").on('click', function(event) {
+			var id = $("#chave").val();
+			var ano = $("#anoHidden").val();
+			var semestre = $("#semestre").val();
+			var encerramento = $("#encerramentoHidden").val();
+			var status = $("#status").val();
+			var vagas = $("#vagas").val();
+			
+			var periodo = {
+				"id" : id,
+				"ano" : ano,
+				"semestre" : semestre,
+				"encerramento" : encerramento,
+				"status" : status,
+				"vagas" : vagas,
+			};
+			
+			console.log("Log encerramento = " + periodo.encerramento);
+			submitPeriodo(periodo);
+			
+		});
+		
+		
+		
 		$("#status").selectpicker();
 		$("#viewPeriodo").show();
 	}
