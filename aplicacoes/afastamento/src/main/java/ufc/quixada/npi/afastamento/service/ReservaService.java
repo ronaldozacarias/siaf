@@ -13,14 +13,6 @@ public interface ReservaService {
 	
 	List<Reserva> getReservasByPeriodo(Integer ano, Integer semestre);
 	
-	boolean isPeriodoEncerrado(Integer ano, Integer semestre);
-	
-	void inserirPeriodo(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino);
-	
-	Integer getSemestreAtual();
-	
-	Integer getAnoAtual();
-	
 	boolean hasReservaEmAberto(Professor professor);
 
 

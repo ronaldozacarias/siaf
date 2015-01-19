@@ -132,7 +132,5 @@ public class Reserva {
 			return false;
 		return true;
 	}
-	
-	
 
 }

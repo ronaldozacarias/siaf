@@ -140,3 +140,43 @@ div.controls {
 	margin-top: 50px;
 }
 
+table#ranking {
+	margin-top: 20px;
+}
+
+.bootgrid-table th > .column-header-anchor {
+	cursor: default !important;
+}
+
+div#periodo {
+	text-align: center;
+	margin-top: 30px;
+	color: #F36825;
+}
+
+div#periodo label {
+	font-size: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+div#periodo i {
+	cursor: pointer;
+}
+
+.table > tbody > tr.ACEITO {
+	background-color: #D9EDF7;
+}
+
+.table > tbody > tr.NAO_ACEITO, table > tbody > tr.DESCLASSIFICADO {
+	background-color: #F2DEDE;
+}
+
+.table > tbody > tr.ENCERRADO {
+	background-color: #F5F5F5;
+}
+
+.table > tbody > tr.CLASSIFICADO {
+	background-color: #DFF0D8;
+}
+

@@ -30,9 +30,31 @@
 				</div>
 			</c:if>
 			
-			<c:forEach items="${ranking }" var="r">
-				<label>Professor: ${r.professor.nome } | Sem. na UFC: ${r.semestresAtivos } | Afast.: ${r.semestresAfastados } | Solicit.: ${r.semestresSolicitados } | Pont.: ${r.pontuacao }</label><br>
-			</c:forEach>
+			<input type="hidden" id="ano" value="${periodoAtual.ano }"/>
+			<input type="hidden" id="semestre" value="${periodoAtual.semestre }"/>
+			<input type="hidden" id="anoPosterior" value="${periodoPosterior.ano }"/>
+			<input type="hidden" id="semestrePosterior" value="${periodoPosterior.semestre }"/>
+			<input type="hidden" id="anoAnterior" value="${periodoAnterior.ano }"/>
+			<input type="hidden" id="semestreAnterior" value="${periodoAnterior.semestre }"/>
+			
+			<div id="periodo">
+				<i id="anterior" class="fa fa-arrow-circle-left fa-2x"></i>
+				<label id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
+				<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
+			</div>
+			
+			<table id="ranking" class="table .table-condensed">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Semestres Ativos</th>
+						<th>Semestres Afastados</th>
+						<th>Semestres Solicitados</th>
+			            <th>Pontuação</th>
+			            <th>Status</th>
+					</tr>
+				</thead>
+			</table>
 			
 		</div>
 		

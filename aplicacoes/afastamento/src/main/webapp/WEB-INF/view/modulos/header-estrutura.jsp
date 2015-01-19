@@ -6,4 +6,6 @@
 <link href="<c:url value="/resources/css/font-awesome.min.css" />" rel="stylesheet" />
 <link href="<c:url value="/resources/css/bootstrap-select.min.css" />" rel="stylesheet" />
 <link href="<c:url value="/resources/css/fileinput.min.css" />" rel="stylesheet" />
+<link href="<c:url value="/resources/css/jquery.bootgrid.min.css" />" rel="stylesheet" />
+<%-- <link href="<c:url value="/resources/css/bootstrap-table.min.css" />" rel="stylesheet" /> --%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

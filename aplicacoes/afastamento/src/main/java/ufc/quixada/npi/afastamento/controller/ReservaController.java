@@ -3,20 +3,25 @@ package ufc.quixada.npi.afastamento.controller;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Programa;
+import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
@@ -35,10 +40,36 @@ public class ReservaController {
 	@Inject
 	private RankingService rankingService;
 	
+	@Inject
+	private AfastamentoService afastamentoService;
+	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
-	public String ranking(Model model, HttpSession session) {
-		model.addAttribute("ranking", rankingService.visualizarRanking(2015, 1));
+	public String getRanking(Model model, HttpSession session) {
+		//model.addAttribute("tuplas", rankingService.visualizarRanking(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual()));
+		model.addAttribute("periodoAtual", 
+				afastamentoService.getPeriodoByAnoSemestre(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual()));
+		model.addAttribute("periodoAnterior", 
+				afastamentoService.getPeriodoAnterior(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual()));
+		model.addAttribute("periodoPosterior", 
+				afastamentoService.getPeriodoPosterior(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual()));
+		
 		return "reserva/ranking";
+	}
+	
+	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Model ranking(HttpServletRequest request, Model model, HttpSession session) {
+		Ranking ranking = new Ranking();
+		ranking.setPeriodo(afastamentoService.getPeriodoByAnoSemestre(
+				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
+		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		model.addAttribute("ranking", ranking);
+		model.addAttribute("periodoAtual", ranking.getPeriodo());
+		model.addAttribute("periodoAnterior", 
+				afastamentoService.getPeriodoAnterior(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		model.addAttribute("periodoPosterior", 
+				afastamentoService.getPeriodoPosterior(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		
+		return model;
 	}
 	
 	@RequestMapping(value = "/incluir", method = RequestMethod.GET)
@@ -54,9 +85,9 @@ public class ReservaController {
 			@RequestParam("ano-termino") Integer anoTermino, @RequestParam("semestre-termino") Integer semestreTermino,
 			@RequestParam("programa") Programa programa, Model model, RedirectAttributes redirect, HttpSession session) {
 		
-		Integer diferenca = calculaDiferenca(reservaService.getAnoAtual(), reservaService.getSemestreAtual(), anoInicio, semestreInicio);
+		Integer diferenca = calculaDiferenca(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual(), anoInicio, semestreInicio);
 		if(diferenca <= 2) {
-			if(reservaService.isPeriodoEncerrado(reservaService.getAnoAtual(), reservaService.getSemestreAtual())) {
+			if(afastamentoService.isPeriodoEncerrado(afastamentoService.getAnoAtual(), afastamentoService.getSemestreAtual())) {
 				diferenca--;
 			}
 		}

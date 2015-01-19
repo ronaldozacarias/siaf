@@ -69,37 +69,6 @@ public class ReservaServiceImpl implements ReservaService {
 	}
 
 	@Override
-	public boolean isPeriodoEncerrado(Integer ano, Integer semestre) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("ano", ano);
-		params.put("semestre", semestre);
-		return reservaRepository.find(QueryType.JPQL, "from Periodo where ano = :ano and semestre = :semestre"
-				+ " and status = 'ENCERRADO'", params).size() > 0;
-	}
-
-	@Override
-	public void inserirPeriodo(Integer anoInicio, Integer semestreInicio,
-			Integer anoTermino, Integer semestreTermino) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Integer getSemestreAtual() {
-		Calendar calendar = Calendar.getInstance();
-		if(calendar.get(Calendar.MONTH) < 6) {
-			return 1;
-		}
-		return 2;
-	}
-	
-	@Override
-	public Integer getAnoAtual() {
-		Calendar calendar = Calendar.getInstance();
-		return calendar.get(Calendar.YEAR);
-	}
-
-	@Override
 	public boolean hasReservaEmAberto(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("siape", professor.getSiape());

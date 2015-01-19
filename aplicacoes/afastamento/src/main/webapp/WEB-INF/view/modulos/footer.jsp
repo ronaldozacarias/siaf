@@ -4,6 +4,9 @@
 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 <script src="<c:url value="/webjars/jquery-ui/1.11.1/jquery-ui.min.js" />"></script>
 <script src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/main.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-select.min.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.bootgrid.min.js" />"></script>
+<script src="<c:url value="/resources/js/main.js" />"></script>
+<%-- <script src="<c:url value="/resources/js/bootstrap-table.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap-table-pt-BR.min.js" />"></script> --%>
