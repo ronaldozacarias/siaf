@@ -31,5 +31,6 @@
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.service" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.controller" />
 	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
+	<context:component-scan base-package="br.ufc.quixada.npi.service" />
 	
 </beans>

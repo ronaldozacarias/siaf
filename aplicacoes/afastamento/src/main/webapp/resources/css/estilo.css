@@ -140,3 +140,14 @@ div.controls {
 	margin-top: 50px;
 }
 
+input{
+	display: inline !important;
+	border: 2px red;
+}
+
+.margin-top{
+	margin-top: 70px  !important;
+}
+.margin-top-10{
+	margin-top: 10px  !important;
+}
