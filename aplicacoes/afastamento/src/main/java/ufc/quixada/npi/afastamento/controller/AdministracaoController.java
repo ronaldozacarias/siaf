@@ -1,11 +1,13 @@
 package ufc.quixada.npi.afastamento.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.joda.time.LocalDate;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import br.ufc.quixada.npi.service.GenericService;
 
@@ -68,39 +71,63 @@ public class AdministracaoController {
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodo", new Periodo());
-		return "admin/periodos";
+		return "admin/periodo";
 	}
 
 	@RequestMapping(value = "/periodo", method = RequestMethod.POST)
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
+
+		if(periodo == null){
+			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
+		}
+		
+		if(periodo.getEncerramento() != null){
+			boolean permitirUpdate = updateEncerramento(periodo.getEncerramento());
+			model.addAttribute("permitirUpdate", permitirUpdate);
+		}else{
+			model.addAttribute("permitirUpdate", true);
+		}
+
 		model.addAttribute("periodo", periodo);
-		return "admin/periodos";
+		return "admin/periodo";
+	}
+	
+	private boolean updateEncerramento(Date date) {
+		LocalDate now = new LocalDate();
+		
+		LocalDate enceramento = date != null ? new LocalDate(date): null;
+
+		if (enceramento.isAfter(now) || enceramento.isEqual(now)) {
+			return true;
+		}
+		return false;
 	}
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
-	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @ModelAttribute("periodo") Periodo periodo, BindingResult result) {
+	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoAtualizado, BindingResult result) {
 
-		if (result.hasErrors() || periodo.getEncerramento() == null) {
-			model.addAttribute("errorData", periodo.getEncerramento() == null ? "Preencha a data": "");
-			return "admin/periodos";
+		model.addAttribute("permitirUpdate", true);
+		if (result.hasErrors()) {
+			//model.addAttribute("periodo", periodoAtualizado);
+			return "admin/periodo";
 		}
-		
-		periodoService.update(periodo);
-		redirectAttributes.addFlashAttribute("info", "Atualizado com sucesso!");
-		return "redirect:/administracao/periodo";
-	}
-	@RequestMapping(value = "/update-periodo2", method = RequestMethod.POST)
-	public String updatePeriodos(Model model, RedirectAttributes redirectAttributes, @Valid Periodo periodo, BindingResult result) {
 
-		if (result.hasErrors() || periodo.getEncerramento() == null) {
-			model.addAttribute("errorData", periodo.getEncerramento() == null ? "Preencha a data": "");
-			return "admin/periodos";
+		if(periodoAtualizado.getId() != null){
+			Periodo periodoAtual = periodoService.find(Periodo.class, periodoAtualizado.getId());
+			
+			if ( periodoAtual.getStatus().equals(StatusReserva.ABERTO) && updateEncerramento(periodoAtualizado.getEncerramento()) ) {
+				periodoService.update(periodoAtualizado);
+				redirectAttributes.addFlashAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
+				model.addAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
+			}else{
+				model.addAttribute("errorData","Informe uma data futura.");
+			}
+
 		}
-		
-		periodoService.update(periodo);
-		redirectAttributes.addFlashAttribute("info", "Atualizado com sucesso!");
-		return "redirect:/administracao/periodo";
+
+		//return "redirect:/administracao/periodo";
+		return "admin/periodo";
 	}
 
 }

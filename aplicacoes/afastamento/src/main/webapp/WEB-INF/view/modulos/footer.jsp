@@ -9,3 +9,4 @@
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
+<script src="<c:url value="/resources/js/moment.js" />"></script>

@@ -2,6 +2,7 @@ $(document).ready(function() {
 	
 	console.log('atualizando');
 	
+	
 	$('.selectpicker').selectpicker();
 	
 	$("#filtroSemestre").val(sessionStorage.getItem('semestre'));
@@ -9,18 +10,18 @@ $(document).ready(function() {
 	$(".filtroSemestre").selectpicker('refresh');
 	
 	if(sessionStorage.getItem('ano') && sessionStorage.getItem('semestre')){
-		filtroPeriodo();
+		//filtroPeriodo();
 	}
 	
 	$("#dataNascimento").datepicker({
 		 autoclose: true,
+		 format: "dd/M/yyyy"
 	});
 	
 	$("#encerramento").datepicker({
 		autoclose: true,
-	}).on("changeDate", function(e){
-		console.log("Selected date: " + this.value);
-    });
+		format: "dd/mm/yyyy"
+	});		
 		
 	
 	$(".file").fileinput({
@@ -35,14 +36,25 @@ $(document).ready(function() {
 	});
 	
 	$("#viewPeriodo").hide();
+	showPeriodoPost();
 	
 	$(".filtroSemestre").change(function(event) {
 		filtroPeriodo();
 	});	
 	
+	$("#filtroAno").keyup(function (event) {
+	    var maximoDigitosAno = 4;
+	    var lengthAno = $(this).val().length;
+	    console.log(lengthAno + " - console - " + maximoDigitosAno );
+	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
+	    	filtroPeriodo();
+	    }
+	});	
+	
 });
 
 function filtroPeriodo(){
+	console.log("filtrofiltrofiltrofiltrofiltrofiltrofiltrofiltro");
 	var ano = $("#filtroAno").val();
 	var semestre = $("#filtroSemestre").val();
 
@@ -59,6 +71,7 @@ function filtroPeriodo(){
 }
 
 function loadPeriodo(ano, semestre) {
+	console.log("loadPeriodoloadPeriodoloadPeriodoloadPeriodoloadPeriodo");
 	var filtro = {
 		"ano" : ano,
 		"semestre" : semestre,
@@ -71,6 +84,7 @@ function loadPeriodo(ano, semestre) {
 		data: filtro,
 		success: function(result) {
 			showPeriodo(result);
+			//cosole.log(result);
 		},
 		error: function(error) {
 			console.log('Error loadPeriodo: ' + error);
@@ -79,59 +93,35 @@ function loadPeriodo(ano, semestre) {
 	});
 }
 
-function submitPeriodo(periodo) {
-	$.ajax({
-		url: '/afastamento/administracao/update-periodo2',
-		type: "POST",
-		dataType: "html",
-		data: periodo,
-		success: function(result) {
-			console.log('Update');
-		},
-		error: function(error) {
-			console.log('ErrorPeriodo: ' + error);
-		}
-	});
-}
-
-
 function showPeriodo(result) {
+	console.log("showPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodo");
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
 		console.log("não é numero");
 	}else{
 		console.log('é numero');
+		
 		$("#encerramento").datepicker({
 			autoclose: true,
-		}).on("changeDate", function(e){
-			$("#encerramentoHidden").val(this.value);
-			console.log("Selected date: " + this.value);
-	    });
-
-		$("#updatePeriodo").on('click', function(event) {
-			var id = $("#chave").val();
-			var ano = $("#anoHidden").val();
-			var semestre = $("#semestre").val();
-			var encerramento = $("#encerramentoHidden").val();
-			var status = $("#status").val();
-			var vagas = $("#vagas").val();
-			
-			var periodo = {
-				"id" : id,
-				"ano" : ano,
-				"semestre" : semestre,
-				"encerramento" : encerramento,
-				"status" : status,
-				"vagas" : vagas,
-			};
-			
-			console.log("Log encerramento = " + periodo.encerramento);
-			submitPeriodo(periodo);
-			
-		});
+			format: "dd/mm/yyyy"
+		});		
 		
+		$("#status").selectpicker();
+	}
+	$("#viewPeriodo").show();
+}
+function showPeriodoPost() {
+	if(isNaN(parseInt($("#viewPeriodo #update-periodo #chave").val()))){
+		console.log("não é numero = " + $("#viewPeriodo #update-periodo #chave").empty());
+		$("#viewPeriodo").hide();
+	}else{
+		console.log('é d numero = ' + $("#viewPeriodo #update-periodo #chave").length);
 		
+		$("#encerramento").datepicker({
+			autoclose: true,
+			format: "dd/mm/yyyy"
+		});		
 		
 		$("#status").selectpicker();
 		$("#viewPeriodo").show();

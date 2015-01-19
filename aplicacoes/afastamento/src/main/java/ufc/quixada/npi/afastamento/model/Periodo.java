@@ -34,8 +34,10 @@ public class Periodo {
 	@Max(message = "Semestre inválido", value = 2)	
 	private Integer semestre;
 	
+	@Min(message = "Número de vagas inválido", value = 0)
 	private Integer vagas;
 	
+	@NotNull(message = "Obrigatório")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date encerramento;
