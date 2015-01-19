@@ -10,3 +10,6 @@
 <script src="<c:url value="/resources/js/main.js" />"></script>
 <%-- <script src="<c:url value="/resources/js/bootstrap-table.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-table-pt-BR.min.js" />"></script> --%>
+<script src="<c:url value="/resources/js/bootstrap-datepicker.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
+<script src="<c:url value="/resources/js/moment.js" />"></script>

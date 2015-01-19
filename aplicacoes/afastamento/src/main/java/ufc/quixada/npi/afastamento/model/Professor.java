@@ -13,6 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.jboss.logging.annotations.Message;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Professor {
@@ -21,6 +30,7 @@ public class Professor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty(message="Obrigatório")
 	private String nome;
 	
 	@Column(nullable = false)
@@ -33,16 +43,26 @@ public class Professor {
 	@JoinTable(name = "papel_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
 
+	@Size(min = 11, message="Minino 11 dígitos")
 	private String cpf;
 	
+	@Size(min = 7, message="Minino 7 dígitos")
 	private String siape;
 
+	@NotEmpty(message="Obrigatório")
+	@Email(message="E-mail Inválido")
 	private String email;
 	
+	@NotNull(message = "Obrigatório")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	
+	@NotNull(message = "Ano obrigatório")
 	private Integer anoAdmissao;
 	
+	@NotNull(message = "Semestre Obrigatório")
+	@Min(message = "Semestre inválido", value = 1)
+	@Max(message = "Semestre inválido", value = 2)
 	private Integer semestreAdmissao;
 	
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
@@ -102,6 +122,10 @@ public class Professor {
 
 	public void setPapeis(List<Papel> papeis) {
 		this.papeis = papeis;
+	}
+
+	public void addPapel(Papel papel) {
+		this.papeis.add(papel);
 	}
 
 	public String getSiape() {

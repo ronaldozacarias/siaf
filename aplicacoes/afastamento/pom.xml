@@ -243,6 +243,13 @@
 			<artifactId>npi-core-api</artifactId>
 			<version>${npi.core.version}</version>
 		</dependency>
+		
+		<!-- Dependência JODA TIME -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.5</version>
+		</dependency>
 
 	</dependencies>
 	<build>

@@ -140,6 +140,7 @@ div.controls {
 	margin-top: 50px;
 }
 
+<<<<<<< HEAD
 table#ranking {
 	margin-top: 20px;
 }
@@ -180,3 +181,14 @@ div#periodo i {
 	background-color: #DFF0D8;
 }
 
+input{
+	display: inline !important;
+	border: 2px red;
+}
+
+.margin-top{
+	margin-top: 70px  !important;
+}
+.margin-top-10{
+	margin-top: 10px  !important;
+}
