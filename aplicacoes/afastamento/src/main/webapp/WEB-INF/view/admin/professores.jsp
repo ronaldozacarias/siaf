@@ -13,6 +13,11 @@
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
+
+		<div class="title"> Professores : </div>
+		<span class="line"></span>
+		
+		
 			<c:if test="${not empty erro}">
 					<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
@@ -30,9 +35,26 @@
 				</div>
 			</c:if>
 			
-			<c:forEach items="${professores}" var="professor">
-				
-			</c:forEach>
+			<div class="container">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+				               <th>Siape</th>
+				               <th>Nome</th>
+				               <th>Admisão</th>
+				           </tr>
+				       </thead>
+				       <tbody>
+						<c:forEach items="${professores}" var="professor">
+					           <tr>
+					               <td>${professor.siape}</td>
+					               <td>${professor.nome}</td>
+					               <td>${professor.anoAdmissao}.${professor.semestreAdmissao}</td>
+					           </tr>
+						</c:forEach>
+				       </tbody>
+				</table>
+			</div>
 			
 		</div>
 		
