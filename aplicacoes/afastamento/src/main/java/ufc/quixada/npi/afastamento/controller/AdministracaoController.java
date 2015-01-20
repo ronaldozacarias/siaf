@@ -81,6 +81,7 @@ public class AdministracaoController {
 
 		if(periodo == null){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
+			return "admin/periodo";
 		}
 		
 		if(periodo.getEncerramento() != null){

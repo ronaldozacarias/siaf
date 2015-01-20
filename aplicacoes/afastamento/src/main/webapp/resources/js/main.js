@@ -2,8 +2,6 @@ $(document).ready(function() {
 
 	$('.selectpicker').selectpicker();
 	
-	$("#filtroSemestre").val(sessionStorage.getItem('semestre'));
-	$("#filtroAno").val(sessionStorage.getItem('ano'));
 	$(".filtroSemestre").selectpicker('refresh');
 	
 	
