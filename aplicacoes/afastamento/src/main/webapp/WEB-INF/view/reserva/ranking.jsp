@@ -43,7 +43,7 @@
 				<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
 			</div>
 			
-			<table id="ranking" class="table .table-condensed">
+			<table id="ranking" class="table">
 				<thead>
 					<tr>
 						<th>Nome</th>
