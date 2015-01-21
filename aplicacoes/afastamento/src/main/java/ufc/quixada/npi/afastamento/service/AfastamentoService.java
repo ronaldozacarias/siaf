@@ -14,15 +14,17 @@ public interface AfastamentoService {
 	
 	Periodo getPeriodoByAnoSemestre(Integer ano, Integer semestre);
 	
+	Periodo getPeriodoAtual();
+	
 	Integer getSemestreAtual();
 	
 	Integer getAnoAtual();
 	
-	Periodo getPeriodoAnterior(Integer ano, Integer semestre);
+	Periodo getPeriodoAnterior(Periodo periodo);
 	
-	Periodo getPeriodoPosterior(Integer ano, Integer semestre);
+	Periodo getPeriodoPosterior(Periodo periodo);
 	
-	boolean isPeriodoEncerrado(Integer ano, Integer semestre);
+	boolean isPeriodoEncerrado(Periodo periodo);
 	
 	void inserirPeriodo(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino);
 	

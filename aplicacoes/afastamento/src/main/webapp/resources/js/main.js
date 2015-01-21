@@ -1,7 +1,40 @@
 $(document).ready(function() {
 	
+	$('#solicitarAfastamento').validate({
+        rules: {
+            
+        },
+        highlight: function(element) {
+            $(element).closest('.form-item').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-item').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	anoInicio:{
+                required:"Campo obrigatório",
+            },
+            anoTermino:{
+                required:"Campo obrigatório",
+            },
+            conceito:{
+                required:"Campo obrigatório",
+            },
+            instituicao:{
+                required:"Campo obrigatório",
+            }
+        }
+    });
+	
 	console.log('atualizando');
 	
+	$('.ano').mask('9999', {placeholder:" "});
+	$('.conceito').mask('9',{placeholder:" "});
 	
 	$('.selectpicker').selectpicker();
 	
@@ -93,26 +126,25 @@ function getRanking(ano, semestre) {
 		$('#semestre').val(result.periodoAtual.semestre);
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
+		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
 		
-		loadBootgrid(result.ranking.tuplas, "ranking");
+		loadTable(result.ranking.tuplas, "ranking");
 		
-	})
-	.error(function(error){
-		alert('erro');
 	});
 }
 
-function loadBootgrid(result, table) {
+function loadTable(result, table) {
 	$("tbody").remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(
-            $('<td>').text(item.professor),
-            $('<td>').text(item.semestresAtivos),
-            $('<td>').text(item.semestresAfastados),
-            $('<td>').text(item.semestresSolicitados),
-            $('<td>').text(item.pontuacao),
-            $('<td>').text(item.status)
+        	$('<td class=\"align-center\">').text(i+1),
+        	$('<td>').text(item.professor),
+            $('<td class=\"align-center\">').text(item.semestresAtivos),
+            $('<td class=\"align-center\">').text(item.semestresAfastados),
+            $('<td class=\"align-center\">').text(item.semestresSolicitados),
+            $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');
     });
 	

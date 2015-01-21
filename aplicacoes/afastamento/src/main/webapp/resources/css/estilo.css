@@ -165,6 +165,10 @@ div#periodo i {
 	cursor: pointer;
 }
 
+.table > thead > tr > th {
+	text-align: center;
+}
+
 .table > tbody > tr.ACEITO {
 	background-color: #D9EDF7;
 }
@@ -181,14 +185,52 @@ div#periodo i {
 	background-color: #DFF0D8;
 }
 
+.table > tbody > tr > td.pontuacao {
+	font-weight: bold;
+}
+
+.align-center {
+	text-align: center;
+}
+
+div#legenda label {
+	font-weight: 100;
+}
+
+div#legenda label span {
+	font-weight: bold;
+}
+
+div#legenda label span.aceito {
+	background-color: #D9EDF7;
+}
+
+div#legenda label span.desclassificado {
+	background-color: #F2DEDE;
+}
+
+div#legenda label span.encerrado {
+	background-color: #F5F5F5;
+}
+
+div#legenda label span.classificado {
+	background-color: #DFF0D8;
+}
+
+
 input{
 	display: inline !important;
 	border: 2px red;
 }
 
-.margin-top{
+.margin-top {
 	margin-top: 70px  !important;
 }
-.margin-top-10{
+
+.margin-top-10 {
 	margin-top: 10px  !important;
+}
+
+.alert {
+	margin-top: 68px;
 }

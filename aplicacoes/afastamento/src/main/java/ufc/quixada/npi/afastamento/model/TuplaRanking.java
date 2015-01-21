@@ -19,7 +19,6 @@ public class TuplaRanking {
 	@JsonIgnore
 	private Periodo periodo;
 	
-	@JsonIgnore
 	private Reserva reserva;
 
 	public StatusReserva getStatus() {

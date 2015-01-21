@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
@@ -34,7 +35,7 @@ public class RankingServiceImpl implements RankingService {
 		for(int i = 0; i < tuplaAtual.size(); i++) {
 			Periodo periodoInicio = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
 			Periodo periodoTermino = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
-			for(;periodoInicio != null && !periodoInicio.equals(periodoTermino); periodoInicio = afastamentoService.getPeriodoPosterior(periodoInicio.getAno(), periodoInicio.getSemestre())) {
+			for(;periodoInicio != null && !periodoInicio.equals(afastamentoService.getPeriodoPosterior(periodoTermino)); periodoInicio = afastamentoService.getPeriodoPosterior(periodoInicio)) {
 				List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
 				boolean encontrou = false;
 				for(TuplaRanking tupla : tuplaPeriodo) {
@@ -106,6 +107,26 @@ public class RankingServiceImpl implements RankingService {
 	        @Override
 	        public int compare(TuplaRanking  ranking1, TuplaRanking  ranking2)
 	        {
+	        	if(ranking1.getPontuacao().compareTo(ranking2.getPontuacao()) == 0.0f) {
+	        		if(ranking1.getReserva().getPrograma().equals(ranking2.getReserva().getPrograma())) {
+	        			if(ranking1.getReserva().getConceitoPrograma().equals(ranking2.getReserva().getConceitoPrograma())) {
+	        				return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
+	        			}
+	        			return ranking1.getReserva().getConceitoPrograma().compareTo(ranking2.getReserva().getConceitoPrograma());
+	        		}
+	        		if(ranking1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
+	        			return 1;
+	        		}
+	        		if(ranking2.getReserva().getPrograma().equals(Programa.MESTRADO)) {
+	        			return -1;
+	        		}
+	        		if(ranking1.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        			return 1;
+	        		}
+	        		if(ranking2.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        			return -1;
+	        		}
+	        	}
 	            return  ranking1.getPontuacao().compareTo(ranking2.getPontuacao());
 	        }
 	    });

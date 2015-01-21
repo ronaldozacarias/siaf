@@ -42,20 +42,35 @@
 				<label id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
 				<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
 			</div>
+			<div class="align-center"><label id="vagas"></label></div>
 			
 			<table id="ranking" class="table">
 				<thead>
 					<tr>
+						<th>#</th>
 						<th>Nome</th>
-						<th>Semestres Ativos</th>
-						<th>Semestres Afastados</th>
-						<th>Semestres Solicitados</th>
+						<th>SE</th>
+						<th>SA</th>
+						<th>SS</th>
+			            <th>Período</th>
 			            <th>Pontuação</th>
-			            <th>Status</th>
 					</tr>
 				</thead>
 			</table>
-			
+
+			<div id="legenda">
+				<label><span>SE:</span> Número de semestres desde a
+					contratação na UFC até o início do afastamento, iniciando no
+					primeiro semestre em que o solicitante teve disciplina alocada no
+					Campus Quixadá.</label>
+				<label><span>SA:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
+				<label><span>SS:</span> Número de semestres do afastamento reservado/solicitado.</label><br/>
+				<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Solicitação aceita e classificada dentro das vagas.</label><br/>
+				<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Classificado dentro das vagas.</label><br/>
+				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Não classificado dentro das vagas.</label><br/>
+				<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Solicitação encerrada.</label>
+			</div>
+
 		</div>
 		
 		<jsp:include page="../modulos/footer.jsp" />
