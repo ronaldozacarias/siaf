@@ -235,6 +235,7 @@ li ul .dropdown-menu {
 	width: 180px;
 }
 
-.afas-tr-left {
+
+#professores > thead > tr > th {
 	text-align: left;
-} 
+}

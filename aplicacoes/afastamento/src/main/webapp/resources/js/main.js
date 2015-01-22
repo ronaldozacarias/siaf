@@ -31,6 +31,51 @@ $(document).ready(function() {
         }
     });
 	
+	$('#novo-professor').validate({
+        rules: {
+        	semestreAdmissao: {
+        		 required: true
+            }
+        },
+        
+        highlight: function(element) {
+            $(element).closest('.form-item').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-item').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            	error.insertAfter(element.parent().children().last());
+        },
+        
+        messages:{
+        	nome:{
+                required:"Campo obrigatório",
+            },
+            siape:{
+                required:"Campo obrigatório",
+            },
+            email:{
+                required:"Campo obrigatório",
+            },
+            anoAdmissao:{
+            	required:"Campo obrigatório",
+            },
+            semestreAdmissao:{
+            	required:"Selecione o semestre",
+            },
+            cpf:{
+                required:"Campo obrigatório",
+            },
+            dataNascimento:{
+                required:"Campo obrigatório",
+            }
+        },
+    });
+
+
 	$('.ano').mask('9999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});
 	

@@ -37,65 +37,76 @@
 
 				<!-- 1 LINHA -->
 				<div class="form-group">
-					<label for="nome" class="col-sm-2 control-label">Nome:</label>
-					<div class="col-sm-4">
-						<form:input id="nome" name="nome" type="text" path="nome" size="50" cssClass="form-control"/>
-						<div class="error-validation">
-							<form:errors path="nome"></form:errors>
+					<div class="form-item">
+						<label for="nome" class="col-sm-2 control-label">Nome:</label>
+						<div class="col-sm-4">
+							<form:input id="nome" name="nome" type="text" path="nome" size="50" cssClass="form-control" required="required"/>
+							<div class="error-validation">
+								<form:errors path="nome"></form:errors>
+							</div>
 						</div>
 					</div>
 
-					<label for="siape" class="col-sm-2 control-label">Siape:</label>
-					<div class="col-sm-4">
-						<form:input id="siape" name="siape" type="text" path="siape" cssClass="form-control"/>
-						<div class="error-validation">
-							<form:errors path="siape"></form:errors>
+					<div class="form-item">
+						<label for="siape" class="col-sm-2 control-label">Siape:</label>
+						<div class="col-sm-4">
+							<form:input id="siape" name="siape" type="text" path="siape" cssClass="form-control" required="required"/>
+							<div class="error-validation">
+								<form:errors path="siape"></form:errors>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<!-- 2 LINHA -->
 				<div class="form-group">
-					<label for="email" class="col-sm-2 control-label">E-mail:</label>
-					<div class="col-sm-4">
-						<form:input id="email" name="email" type="text" path="email" size="50" cssClass="form-control"/>
-						<div class="error-validation">
-							<form:errors path="email"></form:errors>
+					<div class="form-item">
+						<label for="email" class="col-sm-2 control-label">E-mail:</label>
+						<div class="col-sm-4">
+							<form:input id="email" name="email" type="text" path="email" size="50" cssClass="form-control" required="required"/>
+							<div class="error-validation">
+								<form:errors path="email"></form:errors>
+							</div>
 						</div>
 					</div>
 
-					<label for="cpf" class="col-sm-2 control-label">CPF:</label>
-					<div class="col-sm-4">
-						<form:input id="cpf" name="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99"/>
-						<div class="error-validation">
-							<form:errors path="cpf"></form:errors>
+					<div class="form-item">
+						<label for="cpf" class="col-sm-2 control-label">CPF:</label>
+						<div class="col-sm-4">
+							<form:input id="cpf" name="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99" required="required"/>
+							<div class="error-validation">
+								<form:errors path="cpf"></form:errors>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				<!-- 3 LINHA -->
 				<div class="form-group">
-					<label for="anoAdmissao" class="col-sm-2 control-label">Admissão:</label>
-					<div id="admissao" class="col-sm-4">
-						<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control"/>
-						<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker">
-							<option>Semestre</option>
-							<option value="1">1</option>
-							<option value="3">3</option>
-							<option value="2">2</option>
-						</form:select>
-						<div class="error-validation">
-							<form:errors path="anoAdmissao"></form:errors>
-							<form:errors path="semestreAdmissao"></form:errors>
+					<div class="form-item">
+						<label for="anoAdmissao" class="col-sm-2 control-label">Admissão:</label>
+						<div id="admissao" class="col-sm-4">
+							<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control" required="required"/>
+							<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker" required="required">
+								<option>Semestre</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+							</form:select>
+							<div class="error-validation">
+								<form:errors path="anoAdmissao"></form:errors>
+								<form:errors path="semestreAdmissao"></form:errors>
+							</div>
 						</div>
 					</div>
 					
-					<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
-					<div class="col-sm-4">
-						<form:input id="dataNascimento" name="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy"/>
-						<div class="error-validation">
-							<form:errors path="dataNascimento"></form:errors>
-						</div>
+					<div class="form-item">
+						<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
+						<div class="col-sm-4">
+							<form:input id="dataNascimento" name="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy" required="required"/>
+							<div class="error-validation">
+								<form:errors path="dataNascimento"></form:errors>
+							</div>
+						</div>					
 					</div>					
 				</div>
 				

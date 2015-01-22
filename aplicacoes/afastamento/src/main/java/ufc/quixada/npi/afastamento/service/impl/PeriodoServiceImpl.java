@@ -29,3 +29,10 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		return periodoRepository.findFirst(QueryType.JPQL, "select p from Periodo p where p.ano = :ano and p.semestre = :semestre", params, -1);
 	}
 }
+
+
+
+
+
+
+

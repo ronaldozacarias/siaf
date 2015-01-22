@@ -23,6 +23,7 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
+import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.service.GenericService;
 
 
@@ -31,7 +32,7 @@ import br.ufc.quixada.npi.service.GenericService;
 public class AdministracaoController {
 	
 	@Inject
-	private GenericService<Professor> professorService;
+	private ProfessorService professorService;
 	
 	@Inject
 	private GenericService<Papel> papelService;
@@ -41,7 +42,8 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		model.addAttribute("professores", professorService.find(Professor.class));
+		List<Professor> professors = professorService.findOrder();
+		model.addAttribute("professores", professors);
 		return "admin/professores";
 	}
 
