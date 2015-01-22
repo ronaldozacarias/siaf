@@ -78,21 +78,36 @@ public class AdministracaoController {
 	@RequestMapping(value = "/periodo", method = RequestMethod.POST)
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
+		boolean permitirUpdate = false;
 
 		if(periodo == null){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
 			return "admin/periodo";
 		}
 		
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno()-1, periodo.getSemestre());
+		
+		
 		if(periodo.getEncerramento() != null){
-			boolean permitirUpdate = updateEncerramento(periodo.getEncerramento());
+			permitirUpdate = updateEncerramento(periodo.getEncerramento());
 			model.addAttribute("permitirUpdate", permitirUpdate);
 		}else{
-			model.addAttribute("permitirUpdate", true);
+			permitirUpdate = true;
+			//model.addAttribute("permitirUpdate", true);
 		}
 
+		if(notNull(periodoSolicitacao) && periodoSolicitacao.getStatus().equals(StatusReserva.ENCERRADO)){
+			permitirUpdate = false;
+			//model.addAttribute("permitirUpdate", false);
+		}
+
+		model.addAttribute("permitirUpdate", permitirUpdate);
 		model.addAttribute("periodo", periodo);
 		return "admin/periodo";
+	}
+	
+	private boolean notNull(Object object){
+		return object != null ?  true : false;
 	}
 	
 	private boolean updateEncerramento(Date date) {

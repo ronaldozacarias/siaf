@@ -59,17 +59,7 @@
 								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
 							</div>
 							
-							<div class="form-group center">
-								<label class="col-sm-1 control-label">Status:</label>
-								<div class="col-sm-2">
-									<form:select id="status" name="status" path="status" class="form-control selectpicker" >
-										<form:options items="${status}" itemLabel="descricao" />
-									</form:select>
-									<div class="error-validation">
-										<form:errors path="status"></form:errors>
-									</div>
-								</div>
-		
+							<div class="form-group center">		
 								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
 								<div class="col-sm-2">
 									<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control"/>
@@ -89,7 +79,6 @@
 		
 						<div class="controls">
 							<input name="Atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
-							<a href="<c:url value="#"></c:url>" class="btn btn-default">Cancelar</a>
 						</div>
 							
 						</form:form>
@@ -104,10 +93,6 @@
 							</div>
 						
 							<div class="form-group center">
-								<label class="col-sm-1 control-label">Status:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.status }</label>					
-								</div>
 						
 								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
 								<div class="col-sm-2">
