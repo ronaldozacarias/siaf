@@ -23,7 +23,7 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
-import ufc.quixada.npi.afastamento.service.AfastamentoService;
+import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
@@ -43,14 +43,14 @@ public class ReservaController {
 	private RankingService rankingService;
 	
 	@Inject
-	private AfastamentoService afastamentoService;
+	private PeriodoService periodoService;
 	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
-		Periodo periodoAtual = afastamentoService.getPeriodoAtual();
+		Periodo periodoAtual = periodoService.getPeriodoAtual();
 		model.addAttribute("periodoAtual", periodoAtual);
-		model.addAttribute("periodoAnterior", afastamentoService.getPeriodoAnterior(periodoAtual));
-		model.addAttribute("periodoPosterior", afastamentoService.getPeriodoPosterior(periodoAtual));
+		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
+		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		
 		return "reserva/ranking";
 	}
@@ -58,13 +58,13 @@ public class ReservaController {
 	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model ranking(HttpServletRequest request, Model model, HttpSession session) {
 		Ranking ranking = new Ranking();
-		ranking.setPeriodo(afastamentoService.getPeriodoByAnoSemestre(
+		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
 		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
-		model.addAttribute("periodoAnterior", afastamentoService.getPeriodoAnterior(ranking.getPeriodo()));
-		model.addAttribute("periodoPosterior", afastamentoService.getPeriodoPosterior(ranking.getPeriodo()));
+		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(ranking.getPeriodo()));
 		
 		return model;
 	}
@@ -96,7 +96,7 @@ public class ReservaController {
 			return "redirect:/reserva/incluir";
 		}
 		
-		Periodo periodo = afastamentoService.getPeriodoAtual();
+		Periodo periodo = periodoService.getPeriodoAtual();
 		Integer diferenca = calculaDiferenca(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
 		
 		if(diferenca < 2) {
@@ -145,7 +145,7 @@ public class ReservaController {
 		if(reserva == null || !reserva.getProfessor().equals(getUsuarioLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
 			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
 		} else {
-			reservaService.excluir(reserva);
+			reservaService.delete(reserva);
 			redirect.addFlashAttribute("info", "Reserva excluída com sucesso");
 		}
 		return "redirect:/reserva/listar";
