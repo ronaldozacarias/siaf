@@ -65,7 +65,7 @@ body {
 	outline: none;
 }
 
-.menuTop ul li a:hover {
+.menuTop ul li a:hover, .menuTop ul li.active a {
 	color: #F47920;
 	text-decoration: underline !important;
 }

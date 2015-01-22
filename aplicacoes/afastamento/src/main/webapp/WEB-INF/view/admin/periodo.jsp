@@ -137,6 +137,9 @@
 		</div>
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>
+	<script type="text/javascript">
+		$('#menu-periodos').addClass('active');
+	</script>
 </body>
 </html>
 

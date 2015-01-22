@@ -11,16 +11,16 @@
     
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
-    		<li>
+    		<li id="menu-ranking">
     			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
-    		<li>
+    		<li id="menu-add-reserva">
     			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
     		</li>
-    		<li>
+    		<li id="menu-reservas">
     			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
     		</li>
-    		<li>
+    		<li id="menu-periodos">
     			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
     		</li>
 

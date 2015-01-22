@@ -70,7 +70,6 @@
 				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Não classificado dentro das vagas.</label><br/>
 				<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Solicitação encerrada.</label>
 			</div>
-
 		</div>
 		
 		<jsp:include page="../modulos/footer.jsp" />
@@ -79,6 +78,7 @@
 </body>
 <script type="text/javascript">
 	getRanking($('#ano').val(), $('#semestre').val());
+	$('#menu-ranking').addClass('active');
 </script>
 </html>
 
