@@ -14,6 +14,10 @@ public interface ReservaService {
 	List<Reserva> getReservasByPeriodo(Integer ano, Integer semestre);
 	
 	boolean hasReservaEmAberto(Professor professor);
+	
+	Reserva getReservaById(Long id);
+	
+	void excluir(Reserva reserva);
 
 
 }

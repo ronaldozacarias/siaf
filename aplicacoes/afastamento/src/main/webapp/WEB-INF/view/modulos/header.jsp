@@ -17,7 +17,9 @@
     		<li>
     			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
     		</li>
-    		
+    		<li>
+    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
+    		</li>
     		<li>
     			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
     		</li>
