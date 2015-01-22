@@ -66,7 +66,7 @@
 
 					<label for="cpf" class="col-sm-2 control-label">CPF:</label>
 					<div class="col-sm-4">
-						<form:input id="cpf" name="cpf" type="text" path="cpf" cssClass="form-control"/>
+						<form:input id="cpf" name="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99"/>
 						<div class="error-validation">
 							<form:errors path="cpf"></form:errors>
 						</div>
@@ -92,7 +92,7 @@
 					
 					<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
 					<div class="col-sm-4">
-						<form:input id="dataNascimento" name="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"/>
+						<form:input id="dataNascimento" name="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy"/>
 						<div class="error-validation">
 							<form:errors path="dataNascimento"></form:errors>
 						</div>
