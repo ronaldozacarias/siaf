@@ -1,5 +1,39 @@
 $(document).ready(function() {
-
+	
+	$('#solicitarAfastamento').validate({
+        rules: {
+            
+        },
+        highlight: function(element) {
+            $(element).closest('.form-item').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-item').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	anoInicio:{
+                required:"Campo obrigatório",
+            },
+            anoTermino:{
+                required:"Campo obrigatório",
+            },
+            conceito:{
+                required:"Campo obrigatório",
+            },
+            instituicao:{
+                required:"Campo obrigatório",
+            }
+        }
+    });
+	
+	$('.ano').mask('9999', {placeholder:" "});
+	$('.conceito').mask('9',{placeholder:" "});
+	
 	$('.selectpicker').selectpicker();
 	
 	$(".filtroSemestre").selectpicker('refresh');
@@ -27,6 +61,14 @@ $(document).ready(function() {
 		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
 	});
 	
+	$('#anterior').click(function(){
+		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val());
+	});
+	
+	$('#posterior').click(function(){
+		getRanking($('#anoPosterior').val(), $('#semestrePosterior').val());
+	});
+	
 	$("#viewPeriodo").hide();
 	showPeriodoPost();
 	
@@ -37,7 +79,6 @@ $(document).ready(function() {
 	$("#filtroAno").keyup(function (event) {
 	    var maximoDigitosAno = 4;
 	    var lengthAno = $(this).val().length;
-	    console.log(lengthAno + " - console - " + maximoDigitosAno );
 	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 	    	filtroPeriodo();
 	    }
@@ -48,6 +89,60 @@ $(document).ready(function() {
 	 $("#cpf").mask("999.999.999-99");
 });
 
+function getRanking(ano, semestre) {
+	$.ajax({
+		type: "POST",
+		url: '/afastamento/reserva/ranking.json',
+		data: {
+        	ano : ano,
+        	semestre : semestre
+		}
+	})
+	.success(function(result) {
+		
+		$('i#anterior').show();
+		$('i#posterior').show();
+		if(result.periodoAnterior == null) {
+			$('i#anterior').hide();
+		} else {
+			$('#anoAnterior').val(result.periodoAnterior.ano);
+			$('#semestreAnterior').val(result.periodoAnterior.semestre);
+		}
+		
+		if(result.periodoPosterior == null) {
+			$('i#posterior').hide();
+		} else {
+			$('#anoPosterior').val(result.periodoPosterior.ano);
+			$('#semestrePosterior').val(result.periodoPosterior.semestre);
+		}
+		
+		$('#ano').val(result.periodoAtual.ano);
+		$('#semestre').val(result.periodoAtual.semestre);
+		
+		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
+		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
+		
+		loadTable(result.ranking.tuplas, "ranking");
+		
+	});
+}
+
+function loadTable(result, table) {
+	$("tbody").remove();
+	$('#ranking').append('<tbody>');
+	$.each(result, function(i, item) {
+        var $tr = $('<tr class="' + item.status + '">').append(
+        	$('<td class=\"align-center\">').text(i+1),
+        	$('<td>').text(item.professor),
+            $('<td class=\"align-center\">').text(item.semestresAtivos),
+            $('<td class=\"align-center\">').text(item.semestresAfastados),
+            $('<td class=\"align-center\">').text(item.semestresSolicitados),
+            $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
+        ).appendTo('tbody');
+    });
+}
+
 function filtroPeriodo(){
 	var ano = $("#filtroAno").val();
 	var semestre = $("#filtroSemestre").val();
@@ -56,7 +151,6 @@ function filtroPeriodo(){
 	sessionStorage.setItem("semestre", semestre);
 
 	if( (ano.length > 3 && !isNaN(ano)) && (!isNaN(semestre) && (semestre == '1' || semestre == '2')) ){
-		console.log("loading...");
 		loadPeriodo(ano, semestre);
 	}
 
@@ -77,7 +171,6 @@ function loadPeriodo(ano, semestre) {
 			showPeriodo(result);
 		},
 		error: function(error) {
-			console.log('Error loadPeriodo: ' + error);
 			$('viewPeriodos').hide();
 		}
 	});
@@ -87,10 +180,8 @@ function showPeriodo(result) {
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
-		console.log("não é numero");
+
 	}else{
-		console.log('é numero');
-		
 		$("#encerramento").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
@@ -100,13 +191,11 @@ function showPeriodo(result) {
 	}
 	$("#viewPeriodo").show();
 }
+
 function showPeriodoPost() {
 	if(isNaN(parseInt($("#viewPeriodo #update-periodo #chave").val()))){
-		console.log("não é numero = " + $("#viewPeriodo #update-periodo #chave").empty());
 		$("#viewPeriodo").hide();
 	}else{
-		console.log('é d numero = ' + $("#viewPeriodo #update-periodo #chave").length);
-		
 		$("#encerramento").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"

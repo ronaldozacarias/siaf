@@ -3,12 +3,8 @@
 	pageEncoding="UTF-8"%>
 <html>
 <head>
+<jsp:include page="modulos/header-estrutura.jsp" />
 <title>Página de Login</title>
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.js" />"></script>
-<script src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-
 <style>
 .errorblock {
 	color: #ff0000;
@@ -17,7 +13,6 @@
 	padding: 8px;
 	margin: 16px;
 }
-
 .center {
 	float: none;
 	margin-left: auto;
@@ -61,5 +56,6 @@
 			</div>
 		</div>
 	</div>
+	<jsp:include page="modulos/footer.jsp" />
 </body>
 </html>

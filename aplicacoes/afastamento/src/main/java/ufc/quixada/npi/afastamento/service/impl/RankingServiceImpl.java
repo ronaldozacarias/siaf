@@ -9,9 +9,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Afastamento;
-import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
@@ -26,7 +29,45 @@ public class RankingServiceImpl implements RankingService {
 	private AfastamentoService afastamentoService;
 
 	@Override
-	public List<Ranking> visualizarRanking(Integer ano, Integer semestre) {
+	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
+		Periodo periodo = afastamentoService.getPeriodoByAnoSemestre(ano, semestre);
+		List<TuplaRanking> tuplaAtual = getRanking(periodo).getTuplas();
+		for(int i = 0; i < tuplaAtual.size(); i++) {
+			Periodo periodoInicio = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
+			Periodo periodoTermino = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
+			for(;periodoInicio != null && !periodoInicio.equals(afastamentoService.getPeriodoPosterior(periodoTermino)); periodoInicio = afastamentoService.getPeriodoPosterior(periodoInicio)) {
+				List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
+				boolean encontrou = false;
+				for(TuplaRanking tupla : tuplaPeriodo) {
+					if(tupla.getReserva().equals(tuplaAtual.get(i).getReserva())) {
+						encontrou = true;
+						break;
+					}
+				}
+				if(!encontrou) {
+					tuplaAtual.get(i).setStatus(StatusReserva.DESCLASSIFICADO);
+				}
+				
+			}
+		}
+		return tuplaAtual;
+		
+	}
+	
+	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
+		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
+		for(TuplaRanking tupla : tuplaRanking) {
+			if(!tupla.getStatus().equals(StatusReserva.DESCLASSIFICADO) && !tupla.getStatus().equals(StatusReserva.NAO_ACEITO)) {
+				result.add(tupla);
+			}
+		}
+		return result;
+	}
+	
+	private Ranking getRanking(Periodo periodo) {
+		Ranking ranking = new Ranking();
+		ranking.setPeriodo(periodo);
+		
 		//R = (T – A) / (5 x A + S + P)
 		//T – Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá;
 		//A – Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados;
@@ -38,53 +79,86 @@ public class RankingServiceImpl implements RankingService {
 		//I – Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.
 		//II – Prioridade para programas com melhor conceito.
 		//III – Prioridade para o candidato mais velho.
-		List<Reserva> reservas = reservaService.getReservasByPeriodo(ano, semestre);
-		List<Ranking> ranking = new ArrayList<Ranking>();
+		List<Reserva> reservas = reservaService.getReservasByPeriodo(periodo.getAno(), periodo.getSemestre());
+		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		for (Reserva reserva : reservas) {
-			Ranking r = new Ranking();
-			r.setProfessor(reserva.getProfessor());
-			r.setSemestresSolicitados(getSemestresSolicitados(reserva));
-			r.setSemestresAtivos(getSemestresAtivos(reserva.getProfessor()));
-			r.setSemestresAfastados(getSemestresAfastados(reserva.getProfessor()));
-			Float semAtivos = Float.valueOf(r.getSemestresAtivos()); //T
-			Float semAfastados = Float.valueOf(r.getSemestresAfastados()); //A
-			Float semSolicitados = Float.valueOf(r.getSemestresSolicitados()); //S
+			TuplaRanking tupla = new TuplaRanking();
+			tupla.setReserva(reserva);
+			tupla.setPeriodo(periodo);
+			tupla.setProfessor(reserva.getProfessor().getNome());
+			tupla.setSemestresSolicitados(getSemestresSolicitados(reserva));
+			tupla.setSemestresAtivos(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
+					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1);
+			tupla.setSemestresAfastados(getSemestresAfastados(reserva));
+			tupla.setStatus(reserva.getStatus());
+			Float t = Float.valueOf(tupla.getSemestresAtivos());
+			Float a = Float.valueOf(tupla.getSemestresAfastados());
+			Float s = afastamentoService.getAfastamentosByProfessor(reserva.getProfessor().getSiape()).isEmpty() ? 2 : Float.valueOf(tupla.getSemestresSolicitados());
 			Integer semContratacao = calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
-					reservaService.getAnoAtual(), reservaService.getSemestreAtual()) - 1;
-			Float semRestantes = semContratacao > 6.0f ? 0.0f : (6.0f - semContratacao); //P
+					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1;
+			Float p = semContratacao >= 6.0f ? 0.0f : (6.0f - semContratacao);
 			
-			Float pontuacao = (semAtivos - semAfastados) / (5.0f * semAfastados + semSolicitados + semRestantes);
-			r.setPontuacao(pontuacao);
+			Float pontuacao = (t - a) / (5.0f * a + s + p);
+			tupla.setPontuacao(pontuacao);
 			
-			ranking.add(r);
+			tuplas.add(tupla);
 		}
-		Collections.sort(ranking, new Comparator<Ranking>() {
+		Collections.sort(tuplas, new Comparator<TuplaRanking>() {
 	        @Override
-	        public int compare(Ranking  ranking1, Ranking  ranking2)
+	        public int compare(TuplaRanking  ranking1, TuplaRanking  ranking2)
 	        {
+	        	if(ranking1.getPontuacao().compareTo(ranking2.getPontuacao()) == 0.0f) {
+	        		if(ranking1.getReserva().getPrograma().equals(ranking2.getReserva().getPrograma())) {
+	        			if(ranking1.getReserva().getConceitoPrograma().equals(ranking2.getReserva().getConceitoPrograma())) {
+	        				return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
+	        			}
+	        			return ranking1.getReserva().getConceitoPrograma().compareTo(ranking2.getReserva().getConceitoPrograma());
+	        		}
+	        		if(ranking1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
+	        			return 1;
+	        		}
+	        		if(ranking2.getReserva().getPrograma().equals(Programa.MESTRADO)) {
+	        			return -1;
+	        		}
+	        		if(ranking1.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        			return 1;
+	        		}
+	        		if(ranking2.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        			return -1;
+	        		}
+	        	}
 	            return  ranking1.getPontuacao().compareTo(ranking2.getPontuacao());
 	        }
 	    });
-		Collections.reverse(ranking);
+		Collections.reverse(tuplas);
+		int vagas = periodo.getVagas();
+		for (TuplaRanking tupla : tuplas) {
+			if(tupla.getStatus().equals(StatusReserva.ACEITO) || tupla.getStatus().equals(StatusReserva.ENCERRADO)) {
+				vagas--;
+			}
+		}
+		for (TuplaRanking tupla : tuplas) {
+			if(tupla.getStatus().equals(StatusReserva.ABERTO)) {
+				if(vagas > 0) {
+					tupla.setStatus(StatusReserva.CLASSIFICADO);
+					vagas--;
+				} else {
+					tupla.setStatus(StatusReserva.DESCLASSIFICADO);
+				}
+			}
+		}
+		
+		ranking.setTuplas(tuplas);
 		return ranking;
 		
 	}
 	
-	
-	
 	private Integer getSemestresSolicitados(Reserva reserva) {
-		if(afastamentoService.getAfastamentosByProfessor(reserva.getProfessor().getSiape()).isEmpty()) {
-			return 2;
-		}
 		return calculaSemestres(reserva.getAnoInicio(), reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino());
 	}
 	
-	private Integer getSemestresAtivos(Professor professor) {
-		return ((reservaService.getAnoAtual() - professor.getAnoAdmissao()) * 2) + (reservaService.getSemestreAtual() - professor.getSemestreAdmissao());
-	}
-	
-	private Integer getSemestresAfastados(Professor professor) {
-		List<Afastamento> afastamentos = afastamentoService.getAfastamentosByProfessor(professor.getSiape());
+	private Integer getSemestresAfastados(Reserva reserva) {
+		List<Afastamento> afastamentos = afastamentoService.getAfastamentosAnteriores(reserva);
 		Integer semestresAfastado = 0;
 		for(Afastamento afastamento : afastamentos) {
 			semestresAfastado =+ calculaSemestres(afastamento.getReserva().getAnoInicio(), afastamento.getReserva().getSemestreInicio(), 
