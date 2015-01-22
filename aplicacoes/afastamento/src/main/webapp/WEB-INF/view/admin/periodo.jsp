@@ -87,23 +87,10 @@
 					<c:if test="${not permitirUpdate}">
 						<div id="update-periodo">
 							<input type="hidden" id="chave" value="${periodo.id }"/>
-							<div class="form-group center">
-								<label class="control-label">Periodo:</label>
-								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
-							</div>
-						
-							<div class="form-group center">
-						
-								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.vagas }</label>
+							<fmt:formatDate value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
+								<div class="alert alert-info" role="alert">
+									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${periodo.encerramento }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
 								</div>
-						
-								<label for="encerramento" class="col-sm-2 control-label">Encerramento:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.encerramento }</label>
-								</div>
-							</div>
 						</div>
 					</c:if>
 				</c:if>

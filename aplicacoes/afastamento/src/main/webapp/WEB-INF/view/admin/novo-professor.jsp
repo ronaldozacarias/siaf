@@ -88,7 +88,6 @@
 						<div id="admissao" class="col-sm-4">
 							<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control" required="required"/>
 							<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker" required="required">
-								<option>Semestre</option>
 								<option value="1">1</option>
 								<option value="2">2</option>
 							</form:select>

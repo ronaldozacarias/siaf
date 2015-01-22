@@ -217,10 +217,6 @@ input{
 	margin-top: 10px  !important;
 }
 
-.alert {
-	margin-top: 68px;
-}
-
 li ul .dropdown-menu {
 	background: #458568
 }
@@ -235,7 +231,16 @@ li ul .dropdown-menu {
 	width: 180px;
 }
 
-
 #professores > thead > tr > th {
 	text-align: left;
+}
+
+.afas-input-group-addon {
+	padding: 0;
+	border: 0;
+	border-radius: 0; 
+}
+
+.afas-form-group label{
+	margin: 0 0 0 150px;
 }
