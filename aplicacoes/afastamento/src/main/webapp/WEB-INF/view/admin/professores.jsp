@@ -38,7 +38,7 @@
 			<div class="container">
 				<table class="table table-striped">
 					<thead>
-						<tr>
+						<tr class="afas-tr-left">
 				               <th>Siape</th>
 				               <th>Nome</th>
 				               <th>Admisão</th>
