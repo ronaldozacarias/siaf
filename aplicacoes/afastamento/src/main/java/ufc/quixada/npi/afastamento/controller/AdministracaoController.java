@@ -41,7 +41,8 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		return "#admin/professores";
+		model.addAttribute("professores", professorService.find(Professor.class));
+		return "admin/professores";
 	}
 
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)
@@ -65,7 +66,7 @@ public class AdministracaoController {
 		professor.setPapeis(papeis);
 		professorService.update(professor);
 		
-		return "admin/lista-professores";
+		return "redirect:/administracao/professores";
 	}
 	
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
@@ -80,6 +81,7 @@ public class AdministracaoController {
 
 		if(periodo == null){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
+			return "admin/periodo";
 		}
 		
 		if(periodo.getEncerramento() != null){

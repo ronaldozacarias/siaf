@@ -18,9 +18,17 @@
     			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
     		</li>
     		
+    		<li>
+    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
+    		</li>
+
     		<sec:authorize ifAnyGranted="ROLE_ADMIN">
-	    		<li>
-	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>
+	    		<li class="dropdown">
+	    			<a data-toggle="dropdown" class="dropdown-toggle"><span>Professor</span><b class="caret"></b></a>
+                    <ul class="dropdown-menu afas-menu">
+                        <li><a href="<c:url value="/administracao/professores" />">Lista professores</a></li>
+                        <li><a href="<c:url value="/administracao/novo-professor" />">Novo</a></li>
+                    </ul>
 	    		</li>
     		</sec:authorize>
     		
@@ -28,5 +36,6 @@
     			<a class="" href="<c:url value="/j_spring_security_logout" />"><span>Sair</span></a>
     		</li>
     	</ul>
+    	
     </nav>
   </header>

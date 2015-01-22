@@ -37,7 +37,7 @@
 			</c:if>
 			<div id="filtroPeriodo">
 				<div class="col-sm-1">
-					<input id="filtroAno" name="ano" type="text" class="form-control">
+					<input id="filtroAno" name="ano" type="text" class="form-control" placeholder="ano">
 				</div>
 				<select id="filtroSemestre" name="semestre" class="selectpicker filtroSemestre" data-width="auto">
 					<option value="">Semestre</option>

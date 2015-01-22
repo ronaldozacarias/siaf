@@ -1,17 +1,9 @@
 $(document).ready(function() {
-	
-	console.log('atualizando');
-	
-	
+
 	$('.selectpicker').selectpicker();
 	
-	$("#filtroSemestre").val(sessionStorage.getItem('semestre'));
-	$("#filtroAno").val(sessionStorage.getItem('ano'));
 	$(".filtroSemestre").selectpicker('refresh');
 	
-	if(sessionStorage.getItem('ano') && sessionStorage.getItem('semestre')){
-		//filtroPeriodo();
-	}
 	
 	$("#dataNascimento").datepicker({
 		 autoclose: true,
@@ -54,15 +46,12 @@ $(document).ready(function() {
 });
 
 function filtroPeriodo(){
-	console.log("filtrofiltrofiltrofiltrofiltrofiltrofiltrofiltro");
 	var ano = $("#filtroAno").val();
 	var semestre = $("#filtroSemestre").val();
 
 	sessionStorage.setItem("ano", ano);
 	sessionStorage.setItem("semestre", semestre);
 
-	console.log(isNaN(ano) + " - " + semestre);
-	
 	if( (ano.length > 3 && !isNaN(ano)) && (!isNaN(semestre) && (semestre == '1' || semestre == '2')) ){
 		console.log("loading...");
 		loadPeriodo(ano, semestre);
@@ -71,7 +60,6 @@ function filtroPeriodo(){
 }
 
 function loadPeriodo(ano, semestre) {
-	console.log("loadPeriodoloadPeriodoloadPeriodoloadPeriodoloadPeriodo");
 	var filtro = {
 		"ano" : ano,
 		"semestre" : semestre,
@@ -84,7 +72,6 @@ function loadPeriodo(ano, semestre) {
 		data: filtro,
 		success: function(result) {
 			showPeriodo(result);
-			//cosole.log(result);
 		},
 		error: function(error) {
 			console.log('Error loadPeriodo: ' + error);
@@ -94,7 +81,6 @@ function loadPeriodo(ano, semestre) {
 }
 
 function showPeriodo(result) {
-	console.log("showPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodo");
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
