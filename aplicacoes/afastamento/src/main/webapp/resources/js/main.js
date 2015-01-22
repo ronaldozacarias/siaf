@@ -31,20 +31,13 @@ $(document).ready(function() {
         }
     });
 	
-	console.log('atualizando');
-	
 	$('.ano').mask('9999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});
 	
 	$('.selectpicker').selectpicker();
 	
-	$("#filtroSemestre").val(sessionStorage.getItem('semestre'));
-	$("#filtroAno").val(sessionStorage.getItem('ano'));
 	$(".filtroSemestre").selectpicker('refresh');
 	
-	if(sessionStorage.getItem('ano') && sessionStorage.getItem('semestre')){
-		//filtroPeriodo();
-	}
 	
 	$("#dataNascimento").datepicker({
 		 autoclose: true,
@@ -86,7 +79,6 @@ $(document).ready(function() {
 	$("#filtroAno").keyup(function (event) {
 	    var maximoDigitosAno = 4;
 	    var lengthAno = $(this).val().length;
-	    console.log(lengthAno + " - console - " + maximoDigitosAno );
 	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 	    	filtroPeriodo();
 	    }
@@ -147,28 +139,22 @@ function loadTable(result, table) {
             $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');
     });
-	
 }
 
 function filtroPeriodo(){
-	console.log("filtrofiltrofiltrofiltrofiltrofiltrofiltrofiltro");
 	var ano = $("#filtroAno").val();
 	var semestre = $("#filtroSemestre").val();
 
 	sessionStorage.setItem("ano", ano);
 	sessionStorage.setItem("semestre", semestre);
 
-	console.log(isNaN(ano) + " - " + semestre);
-	
 	if( (ano.length > 3 && !isNaN(ano)) && (!isNaN(semestre) && (semestre == '1' || semestre == '2')) ){
-		console.log("loading...");
 		loadPeriodo(ano, semestre);
 	}
 
 }
 
 function loadPeriodo(ano, semestre) {
-	console.log("loadPeriodoloadPeriodoloadPeriodoloadPeriodoloadPeriodo");
 	var filtro = {
 		"ano" : ano,
 		"semestre" : semestre,
@@ -181,24 +167,19 @@ function loadPeriodo(ano, semestre) {
 		data: filtro,
 		success: function(result) {
 			showPeriodo(result);
-			//cosole.log(result);
 		},
 		error: function(error) {
-			console.log('Error loadPeriodo: ' + error);
 			$('viewPeriodos').hide();
 		}
 	});
 }
 
 function showPeriodo(result) {
-	console.log("showPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodoshowPeriodo");
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
-		console.log("não é numero");
+
 	}else{
-		console.log('é numero');
-		
 		$("#encerramento").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
@@ -208,13 +189,11 @@ function showPeriodo(result) {
 	}
 	$("#viewPeriodo").show();
 }
+
 function showPeriodoPost() {
 	if(isNaN(parseInt($("#viewPeriodo #update-periodo #chave").val()))){
-		console.log("não é numero = " + $("#viewPeriodo #update-periodo #chave").empty());
 		$("#viewPeriodo").hide();
 	}else{
-		console.log('é d numero = ' + $("#viewPeriodo #update-periodo #chave").length);
-		
 		$("#encerramento").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"

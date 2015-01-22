@@ -1,6 +1,7 @@
 
 body {
 	background: none repeat scroll 0% 0% #F6F6F6;
+	background: #fff;
 	font-family: Optima,Segoe,Segoe UI,Candara,Calibri,Arial,sans-serif;
 }
 #wrapper {
@@ -98,16 +99,6 @@ form {
 form input, .bootstrap-select button {
 	width: auto !important;
 	display: inline !important;
-	
-	/* border-width: 0px 0px 2px;
-	border-style: none none solid;
-	border-color: -moz-use-text-color -moz-use-text-color #F36825;
-	float: left;
-	font-size: 16px;
-	color: #F36825;
-	border-radius: 0px;
-	padding: 0px;
-	margin-left: 5px; */
 }
 
 form label.value-label {
@@ -140,13 +131,8 @@ div.controls {
 	margin-top: 50px;
 }
 
-<<<<<<< HEAD
 table#ranking {
 	margin-top: 20px;
-}
-
-.bootgrid-table th > .column-header-anchor {
-	cursor: default !important;
 }
 
 div#periodo {
@@ -233,4 +219,18 @@ input{
 
 .alert {
 	margin-top: 68px;
+}
+
+li ul .dropdown-menu {
+	background: #458568
+}
+.dropdown ul .dropdown-menu {
+	background: #458568
+}
+.afas-menu li {
+	line-height: auto;
+	border: 0;
+}
+.afas-menu li {
+	width: 180px;
 }
