@@ -14,26 +14,17 @@
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
-			<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<c:out value="${erro}"></c:out>
-				</div>
-			</c:if>
-			<c:if test="${not empty info}">
-				<div class="alert alert-success alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<c:out value="${info}"></c:out>
-				</div>
-			</c:if>
-			
 			<div class="title"> Inclua sua reserva de afastamento : </div>
 			<span class="line"></span>
-			<form:form id="solicitar-afastamento" commandName="reserva" action="/afastamento/reserva/incluir" method="POST" class="form-horizontal">
+			<form:form id="solicitarAfastamento" commandName="reserva" action="/afastamento/reserva/incluir" method="POST" class="form-horizontal">
+				<c:if test="${not empty erro}">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<c:out value="${erro}"></c:out>
+					</div>
+				</c:if>
 				
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
@@ -46,28 +37,50 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="ano-inicio" class="col-sm-2 control-label">Início:</label>
-					<div class="col-sm-4">
-						<input id="ano-inicio" name="ano-inicio" type="text" class="form-control" size="10">
-						<select id="semestre-inicio" name="semestre-inicio" class="form-control selectpicker">
-							<option value="1">1</option>
-							<option value="2">2</option>
-						</select>
+					<div class="form-item">
+						<label for="anoInicio" class="col-sm-2 control-label">Início:</label>
+						<div class="col-sm-4">
+							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" value="${anoInicio }" required="required"/>
+							<select id="semestreInicio" name="semestreInicio" class="form-control selectpicker">
+								<option value="1" ${semestreInicio == 1 ? 'selected' : ''}>1</option>
+								<option value="2" ${semestreInicio == 2 ? 'selected' : ''}>2</option>
+							</select>
+						</div>
 					</div>
-					<label for="ano-termino" class="col-sm-2 control-label">Término:</label>
-					<div class="col-sm-4">
-						<input id="ano-termino" type="text" name="ano-termino" class="form-control" size="10">
-						<select id="semestre-termino" name="semestre-termino" class="form-control selectpicker" >
-							<option value="1">1</option>
-							<option value="2">2</option>
-						</select>
+					<div class="form-item">
+						<label for="anoTermino" class="col-sm-2 control-label">Término:</label>
+						<div class="col-sm-4">
+							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" value="${anoTermino }" required="required"/>
+							<select id="semestreTermino" name="semestreTermino" class="form-control selectpicker">
+								<option value="1" ${semestreTermino == 1 ? 'selected' : ''}>1</option>
+								<option value="2" ${semestreTermino == 2 ? 'selected' : ''}>2</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="programa" class="col-sm-2 control-label">Programa:</label>
-					<div class="col-sm-4">
-						<form:select id="programa" path="" items="${programa }" itemLabel="descricao" name="programa" class="form-control selectpicker">
-						</form:select>
+					<div class="form-item">
+						<label for="programa" class="col-sm-2 control-label">Programa:</label>
+						<div class="col-sm-4">
+							<select id="programa" name="programa" class="form-control selectpicker">
+								<c:forEach items="${programa}" var="prog">
+									<option value="${prog }" ${programaSelecionado == prog ? 'selected' : ''}>${prog.descricao }</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="form-item">
+						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
+						<div class="col-sm-4">
+							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19" value="${conceito }" required="required"/>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group form-item">
+					<label for="instituicao" class="col-sm-2 control-label">Instituição:</label>
+					<div class="col-sm-8">
+						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" required="required" style="width: 100% !important"/>
 					</div>
 				</div>
 				

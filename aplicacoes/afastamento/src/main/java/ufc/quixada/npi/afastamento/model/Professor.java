@@ -20,7 +20,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jboss.logging.annotations.Message;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity

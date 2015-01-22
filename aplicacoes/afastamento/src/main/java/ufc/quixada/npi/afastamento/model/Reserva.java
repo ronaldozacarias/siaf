@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 public class Reserva {
 	
@@ -30,6 +32,11 @@ public class Reserva {
 	@Enumerated(EnumType.STRING)
 	private Programa programa;
 	
+	private Integer conceitoPrograma;
+	
+	private String instituicao;
+	
+	@JsonIgnore
 	@ManyToOne
 	private Professor professor;
 	
@@ -108,6 +115,22 @@ public class Reserva {
 		this.status = status;
 	}
 
+	public Integer getConceitoPrograma() {
+		return conceitoPrograma;
+	}
+
+	public void setConceitoPrograma(Integer conceitoPrograma) {
+		this.conceitoPrograma = conceitoPrograma;
+	}
+
+	public String getInstituicao() {
+		return instituicao;
+	}
+
+	public void setInstituicao(String instituicao) {
+		this.instituicao = instituicao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -132,7 +155,5 @@ public class Reserva {
 			return false;
 		return true;
 	}
-	
-	
 
 }

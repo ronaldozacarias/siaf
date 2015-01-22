@@ -2,12 +2,12 @@ package ufc.quixada.npi.afastamento.service;
 
 import java.util.List;
 
-import ufc.quixada.npi.afastamento.model.Ranking;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 
 
 public interface RankingService {
 
-	List<Ranking> visualizarRanking(Integer ano, Integer semestre);
-
+	List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre);
+	
 
 }
