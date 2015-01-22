@@ -23,6 +23,29 @@
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
+	
+	<bean id="afastamentoScheduler" class="ufc.quixada.npi.afastamento.jobs.AfastamentoScheduler" />
+	
+	<bean id="encerramentoPeriodoJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="afastamentoScheduler"/>
+        <property name="targetMethod" value="verificaEncerramentoPeriodo"/>
+    </bean>
+    
+    <bean id="encerramentoPeriodoTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="encerramentoPeriodoJob" />       
+        
+        <!-- EXPRESSÃO CRON executada todos os dias 00:00:00 -->        
+        <property name="cronExpression" value="0 0 0 1/1 * ? *" />
+   </bean>
+   
+   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">      
+       <!-- Lista de triggers que devem ser executadas-->
+        <property name="triggers">
+            <list>
+                <ref bean="encerramentoPeriodoTrigger" />
+            </list>
+        </property>
+    </bean>
 
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
@@ -30,6 +53,7 @@
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.repository" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.service" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.controller" />
+	<context:component-scan base-package="ufc.quixada.npi.afastamento.jobs" />
 	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
 	<context:component-scan base-package="br.ufc.quixada.npi.service" />
 	

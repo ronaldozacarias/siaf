@@ -1,5 +1,7 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,9 +25,50 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("ano", ano);
 		params.put("semestre", semestre);
-//		return periodoRepository.find(QueryType.JPQL, "select p from Periodo p where p.ano = :ano and p.semestre = :semestre", params).get(0);
-//		return periodoRepository.findFirst("select p from Periodo p where p.ano = :ano and p.semestre = :semestre", params);
-		//findFirst(QueryType type, String query,Map<String, Object> namedParams, int firstResult)
 		return periodoRepository.findFirst(QueryType.JPQL, "select p from Periodo p where p.ano = :ano and p.semestre = :semestre", params, -1);
 	}
+
+	@Override
+	public Periodo getPeriodo(Date date) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("encerramento", date);
+		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where encerramento = :encerramento", params, -1);
+	}
+	
+	@Override
+	public Periodo getPeriodoAnterior(Periodo periodo) {
+		if(periodo.getSemestre() == 2) {
+			return getPeriodo(periodo.getAno(), 1);
+		}
+		return getPeriodo(periodo.getAno() - 1, 2);
+	}
+
+	@Override
+	public Periodo getPeriodoPosterior(Periodo periodo) {
+		if(periodo.getSemestre() == 1) {
+			return getPeriodo(periodo.getAno(), 2);
+		}
+		return getPeriodo(periodo.getAno() + 1, 1);
+	}
+	
+	@Override
+	public Periodo getPeriodoAtual() {
+		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = 'ABERTO' order by ano ASC, semestre ASC", null, -1);
+	}
+	
+	@Override
+	public Integer getSemestreAtual() {
+		Calendar calendar = Calendar.getInstance();
+		if(calendar.get(Calendar.MONTH) < 6) {
+			return 1;
+		}
+		return 2;
+	}
+	
+	@Override
+	public Integer getAnoAtual() {
+		Calendar calendar = Calendar.getInstance();
+		return calendar.get(Calendar.YEAR);
+	}
+
 }
