@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -131,11 +132,23 @@ public class ReservaController {
 		return "reserva/ranking";
 	}
 	
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String getReservas(Model model, HttpSession session) {
 		model.addAttribute("reservas", reservaService.getReservasByProfessor(getUsuarioLogado(session).getSiape()));
 		model.addAttribute("professor", getUsuarioLogado(session));
-		return "reserva/reservas";
+		return "reserva/lista";
+	}
+	
+	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
+	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.getReservaById(id);
+		if(reserva == null || !reserva.getProfessor().equals(getUsuarioLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
+		} else {
+			reservaService.excluir(reserva);
+			redirect.addFlashAttribute("info", "Reserva excluída com sucesso");
+		}
+		return "redirect:/reserva/listar";
 	}
 	
 	private Professor getUsuarioLogado(HttpSession session) {

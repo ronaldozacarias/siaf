@@ -218,7 +218,8 @@ input{
 }
 
 .alert {
-	margin-top: 68px;
+	text-align: center;
+	margin-top: 20px;
 }
 
 li ul .dropdown-menu {
@@ -234,3 +235,9 @@ li ul .dropdown-menu {
 .afas-menu li {
 	width: 180px;
 }
+
+table#reservas {
+	margin-top: 30px;
+	text-align: center;
+}
+

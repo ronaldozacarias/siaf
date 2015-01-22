@@ -83,4 +83,15 @@ public class ReservaServiceImpl implements ReservaService {
 				+ "(anoInicio = :ano and semestreInicio > :semestre) or (anoTermino = :ano and semestreTermino < :semestre))", params);
 	}
 
+	@Override
+	public Reserva getReservaById(Long id) {
+		return reservaRepository.find(Reserva.class, id);
+	}
+
+	@Override
+	public void excluir(Reserva reserva) {
+		reservaRepository.delete(reserva);
+		
+	}
+
 }
