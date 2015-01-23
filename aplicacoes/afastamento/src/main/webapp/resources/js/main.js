@@ -143,6 +143,8 @@ $(document).ready(function() {
 });
 
 function getRanking(ano, semestre) {
+	$("tbody").remove();
+	$('#img-load').show();
 	$.ajax({
 		type: "POST",
 		url: '/afastamento/reserva/ranking.json',
@@ -175,13 +177,13 @@ function getRanking(ano, semestre) {
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
 		
+		$('#img-load').hide();
 		loadTable(result.ranking.tuplas, "ranking");
 		
 	});
 }
 
 function loadTable(result, table) {
-	$("tbody").remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(
