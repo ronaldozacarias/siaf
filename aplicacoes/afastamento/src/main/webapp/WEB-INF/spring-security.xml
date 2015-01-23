@@ -13,7 +13,9 @@
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
  		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
- 		<intercept-url pattern="/reserva/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
+ 		<intercept-url pattern="/reserva/ranking/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
+ 		<intercept-url pattern="/reserva/ranking.json/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
+ 		<intercept-url pattern="/reserva/**" access="ROLE_PROFESSOR" />
  		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN" />	
  		
  		<form-login login-page="/login" default-target-url="/" 
