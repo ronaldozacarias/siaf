@@ -86,7 +86,7 @@
 					<div class="form-item">
 						<label for="anoAdmissao" class="col-sm-2 control-label">Admissão:</label>
 						<div id="admissao" class="col-sm-4">
-							<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control" required="required"/>
+							<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control ano" required="required"/>
 							<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker" required="required">
 								<option value="1">1</option>
 								<option value="2">2</option>
@@ -111,7 +111,6 @@
 				
 				<div class="controls">
 					<input name="Cadastrar" type="submit" class="btn btn-primary" value="Cadastrar" />
-					<a href="<c:url value="#"></c:url>" class="btn btn-default">Cancelar</a>
 				</div>
 			</form:form>
 		</div>
@@ -119,6 +118,9 @@
 		<jsp:include page="../modulos/footer.jsp" />
 		
 	</div>
+	<script type="text/javascript">
+		$('#menu-professores').addClass('active');
+	</script>
 </body>
 </html>
 

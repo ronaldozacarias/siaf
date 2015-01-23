@@ -131,7 +131,7 @@ $(document).ready(function() {
 
 	 $("#encerramento").mask("99/99/9999");
 
-	 $("#cpf").mask("999.999.999-99");
+	 $("#cpf").mask("999.999.999-99",{placeholder:" "});
 
 	$('#excluir-reserva').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
@@ -142,6 +142,8 @@ $(document).ready(function() {
 });
 
 function getRanking(ano, semestre) {
+	$("tbody").remove();
+	$('#img-load').show();
 	$.ajax({
 		type: "POST",
 		url: '/afastamento/reserva/ranking.json',
@@ -174,13 +176,13 @@ function getRanking(ano, semestre) {
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
 		
+		$('#img-load').hide();
 		loadTable(result.ranking.tuplas, "ranking");
 		
 	});
 }
 
 function loadTable(result, table) {
-	$("tbody").remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(

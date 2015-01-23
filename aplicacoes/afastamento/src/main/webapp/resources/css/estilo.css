@@ -54,6 +54,7 @@ body {
 	border-right: 2px solid #EAECED;
 	position: relative;
 	display: block;
+	cursor: pointer;
 }
 
 .menuTop ul li a {
@@ -295,5 +296,20 @@ table#reservas {
 	font-weight: bold;
 	border: 0;
 	display: block;
+}
+.error-code {
+	text-align: center;
+	width: 100%;
+	padding: 20px 0px 20px 10px;
+	margin-top: 30px;
+	font-size: 20px;
+	color: #7C7C7C;
+	letter-spacing: 3px;
+}
+
+img.error {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 

@@ -57,6 +57,8 @@
 					</tr>
 				</thead>
 			</table>
+			
+			<img id="img-load" alt="Carregando..." src="<c:url value="/resources/images/loading.gif" />" class="error"/>
 
 			<div id="legenda">
 				<label><span>SE:</span> Número de semestres desde a

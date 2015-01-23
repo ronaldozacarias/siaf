@@ -8,7 +8,7 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Solicitar Afastamento</title>
+<title>SiAf - Incluir Reserva</title>
 </head>
 <body>
 	<div id="wrapper">

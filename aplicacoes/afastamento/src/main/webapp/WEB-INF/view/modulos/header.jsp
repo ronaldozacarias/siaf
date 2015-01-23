@@ -14,18 +14,20 @@
     		<li id="menu-ranking">
     			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
-    		<li id="menu-add-reserva">
-    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
-    		</li>
-    		<li id="menu-reservas">
-    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
-    		</li>
+    		<sec:authorize ifAnyGranted="ROLE_PROFESSOR">
+	    		<li id="menu-add-reserva">
+	    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
+	    		</li>
+	    		<li id="menu-reservas">
+	    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
+	    		</li>
+	    	</sec:authorize>
     		<sec:authorize ifAnyGranted="ROLE_ADMIN">
-	    		<li>
-	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
+	    		<li id="menu-periodos">
+	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
 
-	    		<li class="dropdown">
+	    		<li class="dropdown" id="menu-professores">
 	    			<a data-toggle="dropdown" class="dropdown-toggle"><span>Professor</span><b class="caret"></b></a>
                     <ul class="dropdown-menu afas-menu">
                         <li><a href="<c:url value="/administracao/professores" />">Lista professores</a></li>
