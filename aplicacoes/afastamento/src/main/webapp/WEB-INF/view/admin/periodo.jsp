@@ -15,7 +15,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 					
-			<div class="title"> Períodos : </div>
+			<div class="title"> Selecione o periodo : </div>
 			<span class="line"></span>
 
 			<c:if test="${not empty erro}">
@@ -50,46 +50,52 @@
 			<div id="viewPeriodo"  class="form-horizontal" align="center">
 				<c:if test="${not empty periodo}">
 					<c:if test="${permitirUpdate}">
-						<form:form id="update-periodo" commandName="periodo" action="/afastamento/administracao/update-periodo" method="POST" >
-							<form:hidden id="chave" path="id"/>
-							<form:hidden id="anoHidden" path="ano"/>
-							<form:hidden id="semestre" path="semestre"/>
-							<div class="form-group center">
-								<label class="control-label">Período:</label>
-								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
-							</div>
-							
-							<div class="form-group center">		
-								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
-								<div class="col-sm-2">
-									<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control"/>
-									<div class="error-validation">
-										<form:errors path="vagas"></form:errors>
+
+						<div id="update-periodo" class="panel panel-default">
+							<div id="periodo-heading" class="panel-heading"><strong>Periodo: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
+
+							<div id="periodo-body" class="panel-body">
+								<form:form id="form-periodo" commandName="periodo" action="/siaf/administracao/update-periodo" method="POST" >
+									<form:hidden id="chave" path="id"/>
+									<form:hidden id="anoHidden" path="ano"/>
+									<form:hidden id="semestre" path="semestre"/>
+									
+									<div class="periodo">
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="encerramento" class="control-label">Encerramento:</label>
+											<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control" required="required"/>
+											<div class="error-validation">
+												<form:errors path="encerramento"></form:errors>
+												<c:out value="${errorData}"></c:out>
+											</div>
+	
+			                            </div>
+			
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="vagas" class="control-label">Vagas:</label>
+											<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control" required="required"/>
+											<div class="error-validation">
+												<form:errors path="vagas"></form:errors>
+											</div>
+	
+			                            </div>
 									</div>
-								</div>
-								<label for="encerramento" class="col-sm-2 control-label">Encerramento:</label>
-								<div class="col-sm-2">
-									<form:input id="encerramento" path="encerramento" cssClass="form-control"/>
-									<div class="error-validation">
-										<form:errors path="encerramento"></form:errors>
-										<c:out value="${errorData}"></c:out>
+									
+									<div>
+										<input id="btn-update" name="atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
 									</div>
-								</div>
-							</div>
-		
-						<div class="controls">
-							<input name="Atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
-						</div>
-							
-						</form:form>
+								</form:form>
+							</div>					
+						</div>					
+					
 					</c:if>
 	
 					<c:if test="${not permitirUpdate}">
-						<div id="update-periodo">
+						<div id="update-periodo" class="container">
 							<input type="hidden" id="chave" value="${periodo.id }"/>
-							<fmt:formatDate value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
+							<fmt:formatDate var="data" value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
 								<div class="alert alert-info" role="alert">
-									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${periodo.encerramento }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
+									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${data }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
 								</div>
 						</div>
 					</c:if>

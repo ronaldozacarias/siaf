@@ -75,7 +75,6 @@ $(document).ready(function() {
         },
     });
 
-
 	$('.ano').mask('9999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});
 	
@@ -218,7 +217,7 @@ function loadPeriodo(ano, semestre) {
 	};
 	
 	$.ajax({
-		url: '/afastamento/administracao/periodo',
+		url: '/siaf/administracao/periodo',
 		type: "POST",
 		dataType: "html",
 		data: filtro,
@@ -244,6 +243,34 @@ function showPeriodo(result) {
 		
 		$("#status").selectpicker();
 	}
+	$('#periodo-heading').addClass('animated tada');
+	$('#periodo-body').addClass('animated fadeInUp');
+
+	$("#form-periodo").validate({
+        rules: {
+            
+        },
+        highlight: function(element) {
+            $(element).closest('.form-item').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-item').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	vagas:{
+                required:"Campo obrigatório",
+            },
+            encerramento:{
+                required:"Campo obrigatório",
+            }
+        }
+    });	
+	
 	$("#viewPeriodo").show();
 }
 
