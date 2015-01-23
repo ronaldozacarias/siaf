@@ -33,16 +33,16 @@
 			
 			<div class="title"> Novo(a) Professor(a) : </div>
 			<span class="line"></span>
-			<form:form id="novo-professor" commandName="professor" action="/afastamento/administracao/novo-professor" method="POST" class="form-horizontal">
+			<form:form id="novo-professor" commandName="professor" action="/siaf/administracao/novo-professor" method="POST" class="form-horizontal">
 
 				<!-- 1 LINHA -->
 				<div class="form-group">
 					<div class="form-item">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-4">
-							<form:input id="nome" name="nome" type="text" path="nome" size="50" cssClass="form-control" required="required"/>
+							<form:input id="nome" type="text" path="usuario.nome" size="50" cssClass="form-control" required="required"/>
 							<div class="error-validation">
-								<form:errors path="nome"></form:errors>
+								<form:errors path="usuario.nome"></form:errors>
 							</div>
 						</div>
 					</div>
@@ -63,9 +63,9 @@
 					<div class="form-item">
 						<label for="email" class="col-sm-2 control-label">E-mail:</label>
 						<div class="col-sm-4">
-							<form:input id="email" name="email" type="text" path="email" size="50" cssClass="form-control" required="required"/>
+							<form:input id="email" type="text" path="usuario.email" size="50" cssClass="form-control" required="required"/>
 							<div class="error-validation">
-								<form:errors path="email"></form:errors>
+								<form:errors path="usuario.email"></form:errors>
 							</div>
 						</div>
 					</div>

@@ -32,7 +32,7 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	
 	@Override
 	public List<Professor> findOrder() {
-		return professorRepository.find(QueryType.JPQL, "select p from Professor p order by p.nome", null);
+		return professorRepository.find(QueryType.JPQL, "select p from Professor p order by p.usuario.nome", null);
 	}
 
 }

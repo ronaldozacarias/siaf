@@ -85,7 +85,7 @@ $(document).ready(function() {
 	
 	$("#dataNascimento").datepicker({
 		 autoclose: true,
-		 format: "dd/M/yyyy"
+		 format: "dd/mm/yyyy"
 	});
 	
 	$("#encerramento").datepicker({

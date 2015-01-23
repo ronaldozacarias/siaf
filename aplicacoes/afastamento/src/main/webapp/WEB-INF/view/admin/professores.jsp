@@ -49,8 +49,8 @@
 						<c:forEach items="${professores}" var="professor">
 					           <tr>
 					               <td>${professor.siape}</td>
-					               <td>${professor.nome}</td>
-					               <td>${professor.email}</td>
+					               <td>${professor.usuario.nome}</td>
+					               <td>${professor.usuario.email}</td>
 					               <td>${professor.anoAdmissao}.${professor.semestreAdmissao}</td>
 					           </tr>
 						</c:forEach>

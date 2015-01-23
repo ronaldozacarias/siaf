@@ -91,7 +91,7 @@ public class RankingServiceImpl implements RankingService {
 			TuplaRanking tupla = new TuplaRanking();
 			tupla.setReserva(reserva);
 			tupla.setPeriodo(periodo);
-			tupla.setProfessor(reserva.getProfessor().getNome());
+			tupla.setProfessor(reserva.getProfessor().getUsuario().getNome());
 			tupla.setSemestresSolicitados(getSemestresSolicitados(reserva));
 			tupla.setSemestresAtivos(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1);

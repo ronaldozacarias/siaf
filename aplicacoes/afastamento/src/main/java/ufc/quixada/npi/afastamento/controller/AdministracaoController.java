@@ -1,6 +1,7 @@
 package ufc.quixada.npi.afastamento.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.service.GenericService;
@@ -39,6 +41,9 @@ public class AdministracaoController {
 	private GenericService<Papel> papelService;
 
 	@Inject
+	private GenericService<Usuario> usuarioService;
+
+	@Inject
 	private PeriodoService periodoService;	
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
@@ -51,22 +56,36 @@ public class AdministracaoController {
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)
 	public String cadastroProfessor(Model model) {
 		model.addAttribute("professor", new Professor());
+//		model.addAttribute("usuario", new Usuario());
 		return "admin/novo-professor";
 	}
 
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
-	public String cadastroProfessor(@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
+	public String cadastroProfessor(
+			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
 
-		if (result.hasErrors()) {
+		if (result.hasErrors() || Integer.parseInt(""+professor.getAnoAdmissao()) < Calendar.YEAR) {
 			return "admin/novo-professor";
 		}
-
+		
+		Usuario usuario = professor.getUsuario();
+		
+		/*Usuario*/
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
-		professor.setPassword(encoder.encodePassword(professor.getSiape(), ""));
-		professor.setHabilitado(true);
+		usuario.setLogin(professor.getSiape());
+		usuario.setPassword(encoder.encodePassword(professor.getSiape(), ""));
+		usuario.setHabilitado(true);
+
 		List<Papel> papeis = new ArrayList<Papel>();
 		papeis.add(papelService.find(Papel.class, 2L));
-		professor.setPapeis(papeis);
+		
+		usuario.setPapeis(papeis);
+		
+//		usuarioService.update(usuario);
+		usuarioService.save(usuario);
+
+		/*Professor*/
+		professor.setUsuario(usuario);
 		professorService.update(professor);
 		
 		return "redirect:/administracao/professores";
