@@ -127,11 +127,19 @@ $(document).ready(function() {
 	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 	    	filtroPeriodo();
 	    }
-	});	
+	});
 	
+
 	 $("#encerramento").mask("99/99/9999");
 
 	 $("#cpf").mask("999.999.999-99");
+
+	$('#excluir-reserva').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});	
+	
+
 });
 
 function getRanking(ano, semestre) {

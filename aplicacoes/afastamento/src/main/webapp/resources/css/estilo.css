@@ -65,7 +65,7 @@ body {
 	outline: none;
 }
 
-.menuTop ul li a:hover {
+.menuTop ul li a:hover, .menuTop ul li.active a {
 	color: #F47920;
 	text-decoration: underline !important;
 }
@@ -217,6 +217,11 @@ input{
 	margin-top: 10px  !important;
 }
 
+.alert {
+	text-align: center;
+	margin-top: 20px;
+}
+
 li ul .dropdown-menu {
 	background: #458568
 }
@@ -244,3 +249,9 @@ li ul .dropdown-menu {
 .afas-form-group label{
 	margin: 0 0 0 150px;
 }
+
+table#reservas {
+	margin-top: 30px;
+	text-align: center;
+}
+

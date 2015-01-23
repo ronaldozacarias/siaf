@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,7 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
-import ufc.quixada.npi.afastamento.service.AfastamentoService;
+import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
@@ -42,14 +43,14 @@ public class ReservaController {
 	private RankingService rankingService;
 	
 	@Inject
-	private AfastamentoService afastamentoService;
+	private PeriodoService periodoService;
 	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
-		Periodo periodoAtual = afastamentoService.getPeriodoAtual();
+		Periodo periodoAtual = periodoService.getPeriodoAtual();
 		model.addAttribute("periodoAtual", periodoAtual);
-		model.addAttribute("periodoAnterior", afastamentoService.getPeriodoAnterior(periodoAtual));
-		model.addAttribute("periodoPosterior", afastamentoService.getPeriodoPosterior(periodoAtual));
+		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
+		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		
 		return "reserva/ranking";
 	}
@@ -57,13 +58,13 @@ public class ReservaController {
 	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model ranking(HttpServletRequest request, Model model, HttpSession session) {
 		Ranking ranking = new Ranking();
-		ranking.setPeriodo(afastamentoService.getPeriodoByAnoSemestre(
+		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
 		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
-		model.addAttribute("periodoAnterior", afastamentoService.getPeriodoAnterior(ranking.getPeriodo()));
-		model.addAttribute("periodoPosterior", afastamentoService.getPeriodoPosterior(ranking.getPeriodo()));
+		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(ranking.getPeriodo()));
 		
 		return model;
 	}
@@ -95,7 +96,7 @@ public class ReservaController {
 			return "redirect:/reserva/incluir";
 		}
 		
-		Periodo periodo = afastamentoService.getPeriodoAtual();
+		Periodo periodo = periodoService.getPeriodoAtual();
 		Integer diferenca = calculaDiferenca(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
 		
 		if(diferenca < 2) {
@@ -131,11 +132,23 @@ public class ReservaController {
 		return "reserva/ranking";
 	}
 	
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String getReservas(Model model, HttpSession session) {
 		model.addAttribute("reservas", reservaService.getReservasByProfessor(getUsuarioLogado(session).getSiape()));
 		model.addAttribute("professor", getUsuarioLogado(session));
-		return "reserva/reservas";
+		return "reserva/lista";
+	}
+	
+	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
+	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.getReservaById(id);
+		if(reserva == null || !reserva.getProfessor().equals(getUsuarioLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
+		} else {
+			reservaService.delete(reserva);
+			redirect.addFlashAttribute("info", "Reserva excluída com sucesso");
+		}
+		return "redirect:/reserva/listar";
 	}
 	
 	private Professor getUsuarioLogado(HttpSession session) {

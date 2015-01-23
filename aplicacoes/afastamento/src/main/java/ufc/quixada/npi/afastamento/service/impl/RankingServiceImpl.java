@@ -16,6 +16,7 @@ import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
+import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 
@@ -27,15 +28,18 @@ public class RankingServiceImpl implements RankingService {
 	
 	@Inject
 	private AfastamentoService afastamentoService;
+	
+	@Inject
+	private PeriodoService periodoService;
 
 	@Override
 	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
-		Periodo periodo = afastamentoService.getPeriodoByAnoSemestre(ano, semestre);
+		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		List<TuplaRanking> tuplaAtual = getRanking(periodo).getTuplas();
 		for(int i = 0; i < tuplaAtual.size(); i++) {
-			Periodo periodoInicio = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
-			Periodo periodoTermino = afastamentoService.getPeriodoByAnoSemestre(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
-			for(;periodoInicio != null && !periodoInicio.equals(afastamentoService.getPeriodoPosterior(periodoTermino)); periodoInicio = afastamentoService.getPeriodoPosterior(periodoInicio)) {
+			Periodo periodoInicio = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
+			Periodo periodoTermino = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
+			for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
 				List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
 				boolean encontrou = false;
 				for(TuplaRanking tupla : tuplaPeriodo) {
@@ -64,7 +68,8 @@ public class RankingServiceImpl implements RankingService {
 		return result;
 	}
 	
-	private Ranking getRanking(Periodo periodo) {
+	@Override
+	public Ranking getRanking(Periodo periodo) {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodo);
 		

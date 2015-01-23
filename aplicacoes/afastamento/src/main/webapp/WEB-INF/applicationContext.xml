@@ -23,13 +23,14 @@
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
-
+	
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<context:annotation-config />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.repository" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.service" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.controller" />
+	<context:component-scan base-package="ufc.quixada.npi.afastamento.jobs" />
 	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
 	<context:component-scan base-package="br.ufc.quixada.npi.service" />
 	

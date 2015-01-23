@@ -94,6 +94,9 @@
 		<jsp:include page="../modulos/footer.jsp" />
 		
 	</div>
+	<script type="text/javascript">
+		$('#menu-add-reserva').addClass('active');
+	</script>
 </body>
 </html>
 

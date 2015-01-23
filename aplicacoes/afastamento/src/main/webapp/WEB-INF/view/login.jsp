@@ -3,7 +3,8 @@
 	pageEncoding="UTF-8"%>
 <html>
 <head>
-<jsp:include page="modulos/header-estrutura.jsp" />
+<link href="<c:url value="/webjars/bootstrap/3.3.2/css/bootstrap.min.css" />" rel="stylesheet" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Página de Login</title>
 <style>
 .errorblock {
@@ -56,6 +57,7 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="modulos/footer.jsp" />
+	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+	<script src="<c:url value="/webjars/bootstrap/3.3.2/js/bootstrap.min.js" />"></script>
 </body>
 </html>

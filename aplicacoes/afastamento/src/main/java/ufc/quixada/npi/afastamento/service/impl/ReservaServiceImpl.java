@@ -11,19 +11,21 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
-public class ReservaServiceImpl implements ReservaService {
+public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements ReservaService {
 
 	@Inject
 	private GenericRepository<Reserva> reservaRepository;
 	
 	@Inject
-	private GenericRepository<Periodo> periodoRepository;
+	private PeriodoService periodoService;
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -38,23 +40,23 @@ public class ReservaServiceImpl implements ReservaService {
 			periodo.setStatus(StatusReserva.ABERTO);
 			if (ano == reserva.getAnoInicio() && reserva.getSemestreInicio() == 2) {
 				periodo.setSemestre(2);
-				periodoRepository.save(periodo);
+				periodoService.save(periodo);
 				continue;
 			}
 			if (ano == reserva.getAnoTermino() && reserva.getSemestreTermino() == 1) {
 				periodo.setSemestre(1);
-				periodoRepository.save(periodo);
+				periodoService.save(periodo);
 				break;
 			}
 			periodo.setSemestre(1);
-			periodoRepository.save(periodo);
+			periodoService.save(periodo);
 			
 			periodo = new Periodo();
 			periodo.setAno(ano);
 			periodo.setSemestre(2);
 			periodo.setVagas(vagas);
 			periodo.setStatus(StatusReserva.ABERTO);
-			periodoRepository.save(periodo);
+			periodoService.save(periodo);
 		}
 		reservaRepository.save(reserva);
 		
@@ -81,6 +83,11 @@ public class ReservaServiceImpl implements ReservaService {
 		params.put("semestre", semestre);
 		return reservaRepository.find(QueryType.JPQL, "from Reserva where :ano >= anoInicio and :ano <= anoTermino and id not in (select id from Reserva where "
 				+ "(anoInicio = :ano and semestreInicio > :semestre) or (anoTermino = :ano and semestreTermino < :semestre))", params);
+	}
+
+	@Override
+	public Reserva getReservaById(Long id) {
+		return reservaRepository.find(Reserva.class, id);
 	}
 
 }
