@@ -8,14 +8,14 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Solicitar Afastamento</title>
+<title>SiAf - Período</title>
 </head>
 <body>
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 					
-			<div class="title"> Periodos : </div>
+			<div class="title"> Períodos : </div>
 			<span class="line"></span>
 
 			<c:if test="${not empty erro}">
@@ -55,7 +55,7 @@
 							<form:hidden id="anoHidden" path="ano"/>
 							<form:hidden id="semestre" path="semestre"/>
 							<div class="form-group center">
-								<label class="control-label">Periodo:</label>
+								<label class="control-label">Período:</label>
 								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
 							</div>
 							

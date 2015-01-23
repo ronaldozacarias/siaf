@@ -54,6 +54,7 @@ body {
 	border-right: 2px solid #EAECED;
 	position: relative;
 	display: block;
+	cursor: pointer;
 }
 
 .menuTop ul li a {

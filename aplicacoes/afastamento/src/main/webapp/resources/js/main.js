@@ -132,7 +132,7 @@ $(document).ready(function() {
 
 	 $("#encerramento").mask("99/99/9999");
 
-	 $("#cpf").mask("999.999.999-99");
+	 $("#cpf").mask("999.999.999-99",{placeholder:" "});
 
 	$('#excluir-reserva').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
