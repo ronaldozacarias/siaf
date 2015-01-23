@@ -255,3 +255,45 @@ table#reservas {
 	text-align: center;
 }
 
+/* Periodo */
+
+.panel {
+	border: 0;
+}
+.panel-default>.panel-heading {
+	background: none;
+	border: 0;
+	font-size: 20px;
+}
+.panel-default>.panel-heading label{
+	color: #F36825;
+}
+.panel-default .panel-body {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.periodo .input-periodo {
+	display: inline;
+	width: 300px;
+	float: left;
+}
+.periodo .input-periodo label {
+	display: inline;
+	width: 100px;
+	margin: 2px;
+}
+.periodo .input-periodo input {
+	display: inline;
+	width: 200px;
+}
+#btn-update {
+	text-align: center;
+	margin-top: 10px;
+	background: #F36825;
+	color: #fff;
+	font-weight: bold;
+	border: 0;
+	display: block;
+}
+
