@@ -179,6 +179,10 @@ function getRanking(ano, semestre) {
 		$('#img-load').hide();
 		loadTable(result.ranking.tuplas, "ranking");
 		
+		$('table#ranking').removeClass('animated zoomIn').addClass('animated zoomIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+		      $(this).removeClass('animated zoomIn');
+	    });
+		
 	});
 }
 
