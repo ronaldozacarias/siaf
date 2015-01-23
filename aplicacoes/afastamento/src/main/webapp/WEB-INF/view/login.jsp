@@ -14,7 +14,6 @@
 	padding: 8px;
 	margin: 16px;
 }
-
 .center {
 	float: none;
 	margin-left: auto;

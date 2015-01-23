@@ -20,11 +20,11 @@
     		<li id="menu-reservas">
     			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
     		</li>
-    		<li id="menu-periodos">
-    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
-    		</li>
-
     		<sec:authorize ifAnyGranted="ROLE_ADMIN">
+	    		<li>
+	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Periodos</span></a>
+	    		</li>
+
 	    		<li class="dropdown">
 	    			<a data-toggle="dropdown" class="dropdown-toggle"><span>Professor</span><b class="caret"></b></a>
                     <ul class="dropdown-menu afas-menu">

@@ -72,3 +72,10 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	}
 
 }
+
+
+
+
+
+
+

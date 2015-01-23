@@ -36,11 +36,12 @@
 			</c:if>
 			
 			<div class="container">
-				<table class="table table-striped">
+				<table id="professores" class="table table-striped">
 					<thead>
-						<tr>
-				               <th>Siape</th>
-				               <th>Nome</th>
+						<tr class="afas-tr-left">
+				               <th class="afas-tr-left">Siape</th>
+				               <th id="orderName">Nome</th>
+				               <th>E-mail</th>
 				               <th>Admisão</th>
 				           </tr>
 				       </thead>
@@ -49,18 +50,17 @@
 					           <tr>
 					               <td>${professor.siape}</td>
 					               <td>${professor.nome}</td>
+					               <td>${professor.email}</td>
 					               <td>${professor.anoAdmissao}.${professor.semestreAdmissao}</td>
 					           </tr>
 						</c:forEach>
 				       </tbody>
 				</table>
 			</div>
-			
 		</div>
-		
-		<jsp:include page="../modulos/footer.jsp" />
-		
 	</div>
+	
+	<jsp:include page="../modulos/footer.jsp" />
 </body>
 </html>
 

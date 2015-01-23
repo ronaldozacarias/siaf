@@ -59,17 +59,7 @@
 								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
 							</div>
 							
-							<div class="form-group center">
-								<label class="col-sm-1 control-label">Status:</label>
-								<div class="col-sm-2">
-									<form:select id="status" name="status" path="status" class="form-control selectpicker" >
-										<form:options items="${status}" itemLabel="descricao" />
-									</form:select>
-									<div class="error-validation">
-										<form:errors path="status"></form:errors>
-									</div>
-								</div>
-		
+							<div class="form-group center">		
 								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
 								<div class="col-sm-2">
 									<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control"/>
@@ -89,7 +79,6 @@
 		
 						<div class="controls">
 							<input name="Atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
-							<a href="<c:url value="#"></c:url>" class="btn btn-default">Cancelar</a>
 						</div>
 							
 						</form:form>
@@ -98,27 +87,10 @@
 					<c:if test="${not permitirUpdate}">
 						<div id="update-periodo">
 							<input type="hidden" id="chave" value="${periodo.id }"/>
-							<div class="form-group center">
-								<label class="control-label">Periodo:</label>
-								<label class="control-label value-label">${periodo.ano }.${periodo.semestre }</label>					
-							</div>
-						
-							<div class="form-group center">
-								<label class="col-sm-1 control-label">Status:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.status }</label>					
+							<fmt:formatDate value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
+								<div class="alert alert-info" role="alert">
+									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${periodo.encerramento }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
 								</div>
-						
-								<label for="vagas" class="col-sm-2 control-label">Vagas:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.vagas }</label>
-								</div>
-						
-								<label for="encerramento" class="col-sm-2 control-label">Encerramento:</label>
-								<div class="col-sm-2">
-									<label class="control-label value-label">${periodo.encerramento }</label>
-								</div>
-							</div>
 						</div>
 					</c:if>
 				</c:if>
