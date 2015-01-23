@@ -80,6 +80,10 @@
 	
 			                            </div>
 									</div>
+									
+									<div>
+										<input id="btn-update" name="atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
+									</div>
 								</form:form>
 							</div>					
 						</div>					
