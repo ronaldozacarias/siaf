@@ -255,3 +255,19 @@ table#reservas {
 	text-align: center;
 }
 
+.error-code {
+	text-align: center;
+	width: 100%;
+	padding: 20px 0px 20px 10px;
+	margin-top: 30px;
+	font-size: 20px;
+	color: #7C7C7C;
+	letter-spacing: 3px;
+}
+
+img.error {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+

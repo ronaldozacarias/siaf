@@ -14,8 +14,8 @@
 	<div id="wrapper">
 		<jsp:include page="modulos/header.jsp" />
 		<div id="content">
-			<div class="error-code">Ooops! Você não tem permissão para acessar essa página!</div>
-			<img alt="403 - Não Permitido" src="<c:url value="/resources/images/403.png" />" class="error"/>
+			<div class="error-code">Ooops! Acho que não encontramos o que você está procurando...</div>
+			<img alt="404 - Not Found" src="<c:url value="/resources/images/404.png" />" class="error"/>
 		</div>
 		
 		<jsp:include page="modulos/footer.jsp" />
