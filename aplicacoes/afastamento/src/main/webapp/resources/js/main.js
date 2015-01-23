@@ -146,7 +146,7 @@ function getRanking(ano, semestre) {
 	$('#img-load').show();
 	$.ajax({
 		type: "POST",
-		url: '/afastamento/reserva/ranking.json',
+		url: '/siaf/reserva/ranking.json',
 		data: {
         	ano : ano,
         	semestre : semestre
