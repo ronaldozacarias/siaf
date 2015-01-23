@@ -14,18 +14,18 @@ public class TuplaRanking {
 	
 	private Float pontuacao;
 	
-	private StatusReserva status;
+	private StatusTupla status;
 	
 	@JsonIgnore
 	private Periodo periodo;
 	
 	private Reserva reserva;
 
-	public StatusReserva getStatus() {
+	public StatusTupla getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusReserva status) {
+	public void setStatus(StatusTupla status) {
 		this.status = status;
 	}
 

@@ -43,7 +43,7 @@ public class Periodo {
 	private Date encerramento;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusReserva status;
+	private StatusPeriodo status;
 
 	public Long getId() {
 		return id;
@@ -85,11 +85,11 @@ public class Periodo {
 		this.encerramento = encerramento;
 	}
 
-	public StatusReserva getStatus() {
+	public StatusPeriodo getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusReserva status) {
+	public void setStatus(StatusPeriodo status) {
 		this.status = status;
 	}
 

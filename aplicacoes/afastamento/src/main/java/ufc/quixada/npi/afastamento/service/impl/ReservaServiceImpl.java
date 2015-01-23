@@ -10,7 +10,7 @@ import javax.inject.Named;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
-import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
@@ -37,7 +37,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 			Periodo periodo = new Periodo();
 			periodo.setVagas((int)(vagas * 0.15));
 			periodo.setAno(ano);
-			periodo.setStatus(StatusReserva.ABERTO);
+			periodo.setStatus(StatusPeriodo.ABERTO);
 			if (ano == reserva.getAnoInicio() && reserva.getSemestreInicio() == 2) {
 				periodo.setSemestre(2);
 				periodoService.save(periodo);
@@ -55,7 +55,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 			periodo.setAno(ano);
 			periodo.setSemestre(2);
 			periodo.setVagas(vagas);
-			periodo.setStatus(StatusReserva.ABERTO);
+			periodo.setStatus(StatusPeriodo.ABERTO);
 			periodoService.save(periodo);
 		}
 		reservaRepository.save(reserva);
@@ -66,7 +66,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	public List<Reserva> getReservasByProfessor(String siape) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("siape", siape);
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.siape = :siape", params);
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.siape = :siape order by anoInicio DESC, semestreInicio DESC", params);
 	}
 
 	@Override

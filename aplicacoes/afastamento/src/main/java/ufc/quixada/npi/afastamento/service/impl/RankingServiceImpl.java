@@ -14,6 +14,7 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
@@ -49,7 +50,7 @@ public class RankingServiceImpl implements RankingService {
 					}
 				}
 				if(!encontrou) {
-					tuplaAtual.get(i).setStatus(StatusReserva.DESCLASSIFICADO);
+					tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
 				}
 				
 			}
@@ -61,7 +62,7 @@ public class RankingServiceImpl implements RankingService {
 	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
 		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
 		for(TuplaRanking tupla : tuplaRanking) {
-			if(!tupla.getStatus().equals(StatusReserva.DESCLASSIFICADO) && !tupla.getStatus().equals(StatusReserva.NAO_ACEITO)) {
+			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
 				result.add(tupla);
 			}
 		}
@@ -95,7 +96,6 @@ public class RankingServiceImpl implements RankingService {
 			tupla.setSemestresAtivos(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1);
 			tupla.setSemestresAfastados(getSemestresAfastados(reserva));
-			tupla.setStatus(reserva.getStatus());
 			Float t = Float.valueOf(tupla.getSemestresAtivos());
 			Float a = Float.valueOf(tupla.getSemestresAfastados());
 			Float s = afastamentoService.getAfastamentosByProfessor(reserva.getProfessor().getSiape()).isEmpty() ? 2 : Float.valueOf(tupla.getSemestresSolicitados());
@@ -138,18 +138,24 @@ public class RankingServiceImpl implements RankingService {
 		Collections.reverse(tuplas);
 		int vagas = periodo.getVagas();
 		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getStatus().equals(StatusReserva.ACEITO) || tupla.getStatus().equals(StatusReserva.ENCERRADO)) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
 				vagas--;
 			}
 		}
 		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getStatus().equals(StatusReserva.ABERTO)) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
 				if(vagas > 0) {
-					tupla.setStatus(StatusReserva.CLASSIFICADO);
+					tupla.setStatus(StatusTupla.CLASSIFICADO);
 					vagas--;
 				} else {
-					tupla.setStatus(StatusReserva.DESCLASSIFICADO);
+					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 				}
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+				tupla.setStatus(StatusTupla.ACEITO);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
+				tupla.setStatus(StatusTupla.DESCLASSIFICADO);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
+				tupla.setStatus(StatusTupla.ENCERRADO);
 			}
 		}
 		

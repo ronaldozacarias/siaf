@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
-import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.service.GenericService;
@@ -128,14 +128,13 @@ public class AdministracaoController {
 
 		model.addAttribute("permitirUpdate", true);
 		if (result.hasErrors()) {
-			//model.addAttribute("periodo", periodoAtualizado);
 			return "admin/periodo";
 		}
 
 		if(periodoAtualizado.getId() != null){
 			Periodo periodoAtual = periodoService.find(Periodo.class, periodoAtualizado.getId());
 			
-			if ( periodoAtual.getStatus().equals(StatusReserva.ABERTO) && updateEncerramento(periodoAtualizado.getEncerramento()) ) {
+			if ( periodoAtual.getStatus().equals(StatusPeriodo.ABERTO) && updateEncerramento(periodoAtualizado.getEncerramento()) ) {
 				periodoService.update(periodoAtualizado);
 				redirectAttributes.addFlashAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
 				model.addAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
@@ -145,7 +144,6 @@ public class AdministracaoController {
 
 		}
 
-		//return "redirect:/administracao/periodo";
 		return "admin/periodo";
 	}
 

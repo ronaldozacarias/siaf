@@ -1,12 +1,12 @@
 package ufc.quixada.npi.afastamento.model;
 
-public enum StatusReserva {
+public enum StatusPeriodo {
 	
-	ABERTO("ABERTO"), ENCERRADO("ENCERRADO"), ACEITO("ACEITO"), NAO_ACEITO("NÃO ACEITO");
+	ABERTO("ABERTO"), ENCERRADO("ENCERRADO");
 	
 	private String descricao;
 
-	private StatusReserva(String descricao) {
+	private StatusPeriodo(String descricao) {
 		this.descricao = descricao;
 	}
 
