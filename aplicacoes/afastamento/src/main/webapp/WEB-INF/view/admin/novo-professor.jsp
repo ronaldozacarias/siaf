@@ -50,7 +50,7 @@
 					<div class="form-item">
 						<label for="siape" class="col-sm-2 control-label">Siape:</label>
 						<div class="col-sm-4">
-							<form:input id="siape" name="siape" type="text" path="siape" cssClass="form-control" required="required"/>
+							<form:input id="siape" type="text" path="siape" cssClass="form-control" required="required"/>
 							<div class="error-validation">
 								<form:errors path="siape"></form:errors>
 							</div>
@@ -73,7 +73,7 @@
 					<div class="form-item">
 						<label for="cpf" class="col-sm-2 control-label">CPF:</label>
 						<div class="col-sm-4">
-							<form:input id="cpf" name="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99" required="required"/>
+							<form:input id="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99" required="required"/>
 							<div class="error-validation">
 								<form:errors path="cpf"></form:errors>
 							</div>
@@ -86,7 +86,7 @@
 					<div class="form-item">
 						<label for="anoAdmissao" class="col-sm-2 control-label">Admissão:</label>
 						<div id="admissao" class="col-sm-4">
-							<form:input id="anoAdmissao" name="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control ano" required="required"/>
+							<form:input id="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control ano" required="required"/>
 							<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker" required="required">
 								<option value="1">1</option>
 								<option value="2">2</option>
@@ -101,7 +101,7 @@
 					<div class="form-item">
 						<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
 						<div class="col-sm-4">
-							<form:input id="dataNascimento" name="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy" required="required"/>
+							<form:input id="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy" required="required"/>
 							<div class="error-validation">
 								<form:errors path="dataNascimento"></form:errors>
 							</div>

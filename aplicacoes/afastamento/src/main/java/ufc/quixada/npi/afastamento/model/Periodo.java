@@ -37,7 +37,6 @@ public class Periodo {
 	@Min(message = "Número de vagas inválido", value = 0)
 	private Integer vagas;
 	
-	@NotNull(message = "Obrigatório")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date encerramento;

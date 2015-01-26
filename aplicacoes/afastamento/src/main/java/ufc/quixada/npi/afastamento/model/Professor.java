@@ -3,10 +3,8 @@ package ufc.quixada.npi.afastamento.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +45,6 @@ public class Professor {
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
 	private List<Reserva> reservas;
 
-	@Basic(fetch = FetchType.LAZY)
 	@OneToOne(cascade=CascadeType.REFRESH) 
 	private Usuario usuario;
 		

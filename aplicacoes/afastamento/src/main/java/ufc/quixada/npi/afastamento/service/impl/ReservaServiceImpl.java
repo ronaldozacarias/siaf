@@ -40,23 +40,31 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 			periodo.setStatus(StatusPeriodo.ABERTO);
 			if (ano == reserva.getAnoInicio() && reserva.getSemestreInicio() == 2) {
 				periodo.setSemestre(2);
-				periodoService.save(periodo);
+				if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+					periodoService.save(periodo);
+				}
 				continue;
 			}
 			if (ano == reserva.getAnoTermino() && reserva.getSemestreTermino() == 1) {
 				periodo.setSemestre(1);
-				periodoService.save(periodo);
+				if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+					periodoService.save(periodo);
+				}
 				break;
 			}
 			periodo.setSemestre(1);
-			periodoService.save(periodo);
+			if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+				periodoService.save(periodo);
+			}
 			
 			periodo = new Periodo();
 			periodo.setAno(ano);
 			periodo.setSemestre(2);
-			periodo.setVagas(vagas);
+			periodo.setVagas((int)(vagas * 0.15));
 			periodo.setStatus(StatusPeriodo.ABERTO);
-			periodoService.save(periodo);
+			if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+				periodoService.save(periodo);
+			}
 		}
 		reservaRepository.save(reserva);
 		

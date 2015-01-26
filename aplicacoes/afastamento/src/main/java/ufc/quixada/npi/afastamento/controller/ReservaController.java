@@ -23,6 +23,7 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
@@ -72,7 +73,7 @@ public class ReservaController {
 	@RequestMapping(value = "/incluir", method = RequestMethod.GET)
 	public String incluirForm(Model model, HttpSession session) {
 		model.addAttribute("reserva", new Reserva());
-		model.addAttribute("professor", getUsuarioLogado(session));
+		model.addAttribute("professor", getProfessorLogado(session));
 		model.addAttribute("programa", Programa.values());
 		return "reserva/inclusao";
 	}
@@ -112,8 +113,8 @@ public class ReservaController {
 			return "redirect:/reserva/incluir";
 		}
 		
-		if(reservaService.hasReservaEmAberto(getUsuarioLogado(session))) {
-			redirect.addFlashAttribute("erro", "Já uma solicitação de reserva em aberto.");
+		if(reservaService.hasReservaEmAberto(getProfessorLogado(session))) {
+			redirect.addFlashAttribute("erro", "Já há uma solicitação de reserva em aberto.");
 			return "redirect:/reserva/incluir";
 		}
 		
@@ -124,25 +125,26 @@ public class ReservaController {
 		reserva.setSemestreTermino(semestreTermino);
 		reserva.setDataSolicitacao(new Date());
 		reserva.setPrograma(programa);
-		reserva.setProfessor(getUsuarioLogado(session));
+		reserva.setProfessor(getProfessorLogado(session));
+		reserva.setInstituicao(instituicao);
 		reserva.setStatus(StatusReserva.ABERTO);
 		
 		reservaService.salvar(reserva);
 		
-		return "reserva/ranking";
+		return "redirect:/reserva/ranking";
 	}
 	
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String getReservas(Model model, HttpSession session) {
-		model.addAttribute("reservas", reservaService.getReservasByProfessor(getUsuarioLogado(session).getSiape()));
-		model.addAttribute("professor", getUsuarioLogado(session));
+		model.addAttribute("reservas", reservaService.getReservasByProfessor(getProfessorLogado(session).getSiape()));
+		model.addAttribute("professor", getProfessorLogado(session));
 		return "reserva/lista";
 	}
 	
 	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
-		if(reserva == null || !reserva.getProfessor().equals(getUsuarioLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		if(reserva == null || !reserva.getProfessor().equals(getProfessorLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
 			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
 		} else {
 			reservaService.delete(reserva);
@@ -151,14 +153,26 @@ public class ReservaController {
 		return "redirect:/reserva/listar";
 	}
 	
-	private Professor getUsuarioLogado(HttpSession session) {
+	private Usuario getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Professor professor = usuarioService
+			Usuario usuario = usuarioService
 					.getUsuarioByLogin(SecurityContextHolder.getContext()
 							.getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, professor);
+			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
 		}
-		return (Professor) session.getAttribute(Constants.USUARIO_LOGADO);
+		return (Usuario) session.getAttribute(Constants.USUARIO_LOGADO);
+	}
+	
+	private Professor getProfessorLogado(HttpSession session) {
+		Professor professor = null;
+		if (session.getAttribute(Constants.PROFESSOR_LOGADO) == null) {
+			Usuario usuario = getUsuarioLogado(session);
+			professor = usuarioService.getProfessorByUsuario(usuario);
+			session.setAttribute(Constants.PROFESSOR_LOGADO, professor);
+		} else {
+			professor = (Professor) session.getAttribute(Constants.PROFESSOR_LOGADO);
+		}
+		return professor;
 	}
 	
 	private Integer calculaDiferenca(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
