@@ -131,7 +131,9 @@ public class ReservaController {
 		
 		reservaService.salvar(reserva);
 		
-		return "redirect:/reserva/ranking";
+		redirect.addFlashAttribute("info", "Reserva incluída com sucesso.");
+		
+		return "redirect:/reserva/listar";
 	}
 	
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
