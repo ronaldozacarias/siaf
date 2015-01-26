@@ -54,15 +54,14 @@ $(document).ready(function() {
         },
         
         messages:{
-        	'usuario.nome':{
+        	"usuario.nome":{
                 required:"Campo obrigatório",
             },
             siape:{
                 required:"Campo obrigatório",
             },
             'usuario.email':{
-                required:"Campo obrigatório",
-                email: "Digite um email válido"
+            	required:"Campo obrigatório",
             },
             anoAdmissao:{
             	required:"Campo obrigatório",
