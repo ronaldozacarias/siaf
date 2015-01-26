@@ -192,6 +192,7 @@ public class AdministracaoController {
 			
 		if(permitirUpdateEncerramento || permitirUpdateVagas){
 			periodoService.update(periodoAtualizadoBanco);
+			model.addAttribute("periodo", periodoAtualizadoBanco);
 			model.addAttribute("info","Periodo " +periodoAtualizadoBanco.getAno() + "." + periodoAtualizadoBanco.getSemestre() + " atualizado com sucesso!");
 		}
 		
