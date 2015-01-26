@@ -317,4 +317,7 @@ table#ranking {
   -moz-animation-duration: 300ms;
   -moz-animation-delay: 100ms;
 }
+.clear{
+	clear: both;
+}
 
