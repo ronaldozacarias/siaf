@@ -61,7 +61,7 @@ $(document).ready(function() {
                 required:"Campo obrigatório",
             },
             'usuario.email':{
-                email: "Digite um email válido"
+            	required:"Campo obrigatório",
             },
             anoAdmissao:{
             	required:"Campo obrigatório",
