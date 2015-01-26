@@ -33,6 +33,12 @@ $(document).ready(function() {
 	
 	$('#novo-professor').validate({
         rules: {
+        	semestreAdmissao: {
+        		required: true
+            },
+            'usuario.email': {
+            	email: true
+            }
         },
         
         highlight: function(element) {
@@ -54,8 +60,8 @@ $(document).ready(function() {
             siape:{
                 required:"Campo obrigatório",
             },
-            "usuario.email":{
-                required:"Campo obrigatório",
+            'usuario.email':{
+                email: "Digite um email válido"
             },
             anoAdmissao:{
             	required:"Campo obrigatório",
@@ -73,6 +79,7 @@ $(document).ready(function() {
     });
 
 	$('.ano').mask('9999', {placeholder:" "});
+	$('#siape').mask('9999999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});
 	
 	$('.selectpicker').selectpicker();
@@ -111,6 +118,7 @@ $(document).ready(function() {
 	});
 	
 	$("#viewPeriodo").hide();
+	$("#warning-ranking").hide();
 	showPeriodoPost();
 	
 	$(".filtroSemestre").change(function(event) {
@@ -140,6 +148,7 @@ $(document).ready(function() {
 
 function getRanking(ano, semestre) {
 	$("tbody").remove();
+	$("#warning-ranking").hide();
 	$('#img-load').show();
 	$.ajax({
 		type: "POST",
@@ -196,6 +205,9 @@ function loadTable(result, table) {
             $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');
     });
+	if(result.length == 0) {
+		$("#warning-ranking").show();
+	}
 }
 
 function filtroPeriodo(){

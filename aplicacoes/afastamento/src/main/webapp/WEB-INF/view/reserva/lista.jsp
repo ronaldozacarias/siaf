@@ -15,7 +15,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 			<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
+				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
 					<div class="col-sm-4">
-						<label class="control-label value-label">${professor.nome }</label>
+						<label class="control-label value-label">${professor.usuario.nome }</label>
 					</div>
 					<label class="col-sm-2 control-label">Siape:</label>
 					<div class="col-sm-4">

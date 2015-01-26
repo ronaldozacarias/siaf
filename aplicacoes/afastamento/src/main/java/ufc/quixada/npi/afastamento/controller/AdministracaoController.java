@@ -55,7 +55,6 @@ public class AdministracaoController {
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)
 	public String cadastroProfessor(Model model) {
 		model.addAttribute("professor", new Professor());
-//		model.addAttribute("usuario", new Usuario());
 		return "admin/novo-professor";
 	}
 
@@ -80,7 +79,6 @@ public class AdministracaoController {
 		
 		usuario.setPapeis(papeis);
 		
-//		usuarioService.update(usuario);
 		usuarioService.save(usuario);
 
 		/*Professor*/
@@ -114,12 +112,10 @@ public class AdministracaoController {
 			model.addAttribute("permitirUpdate", permitirUpdate);
 		}else{
 			permitirUpdate = true;
-			//model.addAttribute("permitirUpdate", true);
 		}
 
 		if(notNull(periodoSolicitacao) && periodoSolicitacao.getStatus().equals(StatusPeriodo.ENCERRADO)){
 			permitirUpdate = false;
-			//model.addAttribute("permitirUpdate", false);
 		}
 
 		model.addAttribute("permitirUpdate", permitirUpdate);

@@ -16,9 +16,9 @@
 		<div id="content">
 			<div class="title"> Inclua sua reserva de afastamento : </div>
 			<span class="line"></span>
-			<form:form id="solicitarAfastamento" commandName="reserva" action="/afastamento/reserva/incluir" method="POST" class="form-horizontal">
+			<form:form id="solicitarAfastamento" commandName="reserva" action="/siaf/reserva/incluir" method="POST" class="form-horizontal">
 				<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
+					<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
 						<button type="button" class="close" data-dismiss="alert">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
@@ -29,7 +29,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
 					<div class="col-sm-4">
-						<label class="control-label value-label">${professor.nome }</label>
+						<label class="control-label value-label">${professor.usuario.nome }</label>
 					</div>
 					<label class="col-sm-2 control-label">Siape:</label>
 					<div class="col-sm-4">

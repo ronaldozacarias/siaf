@@ -58,6 +58,10 @@
 				</thead>
 			</table>
 			
+			<div id="warning-ranking" class="alert alert-warning alert-dismissible" role="alert">
+				Não há nenhuma reserva para esse período.
+			</div>
+			
 			<img id="img-load" alt="Carregando..." src="<c:url value="/resources/images/loading.gif" />" class="error"/>
 
 			<div id="legenda">

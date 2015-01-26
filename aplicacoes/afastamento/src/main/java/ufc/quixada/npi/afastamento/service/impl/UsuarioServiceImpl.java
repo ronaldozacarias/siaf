@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
@@ -15,18 +16,28 @@ import br.ufc.quixada.npi.repository.GenericRepository;
 public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Inject
-	private GenericRepository<Professor> usuarioRepository;
+	private GenericRepository<Usuario> usuarioRepository;
+	
+	@Inject
+	private GenericRepository<Professor> professorRepository;
 	
 	@Override
-	public Professor getUsuarioByLogin(String login) {
+	public Usuario getUsuarioByLogin(String login) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("siape", login);
-		return usuarioRepository.find(QueryType.JPQL, "from Professor where siape = :siape", params).get(0);
+		params.put("login", login);
+		return usuarioRepository.find(QueryType.JPQL, "from Usuario where login = :login", params).get(0);
 	}
 
 	@Override
 	public int getQuantidadeProfessor() {
-		return (Integer) usuarioRepository.find(QueryType.JPQL, "select count(*) from Professor", null).size();
+		return professorRepository.find(QueryType.JPQL, "from Professor", null).size();
+	}
+
+	@Override
+	public Professor getProfessorByUsuario(Usuario usuario) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("usuario_id", usuario.getId());
+		return professorRepository.find(QueryType.JPQL, "from Professor where usuario.id = :usuario_id", params).get(0);
 	}
 
 }
