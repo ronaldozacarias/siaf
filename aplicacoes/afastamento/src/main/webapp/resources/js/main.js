@@ -33,9 +33,6 @@ $(document).ready(function() {
 	
 	$('#novo-professor').validate({
         rules: {
-        	semestreAdmissao: {
-        		 required: true
-            }
         },
         
         highlight: function(element) {
@@ -51,13 +48,13 @@ $(document).ready(function() {
         },
         
         messages:{
-        	nome:{
+        	"usuario.nome":{
                 required:"Campo obrigatório",
             },
             siape:{
                 required:"Campo obrigatório",
             },
-            email:{
+            "usuario.email":{
                 required:"Campo obrigatório",
             },
             anoAdmissao:{

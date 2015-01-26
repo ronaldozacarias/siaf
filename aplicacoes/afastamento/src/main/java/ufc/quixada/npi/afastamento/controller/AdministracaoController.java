@@ -1,7 +1,6 @@
 package ufc.quixada.npi.afastamento.controller;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +22,8 @@ import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
-import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.Usuario;
+import ufc.quixada.npi.afastamento.service.PapelService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.service.GenericService;
@@ -38,7 +37,7 @@ public class AdministracaoController {
 	private ProfessorService professorService;
 	
 	@Inject
-	private GenericService<Papel> papelService;
+	private PapelService papelService;
 
 	@Inject
 	private GenericService<Usuario> usuarioService;
@@ -64,7 +63,7 @@ public class AdministracaoController {
 	public String cadastroProfessor(
 			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
 
-		if (result.hasErrors() || Integer.parseInt(""+professor.getAnoAdmissao()) < Calendar.YEAR) {
+		if (result.hasErrors()) {
 			return "admin/novo-professor";
 		}
 		
@@ -77,7 +76,7 @@ public class AdministracaoController {
 		usuario.setHabilitado(true);
 
 		List<Papel> papeis = new ArrayList<Papel>();
-		papeis.add(papelService.find(Papel.class, 2L));
+		papeis.add(papelService.getPapel("ROLE_PROFESSOR"));
 		
 		usuario.setPapeis(papeis);
 		
@@ -118,7 +117,7 @@ public class AdministracaoController {
 			//model.addAttribute("permitirUpdate", true);
 		}
 
-		if(notNull(periodoSolicitacao) && periodoSolicitacao.getStatus().equals(StatusReserva.ENCERRADO)){
+		if(notNull(periodoSolicitacao) && periodoSolicitacao.getStatus().equals(StatusPeriodo.ENCERRADO)){
 			permitirUpdate = false;
 			//model.addAttribute("permitirUpdate", false);
 		}

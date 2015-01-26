@@ -91,13 +91,25 @@
 					</c:if>
 	
 					<c:if test="${not permitirUpdate}">
-						<div id="update-periodo" class="container">
+					
+						<div id="update-periodo" class="panel panel-default">
 							<input type="hidden" id="chave" value="${periodo.id }"/>
 							<fmt:formatDate var="data" value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
-								<div class="alert alert-info" role="alert">
-									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${data }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
-								</div>
-						</div>
+
+							<div id="periodo-heading" class="panel-heading"><strong>Periodo: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
+
+							<div id="periodo-body" class="panel-body">
+									<div class="periodo">
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="encerramento" class="control-label">Encerramento: ${data}</label>
+			                            </div>
+			
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="vagas" class="control-label">Vagas: ${periodo.vagas}</label>
+			                            </div>
+									</div>
+							</div>					
+						</div>					
 					</c:if>
 				</c:if>
 				
