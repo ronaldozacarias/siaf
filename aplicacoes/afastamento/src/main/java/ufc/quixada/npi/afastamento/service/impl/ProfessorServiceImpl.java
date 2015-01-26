@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 package ufc.quixada.npi.afastamento.service.impl;
 
 import java.util.List;

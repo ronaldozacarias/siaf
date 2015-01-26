@@ -37,6 +37,10 @@
     		</sec:authorize>
     		
     		<li>
+    			<a class="" href="<c:url value="/alterar-senha" />"><span>Alterar senha</span></a>
+    		</li>
+    		
+    		<li>
     			<a class="" href="<c:url value="/j_spring_security_logout" />"><span>Sair</span></a>
     		</li>
     	</ul>
