@@ -39,10 +39,10 @@ public class RecuperacaoSenhaServiceImpl extends GenericServiceImpl<RecuperacaoS
 		recuperacaoSenhaRepository.save(recuperacao);
 		
 		Email email = new Email();
-		email.setFrom("siaf");
+		email.setFrom("apps@quixada.ufc.br");
 		email.setSubject("SiAf - Recuperação de Senha");
 		email.setTo(recuperacao.getUsuario().getEmail());
-		email.setText("Você solicitou a mudança de senha no sistema SiAf: http://localhost:8080/siaf/recuperacao/" + recuperacao.getCodigo());
+		email.setText("Você solicitou a mudança de senha no sistema SiAf: http://localhost:8080/siaf/configuracao/recuperacao/" + recuperacao.getCodigo());
 		try {
 			emailService.sendEmail(email);
 		} catch (MessagingException e) {
