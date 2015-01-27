@@ -1,5 +1,15 @@
 $(document).ready(function() {
 	
+	$('.habilitado a').editable({
+	    type: 'checklist',
+	    url: '/siaf/administracao/d',
+	    source: [
+	             {value: 1, text: 'Desabilitar'}
+	   		],
+   		success: function(response, newValue) {
+   		}	
+	});
+	
 	$('#solicitarAfastamento').validate({
         rules: {
             

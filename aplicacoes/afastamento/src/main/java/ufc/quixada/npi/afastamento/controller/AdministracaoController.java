@@ -199,4 +199,14 @@ public class AdministracaoController {
 		return "admin/periodo";
 	}
 
+	@RequestMapping(value = "/desabilita", method = RequestMethod.POST)
+	public String habilitar(@RequestParam("pk") Long id, @RequestParam("value[]") String status) {
+
+		Professor professor = professorService.find(Professor.class, id);
+		professor.setDataRemocao(new Date());
+		//professor.getUsuario().setHabilitado(false);
+		professorService.update(professor);
+		return "redirect:/administracao/professores";
+	}
+
 }
