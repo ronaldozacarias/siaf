@@ -20,10 +20,8 @@ public class RecuperacaoSenha {
 	@OneToOne
 	private Usuario usuario;
 	
-	private Boolean valido;
-	
 	private Date dataSolicitacao;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -48,18 +46,6 @@ public class RecuperacaoSenha {
 		this.usuario = usuario;
 	}
 
-	public Boolean getValido() {
-		return valido;
-	}
-
-	public void setValido(Boolean valido) {
-		this.valido = valido;
-	}
-	
-	public Boolean isValido() {
-		return valido;
-	}
-
 	public Date getDataSolicitacao() {
 		return dataSolicitacao;
 	}
@@ -67,7 +53,5 @@ public class RecuperacaoSenha {
 	public void setDataSolicitacao(Date dataSolicitacao) {
 		this.dataSolicitacao = dataSolicitacao;
 	}
-	
-	
 
 }

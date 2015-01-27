@@ -20,7 +20,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
 	public String loginerror(Model model) {
-		model.addAttribute("error", "Usuário e/ou senha inválidos");
+		model.addAttribute("erro", "Usuário e/ou senha inválidos");
 		return "login";
 	}
 

@@ -16,7 +16,7 @@
 		<div id="content">
 			<div class="title"> Alterar senha : </div>
 			<span class="line"></span>
-			<form:form id="alterarSenha" commandName="reserva" action="/siaf/alterar-senha" method="POST" class="form-horizontal">
+			<form:form id="alterarSenha" commandName="reserva" servletRelativeAction="/configuracao/alterar-senha" method="POST" class="form-horizontal">
 				<c:if test="${not empty erro}">
 					<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
 						<button type="button" class="close" data-dismiss="alert">
@@ -59,10 +59,8 @@
 					</div>
 				</div>
 				
-				
 				<div class="controls">
 					<input name="reservar" type="submit" class="btn btn-primary" value="Alterar" />
-					<a href="<c:url value="/afastamento/ranking"></c:url>" class="btn btn-default">Cancelar</a>
 				</div>
 			</form:form>
 		</div>

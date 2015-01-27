@@ -13,11 +13,11 @@
 <body>
 	<div id="wrapper">
 		<div id="content">
-			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />">
+			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />" style="max-width: 200px;">
 			<div class="title"> Recuperar senha : </div>
 			<span class="line"></span>
-			<form:form id="novaSenha" commandName="reserva" action="/siaf/configuracao/nova-senha" method="POST" class="form-horizontal">
-				<input type="hidden" name="email" value="${usuario.email }"/>
+			<form:form id="novaSenha" commandName="reserva" servletRelativeAction="/configuracao/nova-senha" method="POST" class="form-horizontal">
+				<input type="hidden" name="codigo" value="${codigo}"/>
 				<c:if test="${not empty erro}">
 					<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
 						<button type="button" class="close" data-dismiss="alert">
@@ -51,7 +51,6 @@
 				
 				<div class="controls">
 					<input name="reservar" type="submit" class="btn btn-primary" value="Alterar" />
-					<a href="<c:url value="/afastamento/ranking"></c:url>" class="btn btn-default">Cancelar</a>
 				</div>
 			</form:form>
 		</div>

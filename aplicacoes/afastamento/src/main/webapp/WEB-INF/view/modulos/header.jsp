@@ -37,7 +37,7 @@
     		</sec:authorize>
     		
     		<li>
-    			<a class="" href="<c:url value="/alterar-senha" />"><span>Alterar senha</span></a>
+    			<a class="" href="<c:url value="/configuracao/alterar-senha" />"><span>Alterar senha</span></a>
     		</li>
     		
     		<li>

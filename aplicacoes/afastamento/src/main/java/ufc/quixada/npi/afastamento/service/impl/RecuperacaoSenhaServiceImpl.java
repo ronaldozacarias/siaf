@@ -1,6 +1,7 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -8,7 +9,6 @@ import javax.inject.Named;
 import javax.mail.MessagingException;
 
 import ufc.quixada.npi.afastamento.model.RecuperacaoSenha;
-import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.RecuperacaoSenhaService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.model.Email;
@@ -27,7 +27,17 @@ public class RecuperacaoSenhaServiceImpl extends GenericServiceImpl<RecuperacaoS
 	
 	@Override
 	public void recuperarSenha(RecuperacaoSenha recuperacao) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("usuario", recuperacao.getUsuario().getId());
+		List<RecuperacaoSenha> result = recuperacaoSenhaRepository.find(QueryType.JPQL, "from RecuperacaoSenha where usuario.id = :usuario", params);
+		if(result != null) {
+			for(RecuperacaoSenha rs : result) {
+				recuperacaoSenhaRepository.delete(rs);
+			}
+		}
+		
 		recuperacaoSenhaRepository.save(recuperacao);
+		
 		Email email = new Email();
 		email.setFrom("siaf");
 		email.setSubject("SiAf - Recuperação de Senha");
@@ -36,8 +46,6 @@ public class RecuperacaoSenhaServiceImpl extends GenericServiceImpl<RecuperacaoS
 		try {
 			emailService.sendEmail(email);
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -46,13 +54,6 @@ public class RecuperacaoSenhaServiceImpl extends GenericServiceImpl<RecuperacaoS
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("codigo", codigo);
 		return recuperacaoSenhaRepository.findFirst(QueryType.JPQL, "from RecuperacaoSenha where codigo = :codigo", params, -1);
-	}
-
-	@Override
-	public RecuperacaoSenha getRecuperacaoByUsuario(Usuario usuario) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("usuario", usuario.getId());
-		return recuperacaoSenhaRepository.findFirst(QueryType.JPQL, "from RecuperacaoSenha where usuario.id = :usuario", params, -1);
 	}
 
 }
