@@ -200,12 +200,14 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/desabilita", method = RequestMethod.POST)
-	public String habilitar(@RequestParam("pk") Long id, @RequestParam("value[]") String status) {
+	public String habilitar(@RequestParam("pk") Long id, RedirectAttributes redirect) {
 
 		Professor professor = professorService.find(Professor.class, id);
 		professor.setDataRemocao(new Date());
-		//professor.getUsuario().setHabilitado(false);
+		professor.getUsuario().setHabilitado(false);
 		professorService.update(professor);
+		
+		redirect.addFlashAttribute("info", "Prof(a).: " + professor.getUsuario().getNome() + " desabilitado com sucesso.");
 		return "redirect:/administracao/professores";
 	}
 

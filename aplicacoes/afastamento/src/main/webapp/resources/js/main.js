@@ -1,12 +1,34 @@
 $(document).ready(function() {
 	
+	function loadPeriodo(ano, semestre) {
+		var filtro = {
+			"ano" : ano,
+			"semestre" : semestre,
+		};
+		
+		$.ajax({
+			url: '/siaf/administracao/periodo',
+			type: "POST",
+			dataType: "html",
+			data: filtro,
+			success: function(result) {
+				showPeriodo(result);
+			},
+			error: function(error) {
+				$('viewPeriodos').hide();
+			}
+		});
+	}
 	$('.habilitado a').editable({
 	    type: 'checklist',
-	    url: '/siaf/administracao/d',
+	    url: '/afastamento/administracao/desabilita',
 	    source: [
 	             {value: 1, text: 'Desabilitar'}
 	   		],
    		success: function(response, newValue) {
+   			var elem = $("<div>").append(response);
+   			$('#wrapper').empty();
+   			$('#wrapper').html($(elem).find("#wrapper").html());
    		}	
 	});
 	

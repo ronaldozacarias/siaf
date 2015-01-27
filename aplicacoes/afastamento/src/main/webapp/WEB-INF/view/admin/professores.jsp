@@ -10,6 +10,7 @@
 <title>SiAf - Professores</title>
 </head>
 <body>
+<div class="agroup">
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
@@ -61,13 +62,14 @@
 				</table>
 			</div>
 		</div>
+	<jsp:include page="../modulos/footer.jsp" />
 	</div>
 	
-	<jsp:include page="../modulos/footer.jsp" />
 	
 	<script type="text/javascript">
 		$('#menu-professores').addClass('active');
 	</script>
+</div>
 </body>
 </html>
 
