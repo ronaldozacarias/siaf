@@ -13,6 +13,6 @@ public interface UsuarioService extends GenericService<Usuario> {
 	Professor getProfessorByUsuario(Usuario usuario);
 	
 	int getQuantidadeProfessor();
-
+	
 
 }

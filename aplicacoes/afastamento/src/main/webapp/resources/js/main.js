@@ -79,6 +79,31 @@ $(document).ready(function() {
         },
     });
 	
+	$('#novaSenha').validate({
+        rules: {
+            
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	novaSenha:{
+                required:"Campo obrigatório",
+            },
+            novaSenhaVerify:{
+                required:"Campo obrigatório",
+            }
+        }
+    });
+	
 	$('.ano').mask('9999', {placeholder:" "});
 	$('#siape').mask('9999999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});

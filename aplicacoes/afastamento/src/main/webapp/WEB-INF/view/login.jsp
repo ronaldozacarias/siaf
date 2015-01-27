@@ -17,6 +17,22 @@
 	        	    <div class="form-wrap">
 	        	    	<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />">
 		                <h1>Login:</h1>
+		                <c:if test="${not empty erro}">
+							<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
+								<button type="button" class="close" data-dismiss="alert">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<c:out value="${erro}"></c:out>
+							</div>
+						</c:if>
+						<c:if test="${not empty info}">
+							<div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 70px;">
+								<button type="button" class="close" data-dismiss="alert">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<c:out value="${info}"></c:out>
+							</div>
+						</c:if>
 		                <label class="erro">${error }</label>
 	                    <form role="form" action="<c:url value='j_spring_security_check' />" method="post" id="login-form" autocomplete="off" class="form-horizontal">
 	                        <div class="form-group">
@@ -152,7 +168,7 @@
 				var email = $('#email').val();
 				$.ajax({
 					type: "POST",
-					url: '/siaf/recuperar-senha',
+					url: '/siaf/configuracao/recuperar-senha',
 					data: {
 			        	email : email
 					}
