@@ -35,24 +35,16 @@
 			<span class="line"></span>
 			<form:form id="novo-professor" commandName="professor" action="/siaf/administracao/novo-professor" method="POST" class="form-horizontal">
 
+
+
 				<!-- 1 LINHA -->
 				<div class="form-group">
 					<div class="form-item">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
-						<div class="col-sm-4">
-							<form:input id="nome" type="text" path="usuario.nome" size="50" cssClass="form-control" required="required"/>
+						<div class="col-sm-10">
+							<form:input id="nome" type="text" path="usuario.nome" size="118" cssClass="form-control" required="required"/>
 							<div class="error-validation">
 								<form:errors path="usuario.nome"></form:errors>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-item">
-						<label for="siape" class="col-sm-2 control-label">Siape:</label>
-						<div class="col-sm-4">
-							<form:input id="siape" type="text" path="siape" cssClass="form-control" required="required"/>
-							<div class="error-validation">
-								<form:errors path="siape"></form:errors>
 							</div>
 						</div>
 					</div>
@@ -71,22 +63,45 @@
 					</div>
 
 					<div class="form-item">
-						<label for="cpf" class="col-sm-2 control-label">CPF:</label>
+						<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
 						<div class="col-sm-4">
-							<form:input id="cpf" type="text" path="cpf" cssClass="form-control" placeholder="999.999.999-99" required="required"/>
+							<form:input id="dataNascimento" type="text" path="dataNascimento" cssClass="form-control data"  placeholder="dd/mm/yyyy" required="required"/>
 							<div class="error-validation">
-								<form:errors path="cpf"></form:errors>
+								<form:errors path="dataNascimento"></form:errors>
 							</div>
-						</div>
+						</div>					
 					</div>
 				</div>
 
 				<!-- 3 LINHA -->
 				<div class="form-group">
 					<div class="form-item">
+						<label for="cpf" class="col-sm-2 control-label">CPF:</label>
+						<div class="col-sm-4">
+							<form:input id="cpf" type="text" path="cpf" cssClass="form-control" size="50" placeholder="999.999.999-99" required="required"/>
+							<div class="error-validation">
+								<form:errors path="cpf"></form:errors>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-item">
+						<label for="siape" class="col-sm-2 control-label">Siape:</label>
+						<div class="col-sm-4">
+							<form:input id="siape" type="text" path="siape" cssClass="form-control" required="required"/>
+							<div class="error-validation">
+								<form:errors path="siape"></form:errors>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 4 LINHA -->
+				<div class="form-group">
+					<div class="form-item">
 						<label for="anoAdmissao" class="col-sm-2 control-label">Admissão:</label>
 						<div id="admissao" class="col-sm-4">
-							<form:input id="anoAdmissao" type="text" path="anoAdmissao" size="4" placeholder="Ano" cssClass="form-control ano" required="required"/>
+							<form:input id="anoAdmissao" type="text" path="anoAdmissao" size="10" placeholder="Ano" cssClass="form-control ano" required="required"/>
 							<form:select id="semestreAdmissao" path="semestreAdmissao" class="form-control selectpicker" required="required">
 								<option value="1">1</option>
 								<option value="2">2</option>
@@ -99,11 +114,11 @@
 					</div>
 					
 					<div class="form-item">
-						<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
+						<label for="dataAdmissao" class="col-sm-2 control-label">Data de Admissão:</label>
 						<div class="col-sm-4">
-							<form:input id="dataNascimento" type="text" path="dataNascimento" cssClass="form-control"  placeholder="dd/mm/yyyy" required="required"/>
+							<form:input id="dataAdmissao" type="text" path="dataAdmissao" cssClass="form-control data"  placeholder="dd/mm/yyyy" required="required"/>
 							<div class="error-validation">
-								<form:errors path="dataNascimento"></form:errors>
+								<form:errors path="dataAdmissao"></form:errors>
 							</div>
 						</div>					
 					</div>					
@@ -123,4 +138,3 @@
 	</script>
 </body>
 </html>
-

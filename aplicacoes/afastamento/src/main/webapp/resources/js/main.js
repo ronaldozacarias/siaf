@@ -106,6 +106,9 @@ $(document).ready(function() {
             },
             dataNascimento:{
                 required:"Campo obrigatório",
+            },
+            dataAdmissao:{
+                required:"Campo obrigatório",
             }
         },
     });
@@ -119,16 +122,10 @@ $(document).ready(function() {
 	$(".filtroSemestre").selectpicker('refresh');
 	
 	
-	$("#dataNascimento").datepicker({
+	$(".data").datepicker({
 		 autoclose: true,
 		 format: "dd/mm/yyyy"
 	});
-	
-	$("#encerramento").datepicker({
-		autoclose: true,
-		format: "dd/mm/yyyy"
-	});		
-		
 	
 	$(".file").fileinput({
 		showUpload: false,
@@ -281,7 +278,7 @@ function showPeriodo(result) {
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
 
 	}else{
-		$("#encerramento").datepicker({
+		$(".data").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
 		});		
@@ -323,7 +320,7 @@ function showPeriodoPost() {
 	if(isNaN(parseInt($("#viewPeriodo #update-periodo #chave").val()))){
 		$("#viewPeriodo").hide();
 	}else{
-		$("#encerramento").datepicker({
+		$(".data").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
 		});		

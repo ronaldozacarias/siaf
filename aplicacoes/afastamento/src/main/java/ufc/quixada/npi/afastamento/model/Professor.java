@@ -42,6 +42,11 @@ public class Professor {
 	@Max(message = "Semestre inválido", value = 2)
 	private Integer semestreAdmissao;
 
+
+	@NotNull(message = "Obrigatório")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date dataAdmissao;
+
 	private Date dataRemocao;
 	
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
@@ -104,6 +109,14 @@ public class Professor {
 
 	public void setDataRemocao(Date dataRemocao) {
 		this.dataRemocao = dataRemocao;
+	}
+
+	public Date getDataAdmissao() {
+		return dataAdmissao;
+	}
+
+	public void setDataAdmissao(Date dataAdmissao) {
+		this.dataAdmissao = dataAdmissao;
 	}
 
 	public List<Reserva> getReservas() {
