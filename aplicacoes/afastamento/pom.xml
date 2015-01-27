@@ -216,6 +216,13 @@
 			<version>${jquery.validation.version}</version>
 		</dependency>
 
+		<!-- Dependência do x-editable-bootstrap -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>x-editable-bootstrap</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+
 		<!-- Dependência do Apache Common File -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
