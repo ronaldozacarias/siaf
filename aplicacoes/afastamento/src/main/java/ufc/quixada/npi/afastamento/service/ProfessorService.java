@@ -11,4 +11,6 @@ public interface ProfessorService extends GenericService<Professor>{
 	
 	Professor getProfessorByUsuarioId(Long id);
 
+	Integer getTotalProfessores();
+
 }

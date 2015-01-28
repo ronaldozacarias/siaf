@@ -30,7 +30,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public int getQuantidadeProfessor() {
-		return professorRepository.find(QueryType.JPQL, "from Professor", null).size();
+		return professorRepository.find(QueryType.JPQL, "from Professor p where p.usuario.habilitado = TRUE", null).size();
 	}
 
 	@Override

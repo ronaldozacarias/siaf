@@ -21,4 +21,5 @@ public interface PeriodoService extends GenericService<Periodo>{
 	
 	Integer getAnoAtual();
 
+	void updateVagas(int vagas);
 }
