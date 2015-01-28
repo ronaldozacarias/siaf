@@ -21,7 +21,7 @@ $(document).ready(function() {
 	}
 	$('.habilitado a').editable({
 	    type: 'checklist',
-	    url: '/afastamento/administracao/desabilita',
+	    url: '/siaf/administracao/desabilita',
 	    source: [
 	             {value: 1, text: 'Desabilitar'}
 	   		],
