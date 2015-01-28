@@ -62,25 +62,37 @@
 									
 									<div class="periodo">
 			                            <div class="form-item form-group form-inline input-periodo">
-											<label for="encerramento" class="control-label">Encerramento:</label>
-											<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control" required="required"/>
-											<div class="error-validation">
-												<form:errors path="encerramento"></form:errors>
-												<c:out value="${errorData}"></c:out>
-											</div>
-	
+
+											<c:if test="${permitirUpdateEncerramento}">
+												<label for="encerramento" class="control-label">Encerramento:</label>
+												<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control" required="required"/>
+												<div class="error-validation">
+													<form:errors path="encerramento"></form:errors>
+													<c:out value="${errorData}"></c:out>
+												</div>
+
+											</c:if>
+
+											<c:if test="${not permitirUpdateEncerramento}">
+												<label for="encerramento" class="control-label">Encerramento: ${periodo.encerramento}</label>
+											</c:if>
 			                            </div>
 			
 			                            <div class="form-item form-group form-inline input-periodo">
-											<label for="vagas" class="control-label">Vagas:</label>
-											<form:input id="vagas" name="nome" type="number" path="vagas" min="0" size="3" cssClass="form-control" required="required"/>
-											<div class="error-validation">
-												<form:errors path="vagas"></form:errors>
-											</div>
-	
+											<c:if test="${permitirUpdateVagas}">
+												<label for="vagas" class="control-label">Vagas:</label>
+												<form:input id="vagas" type="number" path="vagas" min="0" size="3" cssClass="form-control" required="required"/>
+												<div class="error-validation">
+													<form:errors path="vagas"></form:errors>
+												</div>
+											</c:if>
+
+											<c:if test="${not permitirUpdateVagas}">
+												<label for="vagas" class="control-label">Vagas: ${periodo.vagas}</label>
+											</c:if>
 			                            </div>
 									</div>
-									
+									<div class="clear"></div>
 									<div>
 										<input id="btn-update" name="atualizar" type="submit" class="btn btn-primary" value="Atualizar" />
 									</div>
@@ -91,13 +103,25 @@
 					</c:if>
 	
 					<c:if test="${not permitirUpdate}">
-						<div id="update-periodo" class="container">
+					
+						<div id="update-periodo" class="panel panel-default">
 							<input type="hidden" id="chave" value="${periodo.id }"/>
 							<fmt:formatDate var="data" value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
-								<div class="alert alert-info" role="alert">
-									Periodo: <strong>${periodo.ano }.${periodo.semestre }</strong> encerrado em <strong>${data }</strong> com oferta de <strong>${periodo.vagas }</strong> vaga(s).
-								</div>
-						</div>
+
+							<div id="periodo-heading" class="panel-heading"><strong>Periodo: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
+
+							<div id="periodo-body" class="panel-body">
+									<div class="periodo">
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="encerramento" class="control-label">Encerramento: ${data}</label>
+			                            </div>
+			
+			                            <div class="form-item form-group form-inline input-periodo">
+											<label for="vagas" class="control-label">Vagas: ${periodo.vagas}</label>
+			                            </div>
+									</div>
+							</div>					
+						</div>					
 					</c:if>
 				</c:if>
 				

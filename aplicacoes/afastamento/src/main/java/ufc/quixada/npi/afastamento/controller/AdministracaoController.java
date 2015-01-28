@@ -1,7 +1,6 @@
 package ufc.quixada.npi.afastamento.controller;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +22,8 @@ import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
-import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.Usuario;
+import ufc.quixada.npi.afastamento.service.PapelService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.service.GenericService;
@@ -38,7 +37,7 @@ public class AdministracaoController {
 	private ProfessorService professorService;
 	
 	@Inject
-	private GenericService<Papel> papelService;
+	private PapelService papelService;
 
 	@Inject
 	private GenericService<Usuario> usuarioService;
@@ -59,11 +58,12 @@ public class AdministracaoController {
 		return "admin/novo-professor";
 	}
 
+
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
 	public String cadastroProfessor(
 			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
 
-		if (result.hasErrors() || Integer.parseInt(""+professor.getAnoAdmissao()) < Calendar.YEAR) {
+		if (result.hasErrors()) {
 			return "admin/novo-professor";
 		}
 		
@@ -76,7 +76,7 @@ public class AdministracaoController {
 		usuario.setHabilitado(true);
 
 		List<Papel> papeis = new ArrayList<Papel>();
-		papeis.add(papelService.find(Papel.class, 2L));
+		papeis.add(papelService.getPapel("ROLE_PROFESSOR"));
 		
 		usuario.setPapeis(papeis);
 		
@@ -85,6 +85,10 @@ public class AdministracaoController {
 		/*Professor*/
 		professor.setUsuario(usuario);
 		professorService.update(professor);
+		
+		int totalProfessores = professorService.getTotalProfessores(); 
+		int vagas = (int) (totalProfessores * 0.15);
+		periodoService.updateVagas(vagas);
 		
 		return "redirect:/administracao/professores";
 	}
@@ -98,28 +102,37 @@ public class AdministracaoController {
 	@RequestMapping(value = "/periodo", method = RequestMethod.POST)
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
-		boolean permitirUpdate = false;
-
-		if(periodo == null){
+		
+		if(!notNull(periodo)){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
 			return "admin/periodo";
+		} else if (periodo.getStatus().equals(StatusPeriodo.ENCERRADO)) {
+			model.addAttribute("permitirUpdate", false);
+			model.addAttribute("periodo", periodo);
+			return "admin/periodo";
 		}
+
+		boolean permitirUpdate = false;
+		boolean permitirUpdateEncerramento = false;
+		boolean permitirUpdateVagas = false;
 		
-		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno()-1, periodo.getSemestre());
-		
-		
-		if(periodo.getEncerramento() != null){
-			permitirUpdate = updateEncerramento(periodo.getEncerramento());
-			model.addAttribute("permitirUpdate", permitirUpdate);
-		}else{
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno()-1, periodo.getSemestre());	
+
+		if(periodo.getStatus().equals(StatusPeriodo.ABERTO)){
+			permitirUpdateEncerramento = true;
+		}
+
+		if(periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)){
+			permitirUpdateVagas = true;
+		}
+				
+		if(permitirUpdateVagas || permitirUpdateEncerramento){
 			permitirUpdate = true;
 		}
-
-		if(notNull(periodoSolicitacao) && periodoSolicitacao.getStatus().equals(StatusReserva.ENCERRADO)){
-			permitirUpdate = false;
-		}
-
-		model.addAttribute("permitirUpdate", permitirUpdate);
+		
+		model.addAttribute("permitirUpdateVagas", 		 permitirUpdateVagas);
+		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
+		model.addAttribute("permitirUpdate", 			 permitirUpdate);
 		model.addAttribute("periodo", periodo);
 		return "admin/periodo";
 	}
@@ -128,39 +141,79 @@ public class AdministracaoController {
 		return object != null ?  true : false;
 	}
 	
+	//Verifica utilidade?
 	private boolean updateEncerramento(Date date) {
 		LocalDate now = new LocalDate();
-		
-		LocalDate enceramento = date != null ? new LocalDate(date): null;
+		LocalDate enceramento = notNull(date) ? new LocalDate(date): null;
 
-		if (enceramento.isAfter(now) || enceramento.isEqual(now)) {
-			return true;
-		}
-		return false;
+		return (enceramento.isAfter(now) || enceramento.isEqual(now)) ? true : false;
 	}
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
 	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoAtualizado, BindingResult result) {
 
-		model.addAttribute("permitirUpdate", true);
+		boolean permitirUpdateEncerramento = false;
+		boolean permitirUpdateVagas = false;
+		boolean permitirUpdate = false;
+
+		Periodo periodoAtualizadoBanco = periodoService.find(Periodo.class, periodoAtualizado.getId());
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodoAtualizado.getAno()-1, periodoAtualizado.getSemestre());	
+
+		if(periodoAtualizadoBanco.getStatus().equals(StatusPeriodo.ABERTO)){
+			permitirUpdateEncerramento = true;
+		}
+
+		if(periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)){
+			permitirUpdateVagas = true;
+		}
+				
+		if(permitirUpdateVagas || permitirUpdateEncerramento){
+			permitirUpdate = true;
+		}
+		
+		model.addAttribute("permitirUpdate", permitirUpdate);
+		model.addAttribute("permitirUpdateVagas", permitirUpdateVagas);
+		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
+
+		if(!updateEncerramento(periodoAtualizado.getEncerramento())){
+			periodoAtualizadoBanco.setEncerramento(periodoAtualizado.getEncerramento());
+			model.addAttribute("periodo", periodoAtualizadoBanco);
+			model.addAttribute("errorData", "Informe uma data futura.");
+			return "admin/periodo";
+		}
+
+
 		if (result.hasErrors()) {
 			return "admin/periodo";
 		}
 
-		if(periodoAtualizado.getId() != null){
-			Periodo periodoAtual = periodoService.find(Periodo.class, periodoAtualizado.getId());
-			
-			if ( periodoAtual.getStatus().equals(StatusPeriodo.ABERTO) && updateEncerramento(periodoAtualizado.getEncerramento()) ) {
-				periodoService.update(periodoAtualizado);
-				redirectAttributes.addFlashAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
-				model.addAttribute("info","Periodo " +periodoAtualizado.getAno() + "." + periodoAtualizado.getSemestre() + " atualizado com sucesso!");
-			}else{
-				model.addAttribute("errorData","Informe uma data futura.");
-			}
-
+		if(permitirUpdateEncerramento){
+			periodoAtualizadoBanco.setEncerramento(periodoAtualizado.getEncerramento());
 		}
 
+		if(permitirUpdateVagas){
+			periodoAtualizadoBanco.setVagas(periodoAtualizado.getVagas());
+		}
+			
+		if(permitirUpdateEncerramento || permitirUpdateVagas){
+			periodoService.update(periodoAtualizadoBanco);
+			model.addAttribute("periodo", periodoAtualizadoBanco);
+			model.addAttribute("info","Periodo " +periodoAtualizadoBanco.getAno() + "." + periodoAtualizadoBanco.getSemestre() + " atualizado com sucesso!");
+		}
+		
 		return "admin/periodo";
+	}
+
+	@RequestMapping(value = "/desabilita", method = RequestMethod.POST)
+	public String habilitar(@RequestParam("pk") Long id, RedirectAttributes redirect) {
+
+		Professor professor = professorService.find(Professor.class, id);
+		professor.setDataRemocao(new Date());
+		professor.getUsuario().setHabilitado(false);
+		professorService.update(professor);
+		
+		redirect.addFlashAttribute("info", "Prof(a).: " + professor.getUsuario().getNome() + " desabilitado com sucesso.");
+		return "redirect:/administracao/professores";
 	}
 
 }

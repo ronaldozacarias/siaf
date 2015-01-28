@@ -12,8 +12,8 @@ import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
+import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
-import ufc.quixada.npi.afastamento.service.UsuarioService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -28,11 +28,11 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	private PeriodoService periodoService;
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private ProfessorService professorService;
 	
 	@Override
 	public void salvar(Reserva reserva) {
-		int vagas = usuarioService.getQuantidadeProfessor();
+		int vagas = professorService.getTotalProfessores();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
 			Periodo periodo = new Periodo();
 			periodo.setVagas((int)(vagas * 0.15));

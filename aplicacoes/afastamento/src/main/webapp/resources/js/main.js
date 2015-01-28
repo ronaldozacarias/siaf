@@ -1,5 +1,37 @@
 $(document).ready(function() {
 	
+	function loadPeriodo(ano, semestre) {
+		var filtro = {
+			"ano" : ano,
+			"semestre" : semestre,
+		};
+		
+		$.ajax({
+			url: '/siaf/administracao/periodo',
+			type: "POST",
+			dataType: "html",
+			data: filtro,
+			success: function(result) {
+				showPeriodo(result);
+			},
+			error: function(error) {
+				$('viewPeriodos').hide();
+			}
+		});
+	}
+	$('.habilitado a').editable({
+	    type: 'checklist',
+	    url: '/siaf/administracao/desabilita',
+	    source: [
+	             {value: 1, text: 'Desabilitar'}
+	   		],
+   		success: function(response, newValue) {
+   			var elem = $("<div>").append(response);
+   			$('#wrapper').empty();
+   			$('#wrapper').html($(elem).find("#wrapper").html());
+   		}	
+	});
+	
 	$('#solicitarAfastamento').validate({
         rules: {
             
@@ -54,15 +86,14 @@ $(document).ready(function() {
         },
         
         messages:{
-        	'usuario.nome':{
+        	"usuario.nome":{
                 required:"Campo obrigatório",
             },
             siape:{
                 required:"Campo obrigatório",
             },
             'usuario.email':{
-                required:"Campo obrigatório",
-                email: "Digite um email válido"
+            	required:"Campo obrigatório",
             },
             anoAdmissao:{
             	required:"Campo obrigatório",
@@ -74,6 +105,9 @@ $(document).ready(function() {
                 required:"Campo obrigatório",
             },
             dataNascimento:{
+                required:"Campo obrigatório",
+            },
+            dataAdmissao:{
                 required:"Campo obrigatório",
             }
         },
@@ -147,16 +181,10 @@ $(document).ready(function() {
 	$(".filtroSemestre").selectpicker('refresh');
 	
 	
-	$("#dataNascimento").datepicker({
+	$(".data").datepicker({
 		 autoclose: true,
 		 format: "dd/mm/yyyy"
 	});
-	
-	$("#encerramento").datepicker({
-		autoclose: true,
-		format: "dd/mm/yyyy"
-	});		
-		
 	
 	$(".file").fileinput({
 		showUpload: false,
@@ -307,7 +335,7 @@ function showPeriodo(result) {
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
 
 	}else{
-		$("#encerramento").datepicker({
+		$(".data").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
 		});		
@@ -349,7 +377,7 @@ function showPeriodoPost() {
 	if(isNaN(parseInt($("#viewPeriodo #update-periodo #chave").val()))){
 		$("#viewPeriodo").hide();
 	}else{
-		$("#encerramento").datepicker({
+		$(".data").datepicker({
 			autoclose: true,
 			format: "dd/mm/yyyy"
 		});		

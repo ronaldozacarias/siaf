@@ -9,16 +9,16 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.repository.PeriodoRepository;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
-import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
 public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements PeriodoService {
 
 	@Inject
-	private GenericRepository<Periodo> periodoRepository;
+	private PeriodoRepository periodoRepository;
 
 	@Override
 	public Periodo getPeriodo(Integer ano, Integer semestre) {
@@ -29,9 +29,9 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	}
 
 	@Override
-	public Periodo getPeriodo(Date date) {
+	public Periodo getPeriodoByEncerramento(Date encerramento) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("encerramento", date);
+		params.put("encerramento", encerramento);
 		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where encerramento = :encerramento", params, -1);
 	}
 	
@@ -71,11 +71,12 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		return calendar.get(Calendar.YEAR);
 	}
 
+	@Override
+	public void updateVagas(int vagas) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("vagas", vagas);
+		periodoRepository.updateVagas("update Periodo p set vagas = :vagas where p.status = 'ABERTO'", params);
+	}
+
 }
-
-
-
-
-
-
 

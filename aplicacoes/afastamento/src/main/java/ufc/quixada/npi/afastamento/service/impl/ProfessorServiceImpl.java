@@ -1,6 +1,8 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,7 +21,19 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	
 	@Override
 	public List<Professor> findOrder() {
-		return professorRepository.find(QueryType.JPQL, "select p from Professor p order by p.usuario.nome", null);
+		return professorRepository.find(QueryType.JPQL, "select p from Professor p where p.usuario.habilitado = TRUE order by p.usuario.nome", null);
+	}
+
+	@Override
+	public Professor getProfessorByUsuarioId(Long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ano", id);
+		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where p.usuario.id = :id", params, -1);
+	}
+
+	@Override
+	public Integer getTotalProfessores() {
+		return professorRepository.find(QueryType.JPQL, "from Professor p where p.usuario.habilitado = TRUE", null).size();
 	}
 
 }

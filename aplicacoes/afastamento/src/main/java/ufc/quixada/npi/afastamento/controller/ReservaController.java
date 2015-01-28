@@ -25,6 +25,7 @@ import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
+import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
@@ -45,6 +46,8 @@ public class ReservaController {
 	
 	@Inject
 	private PeriodoService periodoService;
+	
+	@Inject ProfessorService professorService;
 	
 	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
@@ -169,7 +172,7 @@ public class ReservaController {
 		Professor professor = null;
 		if (session.getAttribute(Constants.PROFESSOR_LOGADO) == null) {
 			Usuario usuario = getUsuarioLogado(session);
-			professor = usuarioService.getProfessorByUsuario(usuario);
+			professor = professorService.getProfessorByUsuarioId(usuario.getId());
 			session.setAttribute(Constants.PROFESSOR_LOGADO, professor);
 		} else {
 			professor = (Professor) session.getAttribute(Constants.PROFESSOR_LOGADO);

@@ -8,5 +8,9 @@ import br.ufc.quixada.npi.service.GenericService;
 public interface ProfessorService extends GenericService<Professor>{
 	
 	List<Professor> findOrder();
+	
+	Professor getProfessorByUsuarioId(Long id);
+
+	Integer getTotalProfessores();
 
 }
