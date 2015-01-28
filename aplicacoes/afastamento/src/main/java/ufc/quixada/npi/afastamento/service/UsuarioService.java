@@ -8,8 +8,5 @@ public interface UsuarioService {
 	Usuario getUsuarioByLogin(String login);
 	
 	Professor getProfessorByUsuario(Usuario usuario);
-	
-	int getQuantidadeProfessor();
-
 
 }

@@ -29,11 +29,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public int getQuantidadeProfessor() {
-		return professorRepository.find(QueryType.JPQL, "from Professor p where p.usuario.habilitado = TRUE", null).size();
-	}
-
-	@Override
 	public Professor getProfessorByUsuario(Usuario usuario) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("usuario_id", usuario.getId());
