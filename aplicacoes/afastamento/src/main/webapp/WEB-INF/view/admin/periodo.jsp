@@ -66,7 +66,7 @@
 
 											<c:if test="${permitirUpdateEncerramento}">
 												<label for="encerramento" class="control-label">Encerramento:</label>
-												<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control data" required="required"/>
+												<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control data" required="required" placeholder="dd/mm/aaaa"/>
 												<div class="error-validation">
 													<form:errors path="encerramento"></form:errors>
 													<c:out value="${errorData}"></c:out>

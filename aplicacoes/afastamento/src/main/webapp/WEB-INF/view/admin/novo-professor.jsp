@@ -65,7 +65,7 @@
 					<div class="form-item">
 						<label for="dataNascimento" class="col-sm-2 control-label">Data de Nascimento:</label>
 						<div class="col-sm-4">
-							<form:input id="dataNascimento" type="text" path="dataNascimento" cssClass="form-control data"  placeholder="dd/mm/yyyy" required="required"/>
+							<form:input id="dataNascimento" type="text" path="dataNascimento" cssClass="form-control data"  placeholder="dd/mm/aaaa" required="required"/>
 							<div class="error-validation">
 								<form:errors path="dataNascimento"></form:errors>
 							</div>
@@ -116,7 +116,7 @@
 					<div class="form-item">
 						<label for="dataAdmissao" class="col-sm-2 control-label">Data de Admissão:</label>
 						<div class="col-sm-4">
-							<form:input id="dataAdmissao" type="text" path="dataAdmissao" cssClass="form-control data"  placeholder="dd/mm/yyyy" required="required"/>
+							<form:input id="dataAdmissao" type="text" path="dataAdmissao" cssClass="form-control data"  placeholder="dd/mm/aaaa" required="required"/>
 							<div class="error-validation">
 								<form:errors path="dataAdmissao"></form:errors>
 							</div>

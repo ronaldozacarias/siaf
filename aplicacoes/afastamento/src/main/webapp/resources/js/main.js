@@ -182,8 +182,9 @@ $(document).ready(function() {
 	
 	
 	$(".data").datepicker({
-		 autoclose: true,
-		 format: "dd/mm/yyyy"
+		language: 'pt-BR',
+		autoclose: true,
+		format: "dd/mm/yyyy"
 	});
 	
 	$(".file").fileinput({
@@ -336,6 +337,7 @@ function showPeriodo(result) {
 
 	}else{
 		$(".data").datepicker({
+			language: 'pt-BR',
 			autoclose: true,
 			format: "dd/mm/yyyy"
 		});		
