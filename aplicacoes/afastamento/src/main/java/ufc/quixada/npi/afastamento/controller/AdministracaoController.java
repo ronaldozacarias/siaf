@@ -60,7 +60,6 @@ public class AdministracaoController {
 		return "admin/novo-professor";
 	}
 
-
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
 	public String cadastroProfessor(
 			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
@@ -103,7 +102,6 @@ public class AdministracaoController {
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodo", new Periodo());
-		//model.addAttribute("periodos", periodoService.find(Periodo.class));
 		return "admin/periodo";
 	}
 
@@ -111,8 +109,6 @@ public class AdministracaoController {
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		
-		//model.addAttribute("periodos", periodoService.find(Periodo.class));
-
 		if(!notNull(periodo)){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
 			return "admin/periodo";
@@ -152,7 +148,7 @@ public class AdministracaoController {
 	}
 	
 	//Verifica utilidade?
-	private boolean updateEncerramento(Date date) {
+	private boolean isEnceramentoValido(Date date) {
 		LocalDate now = new LocalDate();
 		LocalDate enceramento = notNull(date) ? new LocalDate(date): null;
 
@@ -160,16 +156,16 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
-	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoAtualizado, BindingResult result) {
+	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoEmAtualizacao, BindingResult result) {
 
 		boolean permitirUpdateEncerramento = false;
 		boolean permitirUpdateVagas = false;
 		boolean permitirUpdate = false;
 
-		Periodo periodoAtualizadoBanco = periodoService.find(Periodo.class, periodoAtualizado.getId());
-		Periodo periodoSolicitacao = periodoService.getPeriodo(periodoAtualizado.getAno()-1, periodoAtualizado.getSemestre());	
+		Periodo periodoEmAtualizacaoDoBanco = periodoService.find(Periodo.class, periodoEmAtualizacao.getId());
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodoEmAtualizacao.getAno()-1, periodoEmAtualizacao.getSemestre());	
 
-		if(periodoAtualizadoBanco.getStatus().equals(StatusPeriodo.ABERTO)){
+		if(periodoEmAtualizacaoDoBanco.getStatus().equals(StatusPeriodo.ABERTO)){
 			permitirUpdateEncerramento = true;
 		}
 
@@ -185,30 +181,29 @@ public class AdministracaoController {
 		model.addAttribute("permitirUpdateVagas", permitirUpdateVagas);
 		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
 
-		if(!updateEncerramento(periodoAtualizado.getEncerramento())){
-			periodoAtualizadoBanco.setEncerramento(periodoAtualizado.getEncerramento());
-			model.addAttribute("periodo", periodoAtualizadoBanco);
+		if(!isEnceramentoValido(periodoEmAtualizacao.getEncerramento())){
+			periodoEmAtualizacaoDoBanco.setEncerramento(periodoEmAtualizacao.getEncerramento());
+			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
 			model.addAttribute("errorData", "Informe uma data futura.");
 			return "admin/periodo";
 		}
-
 
 		if (result.hasErrors()) {
 			return "admin/periodo";
 		}
 
 		if(permitirUpdateEncerramento){
-			periodoAtualizadoBanco.setEncerramento(periodoAtualizado.getEncerramento());
+			periodoEmAtualizacaoDoBanco.setEncerramento(periodoEmAtualizacao.getEncerramento());
 		}
 
 		if(permitirUpdateVagas){
-			periodoAtualizadoBanco.setVagas(periodoAtualizado.getVagas());
+			periodoEmAtualizacaoDoBanco.setVagas(periodoEmAtualizacao.getVagas());
 		}
 			
 		if(permitirUpdateEncerramento || permitirUpdateVagas){
-			periodoService.update(periodoAtualizadoBanco);
-			model.addAttribute("periodo", periodoAtualizadoBanco);
-			model.addAttribute("info","Periodo " +periodoAtualizadoBanco.getAno() + "." + periodoAtualizadoBanco.getSemestre() + " atualizado com sucesso!");
+			periodoService.update(periodoEmAtualizacaoDoBanco);
+			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
+			model.addAttribute("info","Periodo " +periodoEmAtualizacaoDoBanco.getAno() + "." + periodoEmAtualizacaoDoBanco.getSemestre() + " atualizado com sucesso!");
 		}
 		
 		return "admin/periodo";
