@@ -11,7 +11,7 @@
 <title>SiAf - Período</title>
 </head>
 <body>
-	<div id="wrapper">
+	<div id="wrapper" class="container">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 					
@@ -65,7 +65,7 @@
 
 											<c:if test="${permitirUpdateEncerramento}">
 												<label for="encerramento" class="control-label">Encerramento:</label>
-												<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control" required="required"/>
+												<form:input id="encerramento" type="text" path="encerramento" name="encerramento" cssClass="form-control data" required="required"/>
 												<div class="error-validation">
 													<form:errors path="encerramento"></form:errors>
 													<c:out value="${errorData}"></c:out>
@@ -133,13 +133,41 @@
 							<c:out value="${message}"></c:out>
 						</div>
 				</c:if>
-				
 			</div>
-
 		</div>
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>
+
+		<div id="listaPeriodos" class="container">
+		    <div class="panel-group" id="accordion">
+		        <div class="panel panel-default">
+		            <div class="panel-heading">
+		                <h4 class="panel-title">
+		                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span>Veja todos os periodos</a>
+		                </h4>
+		            </div>
+		            <div id="collapseOne" class="panel-collapse collapse in">
+						<div>
+							<table id="periodos" class="table table-striped">
+								<thead>
+									<tr class="afas-tr-left">
+							               <th data-column-id="ano" data-order="asc" data-align="center">Ano</th>
+							               <th data-column-id="semestre" data-align="center">Semestre</th>
+							               <th data-column-id="vagas" data-align="center">Vagas</th>
+							               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
+							           </tr>
+							       </thead>
+							</table>
+						</div>
+		            </div>
+		        </div>
+			</div>
+		</div>
+
+
+
 	<script type="text/javascript">
+		getPeriodos();
 		$('#menu-periodos').addClass('active');
 	</script>
 </body>

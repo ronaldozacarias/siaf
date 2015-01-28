@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +19,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PapelService;
@@ -93,9 +98,15 @@ public class AdministracaoController {
 		return "redirect:/administracao/professores";
 	}
 	
+	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<Periodo> periodos() {
+		return periodoService.find(Periodo.class);
+	}
+	
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodo", new Periodo());
+		//model.addAttribute("periodos", periodoService.find(Periodo.class));
 		return "admin/periodo";
 	}
 
@@ -103,6 +114,8 @@ public class AdministracaoController {
 	public String listarPeriodos(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		
+		//model.addAttribute("periodos", periodoService.find(Periodo.class));
+
 		if(!notNull(periodo)){
 			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
 			return "admin/periodo";

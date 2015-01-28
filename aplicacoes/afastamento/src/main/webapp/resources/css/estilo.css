@@ -393,3 +393,9 @@ table#ranking {
 	text-align: center;
 }
 
+#listaPeriodos {
+	margin-top: 10px;
+}
+#listaPeriodos .panel-heading {
+	background: #E8E8E5;
+}

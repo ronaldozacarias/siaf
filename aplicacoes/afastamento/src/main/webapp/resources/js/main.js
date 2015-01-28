@@ -343,7 +343,7 @@ function showPeriodo(result) {
 		$("#status").selectpicker();
 	}
 	$('#periodo-heading').addClass('animated tada');
-	$('#periodo-body').addClass('animated fadeInUp');
+	$('#periodo-body').addClass('animated zoomIn');
 
 	$("#form-periodo").validate({
         rules: {
@@ -385,4 +385,46 @@ function showPeriodoPost() {
 		$("#status").selectpicker();
 		$("#viewPeriodo").show();
 	}
+}
+
+
+function getPeriodos() {
+	$.ajax({
+		type: "GET",
+		url: '/siaf/administracao/periodos.json',
+	})
+	.success(function(result) {
+		loadPeriodos(result);
+		$("#periodos tbody td").attr("class", "align-center")
+	});
+}
+
+function loadPeriodos(result, table) {
+	$("#periodos")
+		.bootgrid({
+			labels: {
+	            all: "Todos",
+	            infos: "Mostrando {{ctx.start}} - {{ctx.end}} de {{ctx.total}}",
+	            loading: "Carregando...",
+	            noResults: "Nenhum resultado encontrado!",
+	            refresh: "Atualizar",
+	            search: "Buscar"
+	        },
+	        columnSelection: false,
+	        caseSensitive: false,
+	        cssClass: "text-right",
+	        formatters: {
+	        	"status": function(column, row) {
+	        		if(row.status == 'ABERTO'){
+	        			return "<span class=\"label label-success\">" + row.status + "</span>";
+	        		}else{
+	        			return "<span class=\"label label-danger\">" + row.status + "</span>";
+	        		}
+	        	}
+	        },
+		})
+		.bootgrid("clear")
+		.bootgrid("append", result);
+		$("td").attr("class", "text-center");
+
 }
