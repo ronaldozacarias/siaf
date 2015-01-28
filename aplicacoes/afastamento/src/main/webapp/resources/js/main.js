@@ -412,7 +412,6 @@ function loadPeriodos(result, table) {
 	        },
 	        columnSelection: false,
 	        caseSensitive: false,
-	        cssClass: "text-right",
 	        formatters: {
 	        	"status": function(column, row) {
 	        		if(row.status == 'ABERTO'){
@@ -425,6 +424,5 @@ function loadPeriodos(result, table) {
 		})
 		.bootgrid("clear")
 		.bootgrid("append", result);
-		$("td").attr("class", "text-center");
 
 }

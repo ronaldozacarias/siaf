@@ -394,8 +394,14 @@ table#ranking {
 }
 
 #listaPeriodos {
-	margin-top: 10px;
+	margin-top: 15px;
 }
 #listaPeriodos .panel-heading {
 	background: #E8E8E5;
+}
+
+#listaPeriodos #accordion {
+	border-left: 2px solid #E8E8E5;
+/* 	border-bottom: 2px solid #E8E8E5; */
+	border-right: 2px solid #E8E8E5;
 }

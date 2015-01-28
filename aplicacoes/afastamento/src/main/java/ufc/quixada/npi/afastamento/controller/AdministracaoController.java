@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
@@ -25,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
-import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PapelService;
@@ -91,9 +88,9 @@ public class AdministracaoController {
 		professor.setUsuario(usuario);
 		professorService.update(professor);
 		
-		int totalProfessores = professorService.getTotalProfessores(); 
-		int vagas = (int) (totalProfessores * 0.15);
-		periodoService.updateVagas(vagas);
+		//int totalProfessores = professorService.getTotalProfessores(); 
+		//int vagas = (int) (totalProfessores * 0.15);
+		//periodoService.updateVagas(vagas);
 		
 		return "redirect:/administracao/professores";
 	}
