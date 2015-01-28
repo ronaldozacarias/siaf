@@ -16,7 +16,7 @@
 		<div id="content">
 			<div class="title"> Alterar senha : </div>
 			<span class="line"></span>
-			<form:form id="alterarSenha" commandName="reserva" servletRelativeAction="/configuracao/alterar-senha" method="POST" class="form-horizontal">
+			<form:form id="alterarSenhaForm" commandName="reserva" servletRelativeAction="/configuracao/alterar-senha" method="POST" class="form-horizontal">
 				<c:if test="${not empty erro}">
 					<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
 						<button type="button" class="close" data-dismiss="alert">

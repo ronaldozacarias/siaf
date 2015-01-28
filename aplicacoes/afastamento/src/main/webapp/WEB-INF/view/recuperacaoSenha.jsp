@@ -16,7 +16,7 @@
 			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />" style="max-width: 200px;">
 			<div class="title"> Recuperar senha : </div>
 			<span class="line"></span>
-			<form:form id="novaSenha" commandName="reserva" servletRelativeAction="/configuracao/nova-senha" method="POST" class="form-horizontal">
+			<form:form id="novaSenhaForm" commandName="reserva" servletRelativeAction="/configuracao/nova-senha" method="POST" class="form-horizontal">
 				<input type="hidden" name="codigo" value="${codigo}"/>
 				<c:if test="${not empty erro}">
 					<div class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 70px;">
