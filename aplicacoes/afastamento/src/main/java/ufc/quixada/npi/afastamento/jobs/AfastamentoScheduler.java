@@ -39,7 +39,7 @@ public class AfastamentoScheduler {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		Date ontem = calendar.getTime();
-		Periodo periodo = periodoService.getPeriodo(new java.sql.Date(ontem.getTime()));
+		Periodo periodo = periodoService.getPeriodoByEncerramento(new java.sql.Date(ontem.getTime()));
 		if(periodo != null) {
 			periodo.setStatus(StatusPeriodo.ENCERRADO);
 			periodoService.update(periodo);

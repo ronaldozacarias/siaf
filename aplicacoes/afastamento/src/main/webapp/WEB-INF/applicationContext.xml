@@ -10,6 +10,8 @@
 		   http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
+	<context:property-placeholder location="classpath:email.properties"/>
+	
 	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />
 		<property name="dataSource" ref="afastamento" />
@@ -22,6 +24,23 @@
 	</bean>
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</bean>
+	
+	<bean id="mailSession" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	<property name="jndiName" value="java:comp/env/mail/Session" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="session" ref="mailSession"/>
+		<!-- <property name="host" value="${host}" />
+		<property name="port" value="${port}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">false</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property> -->
 	</bean>
 	
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />

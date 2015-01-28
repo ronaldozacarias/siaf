@@ -112,7 +112,66 @@ $(document).ready(function() {
             }
         },
     });
-
+	
+	$('#novaSenhaForm').validate({
+        rules: {
+        	novaSenhaVerify: {
+        		equalTo: "#novaSenha"
+        	}
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	novaSenha:{
+                required:"Campo obrigatório",
+            },
+            novaSenhaVerify:{
+                required:"Campo obrigatório",
+                equalTo: "As senhas não conferem"
+            }
+        }
+    });
+	
+	$('#alterarSenhaForm').validate({
+        rules: {
+        	novaSenhaVerify: {
+        		equalTo: "#novaSenha"
+        	}
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	senhaAnterior:{
+                required:"Campo obrigatório",
+            },
+        	novaSenha:{
+                required:"Campo obrigatório",
+            },
+            novaSenhaVerify:{
+                required:"Campo obrigatório",
+                equalTo: "As senhas não conferem"
+            }
+        }
+    });
+	
 	$('.ano').mask('9999', {placeholder:" "});
 	$('#siape').mask('9999999', {placeholder:" "});
 	$('.conceito').mask('9',{placeholder:" "});
@@ -162,17 +221,15 @@ $(document).ready(function() {
 	    }
 	});
 	
+	$("#encerramento").mask("99/99/9999");
 
-	 $("#encerramento").mask("99/99/9999");
-
-	 $("#cpf").mask("999.999.999-99",{placeholder:" "});
+	$("#cpf").mask("999.999.999-99",{placeholder:" "});
 
 	$('#excluir-reserva').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
-	});	
+	});
 	
-
 });
 
 function getRanking(ano, semestre) {

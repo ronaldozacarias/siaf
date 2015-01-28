@@ -9,7 +9,7 @@ public interface PeriodoService extends GenericService<Periodo>{
 	
 	Periodo getPeriodo(Integer ano, Integer semestre);
 	
-	Periodo getPeriodo(Date date);
+	Periodo getPeriodoByEncerramento(Date encerramento);
 	
 	Periodo getPeriodoAtual();
 	

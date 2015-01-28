@@ -16,7 +16,11 @@
  		<intercept-url pattern="/reserva/ranking/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
  		<intercept-url pattern="/reserva/ranking.json/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
  		<intercept-url pattern="/reserva/**" access="ROLE_PROFESSOR" />
- 		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN" />	
+ 		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN" />
+ 		<intercept-url pattern="/configuracao/recuperar-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+ 		<intercept-url pattern="/configuracao/recuperacao/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+ 		<intercept-url pattern="/configuracao/nova-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+ 		<intercept-url pattern="/configuracao/**" access="ROLE_PROFESSOR,ROLE_ADMIN" />
  		
  		<form-login login-page="/login" default-target-url="/" 
  			authentication-failure-url="/loginfailed" />

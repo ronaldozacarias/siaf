@@ -1,25 +1,23 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.UsuarioService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl extends GenericServiceImpl<Usuario> implements UsuarioService {
 	
 	@Inject
 	private GenericRepository<Usuario> usuarioRepository;
-	
-	@Inject
-	private GenericRepository<Professor> professorRepository;
 	
 	@Override
 	public Usuario getUsuarioByLogin(String login) {
@@ -29,10 +27,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Professor getProfessorByUsuario(Usuario usuario) {
+	public Usuario getUsuarioByEmail(String email) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("usuario_id", usuario.getId());
-		return professorRepository.find(QueryType.JPQL, "from Professor where usuario.id = :usuario_id", params).get(0);
+		params.put("email", email);
+		List<Usuario> result = usuarioRepository.find(QueryType.JPQL, "from Usuario where email = :email", params);
+		if(!result.isEmpty()) {
+			return result.get(0);
+		}
+		return null;
 	}
 
 }

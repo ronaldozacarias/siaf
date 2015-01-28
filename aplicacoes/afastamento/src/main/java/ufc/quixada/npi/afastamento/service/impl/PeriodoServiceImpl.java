@@ -29,9 +29,9 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	}
 
 	@Override
-	public Periodo getPeriodo(Date date) {
+	public Periodo getPeriodoByEncerramento(Date encerramento) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("encerramento", date);
+		params.put("encerramento", encerramento);
 		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where encerramento = :encerramento", params, -1);
 	}
 	

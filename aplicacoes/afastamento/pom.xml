@@ -19,7 +19,7 @@
 		<!-- Java EE / Java SE dependencies -->
 
 		<jstl.version>1.2</jstl.version>
-		<javax.mail.version>1.4.3</javax.mail.version>
+		<javax.activation.version>1.1.1</javax.activation.version>
 		<javax.servlet.version>3.0-alpha-1</javax.servlet.version>
 		<javaee.web.api.version>6.0</javaee.web.api.version>
 		<java.validation.version>1.1.0.Final</java.validation.version>
@@ -53,7 +53,7 @@
 		<commons.io.version>2.4</commons.io.version>
 		
 		<!-- NPI -->
-		<npi.core.version>0.0.6</npi.core.version>
+		<npi.core.version>0.0.9</npi.core.version>
 		
 		<!-- Quartz -->
 		<quartz.version>1.8.6</quartz.version>
@@ -239,9 +239,9 @@
 		
 		<!-- Dependência Java Mail -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>${javax.mail.version}</version>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>${javax.activation.version}</version>
 		</dependency>
 		
 		<!-- NPI Core -->
@@ -249,6 +249,12 @@
 			<groupId>br.ufc.quixada.npi</groupId>
 			<artifactId>npi-core-api</artifactId>
 			<version>${npi.core.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>mail</artifactId>
+					<groupId>javax.mail</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Dependência JODA TIME -->
