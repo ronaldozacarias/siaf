@@ -41,6 +41,7 @@
 				<table id="professores" class="table table-striped">
 					<thead>
 						<tr class="afas-tr-left">
+				               <th>Nº</th>
 				               <th class="afas-tr-left">Siape</th>
 				               <th id="orderName">Nome</th>
 				               <th>E-mail</th>
@@ -49,8 +50,9 @@
 				           </tr>
 				       </thead>
 				       <tbody>
-						<c:forEach items="${professores}" var="professor">
+						<c:forEach items="${professores}" var="professor" varStatus="count">
 					           <tr>
+					               <td>${count.count}</td>
 					               <td>${professor.siape}</td>
 					               <td>${professor.usuario.nome}</td>
 					               <td>${professor.usuario.email}</td>

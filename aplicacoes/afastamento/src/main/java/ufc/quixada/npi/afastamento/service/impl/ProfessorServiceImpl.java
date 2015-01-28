@@ -31,4 +31,9 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where p.usuario.id = :id", params, -1);
 	}
 
+	@Override
+	public Integer getTotalProfessores() {
+		return professorRepository.find(QueryType.JPQL, "from Professor p where p.usuario.habilitado = TRUE", null).size();
+	}
+
 }

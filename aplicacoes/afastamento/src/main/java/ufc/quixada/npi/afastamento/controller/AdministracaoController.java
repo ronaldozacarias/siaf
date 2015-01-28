@@ -58,6 +58,7 @@ public class AdministracaoController {
 		return "admin/novo-professor";
 	}
 
+
 	@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
 	public String cadastroProfessor(
 			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
@@ -84,6 +85,10 @@ public class AdministracaoController {
 		/*Professor*/
 		professor.setUsuario(usuario);
 		professorService.update(professor);
+		
+		int totalProfessores = professorService.getTotalProfessores(); 
+		int vagas = (int) (totalProfessores * 0.15);
+		periodoService.updateVagas(vagas);
 		
 		return "redirect:/administracao/professores";
 	}
