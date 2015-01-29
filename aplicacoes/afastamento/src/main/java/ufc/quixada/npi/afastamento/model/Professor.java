@@ -42,7 +42,6 @@ public class Professor {
 	@Max(message = "Semestre inválido", value = 2)
 	private Integer semestreAdmissao;
 
-
 	@NotNull(message = "Obrigatório")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataAdmissao;
