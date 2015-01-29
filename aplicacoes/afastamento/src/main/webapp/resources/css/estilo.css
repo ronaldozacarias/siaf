@@ -403,6 +403,10 @@ table#ranking {
 
 #listaPeriodos #accordion {
 	border-left: 2px solid #E8E8E5;
-/* 	border-bottom: 2px solid #E8E8E5; */
 	border-right: 2px solid #E8E8E5;
+}
+
+span#captcha-erro {
+	text-align: center;
+	color: #a94442;
 }

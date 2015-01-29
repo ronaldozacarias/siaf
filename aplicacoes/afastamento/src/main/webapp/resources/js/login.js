@@ -1,15 +1,31 @@
 $(document).ready(function() {
 	
+	var widget_login;
+	var widget_recuperacao;
+	window.onload = function() {
+		widget_login = grecaptcha.render('captcha-login', {
+          'sitekey' : '6Ld8JwETAAAAAJO7YwQhpEjZOJZphzh0PfvinsZ5',
+        });
+		widget_recuperacao = grecaptcha.render('captcha-recuperacao', {
+          'sitekey' : '6Ld8JwETAAAAAJO7YwQhpEjZOJZphzh0PfvinsZ5',
+        });
+	}
 	$('a#esqueceu-senha').click(function(){
 		$('#login-form').hide();
 		$('h1').text('Recuperar Senha');
 		$('#recuperar-senha-form').show();
+		grecaptcha.reset(
+			widget_login
+		);
 	});
 	
 	$('a#retorna-login').click(function(){
 		$('#recuperar-senha-form').hide();
 		$('h1').text('Login');
 		$('#login-form').show();
+		grecaptcha.reset(
+			widget_recuperacao
+		);
 	});
 	
 	$('#login-form').validate({
@@ -62,33 +78,11 @@ $(document).ready(function() {
         }
     });
 	
-	/*$('#recuperar-senha-form').submit(function(e) {
-		alert($('#email').val());
-		$('#email').val('');
-		$('#btn-recuperar').click(function(){
-			var email = $('#email').val();
-			$.ajax({
-				type: "POST",
-				url: '/siaf/configuracao/recuperar-senha',
-				data: {
-		        	email : email
-				}
-			})
-			.success(function(result) {
-				$('#recuperar-senha').modal('hide');
-				if(result.resultado == 'erro') {
-					$('img').insertAfter('<div class="alert alert-danger alert-dismissible" role="alert">' +
-						'<button type="button" class="close" data-dismiss="alert">' +
-						'<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' + 
-						result.info + '</div>');
-				} else {
-					$('img').insertAfter('<div class="alert alert-success alert-dismissible" role="alert">' +
-						'<button type="button" class="close" data-dismiss="alert">' +
-						'<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' + 
-						result.info + '</div>');
-				}
-			});
-		});
-	});*/
+	$('#login-form').submit(function(){
+		if(grecaptcha.getResponse() == '') {
+			$('.g-recaptcha').after('<span id="captcha-erro" class="help-block">Selecione a opção "Não sou um robô"</span>');
+			return false;
+		}
+	});
 	
 });

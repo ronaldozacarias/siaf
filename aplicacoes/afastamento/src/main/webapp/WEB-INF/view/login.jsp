@@ -48,6 +48,10 @@
 	                            	<input type="password" name="j_password" id="key" class="form-control" placeholder="senha" required="required" style="width: 100% !important">
 	                            </div>
 	                        </div>
+	                        <div class="form-group">
+	                            <div id="captcha-login" class="col-sm-6">
+	                            </div>
+	                        </div>
 	                        
 	                        <div class="controls" style="margin-top: 30px;">
 	                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Login">
@@ -57,16 +61,20 @@
 	                    
 	                    <!-- Recuperar senha form -->
 	                    <form:form role="form" method="post" servletRelativeAction="/configuracao/recuperar-senha" id="recuperar-senha-form" autocomplete="off" class="form-horizontal" style="display:none;">
-		                        <div class="form-group">
-		                            <label for="email" class="col-sm-2 control-label">email:</label>
-		                            <div class="col-sm-8">
-		                            	<input type="text" name="email" id="email" class="form-control" placeholder="email" required="required" style="width: 100% !important">
-		                            </div>
-		                        </div>
-		                        <div class="controls" style="margin-top: 30px;">
-		                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Recuperar">
-		                       	</div>
-		                        <a id="retorna-login" href="javascript:;" class="forget">Login</a>
+	                        <div class="form-group">
+	                            <label for="email" class="col-sm-2 control-label">email:</label>
+	                            <div class="col-sm-8">
+	                            	<input type="text" name="email" id="email" class="form-control" placeholder="email" required="required" style="width: 100% !important">
+	                            </div>
+	                        </div>
+	                        <div class="form-group">
+	                            <div id="captcha-recuperacao" class="col-sm-6">
+	                            </div>
+	                        </div>
+	                        <div class="controls" style="margin-top: 30px;">
+	                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Recuperar">
+	                       	</div>
+	                        <a id="retorna-login" href="javascript:;" class="forget">Login</a>
 	                    </form:form>
 	                    <hr>
 	        	    </div>
@@ -75,32 +83,10 @@
 	    </div> <!-- /.container -->
 	</section>
 	
-	<!-- Modal Recuperar Senha -->
-	<!-- <div id="recuperar-senha" class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">×</span>
-						<span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title">Recuperar senha</h4>
-				</div>
-				<div class="modal-body">
-					<p>Insira seu email:</p>
-					<input type="text" name="email" id="email" class="form-control" autocomplete="off">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-					<button id="btn-recuperar" class="btn btn-primary">Recuperar</button>
-				</div>
-			</div> / .modal-content
-		</div> /.modal-dialog
-	</div> --> <!-- /.modal -->
-	
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 	<script src="<c:url value="/webjars/bootstrap/3.3.2/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery.validate.min.js" />"></script>
-	<script src="<c:url value="/resources/js/login.js" />"></script>
+	<script src="<c:url value="/resources/js/login.js" />"></script>	
 </body>
 </html>
