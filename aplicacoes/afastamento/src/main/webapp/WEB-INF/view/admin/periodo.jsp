@@ -153,7 +153,7 @@
 							<thead>
 								<tr class="afas-tr-left">
 						               <th data-column-id="ano" data-order="asc" data-align="center">Ano</th>
-						               <th data-column-id="semestre" data-align="center">Semestre</th>
+						               <th data-column-id="semestre" data-order="asc" data-align="center">Semestre</th>
 						               <th data-column-id="vagas" data-align="center">Vagas</th>
 						               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
 						           </tr>
