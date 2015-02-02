@@ -8,13 +8,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Usuario;
-import ufc.quixada.npi.afastamento.service.UsuarioService;
+import ufc.quixada.npi.afastamento.service.UserService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
-public class UsuarioServiceImpl extends GenericServiceImpl<Usuario> implements UsuarioService {
+public class UserServiceImpl extends GenericServiceImpl<Usuario> implements UserService {
 	
 	@Inject
 	private GenericRepository<Usuario> usuarioRepository;

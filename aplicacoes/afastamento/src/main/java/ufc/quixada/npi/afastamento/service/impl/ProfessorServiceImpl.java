@@ -27,7 +27,7 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	@Override
 	public Professor getProfessorByUsuarioId(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("ano", id);
+		params.put("id", id);
 		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where p.usuario.id = :id", params, -1);
 	}
 

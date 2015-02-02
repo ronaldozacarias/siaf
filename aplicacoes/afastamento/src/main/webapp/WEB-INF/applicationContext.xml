@@ -43,6 +43,17 @@
 		</property> -->
 	</bean>
 	
+	<bean id="contextSource"
+        class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="ldap://172.18.0.15:389" />
+        <property name="base" value="dc=quixada,dc=ufc,dc=br" />
+        <property name="userDn" value="cn=admin_teste,dc=quixada,dc=ufc,dc=br" />
+        <property name="password" value="!@admin_teste!@" />
+    </bean>
+    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+        <constructor-arg ref="contextSource" />
+    </bean>
+	
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<context:annotation-config />
@@ -50,7 +61,6 @@
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.service" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.controller" />
 	<context:component-scan base-package="ufc.quixada.npi.afastamento.jobs" />
-	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
-	<context:component-scan base-package="br.ufc.quixada.npi.service" />
+	<context:component-scan base-package="br.ufc.quixada.npi.*" />
 	
 </beans>

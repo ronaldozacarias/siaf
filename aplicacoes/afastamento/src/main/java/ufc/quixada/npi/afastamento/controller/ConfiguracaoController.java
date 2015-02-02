@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ufc.quixada.npi.afastamento.model.RecuperacaoSenha;
 import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.RecuperacaoSenhaService;
-import ufc.quixada.npi.afastamento.service.UsuarioService;
+import ufc.quixada.npi.afastamento.service.UserService;
 import ufc.quixada.npi.afastamento.util.Constants;
 
 @Controller
@@ -27,7 +27,7 @@ import ufc.quixada.npi.afastamento.util.Constants;
 public class ConfiguracaoController {
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private UserService usuarioService;
 	
 	@Inject
 	private RecuperacaoSenhaService recuperacaoService;

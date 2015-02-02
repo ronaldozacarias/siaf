@@ -56,7 +56,7 @@
 	                        <div class="controls" style="margin-top: 30px;">
 	                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Login">
 	                       	</div>
-	                    	<a id="esqueceu-senha" href="javascript:;" class="forget">Esqueceu a senha?</a>
+	                    	<!-- <a id="esqueceu-senha" href="javascript:;" class="forget">Esqueceu a senha?</a> -->
 	                    </form:form>
 	                    
 	                    <!-- Recuperar senha form -->
