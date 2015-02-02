@@ -14,7 +14,7 @@
     		<li id="menu-ranking">
     			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
-    		<sec:authorize ifAnyGranted="ROLE_PROFESSOR">
+    		<sec:authorize ifAnyGranted="ROLE_DOCENTE">
 	    		<li id="menu-add-reserva">
 	    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
 	    		</li>
@@ -22,7 +22,7 @@
 	    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
 	    		</li>
 	    	</sec:authorize>
-    		<sec:authorize ifAnyGranted="ROLE_ADMIN">
+    		<sec:authorize ifAnyGranted="ROLE_ADMIN_SIAF">
 	    		<li id="menu-periodos">
 	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
@@ -37,11 +37,7 @@
     		</sec:authorize>
     		
     		<li>
-    			<a class="" href="<c:url value="/configuracao/alterar-senha" />"><span>Alterar senha</span></a>
-    		</li>
-    		
-    		<li>
-    			<a class="" href="<c:url value="/j_spring_security_logout" />"><span>Sair</span></a>
+    			<a class="" href="<c:url value="/logout" />"><span>Sair</span></a>
     		</li>
     	</ul>
     	

@@ -54,6 +54,7 @@
 		
 		<!-- NPI -->
 		<npi.core.version>0.0.9</npi.core.version>
+		<npi.ldap.version>0.0.2</npi.ldap.version>
 		
 		<!-- Quartz -->
 		<quartz.version>1.8.6</quartz.version>
@@ -244,7 +245,7 @@
 			<version>${javax.activation.version}</version>
 		</dependency>
 		
-		<!-- NPI Core -->
+		<!-- NPI -->
 		<dependency>
 			<groupId>br.ufc.quixada.npi</groupId>
 			<artifactId>npi-core-api</artifactId>
@@ -255,6 +256,12 @@
 					<groupId>javax.mail</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>br.ufc.quixada.npi</groupId>
+			<artifactId>npi-ldap</artifactId>
+			<version>${npi.ldap.version}</version>
 		</dependency>
 		
 		<!-- Dependência JODA TIME -->

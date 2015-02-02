@@ -28,7 +28,7 @@ import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
-import ufc.quixada.npi.afastamento.service.UsuarioService;
+import ufc.quixada.npi.afastamento.service.UserService;
 import ufc.quixada.npi.afastamento.util.Constants;
 
 @Controller
@@ -36,7 +36,7 @@ import ufc.quixada.npi.afastamento.util.Constants;
 public class ReservaController {
 	
 	@Inject
-	private UsuarioService usuarioService;
+	private UserService usuarioService;
 	
 	@Inject
 	private ReservaService reservaService;
