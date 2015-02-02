@@ -2,12 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans          
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context 
 		   http://www.springframework.org/schema/context/spring-context.xsd
 		   http://www.springframework.org/schema/tx
-		   http://www.springframework.org/schema/tx/spring-tx.xsd">
+		   http://www.springframework.org/schema/tx/spring-tx.xsd
+		   http://www.springframework.org/schema/jee 
+           http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
 
 
 	<context:property-placeholder location="classpath:email.properties"/>
@@ -32,24 +35,20 @@
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="session" ref="mailSession"/>
-		<!-- <property name="host" value="${host}" />
-		<property name="port" value="${port}" />
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtp</prop>
-				<prop key="mail.smtp.auth">false</prop>
-				<prop key="mail.debug">true</prop>
-			</props>
-		</property> -->
 	</bean>
-	
-	<bean id="contextSource"
-        class="org.springframework.ldap.core.support.LdapContextSource">
-        <property name="url" value="ldap://172.18.0.15:389" />
-        <property name="base" value="dc=quixada,dc=ufc,dc=br" />
-        <property name="userDn" value="cn=admin_teste,dc=quixada,dc=ufc,dc=br" />
-        <property name="password" value="!@admin_teste!@" />
+
+    <jee:jndi-lookup id="ldapUrl" jndi-name="java:comp/env/ldap/url" expected-type="java.lang.String" />
+    <jee:jndi-lookup id="ldapBase" jndi-name="java:comp/env/ldap/base" expected-type="java.lang.String" />
+    <jee:jndi-lookup id="ldapUserDn" jndi-name="java:comp/env/ldap/userdn" expected-type="java.lang.String" />
+    <jee:jndi-lookup id="ldapPassword" jndi-name="java:comp/env/ldap/password" expected-type="java.lang.String" />
+                     
+    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" ref="ldapUrl" />
+        <property name="base" ref="ldapBase" />
+        <property name="userDn" ref="ldapUserDn" />
+        <property name="password" ref="ldapPassword" />
     </bean>
+    
     <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
         <constructor-arg ref="contextSource" />
     </bean>
