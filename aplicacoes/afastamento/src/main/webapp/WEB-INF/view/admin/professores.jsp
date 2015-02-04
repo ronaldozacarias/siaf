@@ -46,7 +46,7 @@
 				               <th id="orderName">Nome</th>
 				               <th>E-mail</th>
 				               <th>Admisão</th>
-				               <th>Status</th>
+				               <!-- <th>Status</th> -->
 				           </tr>
 				       </thead>
 				       <tbody>
@@ -54,10 +54,10 @@
 					           <tr>
 					               <td>${count.count}</td>
 					               <td>${professor.siape}</td>
-					               <td>${professor.usuario.nome}</td>
-					               <td>${professor.usuario.email}</td>
+					               <td>${professor.nome}</td>
+					               <td>${professor.email}</td>
 					               <td>${professor.anoAdmissao}.${professor.semestreAdmissao}</td>
-					               <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.usuario.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td>
+					               <%-- <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td> --%>
 					           </tr>
 						</c:forEach>
 				       </tbody>

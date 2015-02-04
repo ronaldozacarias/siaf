@@ -30,6 +30,10 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 		for(Professor professor : professores) {
 			SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
 			try {
+				if(professor.getDataSaida() == null) {
+					ativos.add(professor);
+					continue;
+				}
 				Date saida = format.parse(format.format(professor.getDataSaida()));
 				Date hoje = format.parse(format.format(new Date()));
 				if(!saida.before(hoje)) {
