@@ -32,7 +32,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	
 	@Override
 	public void salvar(Reserva reserva) {
-		int vagas = professorService.getTotalProfessores();
+		int vagas = professorService.findAtivos().size();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
 			Periodo periodo = new Periodo();
 			periodo.setVagas((int)(vagas * 0.15));
@@ -71,17 +71,17 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	public List<Reserva> getReservasByProfessor(String siape) {
+	public List<Reserva> getReservasByProfessor(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("siape", siape);
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.siape = :siape order by anoInicio DESC, semestreInicio DESC", params);
+		params.put("cpf", professor.getCpf());
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.cpf = :cpf order by anoInicio DESC, semestreInicio DESC", params);
 	}
 
 	@Override
 	public boolean hasReservaEmAberto(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("siape", professor.getSiape());
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'ABERTO' and professor.siape = :siape", params).size() > 0;
+		params.put("cpf", professor.getCpf());
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'ABERTO' and professor.cpf = :cpf", params).size() > 0;
 	}
 
 	@Override

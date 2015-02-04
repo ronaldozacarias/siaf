@@ -1,12 +1,9 @@
 package ufc.quixada.npi.afastamento.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -19,9 +16,6 @@ public class Afastamento {
 	@OneToOne
 	private Reserva reserva;
 	
-	@OneToMany
-	private List<Documento> documentos;
-
 	public Long getId() {
 		return id;
 	}
@@ -36,14 +30,6 @@ public class Afastamento {
 
 	public void setReserva(Reserva reserva) {
 		this.reserva = reserva;
-	}
-
-	public List<Documento> getDocumentos() {
-		return documentos;
-	}
-
-	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
 	}
 
 	@Override

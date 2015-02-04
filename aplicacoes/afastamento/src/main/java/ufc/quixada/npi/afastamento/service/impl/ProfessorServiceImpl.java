@@ -1,5 +1,9 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +24,29 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	private GenericRepository<Professor> professorRepository;
 	
 	@Override
-	public List<Professor> findOrder() {
-		return professorRepository.find(QueryType.JPQL, "select p from Professor p where p.usuario.habilitado = TRUE order by p.usuario.nome", null);
+	public List<Professor> findAtivos() {
+		List<Professor> professores = professorRepository.find(Professor.class);
+		List<Professor> ativos = new ArrayList<Professor>();
+		for(Professor professor : professores) {
+			SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+			try {
+				Date saida = format.parse(format.format(professor.getDataSaida()));
+				Date hoje = format.parse(format.format(new Date()));
+				if(!saida.before(hoje)) {
+					ativos.add(professor);
+				}
+			} catch (ParseException e) {
+				continue;
+			}
+		}
+		return ativos;
 	}
 
 	@Override
-	public Professor getProfessorByUsuarioId(Long id) {
+	public Professor getByCpf(String cpf) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where p.usuario.id = :id", params, -1);
-	}
-
-	@Override
-	public Integer getTotalProfessores() {
-		return professorRepository.find(QueryType.JPQL, "from Professor p where p.usuario.habilitado = TRUE", null).size();
+		params.put("cpf", cpf);
+		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where cpf = :cpf", params, -1);
 	}
 
 }

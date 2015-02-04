@@ -91,14 +91,14 @@ public class RankingServiceImpl implements RankingService {
 			TuplaRanking tupla = new TuplaRanking();
 			tupla.setReserva(reserva);
 			tupla.setPeriodo(periodo);
-			tupla.setProfessor(reserva.getProfessor().getUsuario().getNome());
+			tupla.setProfessor(reserva.getProfessor().getNome());
 			tupla.setSemestresSolicitados(getSemestresSolicitados(reserva));
 			tupla.setSemestresAtivos(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1);
 			tupla.setSemestresAfastados(getSemestresAfastados(reserva));
 			Float t = Float.valueOf(tupla.getSemestresAtivos());
 			Float a = Float.valueOf(tupla.getSemestresAfastados());
-			Float s = afastamentoService.getAfastamentosByProfessor(reserva.getProfessor().getSiape()).isEmpty() ? 2 : Float.valueOf(tupla.getSemestresSolicitados());
+			Float s = afastamentoService.getAfastamentosByProfessor(reserva.getProfessor()).isEmpty() ? 2 : Float.valueOf(tupla.getSemestresSolicitados());
 			Integer semContratacao = calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1;
 			Float p = semContratacao >= 6.0f ? 0.0f : (6.0f - semContratacao);

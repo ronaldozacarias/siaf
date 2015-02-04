@@ -1,6 +1,5 @@
 package ufc.quixada.npi.afastamento.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,15 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ufc.quixada.npi.afastamento.model.Papel;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
-import ufc.quixada.npi.afastamento.model.Usuario;
-import ufc.quixada.npi.afastamento.service.PapelService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
-import br.ufc.quixada.npi.service.GenericService;
 
 
 @Controller
@@ -38,29 +32,29 @@ public class AdministracaoController {
 	@Inject
 	private ProfessorService professorService;
 	
-	@Inject
+	/*@Inject
 	private PapelService papelService;
 
 	@Inject
-	private GenericService<Usuario> usuarioService;
+	private GenericService<Usuario> usuarioService;*/
 
 	@Inject
 	private PeriodoService periodoService;	
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = professorService.findOrder();
+		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
 		return "admin/professores";
 	}
 
-	@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)
 	public String cadastroProfessor(Model model) {
 		model.addAttribute("professor", new Professor());
 		return "admin/novo-professor";
-	}
+	}*/
 
-	@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/novo-professor", method = RequestMethod.POST)
 	public String cadastroProfessor(
 			@Valid @ModelAttribute("professor") Professor professor, BindingResult result, Model model) {
 
@@ -70,7 +64,7 @@ public class AdministracaoController {
 		
 		Usuario usuario = professor.getUsuario();
 		
-		/*Usuario*/
+		Usuario
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder(256);
 		usuario.setLogin(professor.getSiape());
 		usuario.setPassword(encoder.encodePassword(professor.getSiape(), ""));
@@ -83,7 +77,7 @@ public class AdministracaoController {
 		
 		usuarioService.save(usuario);
 
-		/*Professor*/
+		Professor
 		professor.setUsuario(usuario);
 		professorService.update(professor);
 		
@@ -92,7 +86,7 @@ public class AdministracaoController {
 		//periodoService.updateVagas(vagas);
 		
 		return "redirect:/administracao/professores";
-	}
+	}*/
 	
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Periodo> periodos() {
@@ -209,7 +203,7 @@ public class AdministracaoController {
 		return "admin/periodo";
 	}
 
-	@RequestMapping(value = "/desabilita", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/desabilita", method = RequestMethod.POST)
 	public String habilitar(@RequestParam("pk") Long id, RedirectAttributes redirect) {
 
 		Professor professor = professorService.find(Professor.class, id);
@@ -219,6 +213,6 @@ public class AdministracaoController {
 		
 		redirect.addFlashAttribute("info", "Prof(a).: " + professor.getUsuario().getNome() + " desabilitado com sucesso.");
 		return "redirect:/administracao/professores";
-	}
+	}*/
 
 }

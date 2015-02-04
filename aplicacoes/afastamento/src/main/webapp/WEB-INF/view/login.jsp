@@ -37,9 +37,9 @@
 		                <!-- Login form -->
 	                    <form:form role="form" servletRelativeAction="/j_spring_security_check"  method="post" id="login-form" autocomplete="off" class="form-horizontal">
 	                        <div class="form-group">
-	                            <label for="siape" class="col-sm-2 control-label">siape:</label>
+	                            <label for="cpf" class="col-sm-2 control-label">cpf:</label>
 	                            <div class="col-sm-8">
-	                            	<input type="text" name="j_username" id="siape" class="form-control" placeholder="siape" required="required" style="width: 100% !important">
+	                            	<input type="text" name="j_username" id="cpf" class="form-control" placeholder="cpf" required="required" style="width: 100% !important">
 	                            </div>
 	                        </div>
 	                        <div class="form-group">

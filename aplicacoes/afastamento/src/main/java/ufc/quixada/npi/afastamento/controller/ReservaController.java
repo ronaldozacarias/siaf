@@ -23,20 +23,15 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
-import ufc.quixada.npi.afastamento.model.Usuario;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
-import ufc.quixada.npi.afastamento.service.UserService;
 import ufc.quixada.npi.afastamento.util.Constants;
 
 @Controller
 @RequestMapping("reserva")
 public class ReservaController {
-	
-	@Inject
-	private UserService usuarioService;
 	
 	@Inject
 	private ReservaService reservaService;
@@ -47,9 +42,10 @@ public class ReservaController {
 	@Inject
 	private PeriodoService periodoService;
 	
-	@Inject ProfessorService professorService;
+	@Inject
+	private ProfessorService professorService;
 	
-	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
+    @RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
 		Periodo periodoAtual = periodoService.getPeriodoAtual();
 		model.addAttribute("periodoAtual", periodoAtual);
@@ -101,17 +97,17 @@ public class ReservaController {
 		}
 		
 		Periodo periodo = periodoService.getPeriodoAtual();
-		Integer diferenca = calculaDiferenca(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
 		
 		if(diferenca < 2) {
 			redirect.addFlashAttribute("erro", "Sua solicitação está fora do prazo permitido.");
 			return "redirect:/reserva/incluir";
 		}
-		if((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO) && calculaDiferenca(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
+		if((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO) && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
 			redirect.addFlashAttribute("erro", "O tempo máximo para mestrado ou pós-doutorado é de 4 semestres.");
 			return "redirect:/reserva/incluir";
 		}
-		if(programa == Programa.DOUTORADO && calculaDiferenca(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
+		if(programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
 			redirect.addFlashAttribute("erro", "O tempo máximo para doutorado é de 8 semestres.");
 			return "redirect:/reserva/incluir";
 		}
@@ -141,15 +137,17 @@ public class ReservaController {
 	
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String getReservas(Model model, HttpSession session) {
-		model.addAttribute("reservas", reservaService.getReservasByProfessor(getProfessorLogado(session).getSiape()));
-		model.addAttribute("professor", getProfessorLogado(session));
+		Professor professor = getProfessorLogado(session);
+		model.addAttribute("reservas", reservaService.getReservasByProfessor(professor));
+		model.addAttribute("professor", professor);
 		return "reserva/lista";
 	}
 	
 	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
-		if(reserva == null || !reserva.getProfessor().equals(getProfessorLogado(session)) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		Professor professor = getProfessorLogado(session);
+		if(reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
 			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
 		} else {
 			reservaService.delete(reserva);
@@ -158,21 +156,17 @@ public class ReservaController {
 		return "redirect:/reserva/listar";
 	}
 	
-	private Usuario getUsuarioLogado(HttpSession session) {
+	private String getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
-			Usuario usuario = usuarioService
-					.getUsuarioByLogin(SecurityContextHolder.getContext()
-							.getAuthentication().getName());
-			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
+			session.setAttribute(Constants.USUARIO_LOGADO, SecurityContextHolder.getContext().getAuthentication().getName());
 		}
-		return (Usuario) session.getAttribute(Constants.USUARIO_LOGADO);
+		return (String) session.getAttribute(Constants.USUARIO_LOGADO);
 	}
 	
 	private Professor getProfessorLogado(HttpSession session) {
 		Professor professor = null;
 		if (session.getAttribute(Constants.PROFESSOR_LOGADO) == null) {
-			Usuario usuario = getUsuarioLogado(session);
-			professor = professorService.getProfessorByUsuarioId(usuario.getId());
+			professor = professorService.getByCpf(getUsuarioLogado(session));
 			session.setAttribute(Constants.PROFESSOR_LOGADO, professor);
 		} else {
 			professor = (Professor) session.getAttribute(Constants.PROFESSOR_LOGADO);
@@ -180,7 +174,7 @@ public class ReservaController {
 		return professor;
 	}
 	
-	private Integer calculaDiferenca(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
+	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
 	}
 	
