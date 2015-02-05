@@ -5,19 +5,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
+@EntityListeners(ProfessorEntityListener.class)
 public class Professor {
 
 	@Id
@@ -27,32 +24,33 @@ public class Professor {
 	@Size(min = 11, message="Minino 11 dígitos")
 	private String cpf;
 	
-	@Size(min = 7, message="Minino 7 dígitos")
+	@Transient
+	private String nome;
+	
+	@Transient
+	private String email;
+	
+	@Transient
 	private String siape;
 
-	@NotNull(message = "Obrigatório")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Transient
 	private Date dataNascimento;
 	
-	@NotNull(message = "Ano obrigatório")
 	private Integer anoAdmissao;
 	
-	@NotNull(message = "Semestre Obrigatório")
-	@Min(message = "Semestre inválido", value = 1)
-	@Max(message = "Semestre inválido", value = 2)
 	private Integer semestreAdmissao;
 
-	@NotNull(message = "Obrigatório")
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Transient
 	private Date dataAdmissao;
 
-	private Date dataRemocao;
+	@Transient
+	private Date dataSaida;
 	
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
 	private List<Reserva> reservas;
 
-	@OneToOne(cascade=CascadeType.REFRESH) 
-	private Usuario usuario;
+	/*@OneToOne(cascade=CascadeType.REFRESH) 
+	private Usuario usuario;*/
 		
 	public String getCpf() {
 		return cpf;
@@ -102,12 +100,12 @@ public class Professor {
 		this.semestreAdmissao = semestreAdmissao;
 	}
 
-	public Date getDataRemocao() {
-		return dataRemocao;
+	public Date getDataSaida() {
+		return dataSaida;
 	}
 
-	public void setDataRemocao(Date dataRemocao) {
-		this.dataRemocao = dataRemocao;
+	public void setDataSaida(Date dataSaida) {
+		this.dataSaida = dataSaida;
 	}
 
 	public Date getDataAdmissao() {
@@ -126,13 +124,13 @@ public class Professor {
 		this.reservas = reservas;
 	}
 
-	public Usuario getUsuario() {
+	/*public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
+	}*/
 
 	@Override
 	public int hashCode() {
@@ -140,6 +138,22 @@ public class Professor {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
@@ -151,10 +165,10 @@ public class Professor {
 		if (getClass() != obj.getClass())
 			return false;
 		Professor other = (Professor) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (cpf == null) {
+			if (other.cpf != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!cpf.equals(other.cpf))
 			return false;
 		return true;
 	}

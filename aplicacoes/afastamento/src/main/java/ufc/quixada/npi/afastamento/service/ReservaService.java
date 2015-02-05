@@ -10,7 +10,7 @@ public interface ReservaService extends GenericService<Reserva> {
 
 	void salvar(Reserva afastamento);
 	
-	List<Reserva> getReservasByProfessor(String siape);
+	List<Reserva> getReservasByProfessor(Professor professor);
 	
 	List<Reserva> getReservasByPeriodo(Integer ano, Integer semestre);
 	

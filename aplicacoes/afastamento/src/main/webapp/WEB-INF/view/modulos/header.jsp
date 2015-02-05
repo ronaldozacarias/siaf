@@ -27,12 +27,8 @@
 	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
 
-	    		<li class="dropdown" id="menu-professores">
-	    			<a data-toggle="dropdown" class="dropdown-toggle"><span>Professor</span><b class="caret"></b></a>
-                    <ul class="dropdown-menu afas-menu">
-                        <li><a href="<c:url value="/administracao/novo-professor" />">Novo</a></li>
-                        <li><a href="<c:url value="/administracao/professores" />">Listar</a></li>
-                    </ul>
+	    		<li id="menu-professores">
+	    			<a href="<c:url value="/administracao/professores" />">Professores</a>
 	    		</li>
     		</sec:authorize>
     		
