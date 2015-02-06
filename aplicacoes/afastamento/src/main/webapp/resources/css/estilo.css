@@ -161,7 +161,7 @@ div#periodo i {
 }
 
 .table > tbody > tr.NAO_ACEITO, table > tbody > tr.DESCLASSIFICADO {
-	background-color: #F2DEDE;
+	background-color: #FFD8A4;
 }
 
 .table > tbody > tr.ENCERRADO {
@@ -170,6 +170,10 @@ div#periodo i {
 
 .table > tbody > tr.CLASSIFICADO {
 	background-color: #DFF0D8;
+}
+
+.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
+	background-color: #F2DEDE;
 }
 
 .table > tbody > tr > td.pontuacao {
@@ -193,7 +197,7 @@ div#legenda label span.aceito {
 }
 
 div#legenda label span.desclassificado {
-	background-color: #F2DEDE;
+	background-color: #FFD8A4;
 }
 
 div#legenda label span.encerrado {
@@ -204,6 +208,9 @@ div#legenda label span.classificado {
 	background-color: #DFF0D8;
 }
 
+div#legenda label span.cancelado {
+	background-color: #F2DEDE;
+}
 
 input{
 	display: inline !important;

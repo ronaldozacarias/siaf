@@ -18,7 +18,7 @@
 	    		<li id="menu-add-reserva">
 	    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
 	    		</li>
-	    		<li id="menu-reservas">
+	    		<li id="menu-minhas-reservas">
 	    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
 	    		</li>
 	    	</sec:authorize>
@@ -26,9 +26,11 @@
 	    		<li id="menu-periodos">
 	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
-
+	    		<li id="menu-reservas">
+	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Reservas</span></a>
+	    		</li>
 	    		<li id="menu-professores">
-	    			<a href="<c:url value="/administracao/professores" />">Professores</a>
+	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>
 	    		</li>
     		</sec:authorize>
     		

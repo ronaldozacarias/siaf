@@ -98,4 +98,13 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		return reservaRepository.find(Reserva.class, id);
 	}
 
+	@Override
+	public List<Reserva> getReservasAnterioresComPunicao(Professor professor, Periodo periodo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cpf", professor.getCpf());
+		params.put("ano", periodo.getAno());
+		params.put("semestre", periodo.getSemestre());
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'CANCELADO_COM_PUNICAO' and professor.cpf = :cpf and (anoTermino < :ano or (anoTermino = :ano and semestreTermino < :semestre))", params);
+	}
+
 }

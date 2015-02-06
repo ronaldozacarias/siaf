@@ -140,6 +140,7 @@ public class ReservaController {
 		Professor professor = getProfessorLogado(session);
 		model.addAttribute("reservas", reservaService.getReservasByProfessor(professor));
 		model.addAttribute("professor", professor);
+		model.addAttribute("periodo", periodoService.getPeriodoAtual());
 		return "reserva/lista";
 	}
 	

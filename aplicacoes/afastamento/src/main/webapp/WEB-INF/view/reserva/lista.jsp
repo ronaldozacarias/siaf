@@ -70,7 +70,7 @@
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
 									<td>
-										<c:if test="${reserva.status eq 'ABERTO'}">
+										<c:if test="${reserva.status eq 'ABERTO' or (reserva.status eq 'ACEITO' and periodo.status eq 'ABERTO')}">
 											<a id="excluir" data-toggle="modal" data-target="#excluir-reserva" href="#" 
 												data-href="<c:url value="/reserva/${reserva.id}/excluir"></c:url>" 
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
@@ -82,6 +82,12 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					<div id="legenda">
+						<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito</label>
+						<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
+						<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label>
+						<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label><br/>
+					</div>
 				</c:if>
 			</form>
 		</div>
@@ -107,7 +113,7 @@
 		
 	</div>
 	<script type="text/javascript">
-		$('#menu-reservas').addClass('active');
+		$('#menu-minhas-reservas').addClass('active');
 	</script>
 </body>
 </html>

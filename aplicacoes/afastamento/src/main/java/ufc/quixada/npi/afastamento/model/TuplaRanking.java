@@ -6,11 +6,20 @@ public class TuplaRanking {
 	
 	private String professor;
 	
-	private Integer semestresAtivos;
+	// Número de semestres desde a contratação na UFC até o início do afastamento
+	private Integer t;
 	
-	private Integer semestresAfastados;
+	//Número de semestres em que o docente já esteve afastado
+	private Integer a;
 	
-	private Integer semestresSolicitados;
+	//Número de semestres do afastamento reservado/solicitado. (No caso de primeiro afastamento, a variável S terá valor dois (2)).
+	private Integer s;
+	
+	//Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).
+	private Integer p;
+	
+	// Número de semestres solicitados
+	private Integer ss;
 	
 	private Float pontuacao;
 	
@@ -29,28 +38,28 @@ public class TuplaRanking {
 		this.status = status;
 	}
 
-	public Integer getSemestresAtivos() {
-		return semestresAtivos;
+	public Integer getT() {
+		return t;
 	}
 
-	public void setSemestresAtivos(Integer semestresAtivos) {
-		this.semestresAtivos = semestresAtivos;
+	public void setT(Integer t) {
+		this.t = t;
 	}
 
-	public Integer getSemestresAfastados() {
-		return semestresAfastados;
+	public Integer getA() {
+		return a;
 	}
 
-	public void setSemestresAfastados(Integer semestresAfastados) {
-		this.semestresAfastados = semestresAfastados;
+	public void setA(Integer a) {
+		this.a = a;
 	}
 
-	public Integer getSemestresSolicitados() {
-		return semestresSolicitados;
+	public Integer getS() {
+		return s;
 	}
 
-	public void setSemestresSolicitados(Integer semestresSolicitados) {
-		this.semestresSolicitados = semestresSolicitados;
+	public void setS(Integer s) {
+		this.s = s;
 	}
 
 	public Float getPontuacao() {
@@ -83,6 +92,22 @@ public class TuplaRanking {
 
 	public void setProfessor(String professor) {
 		this.professor = professor;
+	}
+
+	public Integer getSs() {
+		return ss;
+	}
+
+	public void setSs(Integer ss) {
+		this.ss = ss;
+	}
+
+	public Integer getP() {
+		return p;
+	}
+
+	public void setP(Integer p) {
+		this.p = p;
 	}
 
 	@Override

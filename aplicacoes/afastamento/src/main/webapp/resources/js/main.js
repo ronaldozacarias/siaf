@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	
+	$('[data-toggle="tooltip"]').tooltip();
+	
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,
@@ -285,9 +287,11 @@ function loadTable(result, table) {
         var $tr = $('<tr class="' + item.status + '">').append(
         	$('<td class=\"align-center\">').text(i+1),
         	$('<td>').text(item.professor),
-            $('<td class=\"align-center\">').text(item.semestresAtivos),
-            $('<td class=\"align-center\">').text(item.semestresAfastados),
-            $('<td class=\"align-center\">').text(item.semestresSolicitados),
+            $('<td class=\"align-center\">').text(item.t),
+            $('<td class=\"align-center\">').text(item.a),
+            $('<td class=\"align-center\">').text(item.s),
+            $('<td class=\"align-center\">').text(item.p),
+            $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
             $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');

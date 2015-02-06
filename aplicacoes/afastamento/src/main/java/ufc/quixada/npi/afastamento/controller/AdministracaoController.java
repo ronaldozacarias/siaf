@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
@@ -20,9 +21,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.Ranking;
+import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
+import ufc.quixada.npi.afastamento.service.RankingService;
+import ufc.quixada.npi.afastamento.service.ReservaService;
 
 
 @Controller
@@ -32,20 +38,50 @@ public class AdministracaoController {
 	@Inject
 	private ProfessorService professorService;
 	
-	/*@Inject
-	private PapelService papelService;
-
 	@Inject
-	private GenericService<Usuario> usuarioService;*/
-
+	private RankingService rankingService;
+	
 	@Inject
-	private PeriodoService periodoService;	
+	private PeriodoService periodoService;
+	
+	@Inject
+	private ReservaService reservaService;
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
 		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
 		return "admin/professores";
+	}
+	
+	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	public String getReservas(Model model) {
+		Periodo periodo = periodoService.getUltimoPeriodoEncerrado();
+		if(periodo != null) {
+			periodo = periodoService.getPeriodoPosterior(periodo);
+			if(periodo != null) {
+				periodo = periodoService.getPeriodoPosterior(periodo);
+				Ranking ranking = rankingService.getRanking(periodo);
+				model.addAttribute("ranking", ranking);
+			}
+		}
+		
+		return "admin/reservas";
+	}
+	
+	@RequestMapping(value = "/atualizar-ranking", method = RequestMethod.POST)
+	public String atualizarRanking(HttpServletRequest request, RedirectAttributes redirect) {
+		String[] status = request.getParameterValues("status");
+		for(String s : status) {
+			String[] valor = s.split("-");
+			Reserva reserva = reservaService.find(Reserva.class, Long.parseLong(valor[0]));
+			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
+			reserva.setStatus(statusReserva);
+			reservaService.update(reserva);
+		}
+		
+		redirect.addFlashAttribute("info", "Reservas atualizadas com sucesso.");
+		return "redirect:/administracao/reservas";
 	}
 
 	/*@RequestMapping(value = "/novo-professor", method = RequestMethod.GET)

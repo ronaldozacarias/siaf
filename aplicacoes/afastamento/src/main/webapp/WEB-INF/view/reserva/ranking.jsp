@@ -49,9 +49,11 @@
 					<tr>
 						<th>#</th>
 						<th>Nome</th>
-						<th>SE</th>
-						<th>SA</th>
-						<th>SS</th>
+						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres desde a contratação na UFC até o início do afastamento">T</span></th>
+						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres em que o docente já esteve afastado">A</span></th>
+						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres do afastamento reservado/solicitado. No caso de primeiro afastamento, a variável S terá valor dois (2)">S</span></th>
+						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres que faltam para o docente completar três (3) anos de contratação">P</span></th>
+						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres solicitados">SS</span></th>
 			            <th>Período</th>
 			            <th>Pontuação</th>
 					</tr>
@@ -65,16 +67,16 @@
 			<img id="img-load" alt="Carregando..." src="<c:url value="/resources/images/loading.gif" />" class="error"/>
 
 			<div id="legenda">
-				<label><span>SE:</span> Número de semestres desde a
-					contratação na UFC até o início do afastamento, iniciando no
-					primeiro semestre em que o solicitante teve disciplina alocada no
-					Campus Quixadá.</label>
-				<label><span>SA:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
-				<label><span>SS:</span> Número de semestres do afastamento reservado/solicitado.</label><br/>
-				<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Solicitação aceita e classificada dentro das vagas.</label><br/>
-				<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Classificado dentro das vagas.</label><br/>
-				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Não classificado dentro das vagas.</label><br/>
-				<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>: Solicitação encerrada.</label>
+				<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito (afastado)</label>
+				<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
+				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
+				<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label>
+				<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label><br/>
+				<label><span>Fórmula:</span> R = (T – A) / (5 x A + S + P)</label><br/>
+				<label><span>T:</span> Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá.</label><br/>
+				<label><span>A:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
+				<label><span>S:</span> Número de semestres do afastamento reservado/solicitado. (No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado).</label><br/>
+				<label><span>P:</span> Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).</label><br/>
 			</div>
 		</div>
 		

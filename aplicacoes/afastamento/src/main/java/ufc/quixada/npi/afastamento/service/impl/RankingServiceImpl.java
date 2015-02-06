@@ -37,6 +37,7 @@ public class RankingServiceImpl implements RankingService {
 	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		List<TuplaRanking> tuplaAtual = getRanking(periodo).getTuplas();
+		// Para cada período do tempo da reserva de cada solicitação, é verificado se a reserva está dentro das vagas para todos os períodos.
 		for(int i = 0; i < tuplaAtual.size(); i++) {
 			Periodo periodoInicio = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
 			Periodo periodoTermino = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
@@ -50,7 +51,13 @@ public class RankingServiceImpl implements RankingService {
 					}
 				}
 				if(!encontrou) {
-					tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
+					if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
+						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO);
+					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
+						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
+					} else {
+						tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
+					}
 				}
 				
 			}
@@ -62,7 +69,8 @@ public class RankingServiceImpl implements RankingService {
 	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
 		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
 		for(TuplaRanking tupla : tuplaRanking) {
-			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && 
+					!tupla.getStatus().equals(StatusTupla.CANCELADO) && !tupla.getStatus().equals(StatusTupla.CANCELADO_COM_PUNICAO)) {
 				result.add(tupla);
 			}
 		}
@@ -92,17 +100,18 @@ public class RankingServiceImpl implements RankingService {
 			tupla.setReserva(reserva);
 			tupla.setPeriodo(periodo);
 			tupla.setProfessor(reserva.getProfessor().getNome());
-			tupla.setSemestresSolicitados(getSemestresSolicitados(reserva));
-			tupla.setSemestresAtivos(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
+			tupla.setSs(getSemestresSolicitados(reserva));
+			tupla.setT(calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1);
-			tupla.setSemestresAfastados(getSemestresAfastados(reserva));
-			Float t = Float.valueOf(tupla.getSemestresAtivos());
-			Float a = Float.valueOf(tupla.getSemestresAfastados());
-			Float s = afastamentoService.getAfastamentosByProfessor(reserva.getProfessor()).isEmpty() ? 2 : Float.valueOf(tupla.getSemestresSolicitados());
+			tupla.setA(getSemestresAfastados(reserva));
+			Float t = Float.valueOf(tupla.getT());
+			Float a = Float.valueOf(tupla.getA());
+			Float s = a == 0.0 ? 2 : Float.valueOf(tupla.getSs());
+			tupla.setS(s.intValue());
 			Integer semContratacao = calculaSemestres(reserva.getProfessor().getAnoAdmissao(), reserva.getProfessor().getSemestreAdmissao(), 
 					reserva.getAnoInicio(), reserva.getSemestreInicio()) - 1;
 			Float p = semContratacao >= 6.0f ? 0.0f : (6.0f - semContratacao);
-			
+			tupla.setP(p.intValue());
 			Float pontuacao = (t - a) / (5.0f * a + s + p);
 			tupla.setPontuacao(pontuacao);
 			
@@ -138,24 +147,37 @@ public class RankingServiceImpl implements RankingService {
 		Collections.reverse(tuplas);
 		int vagas = periodo.getVagas();
 		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
+			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
+			if((tupla.getReserva().getStatus().equals(StatusReserva.ACEITO) && !periodo.equals(periodoInicio)) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
 				vagas--;
 			}
 		}
 		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
+			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
+			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+				if(!periodo.equals(periodoInicio)) {
+					tupla.setStatus(StatusTupla.ACEITO);
+				} else if(vagas > 0) {
+					tupla.setStatus(StatusTupla.ACEITO);
+					vagas--;
+				} else {
+					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
+				}
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
 				if(vagas > 0) {
 					tupla.setStatus(StatusTupla.CLASSIFICADO);
 					vagas--;
 				} else {
 					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
-				tupla.setStatus(StatusTupla.ACEITO);
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
 				tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
 				tupla.setStatus(StatusTupla.ENCERRADO);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
+				tupla.setStatus(StatusTupla.CANCELADO);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
+				tupla.setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
 			}
 		}
 		
@@ -170,11 +192,14 @@ public class RankingServiceImpl implements RankingService {
 	
 	private Integer getSemestresAfastados(Reserva reserva) {
 		List<Afastamento> afastamentos = afastamentoService.getAfastamentosAnteriores(reserva);
+		Periodo periodo = periodoService.getPeriodo(reserva.getAnoInicio(), reserva.getSemestreInicio());
 		Integer semestresAfastado = 0;
 		for(Afastamento afastamento : afastamentos) {
 			semestresAfastado =+ calculaSemestres(afastamento.getReserva().getAnoInicio(), afastamento.getReserva().getSemestreInicio(), 
 					afastamento.getReserva().getAnoTermino(), afastamento.getReserva().getSemestreTermino());
 		}
+		Integer punicao = reservaService.getReservasAnterioresComPunicao(reserva.getProfessor(), periodo).size();
+		semestresAfastado = semestresAfastado + punicao;
 		return semestresAfastado;
 	}
 	

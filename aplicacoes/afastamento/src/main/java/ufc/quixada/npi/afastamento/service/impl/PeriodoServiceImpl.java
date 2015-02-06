@@ -72,10 +72,8 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	}
 
 	@Override
-	public void updateVagas(int vagas) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("vagas", vagas);
-		periodoRepository.updateVagas("update Periodo p set vagas = :vagas where p.status = 'ABERTO'", params);
+	public Periodo getUltimoPeriodoEncerrado() {
+		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = 'ENCERRADO' order by ano DESC, semestre DESC", null, -1);
 	}
 
 }
