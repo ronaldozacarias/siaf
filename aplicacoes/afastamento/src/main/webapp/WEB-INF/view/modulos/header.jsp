@@ -11,9 +11,11 @@
     
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
-    		<li id="menu-ranking">
-    			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
-    		</li>
+    		<sec:authorize ifAnyGranted="ROLE_DOCENTE,ROLE_ADMIN_SIAF">
+	    		<li id="menu-ranking">
+	    			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
+	    		</li>
+	    	</sec:authorize>
     		<sec:authorize ifAnyGranted="ROLE_DOCENTE">
 	    		<li id="menu-add-reserva">
 	    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>

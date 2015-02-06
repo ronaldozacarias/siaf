@@ -82,6 +82,7 @@ div#content {
 	display: table;
 	float: left;
 	color: #7C7C7C;
+	margin-bottom: 50px;
 }
 
 div.title {
@@ -401,8 +402,7 @@ table#ranking {
 }
 
 #listaPeriodos {
-	margin-top: 15px;
-	margin-bottom: 100px;
+	margin-top: 20px;
 }
 #listaPeriodos .panel-heading {
 	background: #E8E8E5;
@@ -416,4 +416,19 @@ table#ranking {
 span#captcha-erro {
 	text-align: center;
 	color: #a94442;
+}
+
+footer {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+footer > img {
+	max-width: 100px;
+	margin-bottom: 10px;
+}
+
+footer > p {
+	margin-bottom: 0;
+	color: #7C7C7C;
 }

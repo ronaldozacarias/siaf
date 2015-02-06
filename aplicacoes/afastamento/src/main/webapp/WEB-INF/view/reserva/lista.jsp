@@ -70,7 +70,7 @@
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
 									<td>
-										<c:if test="${reserva.status eq 'ABERTO' or (reserva.status eq 'ACEITO' and periodo.status eq 'ABERTO')}">
+										<c:if test="${reserva.status eq 'ABERTO'}">
 											<a id="excluir" data-toggle="modal" data-target="#excluir-reserva" href="#" 
 												data-href="<c:url value="/reserva/${reserva.id}/excluir"></c:url>" 
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">

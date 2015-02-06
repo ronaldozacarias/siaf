@@ -56,7 +56,6 @@
 	                        <div class="controls" style="margin-top: 30px;">
 	                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Login">
 	                       	</div>
-	                    	<!-- <a id="esqueceu-senha" href="javascript:;" class="forget">Esqueceu a senha?</a> -->
 	                    </form:form>
 	                    
 	                    <!-- Recuperar senha form -->
@@ -82,6 +81,12 @@
 	    	</div> <!-- /.row -->
 	    </div> <!-- /.container -->
 	</section>
+	
+	<footer>
+		<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-campus.png" />">
+		<p>Universidade Federal do Ceará - Campus Quixadá.</p>
+		<p>Todos os direitos reservados.</p>
+	</footer>
 	
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>

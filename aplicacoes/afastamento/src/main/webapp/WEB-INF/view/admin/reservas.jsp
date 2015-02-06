@@ -16,7 +16,7 @@
 		<div class="title"> Gerenciar reservas : </div>
 		<span class="line"></span>
 			<c:if test="${not empty info}">
-				<div class="alert alert-success alert-dismissible" role="alert">
+				<div class="alert alert-success margin-top" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
@@ -24,7 +24,7 @@
 				</div>
 			</c:if>
 			<c:if test="${empty ranking}">
-				<div class="alert alert-warning" role="alert">
+				<div class="alert alert-warning margin-top" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>

@@ -52,7 +52,7 @@ public class ReservaController {
 		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		
-		return "reserva/ranking";
+		return Constants.PAGINA_RANKING;
 	}
 	
 	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +74,7 @@ public class ReservaController {
 		model.addAttribute("reserva", new Reserva());
 		model.addAttribute("professor", getProfessorLogado(session));
 		model.addAttribute("programa", Programa.values());
-		return "reserva/inclusao";
+		return Constants.PAGINA_INCLUIR_RESERVA;
 	}
 	
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
@@ -92,29 +92,29 @@ public class ReservaController {
 		redirect.addFlashAttribute("instituicao", instituicao);
 		
 		if(anoInicio == null || anoTermino == null || conceito == null || instituicao == null || instituicao.isEmpty()) {
-			redirect.addFlashAttribute("erro", "É necessário preencher todas as informações.");
-			return "redirect:/reserva/incluir";
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
 		
 		Periodo periodo = periodoService.getPeriodoAtual();
 		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
 		
 		if(diferenca < 2) {
-			redirect.addFlashAttribute("erro", "Sua solicitação está fora do prazo permitido.");
-			return "redirect:/reserva/incluir";
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
 		if((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO) && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
-			redirect.addFlashAttribute("erro", "O tempo máximo para mestrado ou pós-doutorado é de 4 semestres.");
-			return "redirect:/reserva/incluir";
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
 		if(programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
-			redirect.addFlashAttribute("erro", "O tempo máximo para doutorado é de 8 semestres.");
-			return "redirect:/reserva/incluir";
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
 		
 		if(reservaService.hasReservaEmAberto(getProfessorLogado(session))) {
-			redirect.addFlashAttribute("erro", "Já há uma solicitação de reserva em aberto.");
-			return "redirect:/reserva/incluir";
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_RESERVA_EM_ABERTO);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
 		
 		Reserva reserva = new Reserva();
@@ -130,9 +130,9 @@ public class ReservaController {
 		
 		reservaService.salvar(reserva);
 		
-		redirect.addFlashAttribute("info", "Reserva incluída com sucesso.");
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_INCLUIDA);
 		
-		return "redirect:/reserva/listar";
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
@@ -140,8 +140,7 @@ public class ReservaController {
 		Professor professor = getProfessorLogado(session);
 		model.addAttribute("reservas", reservaService.getReservasByProfessor(professor));
 		model.addAttribute("professor", professor);
-		model.addAttribute("periodo", periodoService.getPeriodoAtual());
-		return "reserva/lista";
+		return  Constants.PAGINA_LISTAR_RESERVA;
 	}
 	
 	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
@@ -149,12 +148,12 @@ public class ReservaController {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);
 		if(reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
-			redirect.addFlashAttribute("erro", "Você não tem permissão para excluir essa reserva");
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);
-			redirect.addFlashAttribute("info", "Reserva excluída com sucesso");
+			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
-		return "redirect:/reserva/listar";
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
 	private String getUsuarioLogado(HttpSession session) {

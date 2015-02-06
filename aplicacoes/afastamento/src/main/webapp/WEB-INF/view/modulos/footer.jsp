@@ -14,3 +14,9 @@
 <script src="<c:url value="/resources/js/bootstrap-datepicker.pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.maskedinput.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.validate.min.js" />"></script>
+
+<footer>
+	<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-campus.png" />">
+	<p>Universidade Federal do Ceará - Campus Quixadá.</p>
+	<p>Todos os direitos reservados.</p>
+</footer>

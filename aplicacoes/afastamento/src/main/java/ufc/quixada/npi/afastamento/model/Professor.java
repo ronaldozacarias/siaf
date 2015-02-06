@@ -49,9 +49,6 @@ public class Professor {
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.REMOVE)
 	private List<Reserva> reservas;
 
-	/*@OneToOne(cascade=CascadeType.REFRESH) 
-	private Usuario usuario;*/
-		
 	public String getCpf() {
 		return cpf;
 	}
@@ -123,14 +120,6 @@ public class Professor {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-
-	/*public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}*/
 
 	@Override
 	public int hashCode() {

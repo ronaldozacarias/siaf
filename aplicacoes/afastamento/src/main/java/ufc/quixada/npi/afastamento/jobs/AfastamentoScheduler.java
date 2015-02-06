@@ -2,6 +2,7 @@ package ufc.quixada.npi.afastamento.jobs;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,14 +12,19 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
+import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
+import br.ufc.quixada.npi.ldap.model.Constants;
+import br.ufc.quixada.npi.ldap.model.Usuario;
+import br.ufc.quixada.npi.ldap.service.UsuarioService;
 
 @Named
 @Configurable
@@ -33,6 +39,12 @@ public class AfastamentoScheduler {
 	
 	@Inject
 	private ReservaService reservaService;
+	
+	@Inject
+	private UsuarioService usuarioService;
+	
+	@Inject
+	private ProfessorService professorService;
 	
 	@Scheduled(cron = "0 0 0 1/1 * ?")
 	public void verificaEncerramentoPeriodo() {
@@ -67,7 +79,20 @@ public class AfastamentoScheduler {
 				}
 			}
 		}
+		adicionaNovosProfessor();
 		
+	}
+	
+	private void adicionaNovosProfessor() {
+		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.BASE_USUARIOS_TESTE, Constants.AFFILIATION_DOCENTE);
+		for(Usuario usuario : usuarios) {
+			Professor professor = professorService.getByCpf(usuario.getCpf());
+			if(professor == null) {
+				professor = new Professor();
+				professor.setCpf(usuario.getCpf());
+				professorService.save(professor);
+			}
+		}
 	}
 
 }

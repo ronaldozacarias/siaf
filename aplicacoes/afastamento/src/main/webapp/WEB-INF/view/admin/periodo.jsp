@@ -135,35 +135,37 @@
 						</div>
 				</c:if>
 			</div>
+		
+			<div id="listaPeriodos">
+			    <div class="panel-group" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span> Veja todos os periodos</a>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse">
+							<div>
+								<table id="periodos" class="table table-striped">
+									<thead>
+										<tr class="afas-tr-left">
+								               <th data-column-id="ano" data-order="asc" data-align="center">Ano</th>
+								               <th data-column-id="semestre" data-order="asc" data-align="center">Semestre</th>
+								               <th data-column-id="vagas" data-align="center">Vagas</th>
+								               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
+								           </tr>
+								       </thead>
+								</table>
+							</div>
+			            </div>
+			        </div>
+				</div>
+			</div>
 		</div>
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>
 
-	<div id="listaPeriodos" class="container">
-	    <div class="panel-group" id="accordion">
-	        <div class="panel panel-default">
-	            <div class="panel-heading">
-	                <h4 class="panel-title">
-	                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span>Veja todos os periodos</a>
-	                </h4>
-	            </div>
-	            <div id="collapseOne" class="panel-collapse collapse">
-					<div>
-						<table id="periodos" class="table table-striped">
-							<thead>
-								<tr class="afas-tr-left">
-						               <th data-column-id="ano" data-order="asc" data-align="center">Ano</th>
-						               <th data-column-id="semestre" data-order="asc" data-align="center">Semestre</th>
-						               <th data-column-id="vagas" data-align="center">Vagas</th>
-						               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
-						           </tr>
-						       </thead>
-						</table>
-					</div>
-	            </div>
-	        </div>
-		</div>
-	</div>
+	
 
 	<script type="text/javascript">
 		getPeriodos();
