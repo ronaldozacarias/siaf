@@ -1,7 +1,80 @@
 $(document).ready(function() {
 	
+	var defaults = {
+		    mode: 'inline', 
+		    toggle: 'manual',
+		    showbuttons: false,
+		    onblur: 'ignore',
+		    inputclass: 'input-small',
+		    savenochange: true,
+		    success: function() {
+		        return false;
+		    }
+		};
+		$.extend($.fn.editable.defaults, defaults);
+
+		
+	$(".anoEdit ").editable({
+	    title: 'Ano de Admissão'
+	});
+
+	$(".semestreEdit" ).editable({
+	    title: 'Semestre de Admissão',
+	    type: 'select',
+	    source: [
+	        {value: 1, text: '1'},
+	        {value: 2, text: '2'},
+	    ]
+	});	
+	
+	$('#professores').on('click', '.edit', function(){
+		$("#contentProfessores td.editProf").css("width", "260px");
+	    $('#professores').find('.editable-open').editable('hide');
+	    $('#professores').find('.salvar').removeClass( "show" ).addClass('hide');
+	    $('#professores').find('.edit').show();
+	    $(this).hide().siblings('.salvar').removeClass( "hide" ).addClass('show');
+	    $(this).closest('tr').find('.editable').editable('show');
+	});	
+
+	$('#professores').on('click', '.salvar', function() {
+		$("#contentProfessores td.editProf").css("width", "50px");
+
+	    var $btn = $(this);
+
+	    var id = $btn.data("id");
+		var semestre = $( "select option:selected" ).val();
+		var ano = $("input").val();
+		
+		alert(id + " = id " + ano + " = ano " + semestre + " = semestre");
+
+		$.ajax({
+			url: '/siaf/administracao/admissao',
+			type: "POST",
+			dataType: "html",
+			data : {
+				"id" : id,
+				"ano" : ano,
+				"semestre" : semestre,
+			},
+			success: function(result) {
+				showMessage(result);
+			},
+			error: function(error) {
+			}		
+		});
+
+		
+	    $btn.closest('tr').find('.editable').editable('hide');
+	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
+	});	
+	
+	
 	$('[data-toggle="tooltip"]').tooltip();
 	
+	function showMessage(result) {
+		alert("ssssssssss");
+		$("#message").html($(result).find("#message"));
+	}
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,

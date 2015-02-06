@@ -18,7 +18,7 @@
 		<div class="title"> Professores : </div>
 		<span class="line"></span>
 		
-			<div class="container">
+			<div class="container" id="message">
 				<c:if test="${not empty erro}">
 						<div class="alert alert-danger alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert">
@@ -46,17 +46,24 @@
 				               <th id="orderName">Nome</th>
 				               <th>E-mail</th>
 				               <th>Admisão</th>
+				               <th></th>
 				               <!-- <th>Status</th> -->
 				           </tr>
 				       </thead>
-				       <tbody>
+				       <tbody id="contentProfessores">
 						<c:forEach items="${professores}" var="professor" varStatus="count">
 					           <tr>
 					               <td>${count.count}</td>
 					               <td>${professor.siape}</td>
 					               <td>${professor.nome}</td>
 					               <td>${professor.email}</td>
-					               <td>${professor.anoAdmissao}.${professor.semestreAdmissao}</td>
+					               <td class="editProf" style="width: 10px;">
+					        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit">${professor.semestreAdmissao}</span>
+									</td> 
+									<td class="editAcao" style="width: 40px;">
+					    	           	<button class="btn btn-success edit"><i class="fa fa-pencil "></i></button>
+						                <button class="btn btn-primary salvar hide" data-id="${professor.id}">salvar</button>
+									</td>
 					               <%-- <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td> --%>
 					           </tr>
 						</c:forEach>
