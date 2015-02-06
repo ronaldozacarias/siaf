@@ -16,26 +16,26 @@ public class ProfessorEntityListener {
 	
 	@PostLoad
 	public void loadProfessor(Professor professor) {
-		@SuppressWarnings("resource")
-		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
-		Usuario usuario = usuarioService.getByCpf(Constants.BASE_USUARIOS_TESTE, professor.getCpf());
-		
-		professor.setNome(usuario.getNome());
-		professor.setEmail(usuario.getEmail());
-		professor.setDataNascimento(usuario.getNascimento());
-		professor.setSiape(usuario.getSiape());
-		
-		Date admissao = null;
-		Date saida = null;
-		for(Affiliation affiliation : usuario.getAffiliations()) {
-			if(Constants.AFFILIATION_DOCENTE.equals(affiliation.getNome())) {
-				admissao = affiliation.getDataEntrada();
-				saida = affiliation.getDataSaida();
-			}
-		}
-		professor.setDataAdmissao(admissao);
-		professor.setDataSaida(saida);
+//		@SuppressWarnings("resource")
+//		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
+//		Usuario usuario = usuarioService.getByCpf(Constants.BASE_USUARIOS_TESTE, professor.getCpf());
+//		
+//		professor.setNome(usuario.getNome());
+//		professor.setEmail(usuario.getEmail());
+//		professor.setDataNascimento(usuario.getNascimento());
+//		professor.setSiape(usuario.getSiape());
+//		
+//		Date admissao = null;
+//		Date saida = null;
+//		for(Affiliation affiliation : usuario.getAffiliations()) {
+//			if(Constants.AFFILIATION_DOCENTE.equals(affiliation.getNome())) {
+//				admissao = affiliation.getDataEntrada();
+//				saida = affiliation.getDataSaida();
+//			}
+//		}
+//		professor.setDataAdmissao(admissao);
+//		professor.setDataSaida(saida);
 	}
 
 }

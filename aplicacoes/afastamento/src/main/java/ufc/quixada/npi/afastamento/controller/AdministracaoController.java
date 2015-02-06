@@ -218,6 +218,10 @@ public class AdministracaoController {
 		professor.setSemestreAdmissao(semestre);
 
 		professorService.update(professor);
+		
+		List<Professor> professors = p.find(Professor.class);
+		model.addAttribute("professores", professors);
+		model.addAttribute("info", "Data de admissão do Prof(a) " + professor.getNome() + " atualizado com sucesso");
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}

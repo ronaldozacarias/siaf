@@ -60,10 +60,13 @@
 					               <td class="editProf" style="width: 10px;">
 					        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit">${professor.semestreAdmissao}</span>
 									</td> 
-									<td class="editAcao" style="width: 40px;">
-					    	           	<button class="btn btn-success edit"><i class="fa fa-pencil "></i></button>
-						                <button class="btn btn-primary salvar hide" data-id="${professor.id}">salvar</button>
-									</td>
+									<td class="editAcao" style="width: 40px;" align="right">
+					    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>
+					    	           	<div class="submenu options${professor.id} hide">
+							                <button class="btn salvar" data-id="${professor.id}">salvar</button>
+						    	           	<button class="btn cancel" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
+					    	           	</div>
+					    	        </td>
 					               <%-- <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td> --%>
 					           </tr>
 						</c:forEach>

@@ -15,12 +15,16 @@ $(document).ready(function() {
 
 		
 	$(".anoEdit ").editable({
-	    title: 'Ano de Admissão'
+	    title: 'Ano de Admissão',
+    	emptytext : '',
 	});
 
 	$(".semestreEdit" ).editable({
 	    title: 'Semestre de Admissão',
 	    type: 'select',
+	    emptytext : '',
+	    inputclass: 'selectpicker',
+	    value: 1,
 	    source: [
 	        {value: 1, text: '1'},
 	        {value: 2, text: '2'},
@@ -28,16 +32,27 @@ $(document).ready(function() {
 	});	
 	
 	$('#professores').on('click', '.edit', function(){
-		$("#contentProfessores td.editProf").css("width", "260px");
+	    var $btn = $(this);
+	    var id = $btn.data("id");
+
+	    $("#contentProfessores td.editProf").css("width", "160px");
+		$("#contentProfessores td.editAcao").css("width", "120px");
+
 	    $('#professores').find('.editable-open').editable('hide');
-	    $('#professores').find('.salvar').removeClass( "show" ).addClass('hide');
+	    $('#professores').find('.options' +id).removeClass( "show" ).addClass('hide');
 	    $('#professores').find('.edit').show();
-	    $(this).hide().siblings('.salvar').removeClass( "hide" ).addClass('show');
+	    $(this).hide().siblings('.options' +id).removeClass( "hide" ).addClass('show');
 	    $(this).closest('tr').find('.editable').editable('show');
+	    
+	    $('select').selectpicker({}); 
+	    $('input').attr("size", "4");
+	    $('input').mask('9999', {placeholder:" "});
+	    $('input').attr("placeholder", "Ano");
 	});	
 
 	$('#professores').on('click', '.salvar', function() {
 		$("#contentProfessores td.editProf").css("width", "50px");
+		$("#contentProfessores td.editAcao").css("width", "40px");
 
 	    var $btn = $(this);
 
@@ -45,8 +60,6 @@ $(document).ready(function() {
 		var semestre = $( "select option:selected" ).val();
 		var ano = $("input").val();
 		
-		alert(id + " = id " + ano + " = ano " + semestre + " = semestre");
-
 		$.ajax({
 			url: '/siaf/administracao/admissao',
 			type: "POST",
@@ -65,15 +78,24 @@ $(document).ready(function() {
 
 		
 	    $btn.closest('tr').find('.editable').editable('hide');
-	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
+	    $("options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
+//	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
+	});	
+	$('#professores').on('click', '.cancel', function() {
+		$("#contentProfessores td.editProf").css("width", "50px");
+		$("#contentProfessores td.editAcao").css("width", "40px");
+	    var $btn = $(this);
+	    var id = $btn.data("id");
+	    $(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
+	    $btn.closest('tr').find('.editable').editable('hide');
+//	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	});	
 	
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	
 	function showMessage(result) {
-		alert("ssssssssss");
-		$("#message").html($(result).find("#message"));
+		$("#wrapper").html($(result).find("#wrapper"));
 	}
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
