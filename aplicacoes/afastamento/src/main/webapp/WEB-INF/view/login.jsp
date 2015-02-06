@@ -48,8 +48,9 @@
 	                            	<input type="password" name="j_password" id="key" class="form-control" placeholder="senha" required="required" style="width: 100% !important">
 	                            </div>
 	                        </div>
-	                        <div class="form-group">
-	                            <div id="captcha-login" class="col-sm-6">
+	                        <div id="div-captcha-erro" class="form-group">
+	                        	<div class="col-sm-8">
+		                            <div id="captcha-login" class="col-sm-6"></div>
 	                            </div>
 	                        </div>
 	                        
@@ -58,23 +59,6 @@
 	                       	</div>
 	                    </form:form>
 	                    
-	                    <!-- Recuperar senha form -->
-	                    <form:form role="form" method="post" servletRelativeAction="/configuracao/recuperar-senha" id="recuperar-senha-form" autocomplete="off" class="form-horizontal" style="display:none;">
-	                        <div class="form-group">
-	                            <label for="email" class="col-sm-2 control-label">email:</label>
-	                            <div class="col-sm-8">
-	                            	<input type="text" name="email" id="email" class="form-control" placeholder="email" required="required" style="width: 100% !important">
-	                            </div>
-	                        </div>
-	                        <div class="form-group">
-	                            <div id="captcha-recuperacao" class="col-sm-6">
-	                            </div>
-	                        </div>
-	                        <div class="controls" style="margin-top: 30px;">
-	                       		<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Recuperar">
-	                       	</div>
-	                        <a id="retorna-login" href="javascript:;" class="forget">Login</a>
-	                    </form:form>
 	                    <hr>
 	        	    </div>
 	    		</div> <!-- /.col-xs-12 -->

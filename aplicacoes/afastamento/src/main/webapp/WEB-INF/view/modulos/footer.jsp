@@ -17,6 +17,6 @@
 
 <footer>
 	<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-campus.png" />">
-	<p>Universidade Federal do Ceará - Campus Quixadá.</p>
-	<p>Todos os direitos reservados.</p>
+	<p>Universidade Federal do Ceará</p>
+	<p>Campus Quixadá</p>
 </footer>
