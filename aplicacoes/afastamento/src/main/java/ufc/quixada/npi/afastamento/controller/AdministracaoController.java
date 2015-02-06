@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufc.quixada.npi.service.GenericService;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Ranking;
@@ -41,6 +42,9 @@ public class AdministracaoController {
 	private ProfessorService professorService;
 	
 	@Inject
+	private GenericService<Professor> p;
+	
+	@Inject
 	private RankingService rankingService;
 	
 	@Inject
@@ -51,7 +55,7 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = professorService.findAtivos();
+		List<Professor> professors = p.find(Professor.class);
 		model.addAttribute("professores", professors);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
@@ -200,5 +204,23 @@ public class AdministracaoController {
 		
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
+	
+	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
+	public String listarPeriodosq(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
+
+		if (id == null || ano == null || semestre == null) {
+			model.addAttribute("erro", "Dados invalidos");
+			return Constants.PAGINA_LISTAR_PROFESSORES;
+		}
+		
+		Professor professor = professorService.find(Professor.class, id);
+		professor.setAnoAdmissao(ano);
+		professor.setSemestreAdmissao(semestre);
+
+		professorService.update(professor);
+
+		return Constants.PAGINA_LISTAR_PROFESSORES;
+	}
+	
 
 }
