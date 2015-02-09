@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.joda.time.LocalDate;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufc.quixada.npi.service.GenericService;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Ranking;
@@ -42,9 +42,6 @@ public class AdministracaoController {
 	private ProfessorService professorService;
 	
 	@Inject
-	private GenericService<Professor> p;
-	
-	@Inject
 	private RankingService rankingService;
 	
 	@Inject
@@ -55,7 +52,7 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = p.find(Professor.class);
+		List<Professor> professors = professorService.findAll();
 		model.addAttribute("professores", professors);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
@@ -76,6 +73,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/atualizar-ranking", method = RequestMethod.POST)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public String atualizarRanking(HttpServletRequest request, RedirectAttributes redirect) {
 		String[] status = request.getParameterValues("status");
 		for(String s : status) {
@@ -106,7 +104,7 @@ public class AdministracaoController {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		
 		if(!notNull(periodo)){
-			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
+			model.addAttribute("message", "Período " + ano + "." + semestre + " não está cadastrado.");
 			return Constants.PAGINA_LISTAR_PERIODOS;
 		} else if (periodo.getStatus().equals(StatusPeriodo.ENCERRADO)) {
 			model.addAttribute("permitirUpdate", false);
@@ -152,6 +150,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoEmAtualizacao, BindingResult result) {
 
 		boolean permitirUpdateEncerramento = false;
@@ -206,10 +205,11 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public String listarPeriodosq(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
 
 		if (id == null || ano == null || semestre == null) {
-			model.addAttribute("erro", "Dados invalidos");
+			model.addAttribute(Constants.ERRO, "Dados inválidos");
 			return Constants.PAGINA_LISTAR_PROFESSORES;
 		}
 		

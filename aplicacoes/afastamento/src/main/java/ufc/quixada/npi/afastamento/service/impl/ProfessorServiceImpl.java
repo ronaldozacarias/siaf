@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.enumeration.QueryType;
@@ -51,6 +53,12 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
 		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where cpf = :cpf", params, -1);
+	}
+
+	@Override
+	@Cacheable("professores")
+	public List<Professor> findAll() {
+		return find(Professor.class);
 	}
 
 }

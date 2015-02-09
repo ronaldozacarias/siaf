@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
@@ -21,6 +23,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	private GenericRepository<Periodo> periodoRepository;
 
 	@Override
+	@Cacheable("periodo")
 	public Periodo getPeriodo(Integer ano, Integer semestre) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("ano", ano);

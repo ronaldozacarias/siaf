@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.PostLoad;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.ufc.quixada.npi.ldap.model.Affiliation;
@@ -15,6 +16,7 @@ import br.ufc.quixada.npi.ldap.service.UsuarioService;
 public class ProfessorEntityListener {
 	
 	@PostLoad
+	@Cacheable("loadProfessor")
 	public void loadProfessor(Professor professor) {
 		@SuppressWarnings("resource")
 		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");

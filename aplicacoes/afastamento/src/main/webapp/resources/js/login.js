@@ -32,10 +32,7 @@ $(document).ready(function() {
             j_password:{
                 required:"Campo obrigatório",
             }
-        },
-        submitHandler: function(form) {
-        	alert('submit');
-    	}
+        }
     });
 	
 	$('#login-form').submit(function(){
