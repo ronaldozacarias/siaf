@@ -53,7 +53,7 @@
 					<c:if test="${permitirUpdate}">
 
 						<div id="update-periodo" class="panel panel-default">
-							<div id="periodo-heading" class="panel-heading"><strong>Periodo: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
+							<div id="periodo-heading" class="panel-heading"><strong>Período: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
 
 							<div id="periodo-body" class="panel-body">
 								<form:form id="form-periodo" commandName="periodo" action="/siaf/administracao/update-periodo" method="POST" >
@@ -109,7 +109,7 @@
 							<input type="hidden" id="chave" value="${periodo.id }"/>
 							<fmt:formatDate var="data" value="${periodo.encerramento }" pattern="dd/MM/yyyy" />
 
-							<div id="periodo-heading" class="panel-heading"><strong>Periodo: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
+							<div id="periodo-heading" class="panel-heading"><strong>Período: <label class="value-label">${periodo.ano }.${periodo.semestre }</label></strong></div>
 
 							<div id="periodo-body" class="panel-body">
 									<div class="periodo">
@@ -141,7 +141,7 @@
 			        <div class="panel panel-default">
 			            <div class="panel-heading">
 			                <h4 class="panel-title">
-			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span> Veja todos os periodos</a>
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span> Veja todos os períodos</a>
 			                </h4>
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse">

@@ -9,8 +9,6 @@ public interface ProfessorService extends GenericService<Professor>{
 	
 	List<Professor> findAtivos();
 	
-	List<Professor> findAll();
-	
 	Professor getByCpf(String cpf);
 
 }

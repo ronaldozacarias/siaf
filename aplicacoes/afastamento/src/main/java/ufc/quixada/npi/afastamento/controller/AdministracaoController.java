@@ -32,8 +32,6 @@ import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.util.Constants;
 
-
-
 @Controller
 @RequestMapping("administracao")
 public class AdministracaoController {
@@ -52,8 +50,8 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = professorService.findAll();
-		model.addAttribute("professores", professors);
+		List<Professor> professores = professorService.findAtivos();
+		model.addAttribute("professores", professores);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 	
@@ -141,8 +139,7 @@ public class AdministracaoController {
 		return object != null ?  true : false;
 	}
 	
-	//Verifica utilidade?
-	private boolean isEnceramentoValido(Date date) {
+	private boolean isEncerramentoValido(Date date) {
 		LocalDate now = new LocalDate();
 		LocalDate enceramento = notNull(date) ? new LocalDate(date): null;
 
@@ -151,7 +148,7 @@ public class AdministracaoController {
 
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
-	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoEmAtualizacao, BindingResult result) {
+	public String atualizarPeriodo(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoEmAtualizacao, BindingResult result) {
 
 		boolean permitirUpdateEncerramento = false;
 		boolean permitirUpdateVagas = false;
@@ -176,7 +173,7 @@ public class AdministracaoController {
 		model.addAttribute("permitirUpdateVagas", permitirUpdateVagas);
 		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
 
-		if(!isEnceramentoValido(periodoEmAtualizacao.getEncerramento())){
+		if(!isEncerramentoValido(periodoEmAtualizacao.getEncerramento())){
 			periodoEmAtualizacaoDoBanco.setEncerramento(periodoEmAtualizacao.getEncerramento());
 			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
 			model.addAttribute("errorData", Constants.MSG_DATA_FUTURA);
@@ -198,7 +195,7 @@ public class AdministracaoController {
 		if(permitirUpdateEncerramento || permitirUpdateVagas){
 			periodoService.update(periodoEmAtualizacaoDoBanco);
 			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
-			model.addAttribute(Constants.INFO,"Periodo " +periodoEmAtualizacaoDoBanco.getAno() + "." + periodoEmAtualizacaoDoBanco.getSemestre() + " atualizado com sucesso!");
+			model.addAttribute(Constants.INFO,"Período " +periodoEmAtualizacaoDoBanco.getAno() + "." + periodoEmAtualizacaoDoBanco.getSemestre() + " atualizado com sucesso");
 		}
 		
 		return Constants.PAGINA_LISTAR_PERIODOS;
@@ -206,7 +203,7 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
-	public String listarPeriodosq(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
+	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
 
 		if (id == null || ano == null || semestre == null) {
 			model.addAttribute(Constants.ERRO, "Dados inválidos");
@@ -218,6 +215,10 @@ public class AdministracaoController {
 		professor.setSemestreAdmissao(semestre);
 
 		professorService.update(professor);
+		
+		List<Professor> professors = professorService.findAtivos();
+		model.addAttribute("professores", professors);
+		model.addAttribute("info", "Data de admissão do Prof(a) " + professor.getNome() + " atualizado com sucesso");
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}

@@ -26,6 +26,7 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	private GenericRepository<Professor> professorRepository;
 	
 	@Override
+	@Cacheable("professores")
 	public List<Professor> findAtivos() {
 		List<Professor> professores = professorRepository.find(Professor.class);
 		List<Professor> ativos = new ArrayList<Professor>();
@@ -53,12 +54,6 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", cpf);
 		return professorRepository.findFirst(QueryType.JPQL, "select p from Professor p where cpf = :cpf", params, -1);
-	}
-
-	@Override
-	@Cacheable("professores")
-	public List<Professor> findAll() {
-		return find(Professor.class);
 	}
 
 }

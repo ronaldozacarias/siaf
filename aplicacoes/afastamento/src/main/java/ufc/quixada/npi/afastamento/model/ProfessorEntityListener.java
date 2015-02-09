@@ -27,7 +27,7 @@ public class ProfessorEntityListener {
 		professor.setEmail(usuario.getEmail());
 		professor.setDataNascimento(usuario.getNascimento());
 		professor.setSiape(usuario.getSiape());
-		
+	
 		Date admissao = null;
 		Date saida = null;
 		for(Affiliation affiliation : usuario.getAffiliations()) {
