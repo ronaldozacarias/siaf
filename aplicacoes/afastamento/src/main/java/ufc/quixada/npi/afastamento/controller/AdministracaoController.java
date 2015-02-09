@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufc.quixada.npi.service.GenericService;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Ranking;
@@ -40,10 +39,7 @@ public class AdministracaoController {
 	
 	@Inject
 	private ProfessorService professorService;
-	
-	@Inject
-	private GenericService<Professor> p;
-	
+
 	@Inject
 	private RankingService rankingService;
 	
@@ -55,7 +51,7 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = p.find(Professor.class);
+		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
@@ -219,7 +215,7 @@ public class AdministracaoController {
 
 		professorService.update(professor);
 		
-		List<Professor> professors = p.find(Professor.class);
+		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
 		model.addAttribute("info", "Data de admissão do Prof(a) " + professor.getNome() + " atualizado com sucesso");
 

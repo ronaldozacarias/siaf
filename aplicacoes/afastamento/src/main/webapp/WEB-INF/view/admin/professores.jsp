@@ -62,7 +62,7 @@
 									</td> 
 									<td class="editAcao" style="width: 40px;" align="right">
 					    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>
-					    	           	<div class="submenu options${professor.id} hide">
+					    	           	<div class="options options${professor.id} hide">
 							                <button class="btn salvar" data-id="${professor.id}">salvar</button>
 						    	           	<button class="btn cancel" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
 					    	           	</div>

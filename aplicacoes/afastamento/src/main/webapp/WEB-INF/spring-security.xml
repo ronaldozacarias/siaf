@@ -10,14 +10,13 @@
   
 	<http auto-config="true">
 		<access-denied-handler error-page="/403" />
-		<intercept-url pattern="/administracao/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
  		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
  		<intercept-url pattern="/reserva/ranking/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
  		<intercept-url pattern="/reserva/ranking.json/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
  		<intercept-url pattern="/reserva/**" access="ROLE_DOCENTE" />
- 		
+		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN_SIAF" />
  		<intercept-url pattern="/configuracao/recuperar-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
  		<intercept-url pattern="/configuracao/recuperacao/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
  		<intercept-url pattern="/configuracao/nova-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
@@ -29,7 +28,6 @@
  	</http>
  	
  	<beans:bean id="ldapAuthenticationProvider" class="br.ufc.quixada.npi.ldap.service.LdapAuthenticationProvider"></beans:bean>
-	
  
 		<!-- Configured in application-security.xml-->
 		<authentication-manager alias="authenticationManager">

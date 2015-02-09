@@ -34,6 +34,7 @@ $(document).ready(function() {
 	$('#professores').on('click', '.edit', function(){
 	    var $btn = $(this);
 	    var id = $btn.data("id");
+		$('.options').removeClass( "show" ).addClass('hide');
 
 	    $("#contentProfessores td.editProf").css("width", "160px");
 		$("#contentProfessores td.editAcao").css("width", "120px");
@@ -82,6 +83,7 @@ $(document).ready(function() {
 //	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	});	
 	$('#professores').on('click', '.cancel', function() {
+
 		$("#contentProfessores td.editProf").css("width", "50px");
 		$("#contentProfessores td.editAcao").css("width", "40px");
 	    var $btn = $(this);
