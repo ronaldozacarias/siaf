@@ -16,7 +16,7 @@
 		<div class="title"> Gerenciar reservas : </div>
 		<span class="line"></span>
 			<c:if test="${not empty info}">
-				<div class="alert alert-success margin-top" role="alert">
+				<div class="alert alert-info margin-top" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
@@ -87,7 +87,7 @@
 					</div>
 					<c:if test="${atualizar }">
 						<div class="controls">
-							<input name="reservar" type="submit" class="btn btn-primary" value="Atualizar Ranking" />
+							<input name="reservar" type="submit" class="btn btn-siaf" value="Atualizar Ranking" />
 						</div>
 					</c:if>
 				</form>

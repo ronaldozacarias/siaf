@@ -3,6 +3,7 @@ package ufc.quixada.npi.afastamento.service.impl;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -77,6 +78,11 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	@Override
 	public Periodo getUltimoPeriodoEncerrado() {
 		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = 'ENCERRADO' order by ano DESC, semestre DESC", null, -1);
+	}
+
+	@Override
+	public List<Periodo> getAll() {
+		return periodoRepository.find(QueryType.JPQL, "from Periodo order by ano ASC, semestre ASC", null);
 	}
 
 }
