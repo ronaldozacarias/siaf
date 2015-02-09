@@ -23,7 +23,7 @@
 				</div>
 			</c:if>
 			<c:if test="${not empty info}">
-				<div class="alert alert-success alert-dismissible" role="alert">
+				<div class="alert alert-info alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
@@ -34,6 +34,9 @@
 			<form id="minhasReservas" class="form-horizontal">
 				<div class="title"> Suas reservas : </div>
 				<span class="line"></span>
+				<div>
+					<a href="<c:url value="/reserva/incluir" />" class="btn btn-siaf">Incluir reserva</a>
+				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
 					<div class="col-sm-4">

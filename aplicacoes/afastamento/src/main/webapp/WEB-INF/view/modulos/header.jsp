@@ -17,19 +17,16 @@
 	    		</li>
 	    	</sec:authorize>
     		<sec:authorize ifAnyGranted="ROLE_DOCENTE">
-	    		<li id="menu-add-reserva">
-	    			<a class="" href="<c:url value="/reserva/incluir" />"><span>Incluir Reserva</span></a>
-	    		</li>
 	    		<li id="menu-minhas-reservas">
 	    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
 	    		</li>
 	    	</sec:authorize>
     		<sec:authorize ifAnyGranted="ROLE_ADMIN_SIAF">
 	    		<li id="menu-periodos">
-	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
+	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Gerenciar Períodos</span></a>
 	    		</li>
 	    		<li id="menu-reservas">
-	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Reservas</span></a>
+	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Gerenciar Reservas</span></a>
 	    		</li>
 	    		<li id="menu-professores">
 	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>

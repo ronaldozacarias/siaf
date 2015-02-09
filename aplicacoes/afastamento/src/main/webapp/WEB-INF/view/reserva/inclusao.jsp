@@ -85,8 +85,7 @@
 				</div>
 				
 				<div class="controls">
-					<input name="reservar" type="submit" class="btn btn-primary" value="Reservar" />
-					<a href="<c:url value="/afastamento/ranking"></c:url>" class="btn btn-default">Cancelar</a>
+					<input name="reservar" type="submit" class="btn btn-siaf" value="Reservar" />
 				</div>
 			</form:form>
 		</div>
@@ -95,7 +94,7 @@
 		
 	</div>
 	<script type="text/javascript">
-		$('#menu-add-reserva').addClass('active');
+		$('#menu-minhas-reservas').addClass('active');
 	</script>
 </body>
 </html>

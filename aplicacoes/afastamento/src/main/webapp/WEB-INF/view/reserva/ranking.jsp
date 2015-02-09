@@ -22,7 +22,7 @@
 				</div>
 			</c:if>
 			<c:if test="${not empty info}">
-				<div class="alert alert-success alert-dismissible" role="alert">
+				<div class="alert alert-info alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>

@@ -62,5 +62,7 @@ public class Constants {
 	
 	public static final String MSG_DATA_FUTURA = "Informe uma data futura.";
 	
+	public static final String MSG_ERRO_ATUALIZAR_PERIODO = "Ocorreu um erro na atualização do período.";
+	
 	
 }

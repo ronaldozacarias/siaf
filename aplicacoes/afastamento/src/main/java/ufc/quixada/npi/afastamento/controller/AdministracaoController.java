@@ -1,5 +1,7 @@
 package ufc.quixada.npi.afastamento.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.joda.time.LocalDate;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +33,13 @@ import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.util.Constants;
 
-
-
 @Controller
 @RequestMapping("administracao")
 public class AdministracaoController {
 	
 	@Inject
 	private ProfessorService professorService;
-
+	
 	@Inject
 	private RankingService rankingService;
 	
@@ -51,8 +51,8 @@ public class AdministracaoController {
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professors = professorService.findAtivos();
-		model.addAttribute("professores", professors);
+		List<Professor> professores = professorService.findAtivos();
+		model.addAttribute("professores", professores);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 	
@@ -72,6 +72,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/atualizar-ranking", method = RequestMethod.POST)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public String atualizarRanking(HttpServletRequest request, RedirectAttributes redirect) {
 		String[] status = request.getParameterValues("status");
 		for(String s : status) {
@@ -88,7 +89,7 @@ public class AdministracaoController {
 
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Periodo> periodos() {
-		return periodoService.find(Periodo.class);
+		return periodoService.getAll();
 	}
 	
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
@@ -102,7 +103,7 @@ public class AdministracaoController {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		
 		if(!notNull(periodo)){
-			model.addAttribute("message", "Periodo " + ano + "." + semestre + " não está cadastrado.");
+			model.addAttribute("message", "Período " + ano + "." + semestre + " não está cadastrado.");
 			return Constants.PAGINA_LISTAR_PERIODOS;
 		} else if (periodo.getStatus().equals(StatusPeriodo.ENCERRADO)) {
 			model.addAttribute("permitirUpdate", false);
@@ -110,7 +111,6 @@ public class AdministracaoController {
 			return Constants.PAGINA_LISTAR_PERIODOS;
 		}
 
-		boolean permitirUpdate = false;
 		boolean permitirUpdateEncerramento = false;
 		boolean permitirUpdateVagas = false;
 		
@@ -123,14 +123,9 @@ public class AdministracaoController {
 		if(periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)){
 			permitirUpdateVagas = true;
 		}
-				
-		if(permitirUpdateVagas || permitirUpdateEncerramento){
-			permitirUpdate = true;
-		}
 		
 		model.addAttribute("permitirUpdateVagas", 		 permitirUpdateVagas);
 		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
-		model.addAttribute("permitirUpdate", 			 permitirUpdate);
 		model.addAttribute("periodo", periodo);
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
@@ -139,73 +134,74 @@ public class AdministracaoController {
 		return object != null ?  true : false;
 	}
 	
-	//Verifica utilidade?
-	private boolean isEnceramentoValido(Date date) {
-		LocalDate now = new LocalDate();
-		LocalDate enceramento = notNull(date) ? new LocalDate(date): null;
-
-		return (enceramento.isAfter(now) || enceramento.isEqual(now)) ? true : false;
-	}
-
 	@RequestMapping(value = "/update-periodo", method = RequestMethod.POST)
-	public String listarPeriodos(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodoEmAtualizacao, BindingResult result) {
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	public String atualizarPeriodo(Model model, RedirectAttributes redirectAttributes, @Valid @ModelAttribute("periodo") Periodo periodo, BindingResult result) {
 
+		Date encerramento = periodo.getEncerramento();
+		Integer vagas = periodo.getVagas();
+		if(encerramento != null) {
+			try {
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				Date today;
+					today = format.parse(format.format(new Date()));
+				
+				if(encerramento.before(today)) {
+					model.addAttribute("periodo", periodo);
+					model.addAttribute("errorData", Constants.MSG_DATA_FUTURA);
+					return Constants.PAGINA_LISTAR_PERIODOS;
+				}
+			} catch (ParseException e) {
+				model.addAttribute("periodo", periodo);
+				model.addAttribute(Constants.ERRO, Constants.MSG_ERRO_ATUALIZAR_PERIODO);
+				return Constants.PAGINA_LISTAR_PERIODOS;
+			}
+		}
+		
+		if(vagas == null) {
+			vagas = 0;
+		}
+		
 		boolean permitirUpdateEncerramento = false;
 		boolean permitirUpdateVagas = false;
-		boolean permitirUpdate = false;
 
-		Periodo periodoEmAtualizacaoDoBanco = periodoService.find(Periodo.class, periodoEmAtualizacao.getId());
-		Periodo periodoSolicitacao = periodoService.getPeriodo(periodoEmAtualizacao.getAno()-1, periodoEmAtualizacao.getSemestre());	
+		periodo = periodoService.find(Periodo.class, periodo.getId());
 
-		if(periodoEmAtualizacaoDoBanco.getStatus().equals(StatusPeriodo.ABERTO)){
+		if(periodo.getStatus().equals(StatusPeriodo.ABERTO)){
 			permitirUpdateEncerramento = true;
 		}
 
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno() - 1, periodo.getSemestre());	
 		if(periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)){
 			permitirUpdateVagas = true;
 		}
 				
-		if(permitirUpdateVagas || permitirUpdateEncerramento){
-			permitirUpdate = true;
-		}
-		
-		model.addAttribute("permitirUpdate", permitirUpdate);
 		model.addAttribute("permitirUpdateVagas", permitirUpdateVagas);
 		model.addAttribute("permitirUpdateEncerramento", permitirUpdateEncerramento);
 
-		if(!isEnceramentoValido(periodoEmAtualizacao.getEncerramento())){
-			periodoEmAtualizacaoDoBanco.setEncerramento(periodoEmAtualizacao.getEncerramento());
-			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
-			model.addAttribute("errorData", Constants.MSG_DATA_FUTURA);
-			return Constants.PAGINA_LISTAR_PERIODOS;
-		}
-
-		if (result.hasErrors()) {
-			return Constants.PAGINA_LISTAR_PERIODOS;
-		}
-
 		if(permitirUpdateEncerramento){
-			periodoEmAtualizacaoDoBanco.setEncerramento(periodoEmAtualizacao.getEncerramento());
+			periodo.setEncerramento(encerramento);
 		}
 
 		if(permitirUpdateVagas){
-			periodoEmAtualizacaoDoBanco.setVagas(periodoEmAtualizacao.getVagas());
+			periodo.setVagas(vagas);
 		}
 			
 		if(permitirUpdateEncerramento || permitirUpdateVagas){
-			periodoService.update(periodoEmAtualizacaoDoBanco);
-			model.addAttribute("periodo", periodoEmAtualizacaoDoBanco);
-			model.addAttribute(Constants.INFO,"Periodo " +periodoEmAtualizacaoDoBanco.getAno() + "." + periodoEmAtualizacaoDoBanco.getSemestre() + " atualizado com sucesso!");
+			periodoService.update(periodo);
+			model.addAttribute("periodo", periodo);
+			model.addAttribute(Constants.INFO,"Período " +periodo.getAno() + "." + periodo.getSemestre() + " atualizado com sucesso.");
 		}
 		
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
 	
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	public String listarPeriodosq(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
 
 		if (id == null || ano == null || semestre == null) {
-			model.addAttribute("erro", "Dados invalidos");
+			model.addAttribute(Constants.ERRO, "Dados inválidos");
 			return Constants.PAGINA_LISTAR_PROFESSORES;
 		}
 		
@@ -217,7 +213,7 @@ public class AdministracaoController {
 		
 		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
-		model.addAttribute("info", "Data de admissão do Prof(a) " + professor.getNome() + " atualizado com sucesso");
+		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}

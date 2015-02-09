@@ -3,10 +3,13 @@ package ufc.quixada.npi.afastamento.service.impl;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.springframework.cache.annotation.Cacheable;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
@@ -21,6 +24,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	private GenericRepository<Periodo> periodoRepository;
 
 	@Override
+	@Cacheable("periodo")
 	public Periodo getPeriodo(Integer ano, Integer semestre) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("ano", ano);
@@ -74,6 +78,11 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	@Override
 	public Periodo getUltimoPeriodoEncerrado() {
 		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = 'ENCERRADO' order by ano DESC, semestre DESC", null, -1);
+	}
+
+	@Override
+	public List<Periodo> getAll() {
+		return periodoRepository.find(QueryType.JPQL, "from Periodo order by ano ASC, semestre ASC", null);
 	}
 
 }

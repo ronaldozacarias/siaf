@@ -20,7 +20,7 @@
 		
 			<div class="container" id="message">
 				<c:if test="${not empty erro}">
-						<div class="alert alert-danger alert-dismissible" role="alert">
+					<div class="alert alert-danger alert-dismissible margin-top" role="alert">
 						<button type="button" class="close" data-dismiss="alert">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
@@ -28,7 +28,7 @@
 					</div>
 				</c:if>
 				<c:if test="${not empty info}">
-					<div class="alert alert-success alert-dismissible" role="alert">
+					<div class="alert alert-info alert-dismissible margin-top" role="alert">
 						<button type="button" class="close" data-dismiss="alert">
 							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 						</button>
@@ -63,8 +63,8 @@
 									<td class="editAcao" style="width: 40px;" align="right">
 					    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>
 					    	           	<div class="options options${professor.id} hide">
-							                <button class="btn salvar" data-id="${professor.id}">salvar</button>
-						    	           	<button class="btn cancel" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
+							                <button class="btn salvar btn-primary" data-id="${professor.id}">salvar</button>
+						    	           	<button class="btn cancel btn-danger" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
 					    	           	</div>
 					    	        </td>
 					               <%-- <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td> --%>

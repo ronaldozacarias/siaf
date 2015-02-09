@@ -8,6 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Programa;
@@ -34,6 +36,7 @@ public class RankingServiceImpl implements RankingService {
 	private PeriodoService periodoService;
 
 	@Override
+	@Cacheable("visualizarRanking")
 	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		List<TuplaRanking> tuplaAtual = getRanking(periodo).getTuplas();
@@ -78,6 +81,7 @@ public class RankingServiceImpl implements RankingService {
 	}
 	
 	@Override
+	@Cacheable("ranking")
 	public Ranking getRanking(Periodo periodo) {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodo);
