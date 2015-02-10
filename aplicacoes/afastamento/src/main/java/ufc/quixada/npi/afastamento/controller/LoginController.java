@@ -18,11 +18,6 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping(value = "/l", method = RequestMethod.GET)
-	public String login2() {
-		return "l2";
-	}
-	
 	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
 	public String loginerror(Model model) {
 		model.addAttribute("erro", "Usuário e/ou senha inválidos");
