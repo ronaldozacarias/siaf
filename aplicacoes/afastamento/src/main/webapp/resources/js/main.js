@@ -487,7 +487,7 @@ function getPeriodos() {
 	});
 }
 
-function loadPeriodos(result, table) {
+function loadPeriodos(result) {
 	$("#periodos")
 		.bootgrid({
 			labels: {

@@ -9,6 +9,7 @@
 <link href="<c:url value="/resources/css/jquery.bootgrid.min.css" />" rel="stylesheet" />
 <link href="<c:url value="/resources/css/datepicker3.css"/>" rel="stylesheet">
 <link href="<c:url value="/resources/css/animate.css"/>" rel="stylesheet">
+<link href="<c:url value="/resources/css/hover-min.css" />" rel="stylesheet" media="all"/>
 <link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -58,7 +58,7 @@
 					               <td>${professor.nome}</td>
 					               <td>${professor.email}</td>
 					               <td class="editProf" style="width: 10px;">
-					        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit">${professor.semestreAdmissao}</span>
+					        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit" data-value="${professor.semestreAdmissao}">${professor.semestreAdmissao}</span>
 									</td> 
 									<td class="editAcao" style="width: 40px;" align="right">
 					    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>

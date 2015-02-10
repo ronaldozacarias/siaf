@@ -48,6 +48,8 @@
 		<jquery.maskedinput.version>1.3.1</jquery.maskedinput.version>
 		<jquery.validation.version>1.12.0</jquery.validation.version>
 		<dandelion.datatables.version>0.9.3</dandelion.datatables.version>
+		<font-awesome.version>4.3.0</font-awesome.version>
+		
 		
 		<commons.fileupload.version>1.3.1</commons.fileupload.version>
 		<commons.io.version>2.4</commons.io.version>
@@ -222,6 +224,12 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>x-editable-bootstrap</artifactId>
 			<version>1.5.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>${font-awesome.version}</version>
 		</dependency>
 
 		<!-- Dependência do Apache Common File -->

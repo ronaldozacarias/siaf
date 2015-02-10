@@ -1,4 +1,14 @@
 $(document).ready(function() {
+
+	$("span[for='key']").css({
+		margin : "-15px auto 0 auto",
+		padding: '0'
+	});
+
+	$("span[for='cpf']").css({
+		margin : "-15px auto 0 auto",
+		padding: '0',
+	 });
 	
 	var widget_login;
 	var widget_recuperacao;
@@ -23,7 +33,14 @@ $(document).ready(function() {
         errorElement: 'span',
         errorClass: 'help-block',
         errorPlacement: function(error, element) {
-            error.insertAfter(element.parent().children().last());
+        	if (element.attr("name") == "j_username") {
+        		error.insertAfter("#inputLogin");
+        	} else if (element.attr("name") == "j_password") {
+        		error.insertAfter("#inputSenha");
+        	} else {
+                error.insertAfter(element.parent().children().last());
+        	}
+        	
         },
         messages:{
         	j_username:{
@@ -32,10 +49,7 @@ $(document).ready(function() {
             j_password:{
                 required:"Campo obrigatório",
             }
-        },
-        submitHandler: function(form) {
-        	alert('submit');
-    	}
+        }
     });
 	
 	$('#login-form').submit(function(){

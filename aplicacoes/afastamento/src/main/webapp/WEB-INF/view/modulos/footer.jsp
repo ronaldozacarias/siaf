@@ -7,7 +7,6 @@
 <script src="<c:url value="/webjars/x-editable-bootstrap/1.5.1/js/bootstrap-editable.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-select.min.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.bootgrid.min.js" />"></script>
 <script src="<c:url value="/resources/js/main.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-datepicker.js" />"></script>
 <script src="<c:url value="/resources/js/moment.js" />"></script>
