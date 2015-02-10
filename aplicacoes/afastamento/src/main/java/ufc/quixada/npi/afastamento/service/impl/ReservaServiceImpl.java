@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
@@ -31,6 +34,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	private ProfessorService professorService;
 	
 	@Override
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public void salvar(Reserva reserva) {
 		int vagas = professorService.findAtivos().size();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
@@ -71,6 +75,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
+	@Cacheable("reservasByProfessor")
 	public List<Reserva> getReservasByProfessor(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", professor.getCpf());

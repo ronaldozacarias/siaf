@@ -433,7 +433,7 @@ function showPeriodo(result) {
 	$('#periodo-heading').addClass('animated tada');
 	$('#periodo-body').addClass('animated zoomIn');
 
-	$("#form-periodo").validate({
+	/*$("#form-periodo").validate({
         rules: {
             
         },
@@ -456,7 +456,7 @@ function showPeriodo(result) {
                 required:"Campo obrigatório",
             }
         }
-    });	
+    });*/	
 	
 	$("#viewPeriodo").show();
 }

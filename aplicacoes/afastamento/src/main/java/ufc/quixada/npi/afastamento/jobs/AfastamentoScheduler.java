@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -47,6 +48,7 @@ public class AfastamentoScheduler {
 	private ProfessorService professorService;
 	
 	@Scheduled(cron = "0 0 0 1/1 * ?")
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public void verificaEncerramentoPeriodo() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
@@ -79,11 +81,11 @@ public class AfastamentoScheduler {
 				}
 			}
 		}
-		adicionaNovosProfessor();
+		adicionaNovosProfessores();
 		
 	}
 	
-	private void adicionaNovosProfessor() {
+	private void adicionaNovosProfessores() {
 		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.BASE_USUARIOS_TESTE, Constants.AFFILIATION_DOCENTE);
 		for(Usuario usuario : usuarios) {
 			Professor professor = professorService.getByCpf(usuario.getCpf());
@@ -92,6 +94,18 @@ public class AfastamentoScheduler {
 				professor.setCpf(usuario.getCpf());
 				professorService.save(professor);
 			}
+		}
+		atualizaVagas();
+		
+	}
+	
+	private void atualizaVagas() {
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual()));
+		List<Periodo> periodos = periodoService.getPeriodosPosteriores(periodoAtual);
+		int vagas = (int) (professorService.findAtivos().size() * 0.15);
+		for(Periodo periodo : periodos) {
+			periodo.setVagas(vagas);
+			periodoService.update(periodo);
 		}
 	}
 
