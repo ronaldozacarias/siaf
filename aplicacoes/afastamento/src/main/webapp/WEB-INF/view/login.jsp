@@ -12,8 +12,6 @@
 	<link href="<c:url value="/resources/css/hover-min.css" />" rel="stylesheet" />
 	<link href="<c:url value="/resources/css/estilo-login.css" />" rel="stylesheet" />
 
-	
-
 </head>
 
 <body onload='document.f.j_username.focus();'>
@@ -28,7 +26,6 @@
 			<div class="login-text">
 				<span id="title">Faça seu login</span>
 			</div>
-<%-- 				<form id="login-form" name='f' action="<c:url value='j_spring_security_check' />" method='POST'> --%>
 				<form:form role="form" servletRelativeAction="/j_spring_security_check"  method="post" id="login-form" autocomplete="off" class="form-horizontal">
 	
 					<c:if test="${not empty error}">
@@ -39,23 +36,27 @@
 						<div class="msg"> <i class="fa fa-info-circle"></i>${msg}</div>
 					</c:if>
 				
-					<div id="inputLogin" class="form-group form-inline input-group input-login">
-					    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-						<input type="text" name="j_username" id="cpf" class="form-control" placeholder="cpf" required="required">
+					<div class="form-group">
+						<div id="inputLogin" class="form-inline input-group input-login">
+						    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+							<input type="text" name="j_username" id="cpf" class="form-control" placeholder="cpf" required="required">
+						</div>
 					</div>
 										
-					<div id="inputSenha" class="form-group form-inline input-group input-login">
-					    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-					    <input type="password" name="j_password" id="key" class="form-control" placeholder="senha" required="required">
+					<div class="form-group">
+						<div id="inputSenha" class="form-inline input-group input-login">
+						    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						    <input type="password" name="j_password" id="key" class="form-control" placeholder="senha" required="required">
+						</div>
 					</div>
 					
 
-					<div id="div-captcha-erro" class="form-group form-inline input-group">
+					<div id="div-captcha-erro">
 					    <div id="captcha-login" class=""></div>
 					</div>
 					
 					<div>
-						<button id="btn-login" class="btn btn-login hvr-icon-forward pull-right" name="submit" type="submit" value="Login" value="Login">Login</button>
+						<button class="btn btn-default hvr-icon-forward pull-right" name="submit" type="submit" value="Login" value="Login">Login</button>
 					</div>
 				</form:form>
 		</div>

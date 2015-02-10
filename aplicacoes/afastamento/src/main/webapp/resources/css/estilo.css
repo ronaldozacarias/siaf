@@ -1,7 +1,8 @@
 
 body {
-	background: none repeat scroll 0% 0% #F6F6F6;
-	background: #fff;
+	/*background-image: url("../images/back.png");*/
+	background-color: #F5F5F5;
+	
 	font-family: Optima,Segoe,Segoe UI,Candara,Calibri,Arial,sans-serif;
 }
 #wrapper {
@@ -26,49 +27,44 @@ body {
 	height: 100%;
 }
 
-.accessTop {
-	float: right;
-	width: 900px;
-	height: 81px;
-	border-bottom: 2px solid #E5E5E5;
-}
-
 .menuTop {
 	float: right;
 	width: 900px;
 	height: 67px;
-	background: none repeat scroll 0% 0% #FFF;
-	border-bottom: 2px solid #E5E5E5;
-	border-right: 2px solid #E5E5E5;
+	margin-top: 94px;
 }
 
 .menuTop ul {
-	margin: 0px;
 	padding: 0px;
-	list-style: none outside none;
+	margin-left: 10px;
 }
 
 .menuTop ul li {
 	line-height: initial;
 	float: left;
-	border-right: 2px solid #EAECED;
 	position: relative;
 	display: block;
 	cursor: pointer;
+	margin-right: 8px;
 }
 
 .menuTop ul li a {
 	color: #555;
-	font: bold 13px "arial", sans-serif;
-	padding: 25px 26px 21px 31px;
-	text-decoration: none;
+	font: bold 14px "arial", sans-serif;
+	padding: 15px 19px 5px;
+	text-decoration: underline !important;
 	display: block;
-	outline: none;
+	border-bottom: 2px dashed;
+	margin: 3px;
 }
 
 .menuTop ul li a:hover, .menuTop ul li.active a {
-	color: #F47920;
+	color: #F36825;
 	text-decoration: underline !important;
+}
+
+li#sair {
+	border: none;
 }
 
 .menuTop ul li a span {
@@ -81,7 +77,7 @@ div#content {
 	height: auto;
 	display: table;
 	float: left;
-	color: #7C7C7C;
+	color: #545454;
 	margin-bottom: 50px;
 }
 
@@ -90,12 +86,8 @@ div.title {
 	width: 100%;
 	padding: 20px 0px 20px 10px;
 	font-size: 20px;
-	color: #7C7C7C;
+	color: #545454;
 	letter-spacing: 3px;
-}
-
-form {
-	
 }
 
 form input, .bootstrap-select button {
@@ -158,11 +150,11 @@ div#periodo i {
 }
 
 .table > tbody > tr.ACEITO {
-	background-color: #D9EDF7;
+	background-color: #AED7EC;
 }
 
 .table > tbody > tr.NAO_ACEITO, table > tbody > tr.DESCLASSIFICADO {
-	background-color: #FFD8A4;
+	background-color: #F2BF7C;
 }
 
 .table > tbody > tr.ENCERRADO {
@@ -174,7 +166,7 @@ div#periodo i {
 }
 
 .table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
-	background-color: #F2DEDE;
+	background-color: #F0D1D1;
 }
 
 .table > tbody > tr > td.pontuacao {
@@ -194,11 +186,11 @@ div#legenda label span {
 }
 
 div#legenda label span.aceito {
-	background-color: #D9EDF7;
+	background-color: #AED7EC;
 }
 
 div#legenda label span.desclassificado {
-	background-color: #FFD8A4;
+	background-color: #F2BF7C;
 }
 
 div#legenda label span.encerrado {
@@ -210,7 +202,7 @@ div#legenda label span.classificado {
 }
 
 div#legenda label span.cancelado {
-	background-color: #F2DEDE;
+	background-color: #F0D1D1;
 }
 
 input{

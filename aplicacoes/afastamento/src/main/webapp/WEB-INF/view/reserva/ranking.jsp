@@ -42,7 +42,10 @@
 				<label id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
 				<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
 			</div>
-			<div class="align-center"><label id="vagas"></label></div>
+			<div class="align-center">
+				<label id="encerramento"></label><br>
+				<label id="vagas"></label>
+			</div>
 			
 			<table id="ranking" class="table">
 				<thead>

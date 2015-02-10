@@ -7,7 +7,7 @@
 		<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />">
 	</div>
 	
-    <div class="accessTop"></div>
+    <!-- <div class="accessTop"></div> -->
     
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
@@ -33,7 +33,7 @@
 	    		</li>
     		</sec:authorize>
     		
-    		<li>
+    		<li id="sair">
     			<a class="" href="<c:url value="/logout" />"><span>Sair</span></a>
     		</li>
     	</ul>

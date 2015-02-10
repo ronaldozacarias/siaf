@@ -23,9 +23,9 @@ a {
 	display: table-cell;
 	padding: 30px;
 	width: 40%;
-	background: #F47920; 
  	padding: 30px; 
  	margin: 0 auto;
+ 	vertical-align: middle;
 }
 .login-header h3{
 /* 	font-weight: bold; */
@@ -76,7 +76,7 @@ a {
 
 .input-group-addon {
 	border-radius: 0;
-	background-color: #F47920;
+	background-color: #AC3717;
 	color: #fff;
 }
 .input-group-addon-gp{
@@ -93,8 +93,8 @@ a {
 
 .form-control {
 	border-radius: 0;
-	height: 30px;
-	font-size: 14px;
+	height: 40px;
+	font-size: 15px;
 	color: #555;
 	background-color: #fff;
 	border: 1px solid #ccc;
@@ -110,9 +110,6 @@ a {
 .esqueci-senha:hover {
 	text-decoration: none;
 }
-.fa {
-	color: #2C3F52;
-}
 
 .login-error {
 	background: #B53636;
@@ -124,7 +121,7 @@ a {
 .btn {
 	border-radius: 0;
     display: inline-block;
-    background-color: #F47920;
+    background-color: #AC3717;
     text-decoration: none;
 	font-weight: 700;
     color: white;
@@ -134,7 +131,7 @@ a {
 
 .btn-login:hover {
 	border-radius: 0;
-	background-color: #F47920;
+	background-color: #AC3717;
 	color: #fff;
 }
 .btn-login:active {
@@ -166,7 +163,12 @@ footer > p {
 	margin-bottom: 0;
 	color: #7C7C7C;
 }
+
 .element{
 	display: block;
+}
+
+div#div-captcha-erro {
+	margin: 0 auto;
 }
 

@@ -352,6 +352,7 @@ function getRanking(ano, semestre) {
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
+		$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
 		
 		$('#img-load').hide();
 		loadTable(result.ranking.tuplas, "ranking");
