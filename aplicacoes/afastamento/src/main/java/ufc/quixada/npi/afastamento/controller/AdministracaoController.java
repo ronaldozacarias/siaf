@@ -27,6 +27,7 @@ import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -57,6 +58,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	@CacheEvict(value = {"ranking", "visualizarRanking"}, allEntries = true, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getUltimoPeriodoEncerrado();
 		if(periodo != null) {
@@ -72,7 +74,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/atualizar-ranking", method = RequestMethod.POST)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
 	public String atualizarRanking(HttpServletRequest request, RedirectAttributes redirect) {
 		String[] status = request.getParameterValues("status");
 		for(String s : status) {
@@ -81,6 +83,27 @@ public class AdministracaoController {
 			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
 			reserva.setStatus(statusReserva);
 			reservaService.update(reserva);
+		}
+		Integer ano = Integer.valueOf(request.getParameter("ano"));
+		Integer semestre = Integer.valueOf(request.getParameter("semestre"));
+		Periodo periodo = periodoService.getPeriodo(ano, semestre);
+		Ranking ranking = rankingService.getRanking(periodo);
+		int vagas = periodo.getVagas();
+		for(TuplaRanking tupla : ranking.getTuplas()) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+				if(vagas == 0) {
+					Reserva reserva = tupla.getReserva();
+					reserva.setStatus(StatusReserva.NAO_ACEITO);
+					reservaService.update(reserva);
+				} else {
+					vagas--;
+				}
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0) {
+				Reserva reserva = tupla.getReserva();
+				reserva.setStatus(StatusReserva.ACEITO);
+				reservaService.update(reserva);
+				vagas--;
+			}
 		}
 		
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVAS_ATUALIZADAS);

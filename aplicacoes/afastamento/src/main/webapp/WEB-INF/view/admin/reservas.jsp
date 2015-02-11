@@ -64,7 +64,6 @@
 											<c:when test="${tupla.status != 'DESCLASSIFICADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
 												<c:set var="atualizar" value="true"></c:set>
 												<select id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
-													<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''} value="${tupla.reserva.id }-ABERTO">CLASSIFICADO</option>
 													<option ${tupla.status == 'ACEITO' ? 'selected' : ''} value="${tupla.reserva.id }-ACEITO">ACEITO</option>
 													<option ${tupla.status == 'CANCELADO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
 													<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
