@@ -210,7 +210,7 @@ $(document).ready(function() {
 function getRanking(ano, semestre) {
 	$("tbody").remove();
 	$("#warning-ranking").hide();
-	$('#img-load').show();
+	$('#load-siaf').show();
 	$.ajax({
 		type: "POST",
 		url: '/siaf/reserva/ranking.json',
@@ -248,7 +248,7 @@ function getRanking(ano, semestre) {
 			$('#encerramento').text("Encerramento: -");
 		}
 		
-		$('#img-load').hide();
+		$('#load-siaf').hide();
 		loadTable(result.ranking.tuplas, "ranking");
 		
 		$('table#ranking').removeClass('animated zoomIn').addClass('animated zoomIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){

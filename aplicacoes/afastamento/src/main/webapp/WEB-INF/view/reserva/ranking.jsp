@@ -67,7 +67,7 @@
 				Não há nenhuma reserva para esse período.
 			</div>
 			
-			<div class="load-siaf">
+			<div id="load-siaf">
 				<div class=loading-siaf></div>
 				<div class="load-s"></div>
 			</div>
