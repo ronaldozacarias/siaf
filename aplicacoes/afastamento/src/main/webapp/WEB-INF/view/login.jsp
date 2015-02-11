@@ -56,7 +56,7 @@
 					</div>
 					
 					<div style="text-align: center;">
-						<button class="btn btn-siaf hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
+						<button class="btn btn-siaf btn-login hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
 					</div>
 				</form:form>
 		</div>

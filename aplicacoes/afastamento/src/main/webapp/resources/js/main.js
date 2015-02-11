@@ -61,23 +61,23 @@ $(document).ready(function() {
 		var semestre = $( "select option:selected" ).val();
 		var ano = $("input").val();
 		
-		$.ajax({
-			url: '/siaf/administracao/admissao',
-			type: "POST",
-			dataType: "html",
-			data : {
-				"id" : id,
-				"ano" : ano,
-				"semestre" : semestre,
-			},
-			success: function(result) {
-				showMessage(result);
-			},
-			error: function(error) {
-			}		
-		});
-
-		
+		if(ano != '') {
+			$.ajax({
+				url: '/siaf/administracao/admissao',
+				type: "POST",
+				dataType: "html",
+				data : {
+					"id" : id,
+					"ano" : ano,
+					"semestre" : semestre,
+				},
+				success: function(result) {
+					showMessage(result);
+				},
+				error: function(error) {
+				}		
+			});
+		}
 	    $btn.closest('tr').find('.editable').editable('hide');
 	    $("options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	});
@@ -97,6 +97,7 @@ $(document).ready(function() {
 	function showMessage(result) {
 		$("#wrapper").html($(result).find("#wrapper"));
 	}
+	
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,
@@ -241,7 +242,11 @@ function getRanking(ano, semestre) {
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
-		$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+		if(result.periodoAtual.encerramento != null) {
+			$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+		} else {
+			$('#encerramento').text("Encerramento: -");
+		}
 		
 		$('#img-load').hide();
 		loadTable(result.ranking.tuplas, "ranking");
@@ -254,6 +259,7 @@ function getRanking(ano, semestre) {
 }
 
 function loadTable(result, table) {
+	$("tbody").remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(

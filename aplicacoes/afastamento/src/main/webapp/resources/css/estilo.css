@@ -1,6 +1,5 @@
 
 body {
-	/*background-image: url("../images/back.png");*/
 	background-color: #F5F5F5;
 	
 	font-family: Optima,Segoe,Segoe UI,Candara,Calibri,Arial,sans-serif;
@@ -59,7 +58,7 @@ body {
 }
 
 .menuTop ul li a:hover, .menuTop ul li.active a {
-	color: #F36825;
+	color: #CF5719;
 	text-decoration: underline !important;
 }
 
@@ -96,7 +95,7 @@ form input, .bootstrap-select button {
 }
 
 form label.value-label {
-	color: #F36825;
+	color: #CF5719;
 }
 
 .bootstrap-select {
@@ -132,7 +131,7 @@ table#ranking {
 div#periodo {
 	text-align: center;
 	margin-top: 30px;
-	color: #F36825;
+	color: #CF5719;
 }
 
 div#periodo label {
@@ -158,11 +157,11 @@ div#periodo i {
 }
 
 .table > tbody > tr.ENCERRADO {
-	background-color: #F5F5F5;
+	background-color: #C5C5C5;
 }
 
 .table > tbody > tr.CLASSIFICADO {
-	background-color: #DFF0D8;
+	background-color: #95CF9E;
 }
 
 .table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
@@ -194,11 +193,11 @@ div#legenda label span.desclassificado {
 }
 
 div#legenda label span.encerrado {
-	background-color: #F5F5F5;
+	background-color: #C5C5C5;
 }
 
 div#legenda label span.classificado {
-	background-color: #DFF0D8;
+	background-color: #95CF9E;
 }
 
 div#legenda label span.cancelado {
@@ -267,7 +266,7 @@ table#reservas {
 	font-size: 20px;
 }
 .panel-default>.panel-heading label{
-	color: #F36825;
+	color: #CF5719;
 }
 .panel-default .panel-body {
 	width: 600px;
@@ -317,20 +316,24 @@ table#ranking {
 #login {
     padding-top: 50px
 }
+
 #login .form-wrap {
     width: 30%;
     margin: 0 auto;
 }
+
 #login h1 {
-    color: #F36825;
+    color: #CF5719;
     font-size: 18px;
     text-align: center;
     font-weight: bold;
     padding-bottom: 20px;
 }
+
 #login .form-group {
     margin-bottom: 25px;
 }
+
 #login .checkbox {
     margin-bottom: 20px;
     position: relative;
@@ -340,6 +343,7 @@ table#ranking {
     -o-user-select: none;
     user-select: none;
 }
+
 #login .checkbox.show:before {
     content: '\e013';
     color: #1fa67b;
@@ -349,6 +353,7 @@ table#ranking {
     pointer-events: none;
     font-family: 'Glyphicons Halflings';
 }
+
 #login .checkbox .character-checkbox {
     width: 25px;
     height: 25px;
@@ -423,14 +428,19 @@ footer > p {
 
 .btn-siaf {
 	color: #FFF;
-	background-color: #F66823;
-	border-color: #F66823;
+	background-color: #CF5719;
+	border-color: #CF5719;
 }
 
 .btn-siaf:HOVER {
 	color: #FFF;
-	background-color: #E74B00;
-	border-color: #E74B00;
+	background-color: #CF5719;
+	border-color: #CF5719;
+}
+
+button {
+	outline: none !important;
+	outline-offset:0 !important;
 }
 
 .loading-siaf {
