@@ -2,6 +2,8 @@ package ufc.quixada.npi.afastamento.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +55,13 @@ public class AdministracaoController {
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
 		List<Professor> professores = professorService.findAtivos();
+		Collections.sort(professores, new Comparator<Professor>() {
+	        @Override
+	        public int compare(Professor  professor1, Professor  professor2)
+	        {
+	            return  professor1.getNome().compareTo(professor2.getNome());
+	        }
+	    });
 		model.addAttribute("professores", professores);
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}

@@ -41,36 +41,34 @@
 				<table id="professores" class="table table-striped">
 					<thead>
 						<tr class="afas-tr-left">
-				               <th>Nº</th>
-				               <th class="afas-tr-left">Siape</th>
-				               <th id="orderName">Nome</th>
-				               <th>E-mail</th>
-				               <th>Admisão</th>
-				               <th></th>
-				               <!-- <th>Status</th> -->
+			               <th>Nº</th>
+			               <th class="afas-tr-left">Siape</th>
+			               <th id="orderName">Nome</th>
+			               <th>E-mail</th>
+			               <th>Admisão</th>
+			               <th></th>
+			           </tr>
+			       </thead>
+			       <tbody id="contentProfessores">
+					<c:forEach items="${professores}" var="professor" varStatus="count">
+				           <tr>
+				               <td>${count.count}</td>
+				               <td>${professor.siape}</td>
+				               <td>${professor.nome}</td>
+				               <td>${professor.email}</td>
+				               <td class="editProf" style="width: 10px;">
+				        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit" data-value="${professor.semestreAdmissao}">${professor.semestreAdmissao}</span>
+								</td> 
+								<td class="editAcao" style="width: 40px;" align="right">
+				    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>
+				    	           	<div class="options options${professor.id} hide">
+						                <button class="btn salvar btn-primary" data-id="${professor.id}">salvar</button>
+					    	           	<button class="btn cancel btn-danger" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
+				    	           	</div>
+				    	        </td>
 				           </tr>
-				       </thead>
-				       <tbody id="contentProfessores">
-						<c:forEach items="${professores}" var="professor" varStatus="count">
-					           <tr>
-					               <td>${count.count}</td>
-					               <td>${professor.siape}</td>
-					               <td>${professor.nome}</td>
-					               <td>${professor.email}</td>
-					               <td class="editProf" style="width: 10px;">
-					        	       	<span class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span class="semestreEdit" data-value="${professor.semestreAdmissao}">${professor.semestreAdmissao}</span>
-									</td> 
-									<td class="editAcao" style="width: 40px;" align="right">
-					    	           	<button class="btn edit" data-id="${professor.id}"><i class="fa fa-pencil "></i></button>
-					    	           	<div class="options options${professor.id} hide">
-							                <button class="btn salvar btn-primary" data-id="${professor.id}">salvar</button>
-						    	           	<button class="btn cancel btn-danger" data-id="${professor.id}"><i class="fa fa-times "></i></button>									
-					    	           	</div>
-					    	        </td>
-					               <%-- <td class="habilitado"><a href="#" data-pk="${professor.id}" data-title="Desabilitar prof(a) ${professor.nome}">${professor.usuario.habilitado ? 'Habilitado':''}</a></td> --%>
-					           </tr>
-						</c:forEach>
-				       </tbody>
+					</c:forEach>
+			       </tbody>
 				</table>
 			</div>
 		</div>

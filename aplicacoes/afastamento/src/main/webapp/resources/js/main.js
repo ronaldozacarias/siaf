@@ -80,8 +80,8 @@ $(document).ready(function() {
 		
 	    $btn.closest('tr').find('.editable').editable('hide');
 	    $("options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
-//	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
-	});	
+	});
+	
 	$('#professores').on('click', '.cancel', function() {
 
 		$("#contentProfessores td.editProf").css("width", "50px");
@@ -90,9 +90,7 @@ $(document).ready(function() {
 	    var id = $btn.data("id");
 	    $(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	    $btn.closest('tr').find('.editable').editable('hide');
-//	    $btn.removeClass( "show" ).addClass('hide').siblings('.edit').show();
-	});	
-	
+	});
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	
@@ -146,115 +144,6 @@ $(document).ready(function() {
             },
             instituicao:{
                 required:"Campo obrigatório",
-            }
-        }
-    });
-	
-	$('#novo-professor').validate({
-        rules: {
-        	semestreAdmissao: {
-        		required: true
-            },
-            'usuario.email': {
-            	email: true
-            }
-        },
-        
-        highlight: function(element) {
-            $(element).closest('.form-item').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-item').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function(error, element) {
-            	error.insertAfter(element.parent().children().last());
-        },
-        
-        messages:{
-        	"usuario.nome":{
-                required:"Campo obrigatório",
-            },
-            siape:{
-                required:"Campo obrigatório",
-            },
-            'usuario.email':{
-            	required:"Campo obrigatório",
-            },
-            anoAdmissao:{
-            	required:"Campo obrigatório",
-            },
-            semestreAdmissao:{
-            	required:"Selecione o semestre",
-            },
-            cpf:{
-                required:"Campo obrigatório",
-            },
-            dataNascimento:{
-                required:"Campo obrigatório",
-            },
-            dataAdmissao:{
-                required:"Campo obrigatório",
-            }
-        },
-    });
-	
-	$('#novaSenhaForm').validate({
-        rules: {
-        	novaSenhaVerify: {
-        		equalTo: "#novaSenha"
-        	}
-        },
-        highlight: function(element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function(error, element) {
-            error.insertAfter(element.parent().children().last());
-        },
-        messages:{
-        	novaSenha:{
-                required:"Campo obrigatório",
-            },
-            novaSenhaVerify:{
-                required:"Campo obrigatório",
-                equalTo: "As senhas não conferem"
-            }
-        }
-    });
-	
-	$('#alterarSenhaForm').validate({
-        rules: {
-        	novaSenhaVerify: {
-        		equalTo: "#novaSenha"
-        	}
-        },
-        highlight: function(element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function(error, element) {
-            error.insertAfter(element.parent().children().last());
-        },
-        messages:{
-        	senhaAnterior:{
-                required:"Campo obrigatório",
-            },
-        	novaSenha:{
-                required:"Campo obrigatório",
-            },
-            novaSenhaVerify:{
-                required:"Campo obrigatório",
-                equalTo: "As senhas não conferem"
             }
         }
     });
@@ -432,32 +321,7 @@ function showPeriodo(result) {
 		$("#status").selectpicker();
 	}
 	$('#periodo-heading').addClass('animated tada');
-	$('#periodo-body').addClass('animated zoomIn');
-
-	/*$("#form-periodo").validate({
-        rules: {
-            
-        },
-        highlight: function(element) {
-            $(element).closest('.form-item').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-item').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function(error, element) {
-            error.insertAfter(element.parent().children().last());
-        },
-        messages:{
-        	vagas:{
-                required:"Campo obrigatório",
-            },
-            encerramento:{
-                required:"Campo obrigatório",
-            }
-        }
-    });*/	
+	$('#periodo-body').addClass('animated zoomIn');	
 	
 	$("#viewPeriodo").show();
 }
