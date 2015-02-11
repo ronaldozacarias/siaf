@@ -169,6 +169,7 @@ footer > p {
 }
 
 div#div-captcha-erro {
-	margin: 0 auto;
+	margin-top: 10px;
+	margin-left: 15px;
 }
 

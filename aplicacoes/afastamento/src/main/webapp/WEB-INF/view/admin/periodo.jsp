@@ -114,25 +114,24 @@
 			</div>
 		
 			<div id="listaPeriodos">
-			    <div class="panel-group" >
+			    <div class="panel-group" id="accordion">
 			        <div class="panel panel-default">
 			            <div class="panel-heading">
 			                <h4 class="panel-title">
-			                    <a><span class="glyphicon glyphicon-link"></span> Veja todos os períodos</a>
+			                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-link"></span> Veja todos os períodos</a>
 			                </h4>
 			            </div>
-			            <div>
+			            <div id="collapseOne" class="panel-collapse collapse">
 							<div>
 								<table id="periodos" class="table table-striped">
 									<thead>
 										<tr class="afas-tr-left">
-								               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
-								               <th data-column-id="ano" data-order="asc" data-align="center" data-type="numeric">Ano</th>
-								               <th data-column-id="semestre" data-order="asc" data-align="center"  data-type="numeric">Semestre</th>
-								               <th data-column-id="encerramento" data-align="center">Encerramento</th>
-								               <th data-column-id="vagas" data-align="center"  data-type="numeric">Vagas</th>
-								           </tr>
-								       </thead>
+							               <th data-column-id="ano" data-order="asc" data-align="center" data-type="numeric">Ano</th>
+							               <th data-column-id="semestre" data-order="asc" data-align="center"  data-type="numeric">Semestre</th>
+							               <th data-column-id="vagas" data-align="center"  data-type="numeric">Vagas</th>
+							               <th data-column-id="status" data-formatter="status" data-align="center">Status</th>
+							           </tr>
+							       </thead>
 								</table>
 							</div>
 			            </div>
@@ -141,16 +140,11 @@
 			</div>
 		</div>
 		<jsp:include page="../modulos/footer.jsp" />
-		<script src="<c:url value="/resources/js/jquery.bootgrid.min.js" />"></script>
 	</div>
 
-	
-
 	<script type="text/javascript">
-
 		getPeriodos();
 		$('#menu-periodos').addClass('active');
 	</script>
 </body>
 </html>
-
