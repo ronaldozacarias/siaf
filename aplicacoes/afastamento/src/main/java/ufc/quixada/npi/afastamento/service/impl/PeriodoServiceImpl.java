@@ -85,5 +85,13 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		return periodoRepository.find(QueryType.JPQL, "from Periodo order by ano ASC, semestre ASC", null);
 	}
 
+	@Override
+	public List<Periodo> getPeriodosPosteriores(Periodo periodo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ano", periodo.getAno());
+		params.put("semestre", periodo.getSemestre());
+		return periodoRepository.find(QueryType.JPQL, "from Periodo p where ano > :ano or (ano = :ano and semestre >= :semestre)", params);
+	}
+
 }
 

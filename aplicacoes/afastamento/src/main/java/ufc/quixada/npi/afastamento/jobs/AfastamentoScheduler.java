@@ -81,11 +81,11 @@ public class AfastamentoScheduler {
 				}
 			}
 		}
-		adicionaNovosProfessor();
+		adicionaNovosProfessores();
 		
 	}
 	
-	private void adicionaNovosProfessor() {
+	private void adicionaNovosProfessores() {
 		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.BASE_USUARIOS_TESTE, Constants.AFFILIATION_DOCENTE);
 		for(Usuario usuario : usuarios) {
 			Professor professor = professorService.getByCpf(usuario.getCpf());
@@ -94,6 +94,18 @@ public class AfastamentoScheduler {
 				professor.setCpf(usuario.getCpf());
 				professorService.save(professor);
 			}
+		}
+		atualizaVagas();
+		
+	}
+	
+	private void atualizaVagas() {
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual()));
+		List<Periodo> periodos = periodoService.getPeriodosPosteriores(periodoAtual);
+		int vagas = (int) (professorService.findAtivos().size() * 0.15);
+		for(Periodo periodo : periodos) {
+			periodo.setVagas(vagas);
+			periodoService.update(periodo);
 		}
 	}
 
