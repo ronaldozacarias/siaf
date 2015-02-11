@@ -6,8 +6,8 @@
 
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Ranking</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Ranking</title>
 </head>
 <body>
 	<div id="wrapper">

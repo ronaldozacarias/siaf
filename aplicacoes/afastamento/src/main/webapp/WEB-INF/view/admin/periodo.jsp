@@ -7,8 +7,8 @@
 
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Período</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Gerenciar Períodos</title>
 </head>
 <body>
 	<div id="wrapper" class="container">

@@ -6,8 +6,8 @@
 
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Professores</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Professores</title>
 </head>
 <body>
 <div class="agroup">

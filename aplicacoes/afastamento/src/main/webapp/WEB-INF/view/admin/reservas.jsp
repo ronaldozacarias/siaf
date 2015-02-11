@@ -6,8 +6,8 @@
 
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Reservas</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Gerenciar Reservas</title>
 </head>
 <body>
 	<div id="wrapper">

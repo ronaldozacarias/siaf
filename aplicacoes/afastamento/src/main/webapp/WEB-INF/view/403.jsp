@@ -7,8 +7,8 @@
 
 <html>
 <head>
-<jsp:include page="modulos/header-estrutura.jsp" />
-<title>SiAf - Minhas reservas</title>
+	<jsp:include page="modulos/header-estrutura.jsp" />
+	<title>Permissão Negada</title>
 </head>
 <body>
 	<div id="wrapper">
