@@ -508,8 +508,8 @@ function loadPeriodos(result) {
 	        		}else{
 	        			return "<span class=\"label label-danger\">" + row.status + "</span>";
 	        		}
-	        	}
-	        },
+	        	},
+	        }	        
 		})
 		.bootgrid("clear")
 		.bootgrid("append", result);

@@ -429,3 +429,52 @@ footer > p {
 	background-color: #E74B00;
 	border-color: #E74B00;
 }
+
+.loading-siaf {
+	margin: 2px auto;
+	width: 100px;
+	height: 97px;
+	vertical-align: middle;
+	border-radius: 50%;
+	background: url("../images/siaf-loading.png") -10px -8px no-repeat;
+
+    -webkit-animation: loading .8s steps(9) infinite;
+       -moz-animation: loading .8s steps(9) infinite;
+        -ms-animation: loading .8s steps(9) infinite;
+         -o-animation: loading .8s steps(9) infinite;
+}
+
+.load-s {
+	margin: 2px auto;
+	position: relative;
+	top: -76px;
+	width: 40px;
+	height: 52px;
+	vertical-align: middle;
+	background: url("../images/siaf-loading.png") -162px -32px no-repeat;
+}
+
+@-webkit-keyframes loading {
+   from { transform:	rotate(0deg); 	}
+     to { transform:	rotate(360deg); }
+}
+
+@-moz-keyframes loading {
+   from { transform:	rotate(0deg); 	}
+     to { transform:	rotate(360deg); }
+}
+
+@-ms-keyframes loading {
+   from { transform:	rotate(0deg); 	}
+     to { transform:	rotate(360deg); }
+}
+
+@-o-keyframes loading {
+   from { transform:	rotate(0deg); 	}
+     to { transform:	rotate(360deg); }
+}
+
+@keyframes loading {
+   from { transform:	rotate(0deg); 	}
+     to { transform:	rotate(360deg); }
+}

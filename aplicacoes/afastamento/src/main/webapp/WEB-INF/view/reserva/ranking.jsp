@@ -67,7 +67,10 @@
 				Não há nenhuma reserva para esse período.
 			</div>
 			
-			<img id="img-load" alt="Carregando..." src="<c:url value="/resources/images/loading.gif" />" class="error"/>
+			<div class="load-siaf">
+				<div class=loading-siaf></div>
+				<div class="load-s"></div>
+			</div>
 
 			<div id="legenda">
 				<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito (afastado)</label>
