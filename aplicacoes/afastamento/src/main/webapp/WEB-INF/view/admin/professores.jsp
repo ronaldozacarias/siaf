@@ -41,7 +41,7 @@
 				<table id="professores" class="table table-striped">
 					<thead>
 						<tr class="afas-tr-left">
-			               <th>Nº</th>
+			               <th>#</th>
 			               <th class="afas-tr-left">Siape</th>
 			               <th id="orderName">Nome</th>
 			               <th>E-mail</th>

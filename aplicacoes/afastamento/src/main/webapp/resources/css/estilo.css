@@ -401,6 +401,9 @@ table#ranking {
 span#captcha-erro {
 	text-align: center;
 	color: #a94442;
+	margin-top: 10px;
+	float: right;
+	margin-right: -17px;
 }
 
 footer {

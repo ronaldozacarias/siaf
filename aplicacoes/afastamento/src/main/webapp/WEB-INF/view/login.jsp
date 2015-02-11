@@ -55,8 +55,8 @@
 					    <div id="captcha-login" class=""></div>
 					</div>
 					
-					<div>
-						<button class="btn btn-default hvr-icon-forward pull-right" name="submit" type="submit" value="Login" value="Login">Login</button>
+					<div style="text-align: center;">
+						<button class="btn btn-siaf hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
 					</div>
 				</form:form>
 		</div>
