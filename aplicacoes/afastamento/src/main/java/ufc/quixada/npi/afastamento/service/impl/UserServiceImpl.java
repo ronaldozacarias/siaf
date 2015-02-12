@@ -17,7 +17,7 @@ public class UserServiceImpl extends GenericServiceImpl<Usuario> implements User
 	
 	@Override
 	public Usuario getByCpf(String cpf) {
-		return usuarioService.getByCpf(Constants.BASE_USUARIOS_TESTE, cpf);
+		return usuarioService.getByCpf(Constants.BASE_USUARIOS, cpf);
 	}
 
 }

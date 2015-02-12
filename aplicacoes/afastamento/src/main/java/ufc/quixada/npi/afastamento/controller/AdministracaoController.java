@@ -174,7 +174,7 @@ public class AdministracaoController {
 		Integer vagas = periodo.getVagas();
 		if(encerramento != null) {
 			try {
-				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);
 				Date today;
 					today = format.parse(format.format(new Date()));
 				

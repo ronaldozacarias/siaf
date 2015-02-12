@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.ldap.model.Constants;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
@@ -31,7 +32,7 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 		List<Professor> professores = professorRepository.find(Professor.class);
 		List<Professor> ativos = new ArrayList<Professor>();
 		for(Professor professor : professores) {
-			SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+			SimpleDateFormat format = new SimpleDateFormat(Constants.FORMATO_DATA_AFILIACAO);
 			try {
 				if(professor.getDataSaida() == null) {
 					ativos.add(professor);
