@@ -271,12 +271,20 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.p),
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
+            $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa)),
             $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');
     });
 	if(result.length == 0) {
 		$("#warning-ranking").show();
 	}
+}
+
+function getPrograma(programa) {
+	if(programa == 'POS_DOUTORADO') {
+		return "PÓS DOUTORADO";
+	}
+	return programa;
 }
 
 function filtroPeriodo(){

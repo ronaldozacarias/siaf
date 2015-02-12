@@ -58,6 +58,7 @@
 						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres que faltam para o docente completar três (3) anos de contratação">P</span></th>
 						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres solicitados">SS</span></th>
 			            <th>Período</th>
+			            <th>Programa</th>
 			            <th>Pontuação</th>
 					</tr>
 				</thead>

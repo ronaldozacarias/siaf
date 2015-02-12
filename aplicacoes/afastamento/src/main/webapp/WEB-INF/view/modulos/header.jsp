@@ -4,11 +4,9 @@
 
 <header class="headerMain">
 	<div class="brand">
-		<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />">
+		<a href="<c:url value="/reserva/ranking" />"><img title="Sistema de Afastamento Docente" alt="Sistema de Afastamento Docente" src="<c:url value="/resources/images/logo.png" />"></a>
 	</div>
 	
-    <!-- <div class="accessTop"></div> -->
-    
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
     		<sec:authorize ifAnyGranted="ROLE_DOCENTE,ROLE_ADMIN_SIAF">
@@ -37,6 +35,5 @@
     			<a class="" href="<c:url value="/logout" />"><span>Sair</span></a>
     		</li>
     	</ul>
-    	
     </nav>
   </header>

@@ -48,6 +48,7 @@
 								<th>#</th>
 								<th>Nome</th>
 					            <th>Período</th>
+					            <th>Programa</th>
 					            <th>Pontuação</th>
 					            <th>Status</th>
 							</tr>
@@ -58,6 +59,7 @@
 									<td class="align-center">${count.index + 1 }</td>
 									<td>${tupla.professor }</td>
 									<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio } a ${tupla.reserva.anoTermino }.${tupla.reserva.semestreTermino }</td>
+									<td class="align-center">${tupla.reserva.programa.descricao }</td>
 									<td class="align-center">${tupla.pontuacao }</td>
 									<td class="align-center">
 										<c:choose>
