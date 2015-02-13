@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SiAf - Login</title>
+	<title>Login</title>
+	<link rel="shortcut icon" href="<c:url value="/resources/images/signo.png" />" />
 
 	<link href="<c:url value="/webjars/bootstrap/3.3.2/css/bootstrap.min.css" />" rel="stylesheet" />
 	<link href="<c:url value="/webjars/font-awesome/4.3.0/css/font-awesome.css" />" rel="stylesheet" />
@@ -56,7 +57,7 @@
 					</div>
 					
 					<div style="text-align: center;">
-						<button class="btn btn-siaf hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
+						<button class="btn btn-siaf btn-login hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
 					</div>
 				</form:form>
 		</div>

@@ -61,23 +61,23 @@ $(document).ready(function() {
 		var semestre = $( "select option:selected" ).val();
 		var ano = $("input").val();
 		
-		$.ajax({
-			url: '/siaf/administracao/admissao',
-			type: "POST",
-			dataType: "html",
-			data : {
-				"id" : id,
-				"ano" : ano,
-				"semestre" : semestre,
-			},
-			success: function(result) {
-				showMessage(result);
-			},
-			error: function(error) {
-			}		
-		});
-
-		
+		if(ano != '') {
+			$.ajax({
+				url: '/siaf/administracao/admissao',
+				type: "POST",
+				dataType: "html",
+				data : {
+					"id" : id,
+					"ano" : ano,
+					"semestre" : semestre,
+				},
+				success: function(result) {
+					showMessage(result);
+				},
+				error: function(error) {
+				}		
+			});
+		}
 	    $btn.closest('tr').find('.editable').editable('hide');
 	    $("options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	});
@@ -97,6 +97,7 @@ $(document).ready(function() {
 	function showMessage(result) {
 		$("#wrapper").html($(result).find("#wrapper"));
 	}
+	
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,
@@ -329,7 +330,7 @@ $(document).ready(function() {
 function getRanking(ano, semestre) {
 	$("tbody").remove();
 	$("#warning-ranking").hide();
-	$('#img-load').show();
+	$('#load-siaf').show();
 	$.ajax({
 		type: "POST",
 		url: '/siaf/reserva/ranking.json',
@@ -361,9 +362,13 @@ function getRanking(ano, semestre) {
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
-		$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+		if(result.periodoAtual.encerramento != null) {
+			$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+		} else {
+			$('#encerramento').text("Encerramento: -");
+		}
 		
-		$('#img-load').hide();
+		$('#load-siaf').hide();
 		loadTable(result.ranking.tuplas, "ranking");
 		
 		$('table#ranking').removeClass('animated zoomIn').addClass('animated zoomIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
@@ -374,6 +379,7 @@ function getRanking(ano, semestre) {
 }
 
 function loadTable(result, table) {
+	$("tbody").remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(
@@ -385,12 +391,20 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.p),
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
+            $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa)),
             $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
         ).appendTo('tbody');
     });
 	if(result.length == 0) {
 		$("#warning-ranking").show();
 	}
+}
+
+function getPrograma(programa) {
+	if(programa == 'POS_DOUTORADO') {
+		return "PÓS DOUTORADO";
+	}
+	return programa;
 }
 
 function filtroPeriodo(){

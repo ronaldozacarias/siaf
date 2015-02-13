@@ -27,14 +27,7 @@ a {
  	margin: 0 auto;
  	vertical-align: middle;
 }
-.login-header h3{
-/* 	font-weight: bold; */
-/* 	font-variant: small-caps; */
-/* 	color: #fff; */
-/* 	font-size: 22px; */
-/* 	font-weight: 700; */
-/* 	opacity: 1; */
-}
+
 .login-header img {
 	padding: 0;
 	margin: 0;
@@ -83,6 +76,7 @@ a {
 	text-align: left;
 	width: 66px;
 }
+
 #cadastro-form .form-group input {
 	width: 142%;
 }
@@ -118,27 +112,17 @@ a {
 	color: #fff;
 	font-weight: 600;
 }
-.btn {
-	border-radius: 0;
-    display: inline-block;
-    background-color: #AC3717;
-    text-decoration: none;
-	font-weight: 700;
-    color: white;
-    border: none;
-    margin-top: 5px;
-}
-
-.btn-login:hover {
-	border-radius: 0;
+.btn-login {
+	margin-top: 10px;
 	background-color: #AC3717;
 	color: #fff;
 }
-.btn-login:active {
-	border-radius: 0;
-	background-color: #F47920;
-	border: none;
+
+.btn-login:hover {
+	background-color: #AC3717;
+	color: #fff;
 }
+
 .error-validation {
 	color: red;
 	margin-left: -13px;
@@ -171,5 +155,10 @@ footer > p {
 div#div-captcha-erro {
 	margin-top: 10px;
 	margin-left: 15px;
+}
+
+button {
+	outline: none !important;
+	outline-offset:0 !important;
 }
 

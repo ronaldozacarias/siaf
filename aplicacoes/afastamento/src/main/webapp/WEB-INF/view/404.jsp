@@ -8,7 +8,7 @@
 <html>
 <head>
 <jsp:include page="modulos/header-estrutura.jsp" />
-<title>SiAf - Minhas reservas</title>
+<title>Página não encontrada</title>
 </head>
 <body>
 	<div id="wrapper">

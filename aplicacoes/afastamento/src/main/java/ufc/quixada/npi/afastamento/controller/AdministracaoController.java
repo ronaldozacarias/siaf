@@ -130,14 +130,13 @@ public class AdministracaoController {
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodos", periodoService.find(Periodo.class));
-		model.addAttribute("periodo", new Periodo());
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
 
 	private boolean notNull(Object object){
 		return object != null ?  true : false;
 	}
-		
+	
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
@@ -159,7 +158,7 @@ public class AdministracaoController {
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
-
+	
 	@RequestMapping(value = "/edit-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model permissaoEditPeriodo(Model model, @RequestParam("id") Long id) {
 
@@ -205,7 +204,7 @@ public class AdministracaoController {
 					DateTime date = dateTimeFormatter.parseDateTime(encerramentoString);
 					encerramento = date.toDate();
 
-					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);					
 					Date today;
 						today = format.parse(format.format(new Date()));
 					
@@ -249,5 +248,5 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
 	
-	
+
 }

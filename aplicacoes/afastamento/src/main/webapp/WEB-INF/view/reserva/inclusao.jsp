@@ -7,8 +7,8 @@
 
 <html>
 <head>
-<jsp:include page="../modulos/header-estrutura.jsp" />
-<title>SiAf - Incluir Reserva</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Incluir Reserva</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -40,7 +40,7 @@
 					<div class="form-item">
 						<label for="anoInicio" class="col-sm-2 control-label">Início:</label>
 						<div class="col-sm-4">
-							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" value="${anoInicio }" required="required"/>
+							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" placeholder="ano" value="${anoInicio }" required="required"/>
 							<select id="semestreInicio" name="semestreInicio" class="form-control selectpicker">
 								<option value="1" ${semestreInicio == 1 ? 'selected' : ''}>1</option>
 								<option value="2" ${semestreInicio == 2 ? 'selected' : ''}>2</option>
@@ -50,7 +50,7 @@
 					<div class="form-item">
 						<label for="anoTermino" class="col-sm-2 control-label">Término:</label>
 						<div class="col-sm-4">
-							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" value="${anoTermino }" required="required"/>
+							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" placeholder="ano" value="${anoTermino }" required="required"/>
 							<select id="semestreTermino" name="semestreTermino" class="form-control selectpicker">
 								<option value="1" ${semestreTermino == 1 ? 'selected' : ''}>1</option>
 								<option value="2" ${semestreTermino == 2 ? 'selected' : ''}>2</option>
@@ -72,7 +72,7 @@
 					<div class="form-item">
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
-							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19" value="${conceito }" required="required"/>
+							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19" placeholder="conceito" value="${conceito }" required="required"/>
 						</div>
 					</div>
 				</div>
@@ -80,7 +80,7 @@
 				<div class="form-group form-item">
 					<label for="instituicao" class="col-sm-2 control-label">Instituição:</label>
 					<div class="col-sm-8">
-						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" required="required" style="width: 100% !important"/>
+						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" placeholder="instituição" required="required" style="width: 100% !important"/>
 					</div>
 				</div>
 				

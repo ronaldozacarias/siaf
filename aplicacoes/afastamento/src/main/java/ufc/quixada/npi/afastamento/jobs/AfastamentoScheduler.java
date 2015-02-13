@@ -86,7 +86,7 @@ public class AfastamentoScheduler {
 	}
 	
 	private void adicionaNovosProfessores() {
-		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.BASE_USUARIOS_TESTE, Constants.AFFILIATION_DOCENTE);
+		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.BASE_USUARIOS, Constants.AFFILIATION_DOCENTE);
 		for(Usuario usuario : usuarios) {
 			Professor professor = professorService.getByCpf(usuario.getCpf());
 			if(professor == null) {
