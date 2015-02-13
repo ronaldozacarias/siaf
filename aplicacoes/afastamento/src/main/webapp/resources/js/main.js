@@ -204,6 +204,126 @@ $(document).ready(function() {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
+
+	var editVagas = false;
+	var editEncerramento = false;
+
+	$('.editPeriodo').on('click', function(event) {
+		
+		var id = '';
+
+		if($(this).data('id')){
+			id = $(this).data('id');
+		}
+		
+		$.ajax({
+			type: 'POST',
+			data: {
+				'id': id, 
+			},
+			url: '/siaf/administracao/edit-periodo.json',
+		})
+		.success(function(result) {
+			console.log(result.editEncerramento);
+			console.log(result.editVagas);
+			
+			editVagas = result.editVagas;
+			editEncerramento = result.editEncerramento;
+			$('#options'+id).attr('data-encerramento', result.editEncerramento);
+			$('#options'+id).attr('data-vagas', result.editVagas);
+
+			if(result.editEncerramento){
+			    encerramento = $('#encerramento'+id ).text();
+			    
+				$('#encerramento'+id).empty();
+				$('#encerramento'+id).append('<input name="inputEncerramento" class="form-control data" value="'+encerramento+'" />');
+
+				$(".data").datepicker({
+					language: 'pt-BR',
+					format: "dd/mm/yyyy",	
+					autoclose: true,
+				});
+			}
+
+			if(result.editVagas){
+				vagas = $('#vagas'+id ).text();
+				$('#vagas'+id).empty();
+				$('#vagas'+id).append('<input name="inputVagas" class="form-control" size="2" value="'+vagas+'"/>');
+			}
+			
+			if(result.editEncerramento || result.editVagas){
+			    $('#tablePeriodos').find('#options' + id).removeClass( 'hide' ).addClass('show');
+			    $('#editPeriodo'+id).removeClass( 'show' ).addClass('hide');
+			}
+
+			if(!result.editEncerramento && !result.editVagas){
+				$("#myModal .modal-body p").addClass('label-danger').text('Edição não permitida');
+				$("#myModal").modal('show');
+			}
+			
+		
+		});
+		event.stopPropagation();
+	})
+
+	$('.salvarPeriodo').click(function() {
+		var id = $(this).data('id');
+
+		var vagas = $('#vagas'+id).text();
+		var encerramento = $('#encerramento'+id).text();
+
+		if($('#options' + id).data('encerramento')){
+			encerramento = $('#encerramento'+id+' input').val();
+		}
+		
+		if($('#options' + id).data('vagas')){
+			vagas = $('#vagas'+id+' input').val();
+		}
+		
+		$.ajax({
+			type: 'POST',
+			data: {
+				'id': id,
+				'vagas' : vagas,
+				'encerramento' : encerramento,
+			},
+			url: '/siaf/administracao/editar-periodo',
+		}).success(function(result) {
+			$("#myModal .modal-body p").removeClass('label-danger').addClass('label-success').text('Atualização realizada com sucesso');
+			$("#myModal").modal('show');
+		});
+		
+		$('#encerramento'+id).empty().text(encerramento);
+		$('#vagas'+id).empty().text(vagas);
+
+		
+		$('.options').removeClass( "show" ).addClass('hide');
+		$('.editPeriodo').removeClass( 'hide' ).addClass('show');
+	});
+	
+	
+	$('.cancelPeriodo').click(function(event) {
+		var id = $(this).data('id');
+
+		if($('#options' + id).data('encerramento')){
+			var encerramento = $('#encerramento'+id+' input').val();
+			$('#encerramento'+id).empty();
+			$('#encerramento'+id).text(encerramento);
+		}
+		
+		if($('#options' + id).data('vagas')){
+			var vagas = $('#vagas'+id+' input').val();
+			$('#vagas'+id).empty();
+			$('#vagas'+id).text(vagas);
+		}
+
+		$('#options' + id).removeClass( 'show' ).addClass('hide');
+		$('#editPeriodo'+id).removeClass( 'hide' ).addClass('show');
+
+		event.stopPropagation();
+	});
+	
+	
 });
 
 function getRanking(ano, semestre) {
