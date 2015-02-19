@@ -73,6 +73,18 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="info-periodo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body"><b></b></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 
 	<jsp:include page="../modulos/footer.jsp" />
 	<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
@@ -82,8 +94,17 @@
 		$('#menu-periodos').addClass('active');
 		
 		$('#tablePeriodos').DataTable({
-			"pageLength": 50,
-			"orderFixed":  [[ 1, 'asc' ], [ 2, 'asc' ]],
+			 "pageLength": 50,
+			 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
+			 "columnDefs": [
+			               { "orderable": false, "targets": 0 },
+			               { "orderData": [ 1, 2 ],    "targets": 1 },
+			               { "orderable": false, "targets": 2 },
+			               { "orderable": false, "targets": 3 },
+			               { "orderable": false, "targets": 4 },
+			               { "orderable": false, "targets": 5 },
+			],
+			
 			"language": {
 			    "sEmptyTable": "Nenhum registro encontrado",
 			    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -115,8 +136,5 @@
 		$('input').addClass('form-inline form-control');
 	
 	</script>
-
-	
-	
 </body>
 </html>

@@ -203,7 +203,8 @@ public class AdministracaoController {
 					DateTime date = dateTimeFormatter.parseDateTime(encerramentoString);
 					encerramento = date.toDate();
 
-					SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);					
+//					SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);					
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");					
 					Date today;
  						today = format.parse(format.format(new Date()));
 					

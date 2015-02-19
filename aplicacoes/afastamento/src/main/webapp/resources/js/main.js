@@ -258,10 +258,9 @@ $(document).ready(function() {
 			}
 
 			if(!result.editEncerramento && !result.editVagas){
-//				$("#myModal .modal-body p").addClass('label-danger').text('Edição não permitida');
-//				$("#myModal").modal('show');
-				alert(($(result).find("#wrapper")).html());
-//				$("#wrapper").html($(result).find("#wrapper"));
+				$("#info-periodo .modal-body b").text('Não é possível editar as informações deste periodo.');
+				$("#info-periodo").modal('show');
+				
 			}
 			
 		
