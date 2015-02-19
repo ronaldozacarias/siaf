@@ -182,9 +182,8 @@ public class AdministracaoController {
 		return model;
 	}
 
-	
-	@RequestMapping(value = "/editar-periodo", method = RequestMethod.POST)
-	public String editarPeriodo(Model model, 
+	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Model editarPeriodo(Model model, 
 			@RequestParam("id") Long id, 
 			@RequestParam("vagas") Integer vagas, 
 			@RequestParam("encerramento") String encerramentoString) {
@@ -206,17 +205,18 @@ public class AdministracaoController {
 
 					SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);					
 					Date today;
-						today = format.parse(format.format(new Date()));
+ 						today = format.parse(format.format(new Date()));
 					
 					if(encerramento.before(today)) {
-						model.addAttribute("errorData", Constants.MSG_DATA_FUTURA);
-						return Constants.PAGINA_LISTAR_PERIODOS;
+						model.addAttribute(Constants.ERRO, Constants.MSG_DATA_FUTURA);
+						model.addAttribute("periodo", periodo);
+						return model;
 					}
 
 					permitirUpdateEncerramento = true;
 				} catch (ParseException e) {
 					model.addAttribute(Constants.ERRO, Constants.MSG_ERRO_ATUALIZAR_PERIODO);
-					return Constants.PAGINA_LISTAR_PERIODOS;
+					return model;
 				}
 			}
 		}
@@ -240,12 +240,11 @@ public class AdministracaoController {
 			
 		if(permitirUpdateEncerramento || permitirUpdateVagas){
 			periodoService.update(periodo);
-			model.addAttribute("periodo", periodo);
 			model.addAttribute(Constants.INFO,"Período " +periodo.getAno() + "." + periodo.getSemestre() + " atualizado com sucesso.");
 		}
 
-		model.addAttribute("periodos", periodoService.find(Periodo.class));
-		return Constants.PAGINA_LISTAR_PERIODOS;
+		model.addAttribute("periodo", periodo);
+		return model;
 	}
 	
 

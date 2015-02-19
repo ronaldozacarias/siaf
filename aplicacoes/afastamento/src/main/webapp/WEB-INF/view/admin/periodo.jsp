@@ -15,29 +15,27 @@
 <body>
 	<div id="wrapper" class="container">
 		<jsp:include page="../modulos/header.jsp" />
+		
 		<div id="content">
 					
 			<div class="title"> Período : </div>
 			<span class="line"></span>
-
-			<c:if test="${not empty erro}">
-					<div class="alert alert-danger alert-dismissible margin-top" role="alert">
+ 
+			<div class="messages">
+				<div id="erro" class="alert alert-danger margin-top hide" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<c:out value="${erro}"></c:out>
+					<p></p>
 				</div>
-			</c:if>
 
-			<c:if test="${not empty info}">
-				<div style="" class="alert alert-info alert-dismissible margin-top" role="alert">
+				<div id="info" class="alert alert-info margin-top hide" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<c:out value="${info}"></c:out>
+					<p></p>
 				</div>
-			</c:if>
-			
+			</div>			
 			<div>
 				<table id="tablePeriodos" class="display" cellspacing="0" width="100%">
 					<thead>
@@ -52,7 +50,7 @@
 					</thead>
 					<tbody id="bodyPeriodos">
 						<c:forEach items="${periodos}" var="periodo" varStatus="cont">
-							<tr>
+							<tr id="periodo${periodo.id}">
 								<fmt:formatDate value="${periodo.encerramento}" pattern="dd/MM/yyyy" var="data"/>
 								<td><span class="label ${periodo.status eq 'ABERTO' ? 'label-success':'label-danger'}">${periodo.status}</span></td>
 								<td>${periodo.ano}</td>
@@ -75,23 +73,6 @@
 			</div>
 		</div>
 	</div>
-
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Edição Periodo</h4>
-                </div>
-                <div class="modal-body" align="center">
-                	<p class="label"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 	<jsp:include page="../modulos/footer.jsp" />
 	<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>

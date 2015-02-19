@@ -258,8 +258,10 @@ $(document).ready(function() {
 			}
 
 			if(!result.editEncerramento && !result.editVagas){
-				$("#myModal .modal-body p").addClass('label-danger').text('Edição não permitida');
-				$("#myModal").modal('show');
+//				$("#myModal .modal-body p").addClass('label-danger').text('Edição não permitida');
+//				$("#myModal").modal('show');
+				alert(($(result).find("#wrapper")).html());
+//				$("#wrapper").html($(result).find("#wrapper"));
 			}
 			
 		
@@ -288,10 +290,9 @@ $(document).ready(function() {
 				'vagas' : vagas,
 				'encerramento' : encerramento,
 			},
-			url: '/siaf/administracao/editar-periodo',
+			url: '/siaf/administracao/editar-periodo.json',
 		}).success(function(result) {
-			$("#myModal .modal-body p").removeClass('label-danger').addClass('label-success').text('Atualização realizada com sucesso');
-			$("#myModal").modal('show');
+			messagePeriodo(result);
 		});
 		
 		$('#encerramento'+id).empty().text(encerramento);
@@ -512,4 +513,25 @@ function loadPeriodos(result) {
 		.bootgrid("clear")
 		.bootgrid("append", result);
 
+}
+
+function messagePeriodo(result) {
+	$(".messages #erro").removeClass( "show" ).addClass('hide');
+	$(".messages #info").removeClass( "show" ).addClass('hide');
+
+	if(result.erro && result.erro.length > 0){
+		alert(result.erro);
+		$(".messages #erro p").text(result.erro);
+		$(".messages #erro").removeClass( "hide" ).addClass('show');
+		$('#periodo' + result.periodo.id + ' td').css("background", "#f2dede");
+	} 
+	
+	if(result.info &&  result.info.length > 0){
+		alert(result.info);
+		$(".messages #info p").text(result.info);
+		$(".messages #info").removeClass( "hide" ).addClass('show');
+		$('#periodo' + result.periodo.id + ' td').css("background", "#d9edf7");
+		alert(result.info);
+	} 
+	
 }
