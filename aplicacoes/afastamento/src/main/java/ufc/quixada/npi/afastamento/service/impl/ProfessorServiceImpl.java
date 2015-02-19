@@ -16,7 +16,6 @@ import org.springframework.cache.annotation.Cacheable;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.enumeration.QueryType;
-import br.ufc.quixada.npi.ldap.model.Constants;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
