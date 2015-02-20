@@ -414,6 +414,7 @@ span#captcha-erro {
 footer {
 	text-align: center;
 	margin-bottom: 40px;
+	clear: both;
 }
 
 footer > img {
