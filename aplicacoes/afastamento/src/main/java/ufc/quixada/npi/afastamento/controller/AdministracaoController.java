@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Ranking;
@@ -30,6 +31,7 @@ import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
+import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -51,6 +53,9 @@ public class AdministracaoController {
 	
 	@Inject
 	private ReservaService reservaService;
+	
+	@Inject
+	private AfastamentoService afastamentoService;
 	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
@@ -92,6 +97,10 @@ public class AdministracaoController {
 			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
 			reserva.setStatus(statusReserva);
 			reservaService.update(reserva);
+			Afastamento afastamento = afastamentoService.getByReserva(reserva);
+			if(afastamento != null) {
+				afastamentoService.delete(afastamento);
+			}
 		}
 		Integer ano = Integer.valueOf(request.getParameter("ano"));
 		Integer semestre = Integer.valueOf(request.getParameter("semestre"));
@@ -99,12 +108,17 @@ public class AdministracaoController {
 		Ranking ranking = rankingService.getRanking(periodo);
 		int vagas = periodo.getVagas();
 		for(TuplaRanking tupla : ranking.getTuplas()) {
+			Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
 			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
 				if(vagas == 0) {
 					Reserva reserva = tupla.getReserva();
 					reserva.setStatus(StatusReserva.NAO_ACEITO);
 					reservaService.update(reserva);
 				} else {
+					if (afastamento == null) {
+						afastamento = new Afastamento(tupla.getReserva());
+						afastamentoService.save(afastamento);
+					}
 					vagas--;
 				}
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0) {
@@ -112,6 +126,15 @@ public class AdministracaoController {
 				reserva.setStatus(StatusReserva.ACEITO);
 				reservaService.update(reserva);
 				vagas--;
+				if (afastamento == null) {
+					afastamento = new Afastamento(tupla.getReserva());
+					afastamentoService.save(afastamento);
+				}
+			} else if((tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO) || tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO))
+					&& vagas == 0) {
+				Reserva reserva = tupla.getReserva();
+				reserva.setStatus(StatusReserva.NAO_ACEITO);
+				reservaService.update(reserva);
 			}
 		}
 		

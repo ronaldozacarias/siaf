@@ -12,9 +12,10 @@ import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
 
 @Named
-public class AfastamentoServiceImpl implements AfastamentoService {
+public class AfastamentoServiceImpl extends GenericServiceImpl<Afastamento> implements AfastamentoService {
 	
 	@Inject
 	private GenericRepository<Afastamento> afastamentoRepository;
@@ -28,5 +29,17 @@ public class AfastamentoServiceImpl implements AfastamentoService {
 		return afastamentoRepository.find(QueryType.JPQL, "from Afastamento where reserva.professor.cpf = :cpf "
 				+ "and (reserva.anoInicio < :anoInicio or (reserva.anoInicio = :anoInicio and reserva.semestreInicio < :semestreInicio))", params);
 	}
+
+	@Override
+	public Afastamento getByReserva(Reserva reserva) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", reserva.getId());
+		List<Afastamento> afastamentos = afastamentoRepository.find(QueryType.JPQL, "from Afastamento where reserva.id = :id", params);
+		if(afastamentos != null && !afastamentos.isEmpty()) {
+			return afastamentos.get(0);
+		}
+		return null;
+	}
+
 
 }

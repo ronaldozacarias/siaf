@@ -438,9 +438,13 @@ footer > p {
 	border-color: #CF5719;
 }
 
-button {
+button, input.btn-siaf {
 	outline: none !important;
 	outline-offset:0 !important;
+}
+
+.btn-siaf:focus {
+    color: #FFF !important;
 }
 
 .loading-siaf {
