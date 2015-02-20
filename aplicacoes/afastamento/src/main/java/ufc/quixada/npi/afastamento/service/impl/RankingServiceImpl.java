@@ -127,10 +127,14 @@ public class RankingServiceImpl implements RankingService {
 	        {
 	        	if(ranking1.getPontuacao().compareTo(ranking2.getPontuacao()) == 0.0f) {
 	        		if(ranking1.getReserva().getPrograma().equals(ranking2.getReserva().getPrograma())) {
-	        			if(ranking1.getReserva().getConceitoPrograma().equals(ranking2.getReserva().getConceitoPrograma())) {
-	        				return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
-	        			}
-	        			return ranking1.getReserva().getConceitoPrograma().compareTo(ranking2.getReserva().getConceitoPrograma());
+	        			if(ranking1.getReserva().getConceitoPrograma() != null && ranking2.getReserva().getConceitoPrograma() != null) {
+		        			if(ranking1.getReserva().getConceitoPrograma().equals(ranking2.getReserva().getConceitoPrograma())) {
+		        				return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
+		        			}
+		        			return ranking1.getReserva().getConceitoPrograma().compareTo(ranking2.getReserva().getConceitoPrograma());
+		        		} else {
+		        			return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
+		        		}
 	        		}
 	        		if(ranking1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
 	        			return 1;

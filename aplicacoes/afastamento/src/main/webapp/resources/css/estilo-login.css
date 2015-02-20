@@ -8,6 +8,10 @@ a {
 	cursor: hand;
 }
 
+.btn-siaf:focus {
+    color: #FFF !important;
+}
+
 .login-container {
 	margin: 100px auto;
 	display: table;
