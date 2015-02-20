@@ -29,8 +29,8 @@
 			</div>
 				<form:form role="form" servletRelativeAction="/j_spring_security_check"  method="post" id="login-form" autocomplete="off" class="form-horizontal">
 	
-					<c:if test="${not empty error}">
-						<div class="login-error"><i class="fa fa-times-circle-o"></i> ${error}</div>
+					<c:if test="${not empty erro}">
+						<div class="login-error"><i class="fa fa-times-circle-o"></i> ${erro}</div>
 					</c:if>
 		
 					<c:if test="${not empty msg}">

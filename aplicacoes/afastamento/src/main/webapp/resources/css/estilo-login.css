@@ -110,11 +110,9 @@ a {
 }
 
 .login-error {
-	background: #B53636;
-	margin: 0 0 10px 0;
-	padding: 2px;
-	color: #fff;
-	font-weight: 600;
+	margin-top: 10px;
+	color: #A94442;
+	text-align: center;
 }
 .btn-login {
 	margin-top: 10px;
