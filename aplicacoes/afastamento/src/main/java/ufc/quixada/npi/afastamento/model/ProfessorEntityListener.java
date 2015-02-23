@@ -22,7 +22,6 @@ public class ProfessorEntityListener {
 		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
 		Usuario usuario = usuarioService.getByCpf(Constants.BASE_USUARIOS, professor.getCpf());
-		
 		professor.setNome(usuario.getNome());
 		professor.setEmail(usuario.getEmail());
 		professor.setDataNascimento(usuario.getNascimento());

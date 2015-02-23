@@ -62,7 +62,7 @@
 		</property>
 	</bean>
 
-	<mvc:resources mapping="/webjars/**" location="/webjars/" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 </beans>
