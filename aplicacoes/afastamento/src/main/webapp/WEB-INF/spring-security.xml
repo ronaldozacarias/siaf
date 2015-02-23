@@ -22,10 +22,12 @@
  		<intercept-url pattern="/configuracao/nova-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
  		<intercept-url pattern="/configuracao/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
  		
- 		<form-login login-page="/login" default-target-url="/" 
+ 		<form-login login-page="/login" authentication-success-handler-ref="myAuthenticationSuccessHandler" 
  			authentication-failure-url="/loginfailed" />
  		<logout logout-success-url="/login" invalidate-session="true" logout-url="/logout"/> 	
  	</http>
+ 	
+ 	<beans:bean id="myAuthenticationSuccessHandler" class="ufc.quixada.npi.afastamento.service.SimpleUrlAuthenticationSuccessHandler" />
  	
  	<beans:bean id="ldapAuthenticationProvider" class="br.ufc.quixada.npi.ldap.service.LdapAuthenticationProvider"></beans:bean>
  
