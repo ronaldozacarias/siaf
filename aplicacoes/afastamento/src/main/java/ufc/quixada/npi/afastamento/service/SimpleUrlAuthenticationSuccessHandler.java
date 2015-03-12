@@ -24,7 +24,7 @@ public class SimpleUrlAuthenticationSuccessHandler implements AuthenticationSucc
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		boolean usuarioValido = false;
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals(Constants.AFFILIATION_DOCENTE) || grantedAuthority.getAuthority().equals(Constants.AFFILIATION_ADMIN_SIAF)) {
+            if (grantedAuthority.getAuthority().equals("ROLE_" + Constants.AFFILIATION_DOCENTE) || grantedAuthority.getAuthority().equals("ROLE_" + Constants.AFFILIATION_ADMIN_SIAF)) {
             	usuarioValido = true;
                 break;
             }
@@ -32,7 +32,7 @@ public class SimpleUrlAuthenticationSuccessHandler implements AuthenticationSucc
         if(!usuarioValido) {
         	redirectStrategy.sendRedirect(request, response, "/loginfailed");
         }
-		
+        redirectStrategy.sendRedirect(request, response, "/");
 	}
 
 }
