@@ -63,9 +63,9 @@
 		</div>
 	</div>
 	<footer>
-		<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-campus.png" />">
-		<p>Universidade Federal do Ceará - Campus Quixadá.</p>
-		<p>Todos os direitos reservados.</p>
+		<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-npi.png" />">
+		<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
+	<p>Universidade Federal do Ceará - Campus Quixadá</p>
 	</footer>
 	
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
