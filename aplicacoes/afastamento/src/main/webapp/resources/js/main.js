@@ -225,9 +225,6 @@ $(document).ready(function() {
 			url: '/siaf/administracao/edit-periodo.json',
 		})
 		.success(function(result) {
-			console.log(result.editEncerramento);
-			console.log(result.editVagas);
-			
 			editVagas = result.editVagas;
 			editEncerramento = result.editEncerramento;
 			$('#options'+id).attr('data-encerramento', result.editEncerramento);
@@ -391,8 +388,8 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.p),
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
-            $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa)),
-            $('<td class=\"pontuacao align-center\">').text(item.pontuacao)
+            $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa) + " / " + getConceito(item.reserva.conceitoPrograma)),
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2))
         ).appendTo('tbody');
     });
 	if(result.length == 0) {
@@ -405,6 +402,13 @@ function getPrograma(programa) {
 		return "PÓS DOUTORADO";
 	}
 	return programa;
+}
+
+function getConceito(conceito) {
+	if(conceito == null) {
+		return "-";
+	}
+	return conceito;
 }
 
 function filtroPeriodo(){
@@ -519,18 +523,15 @@ function messagePeriodo(result) {
 	$(".messages #info").removeClass( "show" ).addClass('hide');
 
 	if(result.erro && result.erro.length > 0){
-		alert(result.erro);
 		$(".messages #erro p").text(result.erro);
 		$(".messages #erro").removeClass( "hide" ).addClass('show');
 		$('#periodo' + result.periodo.id + ' td').css("background", "#f2dede");
 	} 
 	
 	if(result.info &&  result.info.length > 0){
-		alert(result.info);
 		$(".messages #info p").text(result.info);
 		$(".messages #info").removeClass( "hide" ).addClass('show');
 		$('#periodo' + result.periodo.id + ' td').css("background", "#d9edf7");
-		alert(result.info);
 	} 
 	
 }

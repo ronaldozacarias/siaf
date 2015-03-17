@@ -58,6 +58,8 @@ public class RankingServiceImpl implements RankingService {
 						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO);
 					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
 						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
+					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
+						tuplaAtual.get(i).setStatus(StatusTupla.NAO_ACEITO);
 					} else {
 						tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
 					}
@@ -203,7 +205,7 @@ public class RankingServiceImpl implements RankingService {
 		Periodo periodo = periodoService.getPeriodo(reserva.getAnoInicio(), reserva.getSemestreInicio());
 		Integer semestresAfastado = 0;
 		for(Afastamento afastamento : afastamentos) {
-			semestresAfastado =+ calculaSemestres(afastamento.getReserva().getAnoInicio(), afastamento.getReserva().getSemestreInicio(), 
+			semestresAfastado = semestresAfastado + calculaSemestres(afastamento.getReserva().getAnoInicio(), afastamento.getReserva().getSemestreInicio(), 
 					afastamento.getReserva().getAnoTermino(), afastamento.getReserva().getSemestreTermino());
 		}
 		Integer punicao = reservaService.getReservasAnterioresComPunicao(reserva.getProfessor(), periodo).size();

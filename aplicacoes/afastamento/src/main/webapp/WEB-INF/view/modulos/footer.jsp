@@ -16,7 +16,7 @@
 <script src="<c:url value="/resources/js/jquery.bootgrid.min.js" />"></script>
 
 <footer>
-	<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-campus.png" />">
-	<p>Universidade Federal do Ceará</p>
-	<p>Campus Quixadá</p>
+	<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-npi.png" />">
+	<p>Desenvolvido por <a href="http://www.npi.quixada.ufc.br" target="_blank">Núcleo de Práticas em Informática</a></p>
+	<p>Universidade Federal do Ceará - Campus Quixadá</p>
 </footer>

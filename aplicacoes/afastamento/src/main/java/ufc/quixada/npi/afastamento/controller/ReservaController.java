@@ -52,7 +52,6 @@ public class ReservaController {
 		model.addAttribute("periodoAtual", periodoAtual);
 		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
-		
 		return Constants.PAGINA_RANKING;
 	}
 	

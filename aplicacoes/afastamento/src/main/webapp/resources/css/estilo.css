@@ -152,7 +152,7 @@ div#periodo i {
 	background-color: #AED7EC;
 }
 
-.table > tbody > tr.NAO_ACEITO, table > tbody > tr.DESCLASSIFICADO {
+table > tbody > tr.DESCLASSIFICADO {
 	background-color: #F2BF7C;
 }
 
@@ -164,8 +164,12 @@ div#periodo i {
 	background-color: #95CF9E;
 }
 
-.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
+.table > tbody > tr.NAO_ACEITO {
 	background-color: #F0D1D1;
+}
+
+.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
+	background-color: #E96D6D;
 }
 
 .table > tbody > tr > td.pontuacao {
@@ -201,10 +205,14 @@ div#legenda label span.classificado {
 }
 
 div#legenda label span.cancelado {
+	background-color: #E96D6D;
+}
+
+div#legenda label span.nao_aceito {
 	background-color: #F0D1D1;
 }
 
-input{
+input {
 	display: inline !important;
 	border: 2px red;
 }

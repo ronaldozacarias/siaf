@@ -72,7 +72,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	@CacheEvict(value = {"ranking", "visualizarRanking"}, allEntries = true, beforeInvocation = true)
+	@CacheEvict(value = {"ranking", "visualizarRanking"}, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getUltimoPeriodoEncerrado();
 		if(periodo != null) {
@@ -203,6 +203,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
 	public Model editarPeriodo(Model model, 
 			@RequestParam("id") Long id, 
 			@RequestParam("vagas") Integer vagas, 

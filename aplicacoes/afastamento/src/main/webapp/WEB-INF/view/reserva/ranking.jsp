@@ -58,7 +58,7 @@
 						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres que faltam para o docente completar três (3) anos de contratação">P</span></th>
 						<th><span data-toggle="tooltip" data-placement="top" title="Número de semestres solicitados">SS</span></th>
 			            <th>Período</th>
-			            <th>Programa</th>
+			            <th>Programa / Conceito</th>
 			            <th>Pontuação</th>
 					</tr>
 				</thead>
@@ -75,6 +75,7 @@
 
 			<div id="legenda">
 				<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito (afastado)</label>
+				<label><span class="nao_aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aceito (anteriormente)</label>
 				<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
 				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
 				<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label>
@@ -84,7 +85,12 @@
 				<label><span>A:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
 				<label><span>S:</span> Número de semestres do afastamento reservado/solicitado. (No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado).</label><br/>
 				<label><span>P:</span> Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).</label><br/>
-				<label><span>Obs:</span> Será considerado como um afastamento com duração de um (1) semestre, para efeito de cálculo da ordem de prioridade das reservas/solicitações, a solicitação cancelada de acordo com os critérios da <a href="<c:url value="/resources/files/Resolucaoo_01-2014.pdf" />">resolução</a>.</label>
+				<label><span>SS:</span> Número de semestres do afastamento reservado/solicitado. </label>
+				<label><span>Obs:</span> Será considerado como um afastamento com duração de um (1) semestre, para efeito de cálculo da ordem de prioridade das reservas/solicitações, a solicitação cancelada de acordo com os critérios da <a href="<c:url value="/resources/files/Resolucaoo_01-2014.pdf" />">resolução</a>.</label><br><br>
+				<label>Em caso de empate na ordem de prioridade, serão considerados os critérios abaixo, na ordem indicada:</label>
+				<label><span>I:</span> Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.</label><br>
+				<label><span>II:</span> Prioridade para programas com melhor conceito.</label><br>
+				<label><span>III:</span> Prioridade para o candidato mais velho.</label>
 			</div>
 		</div>
 		

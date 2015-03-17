@@ -2,6 +2,7 @@ package ufc.quixada.npi.afastamento.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -31,17 +32,17 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
-	public String acessoNegado(ModelMap model, Principal user) {
+	public String acessoNegado() {
 		return "403";
 	}
 	
 	@RequestMapping(value = "/404", method = RequestMethod.GET)
-	public String notFound(ModelMap model, Principal user) {
+	public String notFound() {
 		return "404";
 	}
 	
 	@RequestMapping(value = "/500", method = RequestMethod.GET)
-	public String erroInterno(ModelMap model, Principal user) {
+	public String erroInterno(HttpServletRequest request, Principal user) {
 		return "500";
 	}
 }
