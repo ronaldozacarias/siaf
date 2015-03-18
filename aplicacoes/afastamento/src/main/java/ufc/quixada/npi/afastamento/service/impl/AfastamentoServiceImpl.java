@@ -28,12 +28,6 @@ public class AfastamentoServiceImpl extends GenericServiceImpl<Afastamento> impl
 		params.put("semestreInicio", reserva.getSemestreInicio());
 		List<Afastamento> afs = afastamentoRepository.find(QueryType.JPQL, "from Afastamento where reserva.professor.cpf = :cpf "
 				+ "and (reserva.anoInicio < :anoInicio or (reserva.anoInicio = :anoInicio and reserva.semestreInicio < :semestreInicio))", params);
-		if(reserva.getProfessor().getCpf().equals("65685300344")) {
-			for(Afastamento a : afs) {
-				System.out.println("Afastamento: " + a.getId());
-				
-			}
-		}
 		return afs;
 	}
 
