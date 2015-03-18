@@ -52,6 +52,8 @@ public class Constants {
 	
 	public static final String MSG_CAMPOS_OBRIGATORIOS = "É necessário preencher todas as informações.";
 	
+	public static final String MSG_PERIODO_INVALIDO = "O período de término do afastamento deve ser posterior ao períido de início.";
+	
 	public static final String MSG_SOLICITACAO_FORA_DO_PRAZO = "Sua solicitação está fora do prazo permitido.";
 	
 	public static final String MSG_TEMPO_MAXIMO_MESTRADO = "O tempo máximo para mestrado ou pós-doutorado é de 4 semestres.";

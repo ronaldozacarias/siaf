@@ -96,6 +96,10 @@ public class ReservaController {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
 			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
+		if(anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
+			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+		}
 		
 		Periodo periodo = periodoService.getPeriodoAtual();
 		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
