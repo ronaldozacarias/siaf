@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.service.UserService;
-import br.ufc.quixada.npi.ldap.model.Constants;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -17,7 +16,7 @@ public class UserServiceImpl extends GenericServiceImpl<Usuario> implements User
 	
 	@Override
 	public Usuario getByCpf(String cpf) {
-		return usuarioService.getByCpf(Constants.BASE_USUARIOS, cpf);
+		return usuarioService.getByCpf(cpf);
 	}
 
 }
