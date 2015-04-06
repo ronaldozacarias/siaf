@@ -180,6 +180,9 @@ public class RankingServiceImpl implements RankingService {
 				} else {
 					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 				}
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0) {
+				tupla.setStatus(StatusTupla.CLASSIFICADO);
+				vagas--;
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
 				tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {

@@ -63,9 +63,10 @@
 									<td class="align-center">${tupla.pontuacao }</td>
 									<td class="align-center">
 										<c:choose>
-											<c:when test="${tupla.status != 'DESCLASSIFICADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
+											<c:when test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
 												<c:set var="atualizar" value="true"></c:set>
 												<select id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
+													<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''} value="${tupla.reserva.id }-ABERTO">CLASSIFICADO</option>
 													<option ${tupla.status == 'ACEITO' ? 'selected' : ''} value="${tupla.reserva.id }-ACEITO">ACEITO</option>
 													<option ${tupla.status == 'CANCELADO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
 													<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
@@ -80,12 +81,6 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<div id="legenda">
-						<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito (afastado)</label>
-						<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
-						<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
-						<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label>
-					</div>
 					<c:if test="${atualizar }">
 						<div class="controls">
 							<input name="reservar" type="submit" class="btn btn-siaf" value="Atualizar Ranking" />

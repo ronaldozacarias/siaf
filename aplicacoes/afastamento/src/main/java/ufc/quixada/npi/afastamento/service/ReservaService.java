@@ -9,7 +9,9 @@ import ufc.quixada.npi.afastamento.model.Reserva;
 
 public interface ReservaService extends GenericService<Reserva> {
 
-	void salvar(Reserva afastamento);
+	void salvar(Reserva reserva);
+	
+	void atualizar(Reserva reserva);
 	
 	List<Reserva> getReservasByProfessor(Professor professor);
 	

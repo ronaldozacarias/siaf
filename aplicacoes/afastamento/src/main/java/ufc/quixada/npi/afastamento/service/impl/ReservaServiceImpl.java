@@ -112,4 +112,11 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'CANCELADO_COM_PUNICAO' and professor.cpf = :cpf and (anoTermino < :ano or (anoTermino = :ano and semestreTermino < :semestre))", params);
 	}
 
+	@Override
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
+	public void atualizar(Reserva reserva) {
+		update(reserva);
+		
+	}
+
 }

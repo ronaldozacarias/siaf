@@ -30,6 +30,7 @@ import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
@@ -79,7 +80,9 @@ public class AdministracaoController {
 			periodo = periodoService.getPeriodoPosterior(periodo);
 			if(periodo != null) {
 				periodo = periodoService.getPeriodoPosterior(periodo);
-				Ranking ranking = rankingService.getRanking(periodo);
+				Ranking ranking = new Ranking();
+				ranking.setPeriodo(periodo);
+				ranking.setTuplas(rankingService.visualizarRanking(periodo.getAno(), periodo.getSemestre()));
 				model.addAttribute("ranking", ranking);
 			}
 		}
@@ -91,14 +94,14 @@ public class AdministracaoController {
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
 	public String atualizarRanking(HttpServletRequest request, RedirectAttributes redirect) {
 		String[] status = request.getParameterValues("status");
-		for(String s : status) {
+		for (String s : status) {
 			String[] valor = s.split("-");
 			Reserva reserva = reservaService.find(Reserva.class, Long.parseLong(valor[0]));
 			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
 			reserva.setStatus(statusReserva);
 			reservaService.update(reserva);
 			Afastamento afastamento = afastamentoService.getByReserva(reserva);
-			if(afastamento != null) {
+			if (afastamento != null) {
 				afastamentoService.delete(afastamento);
 			}
 		}
@@ -108,33 +111,43 @@ public class AdministracaoController {
 		Ranking ranking = rankingService.getRanking(periodo);
 		int vagas = periodo.getVagas();
 		for(TuplaRanking tupla : ranking.getTuplas()) {
-			Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
-			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
-				if(vagas == 0) {
+			if(tupla.getReserva().getAnoInicio().equals(ano) && tupla.getReserva().getSemestreInicio().equals(semestre)) {
+				Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
+				if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+					if(vagas == 0) {
+						Reserva reserva = tupla.getReserva();
+						reserva.setStatus(StatusReserva.NAO_ACEITO);
+						reservaService.update(reserva);
+					} else {
+						if (afastamento == null) {
+							afastamento = new Afastamento(tupla.getReserva());
+							afastamentoService.save(afastamento);
+						}
+						vagas--;
+					}
+				} else if (tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0 && tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
 					Reserva reserva = tupla.getReserva();
-					reserva.setStatus(StatusReserva.NAO_ACEITO);
+					reserva.setStatus(StatusReserva.ABERTO);
 					reservaService.update(reserva);
-				} else {
+					vagas--;
 					if (afastamento == null) {
 						afastamento = new Afastamento(tupla.getReserva());
 						afastamentoService.save(afastamento);
 					}
+				} else if((tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO) || tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO))
+						&& vagas == 0) {
+					Reserva reserva = tupla.getReserva();
+					reserva.setStatus(StatusReserva.NAO_ACEITO);
+					reservaService.update(reserva);
+				} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO) && tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
 					vagas--;
+				} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO) && tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+					Reserva reserva = tupla.getReserva();
+					reserva.setStatus(StatusReserva.NAO_ACEITO);
+					reservaService.update(reserva);
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0) {
-				Reserva reserva = tupla.getReserva();
-				reserva.setStatus(StatusReserva.ACEITO);
-				reservaService.update(reserva);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
 				vagas--;
-				if (afastamento == null) {
-					afastamento = new Afastamento(tupla.getReserva());
-					afastamentoService.save(afastamento);
-				}
-			} else if((tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO) || tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO))
-					&& vagas == 0) {
-				Reserva reserva = tupla.getReserva();
-				reserva.setStatus(StatusReserva.NAO_ACEITO);
-				reservaService.update(reserva);
 			}
 		}
 		
