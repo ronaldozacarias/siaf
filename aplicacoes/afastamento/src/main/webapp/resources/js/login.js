@@ -53,10 +53,10 @@ $(document).ready(function() {
     });
 	
 	$('#login-form').submit(function(){
-		/*if(grecaptcha.getResponse() == '') {
+		if(grecaptcha.getResponse() == '') {
 			$('#div-captcha-erro').after('<span id="captcha-erro" class="help-block">Selecione a opção "Não sou um robô"</span>');
 			return false;
-		}*/
+		}
 	});
 	
 });

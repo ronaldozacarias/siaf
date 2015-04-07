@@ -60,6 +60,8 @@ public class RankingServiceImpl implements RankingService {
 						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
 					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
 						tuplaAtual.get(i).setStatus(StatusTupla.NAO_ACEITO);
+					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.NEGADO)) {
+						tuplaAtual.get(i).setStatus(StatusTupla.NEGADO);
 					} else {
 						tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
 					}
@@ -74,7 +76,7 @@ public class RankingServiceImpl implements RankingService {
 	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
 		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
 		for(TuplaRanking tupla : tuplaRanking) {
-			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && 
+			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && !tupla.getStatus().equals(StatusTupla.NEGADO) &&
 					!tupla.getStatus().equals(StatusTupla.CANCELADO) && !tupla.getStatus().equals(StatusTupla.CANCELADO_COM_PUNICAO)) {
 				result.add(tupla);
 			}
@@ -191,6 +193,8 @@ public class RankingServiceImpl implements RankingService {
 				tupla.setStatus(StatusTupla.CANCELADO);
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
 				tupla.setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NEGADO)) {
+				tupla.setStatus(StatusTupla.NEGADO);
 			}
 		}
 		

@@ -389,7 +389,8 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
             $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa) + " / " + getConceito(item.reserva.conceitoPrograma)),
-            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2))
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2)),
+            $('<td class=\"align-center\">').text(getStatus(item.status))
         ).appendTo('tbody');
     });
 	if(result.length == 0) {
@@ -402,6 +403,16 @@ function getPrograma(programa) {
 		return "PÓS DOUTORADO";
 	}
 	return programa;
+}
+
+function getStatus(status) {
+	if(status == 'NAO_ACEITO') {
+		return "NÃO ACEITO";
+	}
+	if(status == 'CANCELADO_COM_PUNICAO') {
+		return "CANCELADO COM PUNIÇÃO";
+	}
+	return status;
 }
 
 function getConceito(conceito) {

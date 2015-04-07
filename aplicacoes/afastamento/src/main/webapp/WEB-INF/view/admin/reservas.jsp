@@ -70,6 +70,7 @@
 													<option ${tupla.status == 'ACEITO' ? 'selected' : ''} value="${tupla.reserva.id }-ACEITO">ACEITO</option>
 													<option ${tupla.status == 'CANCELADO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
 													<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''} value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
+													<option ${tupla.status == 'NEGADO' ? 'selected' : ''} value="${tupla.reserva.id }-NEGADO">NEGADO</option>
 												</select>
 											</c:when>
 											<c:otherwise>
