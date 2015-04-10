@@ -92,7 +92,7 @@ form input, .bootstrap-select button {
 	display: inline !important;
 }
 
-form label.value-label {
+.value-label {
 	color: #CF5719;
 }
 
@@ -105,9 +105,10 @@ form label.value-label {
 	background-color: white !important;
 }
 
-a {
+a, a:hover, a:VISITED, a:ACTIVE {
 	outline: none !important;
 	outline-offset:0 !important;
+	text-decoration: none !important;
 }
 
 span.line {
@@ -126,10 +127,32 @@ table#ranking {
 	margin-top: 20px;
 }
 
+div.titulo-ranking {
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	border-bottom: 1px solid;
+}
+
+#wrap-periodo {
+	background-color: #E7E7E7;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+#wrap-periodo label {
+	font-weight: 500;
+	letter-spacing: 1px;;
+}
+
 div#periodo {
 	text-align: center;
-	margin-top: 30px;
 	color: #CF5719;
+}
+
+div#dados-periodo {
+	font-size: 15px;
 }
 
 div#periodo label {
@@ -146,8 +169,16 @@ div#periodo i {
 	text-align: center;
 }
 
-.table > tbody > tr.ACEITO {
-	background-color: #AED7EC;
+table {
+	float: left;
+}
+
+#afastados > tbody > tr {
+	background-color: #BBD4E1;
+}
+
+.table > tbody > tr.AFASTADO {
+	background-color: #BBD4E1;
 }
 
 table > tbody > tr.DESCLASSIFICADO {
@@ -189,11 +220,11 @@ div#legenda label span {
 	font-weight: bold;
 }
 
-div#legenda label span.aceito {
-	background-color: #AED7EC;
+div#legenda label span.afastado {
+	background-color: #BBD4E1;
 }
 
-div#legenda label span.desclassificado {
+label span.desclassificado {
 	background-color: #F2BF7C;
 }
 
@@ -201,7 +232,7 @@ div#legenda label span.encerrado {
 	background-color: #C5C5C5;
 }
 
-div#legenda label span.classificado {
+label span.classificado {
 	background-color: #95CF9E;
 }
 
@@ -318,10 +349,10 @@ img.error {
 	margin-right: auto;
 }
 
-table#ranking {
+/* table#ranking {
   -moz-animation-duration: 300ms;
   -moz-animation-delay: 100ms;
-}
+} */
 .clear{
 	clear: both;
 }
@@ -483,6 +514,15 @@ button, input.btn-siaf {
 	height: 52px;
 	vertical-align: middle;
 	background: url("../images/siaf-loading.png") -162px -32px no-repeat;
+}
+
+#load-siaf {
+	margin-top: 50px;
+	text-align: center;
+}
+
+#load-siaf > div.title {
+	float: none;
 }
 
 @-webkit-keyframes loading {

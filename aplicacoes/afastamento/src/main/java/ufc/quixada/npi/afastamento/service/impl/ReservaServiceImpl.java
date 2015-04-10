@@ -14,6 +14,7 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
@@ -109,7 +110,8 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		params.put("cpf", professor.getCpf());
 		params.put("ano", periodo.getAno());
 		params.put("semestre", periodo.getSemestre());
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'CANCELADO_COM_PUNICAO' and professor.cpf = :cpf and (anoTermino < :ano or (anoTermino = :ano and semestreTermino < :semestre))", params);
+		params.put("status", StatusReserva.CANCELADO_COM_PUNICAO);
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and professor.cpf = :cpf and (anoTermino < :ano or (anoTermino = :ano and semestreTermino < :semestre))", params);
 	}
 
 	@Override
@@ -117,6 +119,15 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	public void atualizar(Reserva reserva) {
 		update(reserva);
 		
+	}
+
+	@Override
+	public List<Reserva> getAfastados(Periodo periodo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ano", periodo.getAno());
+		params.put("semestre", periodo.getSemestre());
+		params.put("status", StatusReserva.AFASTADO);
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and anoTermino <= :ano and semestreTermino <= :semestre order by anoInicio, semestreInicio", params);
 	}
 
 }

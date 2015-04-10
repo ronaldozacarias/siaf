@@ -22,5 +22,7 @@ public interface ReservaService extends GenericService<Reserva> {
 	Reserva getReservaById(Long id);
 	
 	List<Reserva> getReservasAnterioresComPunicao(Professor professor, Periodo periodo);
+	
+	List<Reserva> getAfastados(Periodo periodo);
 
 }

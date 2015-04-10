@@ -113,7 +113,7 @@ public class AdministracaoController {
 		for(TuplaRanking tupla : ranking.getTuplas()) {
 			if(tupla.getReserva().getAnoInicio().equals(ano) && tupla.getReserva().getSemestreInicio().equals(semestre)) {
 				Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
-				if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+				if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 					if(vagas == 0) {
 						Reserva reserva = tupla.getReserva();
 						reserva.setStatus(StatusReserva.NAO_ACEITO);
@@ -146,7 +146,7 @@ public class AdministracaoController {
 					reserva.setStatus(StatusReserva.NAO_ACEITO);
 					reservaService.update(reserva);
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 				vagas--;
 			}
 		}

@@ -45,7 +45,9 @@ public class RankingServiceImpl implements RankingService {
 			Periodo periodoInicio = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
 			Periodo periodoTermino = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
 			for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
+				//List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
 				List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
+				int vagas = periodoInicio.getVagas();
 				boolean encontrou = false;
 				for(TuplaRanking tupla : tuplaPeriodo) {
 					if(tupla.getReserva().equals(tuplaAtual.get(i).getReserva())) {
@@ -158,19 +160,21 @@ public class RankingServiceImpl implements RankingService {
 	    });
 		Collections.reverse(tuplas);
 		int vagas = periodo.getVagas();
-		for (TuplaRanking tupla : tuplas) {
+		
+		// Subtrai as vagas já garantidas (afastados)
+		/*for (TuplaRanking tupla : tuplas) {
 			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
-			if((tupla.getReserva().getStatus().equals(StatusReserva.ACEITO) && !periodo.equals(periodoInicio)) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
+			if((tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO) && !periodo.equals(periodoInicio)) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
 				vagas--;
 			}
 		}
 		for (TuplaRanking tupla : tuplas) {
 			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
-			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 				if(!periodo.equals(periodoInicio)) {
-					tupla.setStatus(StatusTupla.ACEITO);
+					tupla.setStatus(StatusTupla.AFASTADO);
 				} else if(vagas > 0) {
-					tupla.setStatus(StatusTupla.ACEITO);
+					tupla.setStatus(StatusTupla.AFASTADO);
 					vagas--;
 				} else {
 					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
@@ -196,7 +200,7 @@ public class RankingServiceImpl implements RankingService {
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NEGADO)) {
 				tupla.setStatus(StatusTupla.NEGADO);
 			}
-		}
+		}*/
 		
 		ranking.setTuplas(tuplas);
 		return ranking;
@@ -222,8 +226,6 @@ public class RankingServiceImpl implements RankingService {
 	
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio) + 1;
-	}
-
-	
+	}	
 
 }

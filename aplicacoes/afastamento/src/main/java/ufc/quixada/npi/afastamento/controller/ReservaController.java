@@ -1,6 +1,10 @@
 package ufc.quixada.npi.afastamento.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,8 @@ import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -56,11 +62,19 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Model ranking(HttpServletRequest request, Model model, HttpSession session) {
+	public @ResponseBody Model ranking(HttpServletRequest request, Model model) {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
 		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		model.addAttribute("afastados", getAfastados(ranking.getTuplas()));
+		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
+		for(TuplaRanking tupla : ranking.getTuplas()) {
+			if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO) || tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+				tuplas.add(tupla);
+			}
+		}
+		ranking.setTuplas(tuplas);
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
 		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
@@ -182,6 +196,25 @@ public class ReservaController {
 	
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
+	}
+	
+	private List<TuplaRanking> getAfastados(List<TuplaRanking> tuplas) {
+		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
+		for(TuplaRanking tupla : tuplas) {
+			if (tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+				afastados.add(tupla);
+			}
+		}
+		
+		Collections.sort(afastados, new Comparator<TuplaRanking>() {
+
+			@Override
+			public int compare(TuplaRanking tupla1, TuplaRanking tupla2) {
+				return tupla1.getProfessor().compareTo(tupla2.getProfessor());
+			}
+		});
+		
+		return afastados;
 	}
 	
 }

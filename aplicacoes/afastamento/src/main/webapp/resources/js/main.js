@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	
+	// Página de Gerenciar Professores
 	var defaults = {
 		    mode: 'inline', 
 		    toggle: 'manual',
@@ -94,10 +95,18 @@ $(document).ready(function() {
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	
+	$('[data-toggle="popover"]').popover({
+	    trigger: 'hover'
+	});
+	
 	function showMessage(result) {
 		$("#wrapper").html($(result).find("#wrapper"));
 	}
 	
+//____________________________________________________________________________________________________________________________________________________	
+	
+	
+	// Página de Gerenciar Períodos
 	function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,
@@ -118,94 +127,6 @@ $(document).ready(function() {
 		});
 	}
 	
-	$('#solicitarAfastamento').validate({
-        rules: {
-            
-        },
-        highlight: function(element) {
-            $(element).closest('.form-item').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-item').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function(error, element) {
-            error.insertAfter(element.parent().children().last());
-        },
-        messages:{
-        	anoInicio:{
-                required:"Campo obrigatório",
-            },
-            anoTermino:{
-                required:"Campo obrigatório",
-            },
-            conceito:{
-                required:"Campo obrigatório",
-            },
-            instituicao:{
-                required:"Campo obrigatório",
-            }
-        }
-    });
-	
-	$('.ano').mask('9999', {placeholder:" "});
-	$('.conceito').mask('9',{placeholder:" "});
-	
-	$('.selectpicker').selectpicker();
-	
-	$(".filtroSemestre").selectpicker('refresh');
-	
-	
-	$(".data").datepicker({
-		language: 'pt-BR',
-		autoclose: true,
-		format: "dd/mm/yyyy"
-	});
-	
-	$(".file").fileinput({
-		showUpload: false,
-		overwriteInitial: false,
-		initialCaption: "Selecione...",
-		browseLabel: "Buscar",
-		browseClass: "btn btn-default",
-		removeLabel: "Excluir",
-		msgSelected: "{n} arquivos selecionados",
-		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
-	});
-	
-	$('#anterior').click(function(){
-		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val());
-	});
-	
-	$('#posterior').click(function(){
-		getRanking($('#anoPosterior').val(), $('#semestrePosterior').val());
-	});
-	
-	$("#viewPeriodo").hide();
-	$("#warning-ranking").hide();
-	showPeriodoPost();
-	
-	$(".filtroSemestre").change(function(event) {
-		filtroPeriodo();
-	});	
-	
-	$("#filtroAno").keyup(function (event) {
-	    var maximoDigitosAno = 4;
-	    var lengthAno = $(this).val().length;
-	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
-	    	filtroPeriodo();
-	    }
-	});
-	
-	$("#encerramento").mask("99/99/9999");
-
-	$('#excluir-reserva').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
-	});
-	
-
 	var editVagas = false;
 	var editEncerramento = false;
 
@@ -321,12 +242,106 @@ $(document).ready(function() {
 		event.stopPropagation();
 	});
 	
+	$(".filtroSemestre").change(function(event) {
+		filtroPeriodo();
+	});	
+	
+	$("#filtroAno").keyup(function (event) {
+	    var maximoDigitosAno = 4;
+	    var lengthAno = $(this).val().length;
+	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
+	    	filtroPeriodo();
+	    }
+	});
+	
+//____________________________________________________________________________________________________________________________________________________	
+
+		
+	// Página de inclusão de reserva
+	$('#solicitarAfastamento').validate({
+        rules: {
+            
+        },
+        highlight: function(element) {
+            $(element).closest('.form-item').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-item').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent().children().last());
+        },
+        messages:{
+        	anoInicio:{
+                required:"Campo obrigatório",
+            },
+            anoTermino:{
+                required:"Campo obrigatório",
+            },
+            conceito:{
+                required:"Campo obrigatório",
+            },
+            instituicao:{
+                required:"Campo obrigatório",
+            }
+        }
+    });
+	
+	$('.ano').mask('9999', {placeholder:" "});
+	$('.conceito').mask('9',{placeholder:" "});
+	
+	$('.selectpicker').selectpicker();
+	
+	$(".filtroSemestre").selectpicker('refresh');
+	
+	
+	$(".data").datepicker({
+		language: 'pt-BR',
+		autoclose: true,
+		format: "dd/mm/yyyy"
+	});
+	
+	$(".file").fileinput({
+		showUpload: false,
+		overwriteInitial: false,
+		initialCaption: "Selecione...",
+		browseLabel: "Buscar",
+		browseClass: "btn btn-default",
+		removeLabel: "Excluir",
+		msgSelected: "{n} arquivos selecionados",
+		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
+	});
+	
+	
+	$("#encerramento").mask("99/99/9999");
+
+	$('#excluir-reserva').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});
+//____________________________________________________________________________________________________________________________________________________	
+
+	
+	// Página do Ranking
+	$('#anterior').click(function(){
+		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val());
+	});
+	
+	$('#posterior').click(function(){
+		getRanking($('#anoPosterior').val(), $('#semestrePosterior').val());
+	});
+	
+	$("#ranking-full").hide();
+	
+	showPeriodoPost();	
 	
 });
 
 function getRanking(ano, semestre) {
 	$("tbody").remove();
-	$("#warning-ranking").hide();
+	$("#ranking-full").hide();
 	$('#load-siaf').show();
 	$.ajax({
 		type: "POST",
@@ -337,7 +352,9 @@ function getRanking(ano, semestre) {
 		}
 	})
 	.success(function(result) {
-		
+		$('#count-ranking').text('Vagas restantes: ' + (result.periodoAtual.vagas - result.afastados.length));
+		loadAfastados(result.afastados);
+			
 		$('i#anterior').show();
 		$('i#posterior').show();
 		if(result.periodoAnterior == null) {
@@ -358,25 +375,27 @@ function getRanking(ano, semestre) {
 		$('#semestre').val(result.periodoAtual.semestre);
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
-		$('#vagas').text("Vagas: " + result.periodoAtual.vagas);
+		$('#vagas').text(result.periodoAtual.vagas);
 		if(result.periodoAtual.encerramento != null) {
-			$('#encerramento').text("Encerramento: " + moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+			$('#encerramento').text(moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
 		} else {
-			$('#encerramento').text("Encerramento: -");
+			$('#encerramento').text('-');
 		}
+		$('#help-encerramento').attr('data-content', 'Data limite para solicitação de afastamento com início para o período ' + (result.periodoAtual.ano + 1) + '.' + result.periodoAtual.semestre);
 		
 		$('#load-siaf').hide();
-		loadTable(result.ranking.tuplas, "ranking");
+		loadRanking(result.ranking.tuplas);
 		
-		$('table#ranking').removeClass('animated zoomIn').addClass('animated zoomIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+		$('table#ranking, table#afastados').removeClass('animated zoomIn').addClass('animated zoomIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
 		      $(this).removeClass('animated zoomIn');
 	    });
+		$("#ranking-full").show();
 		
 	});
 }
 
-function loadTable(result, table) {
-	$("tbody").remove();
+function loadRanking(result) {
+	$('#ranking tbody').remove();
 	$('#ranking').append('<tbody>');
 	$.each(result, function(i, item) {
         var $tr = $('<tr class="' + item.status + '">').append(
@@ -389,12 +408,37 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
             $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa) + " / " + getConceito(item.reserva.conceitoPrograma)),
-            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2)),
-            $('<td class=\"align-center\">').text(getStatus(item.status))
-        ).appendTo('tbody');
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2))
+        ).appendTo('#ranking tbody');
     });
+	
 	if(result.length == 0) {
 		$("#warning-ranking").show();
+		$("#ranking").hide();
+	} else {
+		$("#warning-ranking").hide();
+		$("#ranking").show();
+	}
+	
+}
+
+function loadAfastados(afastados) {
+	$('#count-afastados').text(afastados.length);
+	$("#afastados tbody").remove();
+	$('#afastados').append('<tbody>');
+	$.each(afastados, function(i, tupla) {
+        var $tr = $('<tr>').append(
+        	$('<td>').text(tupla.professor),
+            $('<td class=\"align-center\">').text(tupla.reserva.anoInicio + "." + tupla.reserva.semestreInicio + " a " + tupla.reserva.anoTermino + "." + tupla.reserva.semestreTermino),
+            $('<td class=\"align-center\">').text(getPrograma(tupla.reserva.programa))
+        ).appendTo('#afastados tbody');
+    });
+	if(afastados.length == 0) {
+		$("#warning-afastados").show();
+		$("#afastados").hide();
+	} else {
+		$("#warning-afastados").hide();
+		$("#afastados").show();
 	}
 }
 
@@ -403,16 +447,6 @@ function getPrograma(programa) {
 		return "PÓS DOUTORADO";
 	}
 	return programa;
-}
-
-function getStatus(status) {
-	if(status == 'NAO_ACEITO') {
-		return "NÃO ACEITO";
-	}
-	if(status == 'CANCELADO_COM_PUNICAO') {
-		return "CANCELADO COM PUNIÇÃO";
-	}
-	return status;
 }
 
 function getConceito(conceito) {

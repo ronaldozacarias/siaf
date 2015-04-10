@@ -65,7 +65,7 @@ public class AfastamentoScheduler {
 			
 			Ranking ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
-				if(tupla.getStatus().equals(StatusTupla.ACEITO)) {
+				if(tupla.getStatus().equals(StatusTupla.AFASTADO)) {
 					Periodo ultimoPeriodo = periodoService.getPeriodo(tupla.getReserva().getAnoTermino(), tupla.getReserva().getSemestreTermino());
 					if(ultimoPeriodo.equals(periodo)) {
 						tupla.getReserva().setStatus(StatusReserva.ENCERRADO);
@@ -78,7 +78,7 @@ public class AfastamentoScheduler {
 			ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
 				if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
-					tupla.getReserva().setStatus(StatusReserva.ACEITO);
+					tupla.getReserva().setStatus(StatusReserva.AFASTADO);
 					reservaService.update(tupla.getReserva());
 					Afastamento afastamento = new Afastamento();
 					afastamento.setReserva(tupla.getReserva());
