@@ -77,7 +77,7 @@
 					<span id="count-ranking" class="badge"></span>
 				</div>
 				
-				<div class="collapse" id="collapseRanking">
+				<div class="collapse in" id="collapseRanking">
 					<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
 					<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Desclassificado</label><br>
 					<table id="ranking" class="table">
