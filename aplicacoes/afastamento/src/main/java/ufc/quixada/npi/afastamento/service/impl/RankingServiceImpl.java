@@ -40,36 +40,47 @@ public class RankingServiceImpl implements RankingService {
 	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
 		List<TuplaRanking> rankingAtual = getRanking(periodo).getTuplas();
-		// Para cada período do tempo da reserva de cada solicitação, é verificado se a reserva está dentro das vagas para todos os períodos.
+		List<Reserva> reservasDesclassificadas = new ArrayList<Reserva>();
+		int vagas = periodo.getVagas();
+		for(TuplaRanking tupla : rankingAtual) {
+			if(tupla.getStatus().equals(StatusTupla.AFASTADO)) {
+				vagas--;
+			}
+		}
+		// Para cada período do tempo da reserva de cada solicitação é verificado se a reserva está dentro das vagas para todos os períodos.
 		for(int i = 0; i < rankingAtual.size(); i++) {
-			if(!rankingAtual.get(i).getStatus().equals(StatusTupla.AFASTADO)) {
+			if(rankingAtual.get(i).getReserva().getStatus().equals(StatusReserva.ABERTO)) {
 				Periodo periodoInicio = periodoService.getPeriodo(rankingAtual.get(i).getReserva().getAnoInicio(), rankingAtual.get(i).getReserva().getSemestreInicio());
 				Periodo periodoTermino = periodoService.getPeriodo(rankingAtual.get(i).getReserva().getAnoTermino(), rankingAtual.get(i).getReserva().getSemestreTermino());
+				boolean classificado = true;
 				for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
-					//List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
-					List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
-					boolean encontrou = false;
-					for(TuplaRanking tupla : tuplaPeriodo) {
-						if(tupla.getReserva().equals(rankingAtual.get(i).getReserva())) {
-							encontrou = true;
+					List<TuplaRanking> rankingPeriodo = getRanking(periodoInicio).getTuplas();
+					if(!isClassificado(rankingPeriodo, periodoInicio.getVagas(), rankingAtual.get(i).getReserva(), reservasDesclassificadas)) {
+						classificado = false;
+						reservasDesclassificadas.add(rankingAtual.get(i).getReserva());
+						break;
+					}
+					/*int vagas = periodoInicio.getVagas();
+					//boolean encontrou = false;
+					for(int j = 0; j < rankingPeriodo.size(); j++) {
+						if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.AFASTADO)) {
+							vagas--;
+						} else if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+							if(temVaga(rankingPeriodo, vagas, j, reservasNaoAceitas)) {
+								vagas--;
+							}
+						} else if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.CLASSIFICADO) && reservasNaoAceitas.contains(rankingPeriodo.get(j).getReserva())) {
+							classificado = false;
 							break;
 						}
-					}
-					if(!encontrou) {
-						
-						if(rankingAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
-							rankingAtual.get(i).setStatus(StatusTupla.CANCELADO);
-						} else if(rankingAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
-							rankingAtual.get(i).setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
-						} else if(rankingAtual.get(i).getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
-							rankingAtual.get(i).setStatus(StatusTupla.NAO_ACEITO);
-						} else if(rankingAtual.get(i).getReserva().getStatus().equals(StatusReserva.NEGADO)) {
-							rankingAtual.get(i).setStatus(StatusTupla.NEGADO);
-						} else {
-							rankingAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
-						}
-					}
+					}*/
 					
+				}
+				if(classificado && vagas > 0) {
+					rankingAtual.get(i).setStatus(StatusTupla.CLASSIFICADO);
+					vagas--;
+				} else {
+					rankingAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
 				}
 			}
 		}
@@ -77,15 +88,25 @@ public class RankingServiceImpl implements RankingService {
 		
 	}
 	
-	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
-		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
-		for(TuplaRanking tupla : tuplaRanking) {
-			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && !tupla.getStatus().equals(StatusTupla.NEGADO) &&
-					!tupla.getStatus().equals(StatusTupla.CANCELADO) && !tupla.getStatus().equals(StatusTupla.CANCELADO_COM_PUNICAO)) {
-				result.add(tupla);
+	private boolean isClassificado(List<TuplaRanking> tuplas, int vagas, Reserva reserva, List<Reserva> reservasNaoAceitas) {
+		for(TuplaRanking tupla : tuplas) {
+			if(tupla.getReserva().equals(reserva)) {
+				if(vagas > 0) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				if(tupla.getStatus().equals(StatusTupla.AFASTADO)) {
+					vagas--;
+				} else if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO) && !reservasNaoAceitas.contains(tupla.getReserva())) {
+					vagas--;
+				} else if(tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && vagas > 0) {
+					vagas--;
+				}
 			}
 		}
-		return result;
+		return false;
 	}
 	
 	@Override
@@ -165,7 +186,6 @@ public class RankingServiceImpl implements RankingService {
 		
 		// Subtrai as vagas já garantidas (afastados)
 		for (TuplaRanking tupla : tuplas) {
-			//Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
 			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 				vagas--;
 			}
@@ -173,7 +193,6 @@ public class RankingServiceImpl implements RankingService {
 		
 		// Classifica o ranking
 		for (TuplaRanking tupla : tuplas) {
-			//Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
 			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 				tupla.setStatus(StatusTupla.AFASTADO);
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {

@@ -128,6 +128,7 @@
 	</div>
 </body>
 <script type="text/javascript">
+	$('i#anterior').hide();
 	getRanking($('#ano').val(), $('#semestre').val());
 	$('#menu-ranking').addClass('active');
 </script>

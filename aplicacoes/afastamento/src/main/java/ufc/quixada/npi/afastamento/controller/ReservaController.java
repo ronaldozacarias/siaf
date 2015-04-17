@@ -27,6 +27,7 @@ import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
@@ -54,9 +55,8 @@ public class ReservaController {
 	
     @RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
-		Periodo periodoAtual = periodoService.getPeriodoAtual();
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual());
 		model.addAttribute("periodoAtual", periodoAtual);
-		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		return Constants.PAGINA_RANKING;
 	}
@@ -77,7 +77,12 @@ public class ReservaController {
 		ranking.setTuplas(tuplas);
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
-		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		Periodo periodoAnterior = periodoService.getPeriodoAnterior(ranking.getPeriodo());
+		if( periodoService.getPeriodoAnterior(periodoAnterior).getStatus().equals(StatusPeriodo.ENCERRADO)) {
+			model.addAttribute("periodoAnterior", null);
+		} else {
+			model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		}
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(ranking.getPeriodo()));
 		
 		return model;
