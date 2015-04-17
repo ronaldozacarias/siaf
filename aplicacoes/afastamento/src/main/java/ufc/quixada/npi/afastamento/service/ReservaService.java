@@ -15,7 +15,7 @@ public interface ReservaService extends GenericService<Reserva> {
 	
 	List<Reserva> getReservasByProfessor(Professor professor);
 	
-	List<Reserva> getReservasByPeriodo(Integer ano, Integer semestre);
+	List<Reserva> getReservasAbertasOuAfastadosByPeriodo(Integer ano, Integer semestre);
 	
 	boolean hasReservaEmAberto(Professor professor);
 	

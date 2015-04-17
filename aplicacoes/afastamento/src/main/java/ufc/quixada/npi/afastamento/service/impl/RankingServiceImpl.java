@@ -60,20 +60,6 @@ public class RankingServiceImpl implements RankingService {
 						reservasDesclassificadas.add(rankingAtual.get(i).getReserva());
 						break;
 					}
-					/*int vagas = periodoInicio.getVagas();
-					//boolean encontrou = false;
-					for(int j = 0; j < rankingPeriodo.size(); j++) {
-						if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.AFASTADO)) {
-							vagas--;
-						} else if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
-							if(temVaga(rankingPeriodo, vagas, j, reservasNaoAceitas)) {
-								vagas--;
-							}
-						} else if(rankingPeriodo.get(j).getStatus().equals(StatusTupla.CLASSIFICADO) && reservasNaoAceitas.contains(rankingPeriodo.get(j).getReserva())) {
-							classificado = false;
-							break;
-						}
-					}*/
 					
 				}
 				if(classificado && vagas > 0) {
@@ -126,7 +112,7 @@ public class RankingServiceImpl implements RankingService {
 		//I – Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.
 		//II – Prioridade para programas com melhor conceito.
 		//III – Prioridade para o candidato mais velho.
-		List<Reserva> reservas = reservaService.getReservasByPeriodo(periodo.getAno(), periodo.getSemestre());
+		List<Reserva> reservas = reservaService.getReservasAbertasOuAfastadosByPeriodo(periodo.getAno(), periodo.getSemestre());
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		for (Reserva reserva : reservas) {
 			TuplaRanking tupla = new TuplaRanking();
@@ -202,17 +188,8 @@ public class RankingServiceImpl implements RankingService {
 				} else {
 					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
-				tupla.setStatus(StatusTupla.NAO_ACEITO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
-				tupla.setStatus(StatusTupla.ENCERRADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
-				tupla.setStatus(StatusTupla.CANCELADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
-				tupla.setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NEGADO)) {
-				tupla.setStatus(StatusTupla.NEGADO);
 			}
+
 		}
 		
 		ranking.setTuplas(tuplas);
