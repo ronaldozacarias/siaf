@@ -157,6 +157,7 @@ public class ReservaController {
 		reserva.setSemestreTermino(semestreTermino);
 		reserva.setDataSolicitacao(new Date());
 		reserva.setPrograma(programa);
+		reserva.setConceitoPrograma(conceito);
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setInstituicao(instituicao);
 		reserva.setStatus(StatusReserva.ABERTO);
