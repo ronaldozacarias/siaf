@@ -212,7 +212,6 @@ $(document).ready(function() {
 	var guardaVagas = null;
 	
 	$('.editPeriodo').on('click', function(event) {
-		alert("skfdsjfl");
 		var id = '';
 		if($(this).data('id')){
 			id = $(this).data('id');
@@ -595,7 +594,7 @@ function messagePeriodo(result) {
 
 	if(result.erro && result.erro.length > 0){
 		$(".messages #erroDiv").append("<div id=\"info\" " +
-				"class=\"alert alert-danger margin-top hide\" " +
+				"class=\"alert-danger margin-top hide\" " +
 				"role=\"alert\"> " +
 				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
 				"<span aria-hidden=\"true\">&times;</span>" +
@@ -603,7 +602,6 @@ function messagePeriodo(result) {
 				"</button><p></p></div>");
 		$(".messages #erro p").text(result.erro);
 		$(".messages #erro").removeClass( "hide" ).addClass('show');
-		$('#periodo' + result.periodo.id + ' td').css("background", "#f2dede");
 	} 
 	
 	if(result.info &&  result.info.length > 0){
@@ -616,7 +614,6 @@ function messagePeriodo(result) {
 				"</button><p></p></div>");
 		$(".messages #info p").text(result.info);
 		$(".messages #info").removeClass( "hide" ).addClass('show');
-		$('#periodo' + result.periodo.id + ' td').css("background", "#d9edf7");
 	} 
 }
 
@@ -631,8 +628,6 @@ function messageReservaEmAberto(result) {
 				"<span class=\"sr-only\">Close</span>" +
 				"</button><p></p></div>");
 		$(".messages #erroDiv #erro p").text(result.erro);
-		$(".messages #erroDiv #erro").removeClass( "hide" ).addClass('show');
-		$('#reserva' + result.reserva.id + ' td').css("background", "#f2dede");
 	} 
 	
 	if(result.info &&  result.info.length > 0){
@@ -645,7 +640,6 @@ function messageReservaEmAberto(result) {
 				"</button><p></p></div>");
 		$(".messages #infoDiv #info p").text(result.info);
 		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
-		$('#reserva' + result.reserva.id + ' td').css("background", "#d9edf7");
 	} 
 }
 
