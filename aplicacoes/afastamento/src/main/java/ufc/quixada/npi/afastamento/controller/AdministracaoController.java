@@ -72,7 +72,7 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 	
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	@CacheEvict(value = {"ranking", "visualizarRanking"}, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getUltimoPeriodoEncerrado();
@@ -153,7 +153,7 @@ public class AdministracaoController {
 		
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVAS_ATUALIZADAS);
 		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
-	}
+	}*/
 
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Periodo> periodos() {

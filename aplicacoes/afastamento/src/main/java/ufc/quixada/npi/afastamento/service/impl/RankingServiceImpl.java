@@ -15,7 +15,6 @@ import org.springframework.cache.annotation.Cacheable;
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Programa;
-import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
@@ -150,53 +149,6 @@ public class RankingServiceImpl implements RankingService {
 		}
 		
 		return ranking.get(periodo);
-	}
-	
-	@Override
-	@Cacheable("ranking")
-	public Ranking getRanking(Periodo periodo) {
-		Ranking ranking = new Ranking();
-		/*ranking.setPeriodo(periodo);
-		
-		//R = (T – A) / (5 x A + S + P)
-		//T – Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá;
-		//A – Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados;
-		//S – Número de semestres do afastamento reservado/solicitado;
-		//P – Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).
-		
-		//No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado
-		//Em caso de empate na ordem de prioridade estabelecida no Artigo 5o, serão considerados os critérios abaixo, na ordem indicada:
-		//I – Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.
-		//II – Prioridade para programas com melhor conceito.
-		//III – Prioridade para o candidato mais velho.
-		
-		int vagas = periodo.getVagas();
-		
-		// Subtrai as vagas já garantidas (afastados)
-		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
-				vagas--;
-			}
-		}
-		
-		// Classifica o ranking
-		for (TuplaRanking tupla : tuplas) {
-			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
-				tupla.setStatus(StatusTupla.AFASTADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
-				if(vagas > 0) {
-					tupla.setStatus(StatusTupla.CLASSIFICADO);
-					vagas--;
-				} else {
-					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
-				}
-			}
-
-		}
-		
-		ranking.setTuplas(tuplas);*/
-		return ranking;
-		
 	}
 	
 	private Integer getSemestresSolicitados(Reserva reserva) {
