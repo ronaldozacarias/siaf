@@ -129,21 +129,23 @@ table#ranking {
 
 div.titulo-ranking {
 	width: 100%;
-	margin-top: 20px;
-	margin-bottom: 20px;
 	text-align: center;
 	border-bottom: 1px solid;
 }
 
 #wrap-periodo {
 	background-color: #E7E7E7;
-	padding-bottom: 20px;
-	padding-top: 20px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 
 #wrap-periodo label {
 	font-weight: 500;
 	letter-spacing: 1px;;
+}
+
+#collapseRanking > label {
+	margin-top: 15px;
 }
 
 div#periodo {

@@ -176,7 +176,7 @@ $(document).ready(function() {
 			}
 
 			if(!result.editEncerramento && !result.editVagas){
-				$("#info-periodo .modal-body b").text('Não é possível editar as informações deste periodo.');
+				$("#info-periodo .modal-body b").text('Não é possível editar as informações deste período.');
 				$("#info-periodo").modal('show');
 				
 			}

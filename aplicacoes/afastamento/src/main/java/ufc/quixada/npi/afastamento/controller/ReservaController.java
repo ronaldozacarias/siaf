@@ -29,7 +29,6 @@ import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
-import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
@@ -67,13 +66,23 @@ public class ReservaController {
 		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
 		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
-		model.addAttribute("afastados", getAfastados(ranking.getTuplas()));
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
+		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
 		for(TuplaRanking tupla : ranking.getTuplas()) {
-			if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO) || tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+			if (tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+				afastados.add(tupla);
+			} else {
 				tuplas.add(tupla);
 			}
 		}
+		Collections.sort(afastados, new Comparator<TuplaRanking>() {
+
+			@Override
+			public int compare(TuplaRanking tupla1, TuplaRanking tupla2) {
+				return tupla1.getProfessor().compareTo(tupla2.getProfessor());
+			}
+		});
+		model.addAttribute("afastados", afastados);
 		ranking.setTuplas(tuplas);
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
@@ -201,25 +210,6 @@ public class ReservaController {
 	
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
-	}
-	
-	private List<TuplaRanking> getAfastados(List<TuplaRanking> tuplas) {
-		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
-		for(TuplaRanking tupla : tuplas) {
-			if (tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
-				afastados.add(tupla);
-			}
-		}
-		
-		Collections.sort(afastados, new Comparator<TuplaRanking>() {
-
-			@Override
-			public int compare(TuplaRanking tupla1, TuplaRanking tupla2) {
-				return tupla1.getProfessor().compareTo(tupla2.getProfessor());
-			}
-		});
-		
-		return afastados;
 	}
 	
 }

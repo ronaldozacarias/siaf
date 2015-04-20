@@ -91,12 +91,8 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	public List<Reserva> getReservasAbertasOuAfastadosByPeriodo(Integer ano, Integer semestre) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("ano", ano);
-		params.put("semestre", semestre);
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where (status = 'ABERTO' or status = 'AFASTADO') and :ano >= anoInicio and :ano <= anoTermino and id not in (select id from Reserva where "
-				+ "(anoInicio = :ano and semestreInicio > :semestre) or (anoTermino = :ano and semestreTermino < :semestre))", params);
+	public List<Reserva> getReservasAbertasOuAfastados() {
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = '" + StatusReserva.ABERTO + "' or status = '" + StatusReserva.AFASTADO + "'", null);
 	}
 
 	@Override
