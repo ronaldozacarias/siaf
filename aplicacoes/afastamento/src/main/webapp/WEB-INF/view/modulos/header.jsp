@@ -26,10 +26,14 @@
 	    		<li id="menu-reservas">
 	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Gerenciar Reservas</span></a>
 	    		</li>
+	    		<li id="edit-reservas">
+	    			<a class="" href="<c:url value="/administracao/alteraReservas" />"><span>Reservas em Aberto</span></a>
+	    		</li>
 	    		<li id="menu-professores">
 	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>
 	    		</li>
     		</sec:authorize>
+    		
     		
     		<li id="sair">
     			<a class="" href="<c:url value="/logout" />"><span>Sair</span></a>

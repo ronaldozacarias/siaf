@@ -208,15 +208,15 @@ $(document).ready(function() {
 
 	var editVagas = false;
 	var editEncerramento = false;
-
+	var guardaEncerramento = null;
+	var guardaVagas = null;
+	
 	$('.editPeriodo').on('click', function(event) {
-		
+		alert("skfdsjfl");
 		var id = '';
-
 		if($(this).data('id')){
 			id = $(this).data('id');
 		}
-		
 		$.ajax({
 			type: 'POST',
 			data: {
@@ -232,6 +232,7 @@ $(document).ready(function() {
 
 			if(result.editEncerramento){
 			    encerramento = $('#encerramento'+id ).text();
+			    guardaEncerramento = encerramento;
 			    
 				$('#encerramento'+id).empty();
 				$('#encerramento'+id).append('<input name="inputEncerramento" class="form-control data" value="'+encerramento+'" />');
@@ -242,9 +243,11 @@ $(document).ready(function() {
 					autoclose: true,
 				});
 			}
-
+			
 			if(result.editVagas){
 				vagas = $('#vagas'+id ).text();
+				guardaVagas = vagas;
+				
 				$('#vagas'+id).empty();
 				$('#vagas'+id).append('<input name="inputVagas" class="form-control" size="2" value="'+vagas+'"/>');
 			}
@@ -259,11 +262,10 @@ $(document).ready(function() {
 				$("#info-periodo").modal('show');
 				
 			}
-			
-		
+	
 		});
 		event.stopPropagation();
-	})
+	});
 
 	$('.salvarPeriodo').click(function() {
 		var id = $(this).data('id');
@@ -306,13 +308,15 @@ $(document).ready(function() {
 		if($('#options' + id).data('encerramento')){
 			var encerramento = $('#encerramento'+id+' input').val();
 			$('#encerramento'+id).empty();
-			$('#encerramento'+id).text(encerramento);
+			$('#encerramento'+id).text(guardaEncerramento);
+			guardaEncerramento = null;
 		}
 		
 		if($('#options' + id).data('vagas')){
 			var vagas = $('#vagas'+id+' input').val();
 			$('#vagas'+id).empty();
-			$('#vagas'+id).text(vagas);
+			$('#vagas'+id).text(guardaVagas);
+			guardaVagas = null;
 		}
 
 		$('#options' + id).removeClass( 'show' ).addClass('hide');
@@ -321,6 +325,64 @@ $(document).ready(function() {
 		event.stopPropagation();
 	});
 	
+	var guardaConceito = null;
+$('.editReserva').on('click', function(event) {
+		var id = '';
+		if($(this).data('id')){
+			id = $(this).data('id');
+		}
+		
+		$('#options'+id).attr('data-concept', true);
+  
+		conceito = $('#concept'+id ).text();
+		guardaConceito = conceito;
+		$('#concept'+id).empty();
+		$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+
+		$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
+		$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
+		
+		event.stopPropagation();
+	});
+	
+	
+	
+	$('.salvarReserva').click(function() {
+		var id = $(this).data('id');
+		var conceito = $('#concept'+id).text();
+		if($('#options' + id).data('concept')){
+			conceito = $('#concept'+id+' input').val();
+		}
+		$.ajax({
+			type: 'POST',
+			data: {
+				'id': id,
+				'conceito' : conceito,
+			},
+			url: '/siaf/administracao/editar-reservaEmAberto.json',
+		}).success(function(result) {
+			messageReservaEmAberto(result);
+		});
+		
+		$('#concept'+id).empty().text(conceito);
+		
+		$('.options').removeClass( "show" ).addClass('hide');
+		$('.editReserva').removeClass( 'hide' ).addClass('show');
+	});
+	
+	$('.cancelReserva').click(function() {
+		var id = $(this).data('id');
+		
+		var conceito = $('#concept'+id+' input').val();
+		$('#concept'+id).empty();
+		$('#concept'+id).text(guardaConceito);
+		guardaConceito = null;
+		$('#options' + id).removeClass( 'show' ).addClass('hide');
+		$('#editReserva'+id).removeClass( 'hide' ).addClass('show');
+
+		event.stopPropagation();
+	});
+
 	
 });
 
@@ -389,7 +451,8 @@ function loadTable(result, table) {
             $('<td class=\"align-center\">').text(item.ss),
             $('<td class=\"align-center\">').text(item.reserva.anoInicio + "." + item.reserva.semestreInicio + " a " + item.reserva.anoTermino + "." + item.reserva.semestreTermino),
             $('<td class=\"align-center\">').text(getPrograma(item.reserva.programa) + " / " + getConceito(item.reserva.conceitoPrograma)),
-            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2))
+            $('<td class=\"pontuacao align-center\">').text(item.pontuacao.toFixed(2)),
+            $('<td class=\"align-center\">').text(getStatus(item.status))
         ).appendTo('tbody');
     });
 	if(result.length == 0) {
@@ -402,6 +465,16 @@ function getPrograma(programa) {
 		return "PÓS DOUTORADO";
 	}
 	return programa;
+}
+
+function getStatus(status) {
+	if(status == 'NAO_ACEITO') {
+		return "NÃO ACEITO";
+	}
+	if(status == 'CANCELADO_COM_PUNICAO') {
+		return "CANCELADO COM PUNIÇÃO";
+	}
+	return status;
 }
 
 function getConceito(conceito) {
@@ -519,19 +592,73 @@ function loadPeriodos(result) {
 }
 
 function messagePeriodo(result) {
-	$(".messages #erro").removeClass( "show" ).addClass('hide');
-	$(".messages #info").removeClass( "show" ).addClass('hide');
 
 	if(result.erro && result.erro.length > 0){
+		$(".messages #erroDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-danger margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
 		$(".messages #erro p").text(result.erro);
 		$(".messages #erro").removeClass( "hide" ).addClass('show');
 		$('#periodo' + result.periodo.id + ' td').css("background", "#f2dede");
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$(".messages #infoDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-info margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
 		$(".messages #info p").text(result.info);
 		$(".messages #info").removeClass( "hide" ).addClass('show');
 		$('#periodo' + result.periodo.id + ' td').css("background", "#d9edf7");
 	} 
+}
+
+function messageReservaEmAberto(result) {
+
+	if(result.erro && result.erro.length > 0){
+		$(".messages #erroDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-danger margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
+		$(".messages #erroDiv #erro p").text(result.erro);
+		$(".messages #erroDiv #erro").removeClass( "hide" ).addClass('show');
+		$('#reserva' + result.reserva.id + ' td').css("background", "#f2dede");
+	} 
 	
+	if(result.info &&  result.info.length > 0){
+		$(".messages #infoDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-info margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
+		$(".messages #infoDiv #info p").text(result.info);
+		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
+		$('#reserva' + result.reserva.id + ' td').css("background", "#d9edf7");
+	} 
+}
+
+function validarConceito(campo){
+	var numero="34567"; //variáveis aceitas na função.
+	var campo_temporario; //váriavel responsável pela verificação dos dados.
+	for (var i=0;i<campo.value.length;i++){ 
+		// A variável campo_temporario verifica se existe algum valor dentro do form.
+		campo_temporario=campo.value.substring(i,i+1)
+		// Caso esse campo seja diferente da variavel numero, ele irá limpar o form.
+		if (numero.indexOf(campo_temporario)==-1){ 
+			// Caso contrário, ele irá deixar inserir o número no form.	
+			campo.value = campo.value.substring(0,i);
+		}
+	}
 }

@@ -59,7 +59,7 @@
 								<td id="encerramento${periodo.id}" class="encerramento">${data}</td>
 								<td id="vagas${periodo.id}" class="vagas">${periodo.vagas}</td>
 								
-								<td class="editPeriodo">
+								<td>
 									<button class="btn editPeriodo" id="editPeriodo${periodo.id}" data-id="${periodo.id}"><i class="fa fa-pencil "></i></button>
 				    	           	<div class="options hide" id="options${periodo.id}">
 						                <button class="btn salvarPeriodo btn-primary" data-id="${periodo.id}">salvar</button>
