@@ -17,10 +17,6 @@
  		<intercept-url pattern="/reserva/ranking.json/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
  		<intercept-url pattern="/reserva/**" access="ROLE_DOCENTE" />
 		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN_SIAF" />
- 		<intercept-url pattern="/configuracao/recuperar-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
- 		<intercept-url pattern="/configuracao/recuperacao/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
- 		<intercept-url pattern="/configuracao/nova-senha/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
- 		<intercept-url pattern="/configuracao/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
  		
  		<form-login login-page="/login" authentication-success-handler-ref="myAuthenticationSuccessHandler" 
  			authentication-failure-url="/loginfailed" />
@@ -31,23 +27,9 @@
  	
  	<beans:bean id="ldapAuthenticationProvider" class="br.ufc.quixada.npi.ldap.service.LdapAuthenticationProvider"></beans:bean>
  
-		<!-- Configured in application-security.xml-->
 		<authentication-manager alias="authenticationManager">
 		    <authentication-provider ref="ldapAuthenticationProvider"></authentication-provider>
 		</authentication-manager>
-  
- 	<!-- <authentication-manager>
-		<authentication-provider>
-			<password-encoder hash="sha-256"/>
-			<jdbc-user-service data-source-ref="afastamento"
-				users-by-username-query="
-                    SELECT login, password, habilitado
-                    FROM usuario WHERE login = ?"
 
-				authorities-by-username-query=
-                    "SELECT u.login, p.nome FROM usuario AS u, papel_usuario AS pu, papel AS p WHERE u.id = pu.usuario_id AND pu.papel_id = p.id AND u.login=?" 
-                    />
-		</authentication-provider>
- 	</authentication-manager> -->
   <global-method-security  secured-annotations = "enabled"  />
 </beans:beans>

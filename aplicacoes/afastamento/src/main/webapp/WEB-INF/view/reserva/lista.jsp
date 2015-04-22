@@ -47,6 +47,16 @@
 						<label class="control-label value-label">${professor.siape }</label>
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Admissão:</label>
+					<div class="col-sm-4">
+						<label class="control-label value-label">${professor.anoAdmissao }.${professor.semestreAdmissao }</label>
+					</div>
+					<label class="col-sm-2 control-label">Data de Nascimento:</label>
+					<div class="col-sm-4">
+						<label class="control-label value-label"><fmt:formatDate pattern="dd/MM/yyyy" value="${professor.dataNascimento }" /></label>
+					</div>
+				</div>
 				
 				<c:if test="${empty reservas }">
 					<div class="alert alert-warning alert-dismissible" role="alert">
@@ -60,6 +70,7 @@
 							<tr>
 								<th>Período</th>
 								<th>Programa</th>
+								<th>Conceito</th>
 								<th>Instituição</th>
 								<th>Status</th>
 								<th></th>
@@ -70,6 +81,7 @@
 								<tr class="${reserva.status}">
 									<td>${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}</td>
 									<td>${reserva.programa.descricao }</td>
+									<td>${reserva.conceitoPrograma }</td>
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
 									<td>

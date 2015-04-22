@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufc.quixada.npi.ldap.model.Usuario;
+import br.ufc.quixada.npi.ldap.service.UsuarioService;
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
@@ -58,6 +60,9 @@ public class AdministracaoController {
 	@Inject
 	private AfastamentoService afastamentoService;
 
+	@Inject
+	private UsuarioService usuarioService;
+	
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
 		List<Professor> professores = professorService.findAtivos();
@@ -71,6 +76,34 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 
+	@RequestMapping(value = "/atualizar-professores", method = RequestMethod.POST)
+	public String atualizaProfessores(Model model) {
+		
+			List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.AFFILIATION_DOCENTE);
+			for(Usuario usuario : usuarios) {
+				Professor professor = professorService.getByCpf(usuario.getCpf());
+				if(professor == null) {
+					professor = new Professor();
+					professor.setCpf(usuario.getCpf());
+					professorService.save(professor);
+				}
+			}
+			
+			atualizaVagas();
+		
+		return Constants.REDIRECT_PAGINA_LISTAR_PROFESSORES;
+	}
+	
+	private void atualizaVagas() {
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual()));
+		List<Periodo> periodos = periodoService.getPeriodosPosteriores(periodoAtual);
+		int vagas = (int) (professorService.findAtivos().size() * 0.15);
+		for(Periodo periodo : periodos) {
+			periodo.setVagas(vagas);
+			periodoService.update(periodo);
+		}
+	}
+	
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
 	public String getReservas(Model model) {
@@ -85,8 +118,8 @@ public class AdministracaoController {
 				model.addAttribute("ranking", ranking);
 			}
 		}
-
-		return Constants.PAGINA_GERENCIAR_RESERVAS;
+		
+		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
 	}
 
 	@RequestMapping(value = "/atualizar-ranking", method = RequestMethod.POST)

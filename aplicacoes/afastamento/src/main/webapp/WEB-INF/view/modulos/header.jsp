@@ -4,7 +4,7 @@
 
 <header class="headerMain">
 	<div class="brand">
-		<a href="<c:url value="/reserva/ranking" />"><img title="Sistema de Afastamento Docente" alt="Sistema de Afastamento Docente" src="<c:url value="/resources/images/logo.png" />"></a>
+		<a href="<c:url value="/reserva/ranking" />"><img title="Sistema de Afastamento Docente" alt="Sistema de Afastamento Docente" src="<c:url value="/resources/images/logo-beta.png" />"></a>
 	</div>
 	
     <nav class="menuTop" role="navigation">

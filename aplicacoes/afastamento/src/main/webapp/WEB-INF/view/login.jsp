@@ -19,7 +19,7 @@
 
 	<div class="login-container" align="center">
 		<div class="login-header">
-			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo.png" />">
+			<img alt="Sistema de Afastamento de Professores" src="<c:url value="/resources/images/logo-beta.png" />">
 		</div>
 		
 		<div class="login-form">

@@ -17,8 +17,6 @@ body {
 
 .brand {
 	float: left;
-	width: 240px;
-	height: 148px;
 }
 
 .brand img {
@@ -30,7 +28,7 @@ body {
 	float: right;
 	width: 900px;
 	height: 67px;
-	margin-top: 94px;
+	margin-top: 83px;
 }
 
 .menuTop ul {
@@ -171,6 +169,9 @@ table > tbody > tr.DESCLASSIFICADO {
 .table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
 	background-color: #E96D6D;
 }
+.table > tbody > tr.NEGADO {
+	background-color: #EC7751;
+}
 
 .table > tbody > tr > td.pontuacao {
 	font-weight: bold;
@@ -206,6 +207,10 @@ div#legenda label span.classificado {
 
 div#legenda label span.cancelado {
 	background-color: #E96D6D;
+}
+
+div#legenda label span.negado {
+	background-color: #EC7751;
 }
 
 div#legenda label span.nao_aceito {

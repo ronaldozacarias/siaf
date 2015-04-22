@@ -60,6 +60,7 @@
 			            <th>Período</th>
 			            <th>Programa / Conceito</th>
 			            <th>Pontuação</th>
+			            <th>Status</th>
 					</tr>
 				</thead>
 			</table>
@@ -79,6 +80,7 @@
 				<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
 				<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
 				<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label>
+				<label><span class="negado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Negado</label>
 				<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label><br/>
 				<label><span>Fórmula:</span> R = (T – A) / (5 x A + S + P)</label><br/>
 				<label><span>T:</span> Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá.</label><br/>
