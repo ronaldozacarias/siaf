@@ -344,7 +344,7 @@ function getRanking(ano, semestre) {
 	$("#ranking-full").hide();
 	$('#load-siaf').show();
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url: '/siaf/reserva/ranking.json',
 		data: {
         	ano : ano,

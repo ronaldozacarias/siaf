@@ -171,7 +171,7 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
 
 		if (id == null || ano == null || semestre == null) {
@@ -216,7 +216,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
 	public Model editarPeriodo(Model model, 
 			@RequestParam("id") Long id, 
 			@RequestParam("vagas") Integer vagas, 

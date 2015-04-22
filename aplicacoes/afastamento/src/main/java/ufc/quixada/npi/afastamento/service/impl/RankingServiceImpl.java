@@ -112,7 +112,7 @@ public class RankingServiceImpl implements RankingService {
 						tupla.setStatus(StatusTupla.AFASTADO);
 						List<TuplaRanking> tuplaPeriodo = ranking.get(periodoInicio);
 						tuplaPeriodo.add(tupla);
-						ranking.replace(periodoInicio, tuplaPeriodo);
+						ranking.put(periodoInicio, tuplaPeriodo);
 					}
 				}
 			}
@@ -143,7 +143,7 @@ public class RankingServiceImpl implements RankingService {
 				for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
 					List<TuplaRanking> tuplaPeriodo = ranking.get(periodoInicio);
 					tuplaPeriodo.add(tupla);
-					ranking.replace(periodoInicio, tuplaPeriodo);
+					ranking.put(periodoInicio, tuplaPeriodo);
 				}
 			}
 		}

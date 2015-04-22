@@ -60,7 +60,7 @@ public class ReservaController {
 		return Constants.PAGINA_RANKING;
 	}
 	
-	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/ranking.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model ranking(HttpServletRequest request, Model model) {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodoService.getPeriodo(
@@ -106,7 +106,7 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String incluir(@RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
 			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
 			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito, @RequestParam("instituicao") String instituicao,
@@ -178,7 +178,7 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);
