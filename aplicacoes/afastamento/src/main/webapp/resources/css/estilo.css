@@ -527,6 +527,10 @@ button, input.btn-siaf {
 	float: none;
 }
 
+span.obrigatorio {
+	color: #A94442;
+}
+
 @-webkit-keyframes loading {
    from { transform:	rotate(0deg); 	}
      to { transform:	rotate(360deg); }
