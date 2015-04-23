@@ -3,6 +3,7 @@ package ufc.quixada.npi.afastamento.controller;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.service.NotificacaoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -45,6 +48,9 @@ public class ReservaController {
 	
 	@Inject
 	private ProfessorService professorService;
+	
+	@Inject
+	private NotificacaoService notificacaoService;
 	
     @RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
@@ -135,6 +141,13 @@ public class ReservaController {
 		
 		reservaService.salvar(reserva);
 		
+		try {
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_INCLUIDA);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_INCLUIDA);
 		
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
@@ -157,6 +170,12 @@ public class ReservaController {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);
+			try {
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
