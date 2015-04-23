@@ -52,6 +52,27 @@
 				</div>
 				
 				<div class="titulo-ranking title">
+					<a data-toggle="collapse" href="#collapseAfastados" aria-expanded="false" aria-controls="#collapseAfastados">Professores Afastados</a>
+					<span id="count-afastados" class="badge"></span>
+				</div>
+				
+				<div class="collapse in" id="collapseAfastados">
+					<table id="afastados" class="table">
+						<thead>
+							<tr>
+								<th>Nome</th>
+								<th>Período</th>
+					            <th>Programa</th>
+							</tr>
+						</thead>
+					</table>
+				
+					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
+						Ainda não há nenhum docente com afastamento confirmado para esse período.
+					</div>
+				</div>
+
+				<div class="titulo-ranking title">
 					<a data-toggle="collapse" href="#collapseRanking" aria-controls="#collapseRanking">Ranking</a><br>
 					<span id="count-ranking" class="badge"></span>
 				</div>
@@ -78,27 +99,6 @@
 					
 					<div id="warning-ranking" class="alert alert-warning alert-dismissible" role="alert">
 						Não há nenhuma reserva para esse período.
-					</div>
-				</div>
-				
-				<div class="titulo-ranking title">
-					<a data-toggle="collapse" href="#collapseAfastados" aria-expanded="false" aria-controls="#collapseAfastados">Professores Afastados</a>
-					<span id="count-afastados" class="badge"></span>
-				</div>
-				
-				<div class="collapse in" id="collapseAfastados">
-					<table id="afastados" class="table">
-						<thead>
-							<tr>
-								<th>Nome</th>
-								<th>Período</th>
-					            <th>Programa</th>
-							</tr>
-						</thead>
-					</table>
-				
-					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
-						Ainda não há nenhum docente com afastamento confirmado para esse período.
 					</div>
 				</div>
 				
