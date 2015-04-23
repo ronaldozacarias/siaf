@@ -52,27 +52,6 @@
 				</div>
 				
 				<div class="titulo-ranking title">
-					<a data-toggle="collapse" href="#collapseAfastados" aria-expanded="false" aria-controls="#collapseAfastados">Professores Afastados</a>
-					<span id="count-afastados" class="badge"></span>
-				</div>
-				
-				<div class="collapse" id="collapseAfastados">
-					<table id="afastados" class="table">
-						<thead>
-							<tr>
-								<th>Nome</th>
-								<th>Período</th>
-					            <th>Programa</th>
-							</tr>
-						</thead>
-					</table>
-				
-					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
-						Ainda não há nenhum docente com afastamento confirmado para esse período.
-					</div>
-				</div>
-				
-				<div class="titulo-ranking title">
 					<a data-toggle="collapse" href="#collapseRanking" aria-controls="#collapseRanking">Ranking</a><br>
 					<span id="count-ranking" class="badge"></span>
 				</div>
@@ -100,20 +79,41 @@
 					<div id="warning-ranking" class="alert alert-warning alert-dismissible" role="alert">
 						Não há nenhuma reserva para esse período.
 					</div>
-					
-					<div id="legenda">
-						<label><span>Fórmula:</span> R = (T – A) / (5 x A + S + P)</label><br/>
-						<label><span>T:</span> Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá.</label><br/>
-						<label><span>A:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
-						<label><span>S:</span> Número de semestres do afastamento reservado/solicitado. (No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado).</label><br/>
-						<label><span>P:</span> Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).</label><br/>
-						<label><span>SS:</span> Número de semestres do afastamento reservado/solicitado. </label>
-						<label><span>Obs:</span> Será considerado como um afastamento com duração de um (1) semestre, para efeito de cálculo da ordem de prioridade das reservas/solicitações, a solicitação cancelada de acordo com os critérios da <a href="<c:url value="/resources/files/Resolucaoo_01-2014.pdf" />">resolução</a>.</label><br><br>
-						<label>Em caso de empate na ordem de prioridade, serão considerados os critérios abaixo, na ordem indicada:</label>
-						<label><span>I:</span> Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.</label><br>
-						<label><span>II:</span> Prioridade para programas com melhor conceito.</label><br>
-						<label><span>III:</span> Prioridade para o candidato mais velho.</label>
+				</div>
+				
+				<div class="titulo-ranking title">
+					<a data-toggle="collapse" href="#collapseAfastados" aria-expanded="false" aria-controls="#collapseAfastados">Professores Afastados</a>
+					<span id="count-afastados" class="badge"></span>
+				</div>
+				
+				<div class="collapse in" id="collapseAfastados">
+					<table id="afastados" class="table">
+						<thead>
+							<tr>
+								<th>Nome</th>
+								<th>Período</th>
+					            <th>Programa</th>
+							</tr>
+						</thead>
+					</table>
+				
+					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
+						Ainda não há nenhum docente com afastamento confirmado para esse período.
 					</div>
+				</div>
+				
+				<div id="legenda">
+					<label><span>Fórmula:</span> R = (T – A) / (5 x A + S + P)</label><br/>
+					<label><span>T:</span> Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá.</label><br/>
+					<label><span>A:</span> Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados.</label><br/>
+					<label><span>S:</span> Número de semestres do afastamento reservado/solicitado. (No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado).</label><br/>
+					<label><span>P:</span> Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).</label><br/>
+					<label><span>SS:</span> Número de semestres do afastamento reservado/solicitado. </label>
+					<label><span>Obs:</span> Será considerado como um afastamento com duração de um (1) semestre, para efeito de cálculo da ordem de prioridade das reservas/solicitações, a solicitação cancelada de acordo com os critérios da <a href="<c:url value="/resources/files/Resolucaoo_01-2014.pdf" />">resolução</a>.</label><br><br>
+					<label>Em caso de empate na ordem de prioridade, serão considerados os critérios abaixo, na ordem indicada:</label>
+					<label><span>I:</span> Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.</label><br>
+					<label><span>II:</span> Prioridade para programas com melhor conceito.</label><br>
+					<label><span>III:</span> Prioridade para o candidato mais velho.</label>
 				</div>
 			</div>
 			<div id="load-siaf">

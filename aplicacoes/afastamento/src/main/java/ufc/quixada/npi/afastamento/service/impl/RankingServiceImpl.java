@@ -76,14 +76,10 @@ public class RankingServiceImpl implements RankingService {
 	        {
 	        	if(tupla1.getPontuacao().compareTo(tupla2.getPontuacao()) == 0.0f) {
 	        		if(tupla1.getReserva().getPrograma().equals(tupla2.getReserva().getPrograma())) {
-	        			if(tupla1.getReserva().getConceitoPrograma() != null && tupla2.getReserva().getConceitoPrograma() != null) {
-		        			if(tupla1.getReserva().getConceitoPrograma().equals(tupla2.getReserva().getConceitoPrograma())) {
-		        				return tupla1.getReserva().getProfessor().getDataNascimento().compareTo(tupla2.getReserva().getProfessor().getDataNascimento());
-		        			}
-		        			return tupla2.getReserva().getConceitoPrograma().compareTo(tupla1.getReserva().getConceitoPrograma());
-		        		} else {
-		        			return tupla1.getReserva().getProfessor().getDataNascimento().compareTo(tupla2.getReserva().getProfessor().getDataNascimento());
-		        		}
+	        			if(tupla1.getReserva().getConceitoPrograma().equals(tupla2.getReserva().getConceitoPrograma())) {
+	        				return tupla1.getReserva().getProfessor().getDataNascimento().compareTo(tupla2.getReserva().getProfessor().getDataNascimento());
+	        			}
+	        			return tupla2.getReserva().getConceitoPrograma().compareTo(tupla1.getReserva().getConceitoPrograma());
 	        		}
 	        		if(tupla1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
 	        			return -1;

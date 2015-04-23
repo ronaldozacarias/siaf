@@ -81,7 +81,7 @@
 								<tr class="${reserva.status}">
 									<td>${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}</td>
 									<td>${reserva.programa.descricao }</td>
-									<td>${reserva.conceitoPrograma }</td>
+									<td>${reserva.conceitoPrograma eq 0 ? "-" : reserva.conceitoPrograma}</td>
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
 									<td>

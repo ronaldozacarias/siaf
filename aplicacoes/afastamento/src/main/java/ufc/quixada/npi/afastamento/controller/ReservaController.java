@@ -120,7 +120,7 @@ public class ReservaController {
 		redirect.addFlashAttribute("conceito", conceito);
 		redirect.addFlashAttribute("instituicao", instituicao);
 		
-		if(anoInicio == null || anoTermino == null || conceito == null || instituicao == null || instituicao.isEmpty()) {
+		if(anoInicio == null || anoTermino == null) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
 			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
@@ -157,6 +157,9 @@ public class ReservaController {
 		reserva.setSemestreTermino(semestreTermino);
 		reserva.setDataSolicitacao(new Date());
 		reserva.setPrograma(programa);
+		if(conceito == null) {
+			conceito = 0;
+		}
 		reserva.setConceitoPrograma(conceito);
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setInstituicao(instituicao);

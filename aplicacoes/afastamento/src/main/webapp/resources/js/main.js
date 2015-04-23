@@ -53,14 +53,13 @@ $(document).ready(function() {
 	});	
 
 	$('#professores').on('click', '.salvar', function() {
-		$("#contentProfessores td.editProf").css("width", "50px");
-		$("#contentProfessores td.editAcao").css("width", "40px");
-
 	    var $btn = $(this);
 
 	    var id = $btn.data("id");
 		var semestre = $( "select option:selected" ).val();
 		var ano = $("input").val();
+		$(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
+		$btn.closest('tr').find('.editable').editable('hide');
 		
 		if(ano != '') {
 			$.ajax({
@@ -79,8 +78,10 @@ $(document).ready(function() {
 				}		
 			});
 		}
-	    $btn.closest('tr').find('.editable').editable('hide');
-	    $("options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
+		$("#contentProfessores td.editProf").css("width", "50px");
+		$("#contentProfessores td.editAcao").css("width", "40px");
+		
+	    
 	});
 	
 	$('#professores').on('click', '.cancel', function() {
@@ -279,12 +280,6 @@ $(document).ready(function() {
             },
             anoTermino:{
                 required:"Campo obrigatório",
-            },
-            conceito:{
-                required:"Campo obrigatório",
-            },
-            instituicao:{
-                required:"Campo obrigatório",
             }
         }
     });
@@ -450,7 +445,7 @@ function getPrograma(programa) {
 }
 
 function getConceito(conceito) {
-	if(conceito == null) {
+	if(conceito == 0) {
 		return "-";
 	}
 	return conceito;
