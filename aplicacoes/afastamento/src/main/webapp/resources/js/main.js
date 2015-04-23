@@ -50,6 +50,8 @@ $(document).ready(function() {
 	    $('input').attr("size", "4");
 	    $('input').mask('9999', {placeholder:" "});
 	    $('input').attr("placeholder", "Ano");
+	    $('input').val($('#editProf' + id + ' span.anoEdit').text());
+	    
 	});	
 
 	$('#professores').on('click', '.salvar', function() {
@@ -73,6 +75,10 @@ $(document).ready(function() {
 				},
 				success: function(result) {
 					showMessage(result);
+					$('#editProf' + id + ' span.anoEdit').text(ano);
+					$('#editProf' + id + ' span.anoEdit').data("value", ano);
+					$('#editProf' + id + ' span.semestreEdit').text(semestre);
+					$('#editProf' + id + ' span.semestreEdit').data("value", semestre);
 				},
 				error: function(error) {
 				}		
@@ -101,7 +107,7 @@ $(document).ready(function() {
 	});
 	
 	function showMessage(result) {
-		$("#wrapper").html($(result).find("#wrapper"));
+		$("#wrapper #message").html($(result).find("#wrapper #message"));
 	}
 	
 //____________________________________________________________________________________________________________________________________________________	

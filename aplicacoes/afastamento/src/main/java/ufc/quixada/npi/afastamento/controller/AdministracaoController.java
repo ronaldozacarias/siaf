@@ -185,8 +185,6 @@ public class AdministracaoController {
 
 		professorService.update(professor);
 		
-		List<Professor> professors = professorService.findAtivos();
-		model.addAttribute("professores", professors);
 		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
