@@ -133,6 +133,10 @@ div.titulo-ranking {
 	border-bottom: 1px solid;
 }
 
+div.titulo-ranking a {
+	text-decoration: underline !important;
+}
+
 #wrap-periodo {
 	background-color: #E7E7E7;
 	padding-bottom: 10px;
@@ -200,10 +204,10 @@ table > tbody > tr.DESCLASSIFICADO {
 }
 
 .table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
-	background-color: #E96D6D;
+	background-color: #FFBEA9;
 }
 .table > tbody > tr.NEGADO {
-	background-color: #EC7751;
+	background-color: #FFBEA9;
 }
 
 .table > tbody > tr > td.pontuacao {
@@ -239,11 +243,11 @@ label span.classificado {
 }
 
 div#legenda label span.cancelado {
-	background-color: #E96D6D;
+	background-color: #FFBEA9;
 }
 
 div#legenda label span.negado {
-	background-color: #EC7751;
+	background-color: #FFBEA9;
 }
 
 div#legenda label span.nao_aceito {
