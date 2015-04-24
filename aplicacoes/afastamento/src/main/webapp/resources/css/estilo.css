@@ -531,6 +531,11 @@ button, input.btn-siaf {
 	float: none;
 }
 
+.editable-empty {
+	color: #545454 !important;
+	font-style: normal !important;
+}
+
 span.obrigatorio {
 	color: #A94442;
 }
