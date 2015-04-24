@@ -47,7 +47,7 @@
 					<div id="dados-periodo" class="align-center">
 						<label>Encerramento: <span id="encerramento" class="value-label"></span></label>&nbsp;
 						<i id="help-encerramento" class="fa fa-question-circle fa-lg" data-toggle="popover" data-placement="right" data-content=""></i><br>
-						<label>Total de vagas: <span id="vagas" class="badge"></span></label>
+						<label>Total estimado de vagas: <span id="vagas" class="badge"></span></label>
 					</div>
 				</div>
 				

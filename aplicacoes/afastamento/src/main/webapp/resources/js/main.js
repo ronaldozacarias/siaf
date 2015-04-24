@@ -353,7 +353,7 @@ function getRanking(ano, semestre) {
 		}
 	})
 	.success(function(result) {
-		$('#count-ranking').text('Vagas restantes: ' + (result.periodoAtual.vagas - result.afastados.length));
+		$('#count-ranking').text('Estimativa de vagas restantes: ' + (result.periodoAtual.vagas - result.afastados.length));
 		loadAfastados(result.afastados);
 			
 		$('i#anterior').show();
