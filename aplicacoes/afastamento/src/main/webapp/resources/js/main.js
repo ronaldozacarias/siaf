@@ -15,6 +15,14 @@ $(document).ready(function() {
 		$.extend($.fn.editable.defaults, defaults);
 
 		
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			$("#contentProfessores td.editProf").css("width", "50px");
+			$("#contentProfessores td.editAcao").css("width", "40px");
+		    $(".options").removeClass( "show" ).addClass('hide').siblings('.edit').show();
+		}
+	});
+		
 	$(".anoEdit ").editable({
 	    title: 'Ano de Admissão',
     	emptytext : '',
@@ -91,14 +99,17 @@ $(document).ready(function() {
 	});
 	
 	$('#professores').on('click', '.cancel', function() {
-
+		cancelEdit(this);
+	});
+	
+	function cancelEdit(e){
 		$("#contentProfessores td.editProf").css("width", "50px");
 		$("#contentProfessores td.editAcao").css("width", "40px");
-	    var $btn = $(this);
+	    var $btn = $(e);
 	    var id = $btn.data("id");
 	    $(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	    $btn.closest('tr').find('.editable').editable('hide');
-	});
+	}
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	
