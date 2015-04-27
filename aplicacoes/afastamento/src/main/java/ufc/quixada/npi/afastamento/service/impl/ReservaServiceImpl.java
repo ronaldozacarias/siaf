@@ -127,14 +127,12 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 			"professores" }, allEntries = true, beforeInvocation = true)
 	public void atualizar(Reserva reserva) {
 		update(reserva);
-
 	}
 
 	@Override
-	public List<Reserva> getReservasByStatus(StatusReserva statatus) {
-		// TODO Auto-generated method stub
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("status", statatus);
+	public List<Reserva> getReservasByStatus(StatusReserva status) {
+			Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", status);
 		return reservaRepository.find(QueryType.JPQL,
 				"from Reserva where status = :status order by anoInicio DESC, semestreInicio DESC", params);
 	}

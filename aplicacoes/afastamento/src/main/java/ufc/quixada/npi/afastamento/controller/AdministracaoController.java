@@ -316,8 +316,8 @@ public class AdministracaoController {
 		return model;
 	}
 
-	@RequestMapping(value = "/alteraReservas", method = RequestMethod.GET)
-	public String alterarReservar(Model model) {
+	@RequestMapping(value = "/atualizarConceito", method = RequestMethod.GET)
+	public String atualizarConceito(Model model) {
 		List<Reserva> reservas = reservaService.getReservasByStatus(StatusReserva.ABERTO);
 		if (reservas != null) {
 			model.addAttribute("reservas", reservas);
@@ -326,16 +326,11 @@ public class AdministracaoController {
 		return Constants.PAGINA_ALTERAR_RESERVAS_EM_ABERTO;
 	}
 
-	@RequestMapping(value = "/editar-reservaEmAberto.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Model editarPeriodo(Model model, @RequestParam("id") Long id, @RequestParam("conceito") Integer conceitoPrograma) {
-		boolean permitirUpdateConceito = false;
+	@RequestMapping(value = "/atualizarConceito.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Model atualizarConceito(Model model, @RequestParam("id") Long id, @RequestParam("conceito") Integer conceitoPrograma) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
 
 		if (conceitoPrograma != null) {
-			permitirUpdateConceito = true;
-		}
-
-		if (permitirUpdateConceito) {
 			reserva.setConceitoPrograma(conceitoPrograma);
 			reservaService.update(reserva);
 			model.addAttribute(Constants.INFO, "Reserva do professor " + reserva.getProfessor().getNome() + " atualizada com sucesso.");

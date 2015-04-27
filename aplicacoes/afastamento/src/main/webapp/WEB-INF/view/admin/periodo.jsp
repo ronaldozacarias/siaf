@@ -21,20 +21,9 @@
 			<div class="title"> Período : </div>
 			<span class="line"></span>
  
-			<div class="messages">
-				<div id="erro" class="alert alert-danger margin-top hide" role="alert">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<p></p>
-				</div>
-
-				<div id="info" class="alert alert-info margin-top hide" role="alert">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<p></p>
-				</div>
+		<div class="messages">
+				<div id="erroDiv"></div>
+				<div id="infoDiv"></div>
 			</div>			
 			<div>
 				<table id="tablePeriodos" class="display" cellspacing="0" width="100%">
@@ -92,49 +81,6 @@
 	<script type="text/javascript">
 		getPeriodos();
 		$('#menu-periodos').addClass('active');
-		
-		$('#tablePeriodos').DataTable({
-			 "pageLength": 50,
-			 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
-			 "columnDefs": [
-			               { "orderable": false, "targets": 0 },
-			               { "orderData": [ 1, 2 ],    "targets": 1 },
-			               { "orderable": false, "targets": 2 },
-			               { "orderable": false, "targets": 3 },
-			               { "orderable": false, "targets": 4 },
-			               { "orderable": false, "targets": 5 },
-			],
-			
-			"language": {
-			    "sEmptyTable": "Nenhum registro encontrado",
-			    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-			    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-			    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-			    "sInfoPostFix": "",
-			    "sInfoThousands": ".",
-			    "sLengthMenu": "resultados por página _MENU_",
-			    "sLoadingRecords": "Carregando...",
-			    "sProcessing": "Processando...",
-			    "sZeroRecords": "Nenhum registro encontrado",
-			    "sSearch": "",
-			    "oPaginate": {
-			        "sNext": "Próximo",
-			        "sPrevious": "Anterior",
-			        "sFirst": "Primeiro",
-			        "sLast": "Último"
-			    },
-			    "oAria": {
-			        "sSortAscending": ": Ordenar colunas de forma ascendente",
-			        "sSortDescending": ": Ordenar colunas de forma descendente"
-			    }
-			}
-		});
-		
-		
-		$('select').selectpicker();
-		$('input').attr('placeholder', 'Pesquisar...');
-		$('input').addClass('form-inline form-control');
-	
 	</script>
 </body>
 </html>

@@ -358,7 +358,7 @@ $('.editReserva').on('click', function(event) {
 				'id': id,
 				'conceito' : conceito,
 			},
-			url: '/siaf/administracao/editar-reservaEmAberto.json',
+			url: '/siaf/administracao/atualizarConceito.json',
 		}).success(function(result) {
 			messageReservaEmAberto(result);
 		});
@@ -382,7 +382,100 @@ $('.editReserva').on('click', function(event) {
 		event.stopPropagation();
 	});
 
+	//////////////////////
 	
+	$('#tableReservas')
+	.DataTable(
+			{
+				"pageLength" : 50,
+				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
+				"columnDefs" : [ {
+					"orderable" : false,
+					"targets" : 0
+				}, {
+					"orderData" : [ 1, 2 ],
+					"targets" : 1
+				}, {
+					"orderable" : false,
+					"targets" : 2
+				}, {
+					"orderable" : false,
+					"targets" : 3
+				}, {
+					"orderable" : false,
+					"targets" : 4
+				}, {
+					"orderable" : false,
+					"targets" : 5
+				}, ],
+
+				"language" : {
+					"sEmptyTable" : "Nenhum registro encontrado",
+					"sInfo" : "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+					"sInfoEmpty" : "Mostrando 0 até 0 de 0 registros",
+					"sInfoFiltered" : "(Filtrados de _MAX_ registros)",
+					"sInfoPostFix" : "",
+					"sInfoThousands" : ".",
+					"sLengthMenu" : "resultados por página _MENU_",
+					"sLoadingRecords" : "Carregando...",
+					"sProcessing" : "Processando...",
+					"sZeroRecords" : "Nenhum registro encontrado",
+					"sSearch" : "",
+					"oPaginate" : {
+						"sNext" : "Próximo",
+						"sPrevious" : "Anterior",
+						"sFirst" : "Primeiro",
+						"sLast" : "Último"
+					},
+					"oAria" : {
+						"sSortAscending" : ": Ordenar colunas de forma ascendente",
+						"sSortDescending" : ": Ordenar colunas de forma descendente"
+					}
+				}
+			});
+	
+	$('#tablePeriodos').DataTable({
+		 "pageLength": 50,
+		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
+		 "columnDefs": [
+		               { "orderable": false, "targets": 0 },
+		               { "orderData": [ 1, 2 ],    "targets": 1 },
+		               { "orderable": false, "targets": 2 },
+		               { "orderable": false, "targets": 3 },
+		               { "orderable": false, "targets": 4 },
+		               { "orderable": false, "targets": 5 },
+		],
+		
+		"language": {
+		    "sEmptyTable": "Nenhum registro encontrado",
+		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+		    "sInfoPostFix": "",
+		    "sInfoThousands": ".",
+		    "sLengthMenu": "resultados por página _MENU_",
+		    "sLoadingRecords": "Carregando...",
+		    "sProcessing": "Processando...",
+		    "sZeroRecords": "Nenhum registro encontrado",
+		    "sSearch": "",
+		    "oPaginate": {
+		        "sNext": "Próximo",
+		        "sPrevious": "Anterior",
+		        "sFirst": "Primeiro",
+		        "sLast": "Último"
+		    },
+		    "oAria": {
+		        "sSortAscending": ": Ordenar colunas de forma ascendente",
+		        "sSortDescending": ": Ordenar colunas de forma descendente"
+		    }
+		}
+	});
+	
+	
+	$('select').selectpicker();
+	$('input').attr('placeholder', 'Pesquisar...');
+	$('input').addClass('form-inline form-control');
+		
 });
 
 function getRanking(ano, semestre) {
