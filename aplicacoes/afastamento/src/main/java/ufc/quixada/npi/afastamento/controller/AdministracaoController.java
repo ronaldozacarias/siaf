@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -22,20 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.ufc.quixada.npi.ldap.model.Usuario;
-import br.ufc.quixada.npi.ldap.service.UsuarioService;
-import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
-import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
-import ufc.quixada.npi.afastamento.model.StatusReserva;
-import ufc.quixada.npi.afastamento.model.StatusTupla;
-import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.NotificacaoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
@@ -43,6 +34,8 @@ import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 import ufc.quixada.npi.afastamento.util.Constants;
+import br.ufc.quixada.npi.ldap.model.Usuario;
+import br.ufc.quixada.npi.ldap.service.UsuarioService;
 
 @Controller
 @RequestMapping("administracao")
@@ -123,8 +116,8 @@ public class AdministracaoController {
 		}
 	}
 
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
+	/*@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	@CacheEvict(value = {"ranking", "visualizarRanking"}, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getUltimoPeriodoEncerrado();
 		if (periodo != null) {
@@ -172,6 +165,11 @@ public class AdministracaoController {
 						.getReserva());
 				if (tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
 					if (vagas == 0) {
+		for(TuplaRanking tupla : ranking.getTuplas()) {
+			if(tupla.getReserva().getAnoInicio().equals(ano) && tupla.getReserva().getSemestreInicio().equals(semestre)) {
+				Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
+				if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+					if(vagas == 0) {
 						Reserva reserva = tupla.getReserva();
 						reserva.setStatus(StatusReserva.NAO_ACEITO);
 						reservaService.update(reserva);
@@ -216,6 +214,7 @@ public class AdministracaoController {
 				}
 			} else if (tupla.getReserva().getStatus()
 					.equals(StatusReserva.ACEITO)) {
+			} else if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 				vagas--;
 			}
 		}
@@ -230,7 +229,7 @@ public class AdministracaoController {
 		redirect.addFlashAttribute(Constants.INFO,
 				Constants.MSG_RESERVAS_ATUALIZADAS);
 		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
-	}
+	}*/
 
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Periodo> periodos() {
@@ -248,11 +247,9 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo",
-			"visualizarRanking", "ranking", "loadProfessor", "professores" }, allEntries = true)
-	public String atualizaAdmissao(@RequestParam("id") Long id,
-			@RequestParam("ano") Integer ano,
-			@RequestParam("semestre") Integer semestre, Model model) {
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
+	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
+
 
 		if (id == null || ano == null || semestre == null) {
 			model.addAttribute(Constants.ERRO, "Dados inválidos");
@@ -278,6 +275,8 @@ public class AdministracaoController {
 		model.addAttribute("professores", professors);
 		model.addAttribute("info", "Data de admissão do(a) Prof(a) "
 				+ professor.getNome() + " atualizada com sucesso.");
+
+		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
@@ -308,10 +307,10 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo",
-			"visualizarRanking", "ranking", "loadProfessor", "professores" }, allEntries = true, beforeInvocation = true)
-	public Model editarPeriodo(Model model, @RequestParam("id") Long id,
-			@RequestParam("vagas") Integer vagas,
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
+	public Model editarPeriodo(Model model, 
+			@RequestParam("id") Long id, 
+			@RequestParam("vagas") Integer vagas, 
 			@RequestParam("encerramento") String encerramentoString) {
 
 		boolean permitirUpdateEncerramento = false;

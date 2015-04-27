@@ -3,7 +3,9 @@ package ufc.quixada.npi.afastamento.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,7 +15,6 @@ import org.springframework.cache.annotation.Cacheable;
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Programa;
-import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
@@ -39,70 +40,14 @@ public class RankingServiceImpl implements RankingService {
 	@Cacheable("visualizarRanking")
 	public List<TuplaRanking> visualizarRanking(Integer ano, Integer semestre) {
 		Periodo periodo = periodoService.getPeriodo(ano, semestre);
-		List<TuplaRanking> tuplaAtual = getRanking(periodo).getTuplas();
-		// Para cada período do tempo da reserva de cada solicitação, é verificado se a reserva está dentro das vagas para todos os períodos.
-		for(int i = 0; i < tuplaAtual.size(); i++) {
-			Periodo periodoInicio = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoInicio(), tuplaAtual.get(i).getReserva().getSemestreInicio());
-			Periodo periodoTermino = periodoService.getPeriodo(tuplaAtual.get(i).getReserva().getAnoTermino(), tuplaAtual.get(i).getReserva().getSemestreTermino());
-			for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
-				List<TuplaRanking> tuplaPeriodo = getClassificados(getRanking(periodoInicio).getTuplas());
-				boolean encontrou = false;
-				for(TuplaRanking tupla : tuplaPeriodo) {
-					if(tupla.getReserva().equals(tuplaAtual.get(i).getReserva())) {
-						encontrou = true;
-						break;
-					}
-				}
-				if(!encontrou) {
-					if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
-						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO);
-					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
-						tuplaAtual.get(i).setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
-					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
-						tuplaAtual.get(i).setStatus(StatusTupla.NAO_ACEITO);
-					} else if(tuplaAtual.get(i).getReserva().getStatus().equals(StatusReserva.NEGADO)) {
-						tuplaAtual.get(i).setStatus(StatusTupla.NEGADO);
-					} else {
-						tuplaAtual.get(i).setStatus(StatusTupla.DESCLASSIFICADO);
-					}
-				}
-				
-			}
+		List<Periodo> periodos = periodoService	.getPeriodoAbertos();
+		Map<Periodo, List<TuplaRanking>> ranking = new HashMap<Periodo, List<TuplaRanking>>();
+		for(Periodo p : periodos) {
+			ranking.put(p, new ArrayList<TuplaRanking>());
 		}
-		return tuplaAtual;
 		
-	}
-	
-	private List<TuplaRanking> getClassificados(List<TuplaRanking> tuplaRanking) {
-		List<TuplaRanking> result = new ArrayList<TuplaRanking>();
-		for(TuplaRanking tupla : tuplaRanking) {
-			if(!tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO) && !tupla.getStatus().equals(StatusTupla.NEGADO) &&
-					!tupla.getStatus().equals(StatusTupla.CANCELADO) && !tupla.getStatus().equals(StatusTupla.CANCELADO_COM_PUNICAO)) {
-				result.add(tupla);
-			}
-		}
-		return result;
-	}
-	
-	@Override
-	@Cacheable("ranking")
-	public Ranking getRanking(Periodo periodo) {
-		Ranking ranking = new Ranking();
-		ranking.setPeriodo(periodo);
-		
-		//R = (T – A) / (5 x A + S + P)
-		//T – Número de semestres desde a contratação na UFC até o início do afastamento, iniciando no primeiro semestre em que o solicitante teve disciplina alocada no Campus Quixadá;
-		//A – Número de semestres em que o docente já esteve afastado para programas de pós-graduação stricto sensu ou pós-doutorados;
-		//S – Número de semestres do afastamento reservado/solicitado;
-		//P – Número de semestres que faltam para o docente completar três (3) anos de contratação na UFC Quixadá (vale zero se já cumpriu este período).
-		
-		//No caso de primeiro afastamento, a variável S terá valor dois (2) independente da duração do período reservado/solicitado
-		//Em caso de empate na ordem de prioridade estabelecida no Artigo 5o, serão considerados os critérios abaixo, na ordem indicada:
-		//I – Mestrado tem maior prioridade que doutorado, e doutorado tem maior prioridade que pós-doutorado.
-		//II – Prioridade para programas com melhor conceito.
-		//III – Prioridade para o candidato mais velho.
-		List<Reserva> reservas = reservaService.getReservasByPeriodo(periodo.getAno(), periodo.getSemestre());
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
+		List<Reserva> reservas = reservaService.getReservasAbertasOuAfastados();
 		for (Reserva reserva : reservas) {
 			TuplaRanking tupla = new TuplaRanking();
 			tupla.setReserva(reserva);
@@ -127,80 +72,79 @@ public class RankingServiceImpl implements RankingService {
 		}
 		Collections.sort(tuplas, new Comparator<TuplaRanking>() {
 	        @Override
-	        public int compare(TuplaRanking  ranking1, TuplaRanking  ranking2)
+	        public int compare(TuplaRanking  tupla1, TuplaRanking  tupla2)
 	        {
-	        	if(ranking1.getPontuacao().compareTo(ranking2.getPontuacao()) == 0.0f) {
-	        		if(ranking1.getReserva().getPrograma().equals(ranking2.getReserva().getPrograma())) {
-	        			if(ranking1.getReserva().getConceitoPrograma() != null && ranking2.getReserva().getConceitoPrograma() != null) {
-		        			if(ranking1.getReserva().getConceitoPrograma().equals(ranking2.getReserva().getConceitoPrograma())) {
-		        				return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
-		        			}
-		        			return ranking1.getReserva().getConceitoPrograma().compareTo(ranking2.getReserva().getConceitoPrograma());
-		        		} else {
-		        			return ranking2.getReserva().getProfessor().getDataNascimento().compareTo(ranking1.getReserva().getProfessor().getDataNascimento());
-		        		}
+	        	if(tupla1.getPontuacao().compareTo(tupla2.getPontuacao()) == 0.0f) {
+	        		if(tupla1.getReserva().getPrograma().equals(tupla2.getReserva().getPrograma())) {
+	        			if(tupla1.getReserva().getConceitoPrograma().equals(tupla2.getReserva().getConceitoPrograma())) {
+	        				return tupla1.getReserva().getProfessor().getDataNascimento().compareTo(tupla2.getReserva().getProfessor().getDataNascimento());
+	        			}
+	        			return tupla2.getReserva().getConceitoPrograma().compareTo(tupla1.getReserva().getConceitoPrograma());
 	        		}
-	        		if(ranking1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
-	        			return 1;
-	        		}
-	        		if(ranking2.getReserva().getPrograma().equals(Programa.MESTRADO)) {
+	        		if(tupla1.getReserva().getPrograma().equals(Programa.MESTRADO)) {
 	        			return -1;
 	        		}
-	        		if(ranking1.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        		if(tupla2.getReserva().getPrograma().equals(Programa.MESTRADO)) {
 	        			return 1;
 	        		}
-	        		if(ranking2.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        		if(tupla1.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
 	        			return -1;
+	        		}
+	        		if(tupla2.getReserva().getPrograma().equals(Programa.DOUTORADO)) {
+	        			return 1;
 	        		}
 	        	}
-	            return  ranking1.getPontuacao().compareTo(ranking2.getPontuacao());
+	            return  tupla2.getPontuacao().compareTo(tupla1.getPontuacao());
 	        }
 	    });
-		Collections.reverse(tuplas);
-		int vagas = periodo.getVagas();
-		for (TuplaRanking tupla : tuplas) {
-			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
-			if((tupla.getReserva().getStatus().equals(StatusReserva.ACEITO) && !periodo.equals(periodoInicio)) || tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
-				vagas--;
+		
+		// Coloca primeiramente nos períodos os que já estão classificados
+		for(TuplaRanking tupla : tuplas) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+				Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
+				Periodo periodoTermino = periodoService.getPeriodo(tupla.getReserva().getAnoTermino(), tupla.getReserva().getSemestreTermino());
+				for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
+					if(ranking.containsKey(periodoInicio)) {
+						tupla.setStatus(StatusTupla.AFASTADO);
+						List<TuplaRanking> tuplaPeriodo = ranking.get(periodoInicio);
+						tuplaPeriodo.add(tupla);
+						ranking.put(periodoInicio, tuplaPeriodo);
+					}
+				}
 			}
 		}
-		for (TuplaRanking tupla : tuplas) {
-			Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
-			if(tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) {
-				if(!periodo.equals(periodoInicio)) {
-					tupla.setStatus(StatusTupla.ACEITO);
-				} else if(vagas > 0) {
-					tupla.setStatus(StatusTupla.ACEITO);
-					vagas--;
-				} else {
-					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
+		
+		for(TuplaRanking tupla : tuplas) {
+			if(!tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+				boolean classificado = true;
+				Periodo periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
+				Periodo periodoTermino = periodoService.getPeriodo(tupla.getReserva().getAnoTermino(), tupla.getReserva().getSemestreTermino());
+				for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
+					int vagas = periodoInicio.getVagas();
+					for(TuplaRanking t : ranking.get(periodoInicio)) {
+						if(t.getStatus().equals(StatusTupla.AFASTADO) || t.getStatus().equals(StatusTupla.CLASSIFICADO)) {
+							vagas--;
+						}
+					}
+					if(vagas <= 0) {
+						tupla.setStatus(StatusTupla.DESCLASSIFICADO);
+						classificado = false;
+						break;
+					}
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
-				if(vagas > 0) {
+				if(classificado) {
 					tupla.setStatus(StatusTupla.CLASSIFICADO);
-					vagas--;
-				} else {
-					tupla.setStatus(StatusTupla.DESCLASSIFICADO);
 				}
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO) && vagas > 0) {
-				tupla.setStatus(StatusTupla.CLASSIFICADO);
-				vagas--;
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NAO_ACEITO)) {
-				tupla.setStatus(StatusTupla.DESCLASSIFICADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.ENCERRADO)) {
-				tupla.setStatus(StatusTupla.ENCERRADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO)) {
-				tupla.setStatus(StatusTupla.CANCELADO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
-				tupla.setStatus(StatusTupla.CANCELADO_COM_PUNICAO);
-			} else if(tupla.getReserva().getStatus().equals(StatusReserva.NEGADO)) {
-				tupla.setStatus(StatusTupla.NEGADO);
+				periodoInicio = periodoService.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
+				for(;periodoInicio != null && !periodoInicio.equals(periodoService.getPeriodoPosterior(periodoTermino)); periodoInicio = periodoService.getPeriodoPosterior(periodoInicio)) {
+					List<TuplaRanking> tuplaPeriodo = ranking.get(periodoInicio);
+					tuplaPeriodo.add(tupla);
+					ranking.put(periodoInicio, tuplaPeriodo);
+				}
 			}
 		}
 		
-		ranking.setTuplas(tuplas);
-		return ranking;
-		
+		return ranking.get(periodo);
 	}
 	
 	private Integer getSemestresSolicitados(Reserva reserva) {
@@ -222,8 +166,6 @@ public class RankingServiceImpl implements RankingService {
 	
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio) + 1;
-	}
-
-	
+	}	
 
 }

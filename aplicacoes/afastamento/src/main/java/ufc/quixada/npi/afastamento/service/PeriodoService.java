@@ -27,4 +27,6 @@ public interface PeriodoService extends GenericService<Periodo>{
 	List<Periodo> getAll();
 	
 	List<Periodo> getPeriodosPosteriores(Periodo periodo);
+	
+	List<Periodo> getPeriodoAbertos();
 }

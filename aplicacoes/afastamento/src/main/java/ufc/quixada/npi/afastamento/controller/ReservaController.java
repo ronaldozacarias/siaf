@@ -1,6 +1,10 @@
 package ufc.quixada.npi.afastamento.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
@@ -25,8 +29,11 @@ import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.NotificacaoService;
+
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -54,22 +61,44 @@ public class ReservaController {
 	
     @RequestMapping(value = "/ranking", method = RequestMethod.GET)
 	public String getRanking(Model model, HttpSession session) {
-		Periodo periodoAtual = periodoService.getPeriodoAtual();
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual());
 		model.addAttribute("periodoAtual", periodoAtual);
-		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(periodoAtual));
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		return Constants.PAGINA_RANKING;
 	}
 	
-	@RequestMapping(value = "/ranking.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Model ranking(HttpServletRequest request, Model model, HttpSession session) {
+	@RequestMapping(value = "/ranking.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Model ranking(HttpServletRequest request, Model model) {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
 		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
+		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
+		for(TuplaRanking tupla : ranking.getTuplas()) {
+			if (tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+				afastados.add(tupla);
+			} else {
+				tuplas.add(tupla);
+			}
+		}
+		Collections.sort(afastados, new Comparator<TuplaRanking>() {
+
+			@Override
+			public int compare(TuplaRanking tupla1, TuplaRanking tupla2) {
+				return tupla1.getProfessor().compareTo(tupla2.getProfessor());
+			}
+		});
+		model.addAttribute("afastados", afastados);
+		ranking.setTuplas(tuplas);
 		model.addAttribute("ranking", ranking);
 		model.addAttribute("periodoAtual", ranking.getPeriodo());
-		model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		Periodo periodoAnterior = periodoService.getPeriodoAnterior(ranking.getPeriodo());
+		if( periodoService.getPeriodoAnterior(periodoAnterior).getStatus().equals(StatusPeriodo.ENCERRADO)) {
+			model.addAttribute("periodoAnterior", null);
+		} else {
+			model.addAttribute("periodoAnterior", periodoService.getPeriodoAnterior(ranking.getPeriodo()));
+		}
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(ranking.getPeriodo()));
 		
 		return model;
@@ -84,7 +113,7 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String incluir(@RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
 			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
 			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito, @RequestParam("instituicao") String instituicao,
@@ -98,7 +127,7 @@ public class ReservaController {
 		redirect.addFlashAttribute("conceito", conceito);
 		redirect.addFlashAttribute("instituicao", instituicao);
 		
-		if(anoInicio == null || anoTermino == null || conceito == null || instituicao == null || instituicao.isEmpty()) {
+		if(anoInicio == null || anoTermino == null) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
 			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
 		}
@@ -135,6 +164,10 @@ public class ReservaController {
 		reserva.setSemestreTermino(semestreTermino);
 		reserva.setDataSolicitacao(new Date());
 		reserva.setPrograma(programa);
+		if(conceito == null) {
+			conceito = 0;
+		}
+		reserva.setConceitoPrograma(conceito);
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setInstituicao(instituicao);
 		reserva.setStatus(StatusReserva.ABERTO);
@@ -162,7 +195,7 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/{id}/excluir", method = RequestMethod.GET)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);

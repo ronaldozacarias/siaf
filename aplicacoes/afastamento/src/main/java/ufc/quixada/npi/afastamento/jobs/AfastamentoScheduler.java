@@ -1,7 +1,9 @@
 package ufc.quixada.npi.afastamento.jobs;
 
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,13 +13,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
+
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
+
+import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -43,7 +47,9 @@ public class AfastamentoScheduler {
 	@Scheduled(cron = "0 0 0 1/1 * ?")
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
 	public void verificaEncerramentoPeriodo() {
-		Calendar calendar = Calendar.getInstance();
+		// Comentado para verificação de como funcionará o fechamento do ranking.
+		
+		/*Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		Date ontem = calendar.getTime();
 		Periodo periodo = periodoService.getPeriodoByEncerramento(new java.sql.Date(ontem.getTime()));
@@ -53,7 +59,7 @@ public class AfastamentoScheduler {
 			
 			Ranking ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
-				if(tupla.getStatus().equals(StatusTupla.ACEITO)) {
+				if(tupla.getStatus().equals(StatusTupla.AFASTADO)) {
 					Periodo ultimoPeriodo = periodoService.getPeriodo(tupla.getReserva().getAnoTermino(), tupla.getReserva().getSemestreTermino());
 					if(ultimoPeriodo.equals(periodo)) {
 						tupla.getReserva().setStatus(StatusReserva.ENCERRADO);
@@ -66,7 +72,7 @@ public class AfastamentoScheduler {
 			ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
 				if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
-					tupla.getReserva().setStatus(StatusReserva.ACEITO);
+					tupla.getReserva().setStatus(StatusReserva.AFASTADO);
 					reservaService.update(tupla.getReserva());
 					Afastamento afastamento = new Afastamento();
 					afastamento.setReserva(tupla.getReserva());
@@ -77,7 +83,8 @@ public class AfastamentoScheduler {
 				}
 			}
 		}
-		
+
+		adicionaNovosProfessores();*/
 		
 	}
 	
