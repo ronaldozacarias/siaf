@@ -27,6 +27,8 @@ public class Constants {
 	
 	public static final String PAGINA_LISTAR_RESERVA = "reserva/lista";
 	
+	public static final String PAGINA_ALTERAR_RESERVAS_EM_ABERTO = "admin/alteraReservas";
+	
 	
 	
 	/** Redirecionamentos */

@@ -147,15 +147,14 @@ $(document).ready(function() {
 	
 	var editVagas = false;
 	var editEncerramento = false;
-
+	var guardaEncerramento = null;
+	var guardaVagas = null;
+	
 	$('.editPeriodo').on('click', function(event) {
-		
 		var id = '';
-
 		if($(this).data('id')){
 			id = $(this).data('id');
 		}
-		
 		$.ajax({
 			type: 'POST',
 			data: {
@@ -171,6 +170,7 @@ $(document).ready(function() {
 
 			if(result.editEncerramento){
 			    encerramento = $('#encerramento'+id ).text();
+			    guardaEncerramento = encerramento;
 			    
 				$('#encerramento'+id).empty();
 				$('#encerramento'+id).append('<input name="inputEncerramento" class="form-control data" value="'+encerramento+'" />');
@@ -181,9 +181,11 @@ $(document).ready(function() {
 					autoclose: true,
 				});
 			}
-
+			
 			if(result.editVagas){
 				vagas = $('#vagas'+id ).text();
+				guardaVagas = vagas;
+				
 				$('#vagas'+id).empty();
 				$('#vagas'+id).append('<input name="inputVagas" class="form-control" size="2" value="'+vagas+'"/>');
 			}
@@ -198,11 +200,10 @@ $(document).ready(function() {
 				$("#info-periodo").modal('show');
 				
 			}
-			
-		
+	
 		});
 		event.stopPropagation();
-	})
+	});
 
 	$('.salvarPeriodo').click(function() {
 		var id = $(this).data('id');
@@ -245,13 +246,15 @@ $(document).ready(function() {
 		if($('#options' + id).data('encerramento')){
 			var encerramento = $('#encerramento'+id+' input').val();
 			$('#encerramento'+id).empty();
-			$('#encerramento'+id).text(encerramento);
+			$('#encerramento'+id).text(guardaEncerramento);
+			guardaEncerramento = null;
 		}
 		
 		if($('#options' + id).data('vagas')){
 			var vagas = $('#vagas'+id+' input').val();
 			$('#vagas'+id).empty();
-			$('#vagas'+id).text(vagas);
+			$('#vagas'+id).text(guardaVagas);
+			guardaVagas = null;
 		}
 
 		$('#options' + id).removeClass( 'show' ).addClass('hide');
@@ -260,6 +263,26 @@ $(document).ready(function() {
 		event.stopPropagation();
 	});
 	
+	var guardaConceito = null;
+$('.editReserva').on('click', function(event) {
+		var id = '';
+		if($(this).data('id')){
+			id = $(this).data('id');
+		}
+		
+		$('#options'+id).attr('data-concept', true);
+  
+		conceito = $('#concept'+id ).text();
+		guardaConceito = conceito;
+		$('#concept'+id).empty();
+		$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+
+		$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
+		$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
+		
+		event.stopPropagation();
+	});
+
 	$(".filtroSemestre").change(function(event) {
 		filtroPeriodo();
 	});	
@@ -349,6 +372,136 @@ $(document).ready(function() {
 	
 	showPeriodoPost();	
 	
+	$('.salvarReserva').click(function() {
+		var id = $(this).data('id');
+		var conceito = $('#concept'+id).text();
+		if($('#options' + id).data('concept')){
+			conceito = $('#concept'+id+' input').val();
+		}
+		$.ajax({
+			type: 'POST',
+			data: {
+				'id': id,
+				'conceito' : conceito,
+			},
+			url: '/siaf/administracao/atualizarConceito.json',
+		}).success(function(result) {
+			messageReservaEmAberto(result);
+		});
+		
+		$('#concept'+id).empty().text(conceito);
+		
+		$('.options').removeClass( "show" ).addClass('hide');
+		$('.editReserva').removeClass( 'hide' ).addClass('show');
+	});
+	
+	$('.cancelReserva').click(function() {
+		var id = $(this).data('id');
+		
+		var conceito = $('#concept'+id+' input').val();
+		$('#concept'+id).empty();
+		$('#concept'+id).text(guardaConceito);
+		guardaConceito = null;
+		$('#options' + id).removeClass( 'show' ).addClass('hide');
+		$('#editReserva'+id).removeClass( 'hide' ).addClass('show');
+
+		event.stopPropagation();
+	});
+
+	//////////////////////
+	
+	$('#tableReservas')
+	.DataTable(
+			{
+				"pageLength" : 50,
+				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
+				"columnDefs" : [ {
+					"orderable" : false,
+					"targets" : 0
+				}, {
+					"orderData" : [ 1, 2 ],
+					"targets" : 1
+				}, {
+					"orderable" : false,
+					"targets" : 2
+				}, {
+					"orderable" : false,
+					"targets" : 3
+				}, {
+					"orderable" : false,
+					"targets" : 4
+				}, {
+					"orderable" : false,
+					"targets" : 5
+				}, ],
+
+				"language" : {
+					"sEmptyTable" : "Nenhum registro encontrado",
+					"sInfo" : "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+					"sInfoEmpty" : "Mostrando 0 até 0 de 0 registros",
+					"sInfoFiltered" : "(Filtrados de _MAX_ registros)",
+					"sInfoPostFix" : "",
+					"sInfoThousands" : ".",
+					"sLengthMenu" : "resultados por página _MENU_",
+					"sLoadingRecords" : "Carregando...",
+					"sProcessing" : "Processando...",
+					"sZeroRecords" : "Nenhum registro encontrado",
+					"sSearch" : "",
+					"oPaginate" : {
+						"sNext" : "Próximo",
+						"sPrevious" : "Anterior",
+						"sFirst" : "Primeiro",
+						"sLast" : "Último"
+					},
+					"oAria" : {
+						"sSortAscending" : ": Ordenar colunas de forma ascendente",
+						"sSortDescending" : ": Ordenar colunas de forma descendente"
+					}
+				}
+			});
+	
+	$('#tablePeriodos').DataTable({
+		 "pageLength": 50,
+		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
+		 "columnDefs": [
+		               { "orderable": false, "targets": 0 },
+		               { "orderData": [ 1, 2 ],    "targets": 1 },
+		               { "orderable": false, "targets": 2 },
+		               { "orderable": false, "targets": 3 },
+		               { "orderable": false, "targets": 4 },
+		               { "orderable": false, "targets": 5 },
+		],
+		
+		"language": {
+		    "sEmptyTable": "Nenhum registro encontrado",
+		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+		    "sInfoPostFix": "",
+		    "sInfoThousands": ".",
+		    "sLengthMenu": "resultados por página _MENU_",
+		    "sLoadingRecords": "Carregando...",
+		    "sProcessing": "Processando...",
+		    "sZeroRecords": "Nenhum registro encontrado",
+		    "sSearch": "",
+		    "oPaginate": {
+		        "sNext": "Próximo",
+		        "sPrevious": "Anterior",
+		        "sFirst": "Primeiro",
+		        "sLast": "Último"
+		    },
+		    "oAria": {
+		        "sSortAscending": ": Ordenar colunas de forma ascendente",
+		        "sSortDescending": ": Ordenar colunas de forma descendente"
+		    }
+		}
+	});
+	
+	
+	$('select').selectpicker();
+	$('input').attr('placeholder', 'Pesquisar...');
+	$('input').addClass('form-inline form-control');
+		
 });
 
 function getRanking(ano, semestre) {
@@ -576,19 +729,68 @@ function loadPeriodos(result) {
 }
 
 function messagePeriodo(result) {
-	$(".messages #erro").removeClass( "show" ).addClass('hide');
-	$(".messages #info").removeClass( "show" ).addClass('hide');
 
 	if(result.erro && result.erro.length > 0){
+		$(".messages #erroDiv").append("<div id=\"info\" " +
+				"class=\"alert-danger margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
 		$(".messages #erro p").text(result.erro);
 		$(".messages #erro").removeClass( "hide" ).addClass('show');
-		$('#periodo' + result.periodo.id + ' td').css("background", "#f2dede");
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$(".messages #infoDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-info margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
 		$(".messages #info p").text(result.info);
 		$(".messages #info").removeClass( "hide" ).addClass('show');
-		$('#periodo' + result.periodo.id + ' td').css("background", "#d9edf7");
+	} 
+}
+
+function messageReservaEmAberto(result) {
+
+	if(result.erro && result.erro.length > 0){
+		$(".messages #erroDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-danger margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
+		$(".messages #erroDiv #erro p").text(result.erro);
 	} 
 	
+	if(result.info &&  result.info.length > 0){
+		$(".messages #infoDiv").append("<div id=\"info\" " +
+				"class=\"alert alert-info margin-top hide\" " +
+				"role=\"alert\"> " +
+				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
+				"<span aria-hidden=\"true\">&times;</span>" +
+				"<span class=\"sr-only\">Close</span>" +
+				"</button><p></p></div>");
+		$(".messages #infoDiv #info p").text(result.info);
+		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
+	} 
+}
+
+function validarConceito(campo){
+	var numero="34567"; //variáveis aceitas na função.
+	var campo_temporario; //váriavel responsável pela verificação dos dados.
+	for (var i=0;i<campo.value.length;i++){ 
+		// A variável campo_temporario verifica se existe algum valor dentro do form.
+		campo_temporario=campo.value.substring(i,i+1)
+		// Caso esse campo seja diferente da variavel numero, ele irá limpar o form.
+		if (numero.indexOf(campo_temporario)==-1){ 
+			// Caso contrário, ele irá deixar inserir o número no form.	
+			campo.value = campo.value.substring(0,i);
+		}
+	}
 }

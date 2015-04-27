@@ -27,52 +27,52 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 
 	@Inject
 	private GenericRepository<Reserva> reservaRepository;
-	
+
 	@Inject
 	private PeriodoService periodoService;
-	
+
 	@Inject
 	private ProfessorService professorService;
-	
+
 	@Override
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public void salvar(Reserva reserva) {
 		int vagas = professorService.findAtivos().size();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
 			Periodo periodo = new Periodo();
-			periodo.setVagas((int)(vagas * 0.15));
+			periodo.setVagas((int) (vagas * 0.15));
 			periodo.setAno(ano);
 			periodo.setStatus(StatusPeriodo.ABERTO);
 			if (ano == reserva.getAnoInicio() && reserva.getSemestreInicio() == 2) {
 				periodo.setSemestre(2);
-				if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+				if (periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
 					periodoService.save(periodo);
 				}
 				continue;
 			}
 			if (ano == reserva.getAnoTermino() && reserva.getSemestreTermino() == 1) {
 				periodo.setSemestre(1);
-				if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+				if (periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
 					periodoService.save(periodo);
 				}
 				break;
 			}
 			periodo.setSemestre(1);
-			if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+			if (periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
 				periodoService.save(periodo);
 			}
-			
+
 			periodo = new Periodo();
 			periodo.setAno(ano);
 			periodo.setSemestre(2);
-			periodo.setVagas((int)(vagas * 0.15));
+			periodo.setVagas((int) (vagas * 0.15));
 			periodo.setStatus(StatusPeriodo.ABERTO);
-			if(periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
+			if (periodoService.getPeriodo(periodo.getAno(), periodo.getSemestre()) == null) {
 				periodoService.save(periodo);
 			}
 		}
 		reservaRepository.save(reserva);
-		
+
 	}
 
 	@Override
@@ -80,14 +80,16 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	public List<Reserva> getReservasByProfessor(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", professor.getCpf());
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.cpf = :cpf order by anoInicio DESC, semestreInicio DESC", params);
+		return reservaRepository.find(QueryType.JPQL,
+				"from Reserva where professor.cpf = :cpf order by anoInicio DESC, semestreInicio DESC", params);
 	}
 
 	@Override
 	public boolean hasReservaEmAberto(Professor professor) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", professor.getCpf());
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'ABERTO' and professor.cpf = :cpf", params).size() > 0;
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = 'ABERTO' and professor.cpf = :cpf",
+				params).size() > 0;
 	}
 
 	@Override
@@ -111,10 +113,18 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true, beforeInvocation = true)
+	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor",
+			"professores" }, allEntries = true, beforeInvocation = true)
 	public void atualizar(Reserva reserva) {
 		update(reserva);
-		
+	}
+
+	@Override
+	public List<Reserva> getReservasByStatus(StatusReserva status) {
+			Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", status);
+		return reservaRepository.find(QueryType.JPQL,
+				"from Reserva where status = :status order by anoInicio DESC, semestreInicio DESC", params);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import br.ufc.quixada.npi.service.GenericService;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
 
 public interface ReservaService extends GenericService<Reserva> {
 
@@ -23,6 +24,8 @@ public interface ReservaService extends GenericService<Reserva> {
 	
 	List<Reserva> getReservasAnterioresComPunicao(Professor professor, Periodo periodo);
 	
+	List<Reserva> getReservasByStatus(StatusReserva status);
+
 	List<Reserva> getAfastados(Periodo periodo);
 
 }

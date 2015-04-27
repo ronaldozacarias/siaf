@@ -27,6 +27,7 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.NotificacaoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
@@ -115,7 +116,7 @@ public class AdministracaoController {
 			periodoService.update(periodo);
 		}
 	}
-
+	
 	/*@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	@CacheEvict(value = {"ranking", "visualizarRanking"}, beforeInvocation = true)
 	public String getReservas(Model model) {
@@ -167,9 +168,12 @@ public class AdministracaoController {
 					if (vagas == 0) {
 		for(TuplaRanking tupla : ranking.getTuplas()) {
 			if(tupla.getReserva().getAnoInicio().equals(ano) && tupla.getReserva().getSemestreInicio().equals(semestre)) {
+
 				Afastamento afastamento = afastamentoService.getByReserva(tupla.getReserva());
+
 				if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
 					if(vagas == 0) {
+
 						Reserva reserva = tupla.getReserva();
 						reserva.setStatus(StatusReserva.NAO_ACEITO);
 						reservaService.update(reserva);
@@ -180,9 +184,11 @@ public class AdministracaoController {
 						}
 						vagas--;
 					}
+
 				} else if (tupla.getReserva().getStatus()
 						.equals(StatusReserva.NAO_ACEITO)
 						&& vagas > 0
+
 						&& tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
 					Reserva reserva = tupla.getReserva();
 					reserva.setStatus(StatusReserva.ABERTO);
@@ -192,32 +198,41 @@ public class AdministracaoController {
 						afastamento = new Afastamento(tupla.getReserva());
 						afastamentoService.save(afastamento);
 					}
+
 				} else if ((tupla.getReserva().getStatus()
 						.equals(StatusReserva.CANCELADO) || tupla.getReserva()
 						.getStatus()
+
 						.equals(StatusReserva.CANCELADO_COM_PUNICAO))
 						&& vagas == 0) {
 					Reserva reserva = tupla.getReserva();
 					reserva.setStatus(StatusReserva.NAO_ACEITO);
 					reservaService.update(reserva);
+
 				} else if (tupla.getReserva().getStatus()
 						.equals(StatusReserva.ABERTO)
+
 						&& tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
 					vagas--;
+
 				} else if (tupla.getReserva().getStatus()
 						.equals(StatusReserva.ABERTO)
 						&& tupla.getStatus()
 								.equals(StatusTupla.DESCLASSIFICADO)) {
+
 					Reserva reserva = tupla.getReserva();
 					reserva.setStatus(StatusReserva.NAO_ACEITO);
 					reservaService.update(reserva);
 				}
+
 			} else if (tupla.getReserva().getStatus()
 					.equals(StatusReserva.ACEITO)) {
 			} else if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+
 				vagas--;
 			}
 		}
+
 
 		try {
 			notificacaoService.notificar(null, Notificacao.RANKING_ATUALIZADO);
@@ -249,7 +264,6 @@ public class AdministracaoController {
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
 	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
 	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre, Model model) {
-
 
 		if (id == null || ano == null || semestre == null) {
 			model.addAttribute(Constants.ERRO, "Dados inválidos");
@@ -293,8 +307,9 @@ public class AdministracaoController {
 			editEncerramento = true;
 		}
 
-		Periodo periodoSolicitacao = periodoService.getPeriodo(
-				periodo.getAno() - 1, periodo.getSemestre());
+
+		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno() - 1, periodo.getSemestre());
+
 		if (notNull(periodoSolicitacao))
 			if (periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)) {
 				editVagas = true;
@@ -330,6 +345,7 @@ public class AdministracaoController {
 							.parseDateTime(encerramentoString);
 					encerramento = date.toDate();
 
+
 					SimpleDateFormat format = new SimpleDateFormat(
 							br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);
 					Date today;
@@ -355,6 +371,7 @@ public class AdministracaoController {
 			vagas = 0;
 		}
 
+
 		Periodo periodoSolicitacao = periodoService.getPeriodo(
 				periodo.getAno() - 1, periodo.getSemestre());
 		if (periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)) {
@@ -371,12 +388,36 @@ public class AdministracaoController {
 
 		if (permitirUpdateEncerramento || permitirUpdateVagas) {
 			periodoService.update(periodo);
-			model.addAttribute(Constants.INFO, "Período " + periodo.getAno()
+
+		model.addAttribute(Constants.INFO, "Período " + periodo.getAno()
 					+ "." + periodo.getSemestre() + " atualizado com sucesso.");
+
 		}
 
 		model.addAttribute("periodo", periodo);
 		return model;
 	}
 
+	@RequestMapping(value = "/atualizarConceito", method = RequestMethod.GET)
+	public String atualizarConceito(Model model) {
+		List<Reserva> reservas = reservaService.getReservasByStatus(StatusReserva.ABERTO);
+		if (reservas != null) {
+			model.addAttribute("reservas", reservas);
+
+		}
+		return Constants.PAGINA_ALTERAR_RESERVAS_EM_ABERTO;
+	}
+
+	@RequestMapping(value = "/atualizarConceito.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Model atualizarConceito(Model model, @RequestParam("id") Long id, @RequestParam("conceito") Integer conceitoPrograma) {
+		Reserva reserva = reservaService.find(Reserva.class, id);
+
+		if (conceitoPrograma != null) {
+			reserva.setConceitoPrograma(conceitoPrograma);
+			reservaService.update(reserva);
+			model.addAttribute(Constants.INFO, "Reserva do professor " + reserva.getProfessor().getNome() + " atualizada com sucesso.");
+		}
+		model.addAttribute("reserva", reserva);
+		return model;
+	}
 }
