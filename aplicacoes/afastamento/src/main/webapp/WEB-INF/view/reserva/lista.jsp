@@ -81,7 +81,7 @@
 								<tr class="${reserva.status}">
 									<td>${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}</td>
 									<td>${reserva.programa.descricao }</td>
-									<td>${reserva.conceitoPrograma }</td>
+									<td>${reserva.conceitoPrograma eq 0 ? "-" : reserva.conceitoPrograma}</td>
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
 									<td>
@@ -98,7 +98,7 @@
 						</tbody>
 					</table>
 					<div id="legenda">
-						<label><span class="aceito">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aceito</label>
+						<label><span class="afastado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Afastado</label>
 						<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
 						<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label>
 						<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label><br/>

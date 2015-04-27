@@ -12,6 +12,7 @@ import javax.inject.Named;
 import org.springframework.cache.annotation.Cacheable;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
@@ -77,7 +78,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 
 	@Override
 	public Periodo getUltimoPeriodoEncerrado() {
-		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = 'ENCERRADO' order by ano DESC, semestre DESC", null, -1);
+		return periodoRepository.findFirst(QueryType.JPQL, "from Periodo p where status = '" + StatusPeriodo.ENCERRADO + "' order by ano DESC, semestre DESC", null, -1);
 	}
 
 	@Override
@@ -91,6 +92,11 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		params.put("ano", periodo.getAno());
 		params.put("semestre", periodo.getSemestre());
 		return periodoRepository.find(QueryType.JPQL, "from Periodo p where ano > :ano or (ano = :ano and semestre >= :semestre)", params);
+	}
+
+	@Override
+	public List<Periodo> getPeriodoAbertos() {
+		return periodoRepository.find(QueryType.JPQL, "from Periodo p where status = '" + StatusPeriodo.ABERTO + "' order by ano ASC, semestre ASC", null);
 	}
 
 }
