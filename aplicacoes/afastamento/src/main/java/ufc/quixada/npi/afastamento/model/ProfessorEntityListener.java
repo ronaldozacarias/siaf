@@ -8,8 +8,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import ufc.quixada.npi.afastamento.util.Constants;
 import br.ufc.quixada.npi.ldap.model.Affiliation;
-import br.ufc.quixada.npi.ldap.model.Constants;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 
@@ -21,7 +21,6 @@ public class ProfessorEntityListener {
 		@SuppressWarnings("resource")
 		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
-		System.out.println(professor.getCpf());
 		Usuario usuario = usuarioService.getByCpf(professor.getCpf());
 		professor.setNome(usuario.getNome());
 		professor.setEmail(usuario.getEmail());
