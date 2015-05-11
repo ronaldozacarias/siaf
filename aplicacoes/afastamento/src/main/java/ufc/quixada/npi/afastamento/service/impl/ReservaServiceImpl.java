@@ -93,11 +93,6 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	public List<Reserva> getReservasAbertasOuAfastados() {
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = '" + StatusReserva.ABERTO + "' or status = '" + StatusReserva.AFASTADO + "'", null);
-	}
-
-	@Override
 	public Reserva getReservaById(Long id) {
 		return reservaRepository.find(Reserva.class, id);
 	}
@@ -128,11 +123,11 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	public List<Reserva> getAfastados(Periodo periodo) {
+	public List<Reserva> getReservasByStatusReservaAndPeriodo(StatusReserva statusReserva, Periodo periodo) {
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", statusReserva);
 		params.put("ano", periodo.getAno());
 		params.put("semestre", periodo.getSemestre());
-		params.put("status", StatusReserva.AFASTADO);
 		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and anoTermino <= :ano and semestreTermino <= :semestre order by anoInicio, semestreInicio", params);
 	}
 
