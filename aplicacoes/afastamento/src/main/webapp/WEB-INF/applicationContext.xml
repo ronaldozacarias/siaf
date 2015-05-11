@@ -17,6 +17,8 @@
 
 	<context:property-placeholder location="classpath:email.properties"/>
 	
+	<bean id="applicationContextProvider" class="ufc.quixada.npi.afastamento.model.ProfessorEntityListener"/>
+	
 	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />
 		<property name="dataSource" ref="siaf" />

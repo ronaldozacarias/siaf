@@ -73,11 +73,8 @@ public class Constants {
 	
 	/** Afiliações */
 
-	public static final String AFFILIATION_DISCENTE = "DISCENTE";
-	
 	public static final String AFFILIATION_DOCENTE = "DOCENTE";
 	
 	public static final String AFFILIATION_ADMIN_SIAF = "ADMIN-SIAF";
 	
-	public static final String AFFILIATION_STA = "STA";
 }

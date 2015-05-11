@@ -9,17 +9,13 @@
 	
     <nav class="menuTop" role="navigation">
     	<ul role="menubar">
-    		<sec:authorize ifAnyGranted="ROLE_DOCENTE,ROLE_ADMIN_SIAF">
-	    		<li id="menu-ranking">
-	    			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
-	    		</li>
-	    	</sec:authorize>
-    		<sec:authorize ifAnyGranted="ROLE_DOCENTE">
-	    		<li id="menu-minhas-reservas">
-	    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
-	    		</li>
-	    	</sec:authorize>
-    		<sec:authorize ifAnyGranted="ROLE_ADMIN_SIAF">
+    		<li id="menu-ranking">
+    			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
+    		</li>
+    		<li id="menu-minhas-reservas">
+    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
+    		</li>
+    		<sec:authorize ifAnyGranted="ADMIN-SIAF">
 	    		<li id="menu-periodos">
 	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Gerenciar Períodos</span></a>
 	    		</li>
@@ -29,7 +25,6 @@
 	    		<li id="menu-reservasEmAberto">
 	    			<a class="" href="<c:url value="/administracao/atualizarConceito" />"><span>Reservas em Aberto</span></a>
 	    		</li>
-	    		</li> 
 	    		<li id="menu-professores">
 	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>
 	    		</li>

@@ -109,7 +109,7 @@
 					<a data-toggle="collapse" href="#collapseDivReservasCanceladasNegadasInReservasJSP">Reservas
 						Canceladas ou Negadas</a><br>
 				</div>
-				<div class="collapse in" id="#collapseDivReservasCanceladasNegadasInReservasJSP">
+				<div class="collapse in" id="collapseDivReservasCanceladasNegadasInReservasJSP">
 					<c:if test="${not empty tuplasCanceladasNegadas }">
 						<table id="tableReservasCanceladasNegadasInReservasJSP" class="table">
 							<thead>
