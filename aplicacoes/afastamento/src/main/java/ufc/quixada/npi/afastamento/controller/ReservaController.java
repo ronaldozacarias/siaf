@@ -72,7 +72,10 @@ public class ReservaController {
 		Ranking ranking = new Ranking();
 		ranking.setPeriodo(periodoService.getPeriodo(
 				Integer.valueOf(request.getParameter("ano")), Integer.valueOf(request.getParameter("semestre"))));
-		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo().getAno(), ranking.getPeriodo().getSemestre()));
+		
+		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo()));
+		
+		
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
 		for(TuplaRanking tupla : ranking.getTuplas()) {
