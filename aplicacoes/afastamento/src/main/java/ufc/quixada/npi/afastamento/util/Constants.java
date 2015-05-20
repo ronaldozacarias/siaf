@@ -25,6 +25,8 @@ public class Constants {
 	
 	public static final String PAGINA_INCLUIR_RESERVA = "reserva/inclusao";
 	
+	public static final String PAGINA_EDITAR_RESERVA = "reserva/editaReserva";
+	
 	public static final String PAGINA_LISTAR_RESERVA = "reserva/lista";
 	
 	public static final String PAGINA_ALTERAR_RESERVAS_EM_ABERTO = "admin/alteraReservas";
@@ -50,6 +52,8 @@ public class Constants {
 	public static final String MSG_RESERVAS_ATUALIZADAS = "Reservas atualizadas com sucesso.";
 	
 	public static final String MSG_RESERVA_INCLUIDA = "Reserva incluída com sucesso.";
+	
+	public static final String MSG_RESERVA_ATUALIZADA = "Reserva atualizada com sucesso.";
 	
 	public static final String MSG_RESERVA_EXCLUIDA = "Reserva excluída com sucesso.";
 	
