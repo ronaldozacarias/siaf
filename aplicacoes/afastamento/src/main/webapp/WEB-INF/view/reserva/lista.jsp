@@ -7,8 +7,8 @@
 
 <html>
 <head>
-	<jsp:include page="../modulos/header-estrutura.jsp" />
-	<title>Minhas reservas</title>
+<jsp:include page="../modulos/header-estrutura.jsp" />
+<title>Minhas reservas</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -30,9 +30,9 @@
 					<c:out value="${info}"></c:out>
 				</div>
 			</c:if>
-			
+
 			<form id="minhasReservas" class="form-horizontal">
-				<div class="title"> Suas reservas : </div>
+				<div class="title">Suas reservas :</div>
 				<span class="line"></span>
 				<div>
 					<a href="<c:url value="/reserva/incluir" />" class="btn btn-siaf">Incluir reserva</a>
@@ -54,16 +54,16 @@
 					</div>
 					<label class="col-sm-2 control-label">Data de Nascimento:</label>
 					<div class="col-sm-4">
-						<label class="control-label value-label"><fmt:formatDate pattern="dd/MM/yyyy" value="${professor.dataNascimento }" /></label>
+						<label class="control-label value-label"><fmt:formatDate pattern="dd/MM/yyyy"
+								value="${professor.dataNascimento }" /></label>
 					</div>
 				</div>
-				
+
 				<c:if test="${empty reservas }">
-					<div class="alert alert-warning alert-dismissible" role="alert">
-						Você não possui nenhuma reserva ou solicitação de afastamento.
-					</div>
+					<div class="alert alert-warning alert-dismissible" role="alert">Você não possui nenhuma
+						reserva ou solicitação de afastamento.</div>
 				</c:if>
-				
+
 				<c:if test="${not empty reservas }">
 					<table id="reservas" class="table">
 						<thead>
@@ -79,41 +79,47 @@
 						<tbody>
 							<c:forEach items="${reservas }" var="reserva">
 								<tr class="${reserva.status}">
-									<td>${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}</td>
+									<td>${reserva.anoInicio}.${reserva.semestreInicio}a
+										${reserva.anoTermino}.${reserva.semestreTermino}</td>
 									<td>${reserva.programa.descricao }</td>
 									<td>${reserva.conceitoPrograma eq 0 ? "-" : reserva.conceitoPrograma}</td>
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
-									<td>
-										<c:if test="${reserva.status eq 'ABERTO'}">
-											<a id="excluir" data-toggle="modal" data-target="#excluir-reserva" href="#" 
-												data-href="<c:url value="/reserva/${reserva.id}/excluir"></c:url>" 
+									<td><c:if test="${reserva.status eq 'ABERTO'}">
+											<a id="excluir" data-toggle="modal" data-target="#excluir-reserva" href="#"
+												data-href="<c:url value="/reserva/${reserva.id}/excluir"></c:url>"
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
-												<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
+												<button class="btn btn-danger">
+													Excluir&nbsp;<i class="fa fa-trash-o"></i>
+												</button>
 											</a>
-										</c:if>
-									</td>
+										</c:if> &nbsp;&nbsp; <c:if test="${periodo.status eq 'ABERTO' }">
+											<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar</a>
+								</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 					<div id="legenda">
-						<label><span class="afastado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Afastado</label>
-						<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label>
-						<label><span class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label>
-						<label><span class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label><br/>
+						<label><span class="afastado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Afastado</label> <label><span
+							class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label> <label><span
+							class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label> <label><span
+							class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label><br />
 					</div>
 				</c:if>
 			</form>
 		</div>
-		
+
 		<!-- Modal Excluir Reserva -->
-		<div class="modal fade" id="excluir-reserva" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="excluir-reserva" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        			<h4 class="modal-title" id="excluirModalLabel">Excluir</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="excluirModalLabel">Excluir</h4>
 					</div>
 					<div class="modal-body"></div>
 					<div class="modal-footer">
@@ -123,9 +129,9 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<jsp:include page="../modulos/footer.jsp" />
-		
+
 	</div>
 	<script type="text/javascript">
 		$('#menu-minhas-reservas').addClass('active');

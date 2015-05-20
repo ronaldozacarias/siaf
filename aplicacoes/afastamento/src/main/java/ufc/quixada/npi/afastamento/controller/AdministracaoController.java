@@ -111,7 +111,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
+	@CacheEvict(value = { "ranking", "visualizarRanking"}, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {

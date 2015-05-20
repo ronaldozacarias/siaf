@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	
+
+	
+	
+	
 	// Página de Gerenciar Professores
 	var defaults = {
 		    mode: 'inline', 
@@ -22,12 +26,14 @@ $(document).ready(function() {
 		    $(".options").removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		}
 	});
-		
+	
+	
 	$(".anoEdit ").editable({
 	    title: 'Ano de Admissão',
     	emptytext : '',
 	});
 
+	
 	$(".semestreEdit" ).editable({
 	    title: 'Semestre de Admissão',
 	    type: 'select',
@@ -98,6 +104,8 @@ $(document).ready(function() {
 	    
 	});
 	
+	
+	
 	$('#professores').on('click', '.cancel', function() {
 		cancelEdit(this);
 	});
@@ -122,6 +130,7 @@ $(document).ready(function() {
 	}
 	
 //____________________________________________________________________________________________________________________________________________________	
+	
 	
 	
 	// Página de Gerenciar Períodos
@@ -510,6 +519,23 @@ $(document).ready(function() {
 	$('select').selectpicker();
 	$('input').attr('placeholder', 'Pesquisar...');
 	$('input').addClass('form-inline form-control');
+	
+	
+	//Pagina Editar Reserva
+	$('#anoInicioReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+	
+
+	$('#anoTerminoReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+	
+	
 		
 });
 
@@ -566,8 +592,6 @@ function getRanking(ano, semestre) {
 		$("#ranking-full").show();
 		
 	});
-	
-
 }
 
 function loadRanking(result) {
@@ -805,3 +829,18 @@ function validarConceito(campo){
 		}
 	}
 }
+
+function somenteNumeros(campo){
+	var numero="0123456789"; //variáveis aceitas na função.
+	var campo_temporario; //váriavel responsável pela verificação dos dados.
+	for (var i=0;i<campo.value.length;i++){ 
+		// A variável campo_temporario verifica se existe algum valor dentro do form.
+		campo_temporario=campo.value.substring(i,i+1)
+		// Caso esse campo seja diferente da variavel numero, ele irá limpar o form.
+		if (numero.indexOf(campo_temporario)==-1){ 
+			// Caso contrário, ele irá deixar inserir o número no form.	
+			campo.value = campo.value.substring(0,i);
+		}
+	}
+}
+
