@@ -58,8 +58,7 @@ public class RankingServiceImpl implements RankingService {
 				if (tupla1.getPontuacao().compareTo(tupla2.getPontuacao()) == 0.0f) {
 					if (tupla1.getReserva().getPrograma().equals(tupla2.getReserva().getPrograma())) {
 						if (tupla1.getReserva().getConceitoPrograma().equals(tupla2.getReserva().getConceitoPrograma())) {
-							System.out.println("Tupla1: " + tupla1.getReserva().getProfessor().getCpf());
-							System.out.println("Tupla2: " + tupla2.getReserva().getProfessor().getCpf());
+							
 							return tupla1.getReserva().getProfessor().getDataNascimento()
 									.compareTo(tupla2.getReserva().getProfessor().getDataNascimento());
 						}
