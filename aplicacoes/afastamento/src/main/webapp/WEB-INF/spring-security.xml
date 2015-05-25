@@ -8,15 +8,30 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd"> 
   
-	<http auto-config="true">
+	<beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter">
+	    <beans:property name="rolePrefix" value=""/>
+	</beans:bean>
+	
+	<beans:bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter"/>   
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+	    <beans:constructor-arg >
+	        <beans:list>
+	            <beans:ref bean="roleVoter"/>
+	            <beans:ref bean="authenticatedVoter"/>
+	        </beans:list>
+	    </beans:constructor-arg>
+	</beans:bean>
+	
+	<http access-decision-manager-ref="accessDecisionManager" auto-config="true">
 		<access-denied-handler error-page="/403" />
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
  		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
- 		<intercept-url pattern="/reserva/ranking/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
- 		<intercept-url pattern="/reserva/ranking.json/**" access="ROLE_DOCENTE,ROLE_ADMIN_SIAF" />
- 		<intercept-url pattern="/reserva/**" access="ROLE_DOCENTE" />
-		<intercept-url pattern="/administracao/**" access="ROLE_ADMIN_SIAF" />
+ 		<intercept-url pattern="/reserva/ranking/**" access="DOCENTE,ADMIN_SIAF" />
+ 		<intercept-url pattern="/reserva/ranking.json/**" access="DOCENTE,ADMIN_SIAF" />
+ 		<intercept-url pattern="/reserva/**" access="DOCENTE" />
+		<intercept-url pattern="/administracao/**" access="ADMIN-SIAF" />
  		
  		<form-login login-page="/login" authentication-success-handler-ref="myAuthenticationSuccessHandler" 
  			authentication-failure-url="/loginfailed" />

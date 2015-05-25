@@ -51,11 +51,12 @@
 						</div>
 					</div>
 					
-
+					
+						
 					<div id="div-captcha-erro">
 					    <div id="captcha-login" class=""></div>
 					</div>
-					
+					 
 					<div style="text-align: center;">
 						<button class="btn btn-siaf btn-login hvr-icon-forward" name="submit" type="submit" value="Login" value="Login">Login</button>
 					</div>

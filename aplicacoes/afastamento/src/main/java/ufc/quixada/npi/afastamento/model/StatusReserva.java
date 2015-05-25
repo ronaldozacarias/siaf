@@ -14,5 +14,5 @@ public enum StatusReserva {
 	public String getDescricao() {
 		return this.descricao;
 	}
-
+	
 }

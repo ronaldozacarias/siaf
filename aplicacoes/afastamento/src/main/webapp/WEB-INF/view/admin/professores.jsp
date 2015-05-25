@@ -38,8 +38,6 @@
 						</div>
 					</c:if>
 				</div>
-				<form id="atualizarProfessores"
-					action="/siaf/administracao/atualizar-professores" method="POST">
 					<div class="container">
 						<table id="professores" class="table table-striped">
 							<thead>
@@ -86,7 +84,7 @@
 							<input name="atualizar" type="submit" class="btn btn-siaf"
 								value="Atualizar Lista" />
 						</div>
-				</form>
+				
 		</div>
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>

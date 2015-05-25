@@ -2,11 +2,11 @@ package ufc.quixada.npi.afastamento.service;
 
 import java.util.List;
 
-import br.ufc.quixada.npi.service.GenericService;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import br.ufc.quixada.npi.service.GenericService;
 
 public interface ReservaService extends GenericService<Reserva> {
 
@@ -16,8 +16,6 @@ public interface ReservaService extends GenericService<Reserva> {
 	
 	List<Reserva> getReservasByProfessor(Professor professor);
 	
-	List<Reserva> getReservasAbertasOuAfastados();
-	
 	boolean hasReservaEmAberto(Professor professor);
 	
 	Reserva getReservaById(Long id);
@@ -26,6 +24,5 @@ public interface ReservaService extends GenericService<Reserva> {
 	
 	List<Reserva> getReservasByStatus(StatusReserva status);
 
-	List<Reserva> getAfastados(Periodo periodo);
-
+	List<Reserva> getReservasByStatusReservaAndPeriodo(StatusReserva statusReserva, Periodo periodo);
 }

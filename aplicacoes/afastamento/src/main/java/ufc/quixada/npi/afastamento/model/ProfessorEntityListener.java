@@ -4,24 +4,23 @@ import java.util.Date;
 
 import javax.persistence.PostLoad;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
+import ufc.quixada.npi.afastamento.util.Constants;
 import br.ufc.quixada.npi.ldap.model.Affiliation;
-import br.ufc.quixada.npi.ldap.model.Constants;
 import br.ufc.quixada.npi.ldap.model.Usuario;
 import br.ufc.quixada.npi.ldap.service.UsuarioService;
 
-public class ProfessorEntityListener {
+public class ProfessorEntityListener implements ApplicationContextAware {
+	
+	private static ApplicationContext context;
 	
 	@PostLoad
 	@Cacheable("loadProfessor")
 	public void loadProfessor(Professor professor) {
-		@SuppressWarnings("resource")
-		BeanFactory context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
-		System.out.println(professor.getCpf());
 		Usuario usuario = usuarioService.getByCpf(professor.getCpf());
 		professor.setNome(usuario.getNome());
 		professor.setEmail(usuario.getEmail());
@@ -39,5 +38,14 @@ public class ProfessorEntityListener {
 		professor.setDataAdmissao(admissao);
 		professor.setDataSaida(saida);
 	}
+	
+	public ApplicationContext getApplicationContext() {
+        return context;
+    }
+ 
+    @Override
+    public void setApplicationContext(ApplicationContext ctx) {
+        context = ctx;
+    }
 
 }

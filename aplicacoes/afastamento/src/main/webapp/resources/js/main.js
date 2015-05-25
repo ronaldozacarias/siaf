@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	
 	// Página de Gerenciar Professores
 	var defaults = {
 		    mode: 'inline', 
@@ -22,12 +21,14 @@ $(document).ready(function() {
 		    $(".options").removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		}
 	});
-		
+	
+	
 	$(".anoEdit ").editable({
 	    title: 'Ano de Admissão',
     	emptytext : '',
 	});
 
+	
 	$(".semestreEdit" ).editable({
 	    title: 'Semestre de Admissão',
 	    type: 'select',
@@ -98,6 +99,8 @@ $(document).ready(function() {
 	    
 	});
 	
+	
+	
 	$('#professores').on('click', '.cancel', function() {
 		cancelEdit(this);
 	});
@@ -122,6 +125,7 @@ $(document).ready(function() {
 	}
 	
 //____________________________________________________________________________________________________________________________________________________	
+	
 	
 	
 	// Página de Gerenciar Períodos
@@ -285,7 +289,7 @@ $('.editReserva').on('click', function(event) {
 
 	$(".filtroSemestre").change(function(event) {
 		filtroPeriodo();
-	});	
+	});
 	
 	$("#filtroAno").keyup(function (event) {
 	    var maximoDigitosAno = 4;
@@ -293,6 +297,44 @@ $('.editReserva').on('click', function(event) {
 	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 	    	filtroPeriodo();
 	    }
+	});
+	
+	
+	$('#tablePeriodos').DataTable({
+		 "pageLength": 50,
+		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
+		 "columnDefs": [
+		               { "orderable": false, "targets": 0 },
+		               { "orderData": [ 1, 2 ],    "targets": 1 },
+		               { "orderable": false, "targets": 2 },
+		               { "orderable": false, "targets": 3 },
+		               { "orderable": false, "targets": 4 },
+		               { "orderable": false, "targets": 5 },
+		],
+		
+		"language": {
+		    "sEmptyTable": "Nenhum registro encontrado",
+		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+		    "sInfoPostFix": "",
+		    "sInfoThousands": ".",
+		    "sLengthMenu": "resultados por página _MENU_",
+		    "sLoadingRecords": "Carregando...",
+		    "sProcessing": "Processando...",
+		    "sZeroRecords": "Nenhum registro encontrado",
+		    "sSearch": "",
+		    "oPaginate": {
+		        "sNext": "Próximo",
+		        "sPrevious": "Anterior",
+		        "sFirst": "Primeiro",
+		        "sLast": "Último"
+		    },
+		    "oAria": {
+		        "sSortAscending": ": Ordenar colunas de forma ascendente",
+		        "sSortDescending": ": Ordenar colunas de forma descendente"
+		    }
+		}
 	});
 	
 //____________________________________________________________________________________________________________________________________________________	
@@ -352,10 +394,8 @@ $('.editReserva').on('click', function(event) {
 	
 	$("#encerramento").mask("99/99/9999");
 
-	$('#excluir-reserva').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
-	});
+	
+	
 //____________________________________________________________________________________________________________________________________________________	
 	
 	
@@ -396,6 +436,46 @@ $('.editReserva').on('click', function(event) {
 	$("#ranking-full").hide();
 	
 	showPeriodoPost();	
+
+//____________________________________________________________________________________________________________________________________________________	
+
+	//Página atualizar Conceito reserva 	
+	var guardaConceito = null;
+	$('.editReserva').on('click', function(event) {
+			var id = '';
+			if($(this).data('id')){
+				id = $(this).data('id');
+			}
+			
+			$('#options'+id).attr('data-concept', true);
+	  
+			conceito = $('#concept'+id ).text();
+			guardaConceito = conceito;
+			$('#concept'+id).empty();
+			$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+
+			$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
+			$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
+			
+			event.stopPropagation();
+		});
+
+		$(".filtroSemestre").change(function(event) {
+			filtroPeriodo();
+		});	
+		
+		$("#filtroAno").keyup(function (event) {
+		    var maximoDigitosAno = 4;
+		    var lengthAno = $(this).val().length;
+		    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
+		    	filtroPeriodo();
+		    }
+		});
+	
+	$('#excluir-reserva').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});
 	
 	$('.salvarReserva').click(function() {
 		var id = $(this).data('id');
@@ -432,12 +512,9 @@ $('.editReserva').on('click', function(event) {
 
 		event.stopPropagation();
 	});
+
 	
-	
-	
-		
-	//////////////////////
-	
+	//Datable Reserva
 	$('#tableReservas')
 	.DataTable(
 			{
@@ -525,10 +602,28 @@ $('.editReserva').on('click', function(event) {
 		}
 	});
 	
+	//identificar Opção Menu Selecionado
 	
 	$('select').selectpicker();
 	$('input').attr('placeholder', 'Pesquisar...');
 	$('input').addClass('form-inline form-control');
+	
+	
+	//Pagina Editar Reserva
+	$('#anoInicioReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+	
+
+	$('#anoTerminoReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+	
+	
 		
 });
 
@@ -822,3 +917,18 @@ function validarConceito(campo){
 		}
 	}
 }
+
+function somenteNumeros(campo){
+	var numero="0123456789"; //variáveis aceitas na função.
+	var campo_temporario; //váriavel responsável pela verificação dos dados.
+	for (var i=0;i<campo.value.length;i++){ 
+		// A variável campo_temporario verifica se existe algum valor dentro do form.
+		campo_temporario=campo.value.substring(i,i+1)
+		// Caso esse campo seja diferente da variavel numero, ele irá limpar o form.
+		if (numero.indexOf(campo_temporario)==-1){ 
+			// Caso contrário, ele irá deixar inserir o número no form.	
+			campo.value = campo.value.substring(0,i);
+		}
+	}
+}
+
