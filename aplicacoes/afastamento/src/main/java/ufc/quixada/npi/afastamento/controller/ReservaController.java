@@ -103,6 +103,7 @@ public class ReservaController {
 		}
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(ranking.getPeriodo()));
 
+		
 		return model;
 	}
 

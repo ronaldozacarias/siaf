@@ -1,9 +1,4 @@
 $(document).ready(function() {
-	
-
-	
-	
-	
 	// Página de Gerenciar Professores
 	var defaults = {
 		    mode: 'inline', 
@@ -272,7 +267,38 @@ $(document).ready(function() {
 		event.stopPropagation();
 	});
 	
-	//DataTablePeriodos
+	var guardaConceito = null;
+$('.editReserva').on('click', function(event) {
+		var id = '';
+		if($(this).data('id')){
+			id = $(this).data('id');
+		}
+		
+		$('#options'+id).attr('data-concept', true);
+  
+		conceito = $('#concept'+id ).text();
+		guardaConceito = conceito;
+		$('#concept'+id).empty();
+		$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+
+		$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
+		$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
+		
+		event.stopPropagation();
+	});
+
+	$(".filtroSemestre").change(function(event) {
+		filtroPeriodo();
+	});
+	
+	$("#filtroAno").keyup(function (event) {
+	    var maximoDigitosAno = 4;
+	    var lengthAno = $(this).val().length;
+	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
+	    	filtroPeriodo();
+	    }
+	});
+	
 	
 	$('#tablePeriodos').DataTable({
 		 "pageLength": 50,
@@ -371,9 +397,34 @@ $(document).ready(function() {
 	
 	
 //____________________________________________________________________________________________________________________________________________________	
-
+	
 	
 	// Página do Ranking
+	
+	$("#anoBuscado").datepicker({
+        format: " yyyy", 
+           viewMode: "years", 
+           minViewMode: "years"
+    });
+	
+	$('#buscar').click(function(){
+		var anoBuscado = parseInt($('#anoBuscado').val());
+		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
+		var semestreBuscado = parseInt($('#semestreBuscado').val());
+		var periodoAtualSemestre = parseInt($('#periodoAtualSemestre').val());
+		if(anoBuscado > periodoAtualAno){
+			getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());			
+		}else if(anoBuscado == periodoAtualAno){
+			if(semestreBuscado >= periodoAtualSemestre){
+				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
+			}else{
+				//Periodo Inválido
+			}
+		}else{
+			//Periodo Inválido
+		}
+	});
+	
 	$('#anterior').click(function(){
 		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val());
 	});
@@ -461,6 +512,7 @@ $(document).ready(function() {
 
 		event.stopPropagation();
 	});
+
 	
 	//Datable Reserva
 	$('#tableReservas')
@@ -513,6 +565,42 @@ $(document).ready(function() {
 				}
 			});
 	
+	$('#tablePeriodos').DataTable({
+		 "pageLength": 50,
+		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
+		 "columnDefs": [
+		               { "orderable": false, "targets": 0 },
+		               { "orderData": [ 1, 2 ],    "targets": 1 },
+		               { "orderable": false, "targets": 2 },
+		               { "orderable": false, "targets": 3 },
+		               { "orderable": false, "targets": 4 },
+		               { "orderable": false, "targets": 5 },
+		],
+		
+		"language": {
+		    "sEmptyTable": "Nenhum registro encontrado",
+		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+		    "sInfoPostFix": "",
+		    "sInfoThousands": ".",
+		    "sLengthMenu": "resultados por página _MENU_",
+		    "sLoadingRecords": "Carregando...",
+		    "sProcessing": "Processando...",
+		    "sZeroRecords": "Nenhum registro encontrado",
+		    "sSearch": "",
+		    "oPaginate": {
+		        "sNext": "Próximo",
+		        "sPrevious": "Anterior",
+		        "sFirst": "Primeiro",
+		        "sLast": "Último"
+		    },
+		    "oAria": {
+		        "sSortAscending": ": Ordenar colunas de forma ascendente",
+		        "sSortDescending": ": Ordenar colunas de forma descendente"
+		    }
+		}
+	});
 	
 	//identificar Opção Menu Selecionado
 	
