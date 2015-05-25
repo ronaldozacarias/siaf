@@ -357,9 +357,34 @@ $('.editReserva').on('click', function(event) {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 //____________________________________________________________________________________________________________________________________________________	
-
+	
 	
 	// Página do Ranking
+	
+	$("#anoBuscado").datepicker({
+        format: " yyyy", 
+           viewMode: "years", 
+           minViewMode: "years"
+    });
+	
+	$('#buscar').click(function(){
+		var anoBuscado = parseInt($('#anoBuscado').val());
+		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
+		var semestreBuscado = parseInt($('#semestreBuscado').val());
+		var periodoAtualSemestre = parseInt($('#periodoAtualSemestre').val());
+		if(anoBuscado > periodoAtualAno){
+			getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());			
+		}else if(anoBuscado == periodoAtualAno){
+			if(semestreBuscado >= periodoAtualSemestre){
+				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
+			}else{
+				//Periodo Inválido
+			}
+		}else{
+			//Periodo Inválido
+		}
+	});
+	
 	$('#anterior').click(function(){
 		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val());
 	});
@@ -407,7 +432,10 @@ $('.editReserva').on('click', function(event) {
 
 		event.stopPropagation();
 	});
-
+	
+	
+	
+		
 	//////////////////////
 	
 	$('#tableReservas')
