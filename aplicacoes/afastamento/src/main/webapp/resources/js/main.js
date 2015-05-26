@@ -300,7 +300,7 @@ $('.editReserva').on('click', function(event) {
 	});
 	
 	
-	$('#tablePeriodos').DataTable({
+	$('#tablePeriodos').DataTable({			
 		 "pageLength": 50,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
 		 "columnDefs": [
@@ -334,9 +334,10 @@ $('.editReserva').on('click', function(event) {
 		        "sSortAscending": ": Ordenar colunas de forma ascendente",
 		        "sSortDescending": ": Ordenar colunas de forma descendente"
 		    }
-		}
-	});
+		},
 	
+	});
+	$('#tablePeriodos').destroy();
 //____________________________________________________________________________________________________________________________________________________	
 
 		
