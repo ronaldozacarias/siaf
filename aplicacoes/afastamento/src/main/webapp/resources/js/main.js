@@ -300,7 +300,8 @@ $('.editReserva').on('click', function(event) {
 	});
 	
 	
-	$('#tablePeriodos').DataTable({
+	$('#tablePeriodos').DataTable({	
+		"bRetrieve": true,
 		 "pageLength": 50,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
 		 "columnDefs": [
@@ -334,9 +335,10 @@ $('.editReserva').on('click', function(event) {
 		        "sSortAscending": ": Ordenar colunas de forma ascendente",
 		        "sSortDescending": ": Ordenar colunas de forma descendente"
 		    }
-		}
-	});
+		},
 	
+	});
+	$('#tablePeriodos').dataTable().fnDestroy();
 //____________________________________________________________________________________________________________________________________________________	
 
 		
@@ -515,9 +517,7 @@ $('.editReserva').on('click', function(event) {
 
 	
 	//Datable Reserva
-	$('#tableReservas')
-	.DataTable(
-			{
+	$('#tableReservas').DataTable({
 				"pageLength" : 50,
 				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
 				"columnDefs" : [ {
@@ -866,15 +866,17 @@ function messagePeriodo(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +
 				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
 				"<span aria-hidden=\"true\">&times;</span>" +
 				"<span class=\"sr-only\">Close</span>" +
-				"</button><p></p></div>");
-		$(".messages #info p").text(result.info);
-		$(".messages #info").removeClass( "hide" ).addClass('show');
+				"</button><p></p></div>");		
+		$(".messages #infoDiv #info p").text(result.info);
+		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
+		
 	} 
 }
 
@@ -892,6 +894,7 @@ function messageReservaEmAberto(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +
