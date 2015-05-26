@@ -339,6 +339,11 @@ table#reservas {
 	width: 200px;
 }
 
+div.options{
+	width: 105px;
+	align: right;
+}
+
 .error-code {
 	text-align: center;
 	width: 100%;

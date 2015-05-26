@@ -53,10 +53,10 @@
 								<td id="concept${reserva.id}" class="concept">${reserva.conceitoPrograma}</td>
 
 								<td>
-									<button class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
+									<button title="Editar" class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
 										<i class="fa fa-pencil "></i>
 									</button>
-									<div class="options hide" id="options${reserva.id}" style="width: 105px;" align="right">
+									<div class="options hide" id="options${reserva.id}">
 										<button class="btn salvarReserva btn-primary" data-id="${reserva.id}">salvar</button>
 										<button class="btn cancelReserva btn-danger" data-id="${reserva.id}">
 											<i class="fa fa-times"></i>
