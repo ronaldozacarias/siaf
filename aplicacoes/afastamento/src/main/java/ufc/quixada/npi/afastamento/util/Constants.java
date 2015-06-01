@@ -75,6 +75,8 @@ public class Constants {
 	
 	public static final String MSG_ERRO_ATUALIZAR_PERIODO = "Ocorreu um erro na atualização do período.";
 	
+	public static final String MSG_STATUS_RESERVA_ATUALIZADO = "Status da reserva atualizado com sucesso.";
+	
 	/** Afiliações */
 
 	public static final String AFFILIATION_DOCENTE = "DOCENTE";

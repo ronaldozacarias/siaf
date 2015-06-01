@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
@@ -111,11 +113,11 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	@CacheEvict(value = { "ranking", "visualizarRanking"}, beforeInvocation = true)
+	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {
-			periodo = periodoService.getPeriodoPosterior(periodo);
+			// periodo = periodoService.getPeriodoPosterior(periodo);
 			if (periodo != null) {
 				Ranking ranking = new Ranking();
 				ranking.setPeriodo(periodo);
@@ -124,6 +126,9 @@ public class AdministracaoController {
 				List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservaAndPeriodo(
 						Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
 
+				System.out.println("PERIODO " + periodo.getAno() + "." + periodo.getSemestre());
+				System.out.println("LIST " + tuplasCanceladasNegadas.size());
+
 				model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
 				model.addAttribute("ranking", ranking);
 			}
@@ -131,22 +136,26 @@ public class AdministracaoController {
 
 		return Constants.PAGINA_GERENCIAR_RESERVAS;
 	}
-	
-//	@RequestMapping(value = "/reservas.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public Model getReservasList(Model model, @RequestParam("ano") Integer ano, @RequestParam("semestre") Integer semestre){
-//		Periodo periodo = periodoService.getPeriodo(ano, semestre);
-//		
-//		Ranking ranking = new Ranking();
-//		ranking.setPeriodo(periodo);
-//		ranking.setTuplas(rankingService.visualizarRanking(periodo));
-//
-//		List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservasAndPeriodo(
-//				Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
-//
-//		model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
-//		model.addAttribute("ranking", ranking);
-//		return model;
-//	}
+
+	// @RequestMapping(value = "/reservas.json", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public Model getReservasList(Model model, @RequestParam("ano") Integer
+	// ano, @RequestParam("semestre") Integer semestre){
+	// Periodo periodo = periodoService.getPeriodo(ano, semestre);
+	//
+	// Ranking ranking = new Ranking();
+	// ranking.setPeriodo(periodo);
+	// ranking.setTuplas(rankingService.visualizarRanking(periodo));
+	//
+	// List<TuplaRanking> tuplasCanceladasNegadas =
+	// rankingService.visualizarRankingByStatusReservasAndPeriodo(
+	// Arrays.asList(StatusReserva.CANCELADO,
+	// StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
+	//
+	// model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
+	// model.addAttribute("ranking", ranking);
+	// return model;
+	// }
 
 	// @RequestMapping(value = "/atualizar-ranking", method =
 	// RequestMethod.POST)
@@ -392,16 +401,18 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
-	public String atualizarStatusReserva(Model model, @RequestParam("idReserva") Long id, @RequestParam("status") String status) {
+	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
+	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
+			RedirectAttributes redirect, HttpSession session) {
 		String[] valor = status.split("-");
+		System.out.println("ID: " + id);
 		if (id != null & status != null && !status.isEmpty()) {
 			Reserva reserva = reservaService.find(Reserva.class, id);
 			reserva.setStatus(StatusReserva.valueOf(valor[1]));
 			reservaService.update(reserva);
-
+			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
 		}
 		return "redirect:/administracao/reservas";
 	}
-	
+
 }
