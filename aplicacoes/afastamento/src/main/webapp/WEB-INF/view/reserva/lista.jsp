@@ -15,6 +15,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 			<c:if test="${not empty erro}">
+				<br/>
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -23,6 +24,7 @@
 				</div>
 			</c:if>
 			<c:if test="${not empty info}">
+				<br/>
 				<div class="alert alert-info alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -37,6 +39,7 @@
 				<div>
 					<a href="<c:url value="/reserva/incluir" />" class="btn btn-siaf">Incluir reserva</a>
 				</div>
+				<br>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
 					<div class="col-sm-4">

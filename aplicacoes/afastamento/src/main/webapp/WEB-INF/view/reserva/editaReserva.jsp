@@ -86,9 +86,15 @@
 					<div class="form-item">
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
-							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19"
-								placeholder="conceito" value="${reserva.conceitoPrograma }" onKeyUp="validarConceito(this)"
-								maxlength="1" />
+							
+							<select id="conceito" name="conceito" class="form-control selectpicker">
+								<option value="3" ${reserva.conceitoPrograma  == 3 ? 'selected' : ''}>3</option>
+								<option value="4" ${reserva.conceitoPrograma  == 4 ? 'selected' : ''}>4</option>
+								<option value="5" ${reserva.conceitoPrograma  == 5 ? 'selected' : ''}>5</option>
+								<option value="6" ${reserva.conceitoPrograma  == 6 ? 'selected' : ''}>6</option>
+								<option value="7" ${reserva.conceitoPrograma  == 7 ? 'selected' : ''}>7</option>
+							</select>
+						
 						</div>
 					</div>
 				</div>
