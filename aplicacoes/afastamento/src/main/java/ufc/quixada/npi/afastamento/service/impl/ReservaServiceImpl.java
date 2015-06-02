@@ -128,7 +128,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		params.put("status", statusReserva);
 		params.put("ano", periodo.getAno());
 		params.put("semestre", periodo.getSemestre());
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and anoTermino <= :ano and semestreTermino <= :semestre order by anoInicio, semestreInicio", params);
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and anoInicio <= :ano and semestreInicio <= :semestre order by anoInicio, semestreInicio", params);
 	}
 
 }
