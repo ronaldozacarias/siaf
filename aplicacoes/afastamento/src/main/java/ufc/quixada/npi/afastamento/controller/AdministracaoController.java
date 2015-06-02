@@ -117,7 +117,6 @@ public class AdministracaoController {
 	public String getReservas(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {
-			// periodo = periodoService.getPeriodoPosterior(periodo);
 			if (periodo != null) {
 				Ranking ranking = new Ranking();
 				ranking.setPeriodo(periodo);
@@ -126,9 +125,6 @@ public class AdministracaoController {
 				List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservaAndPeriodo(
 						Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
 
-				System.out.println("PERIODO " + periodo.getAno() + "." + periodo.getSemestre());
-				System.out.println("LIST " + tuplasCanceladasNegadas.size());
-
 				model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
 				model.addAttribute("ranking", ranking);
 			}
@@ -136,108 +132,6 @@ public class AdministracaoController {
 
 		return Constants.PAGINA_GERENCIAR_RESERVAS;
 	}
-
-	// @RequestMapping(value = "/reservas.json", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// public Model getReservasList(Model model, @RequestParam("ano") Integer
-	// ano, @RequestParam("semestre") Integer semestre){
-	// Periodo periodo = periodoService.getPeriodo(ano, semestre);
-	//
-	// Ranking ranking = new Ranking();
-	// ranking.setPeriodo(periodo);
-	// ranking.setTuplas(rankingService.visualizarRanking(periodo));
-	//
-	// List<TuplaRanking> tuplasCanceladasNegadas =
-	// rankingService.visualizarRankingByStatusReservasAndPeriodo(
-	// Arrays.asList(StatusReserva.CANCELADO,
-	// StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
-	//
-	// model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
-	// model.addAttribute("ranking", ranking);
-	// return model;
-	// }
-
-	// @RequestMapping(value = "/atualizar-ranking", method =
-	// RequestMethod.POST)
-	//
-	// @CacheEvict(value = { "default", "reservasByProfessor", "periodo",
-	// "visualizarRanking", "ranking", "loadProfessor", "professores" },
-	// allEntries = true, beforeInvocation = true) public String
-	// atualizarRanking(HttpServletRequest request, RedirectAttributes redirect)
-	// { String[] status = request.getParameterValues("status"); for (String s :
-	// status) { String[] valor = s.split("-"); Reserva reserva =
-	// reservaService.find(Reserva.class, Long.parseLong(valor[0]));
-	// StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
-	// reserva.setStatus(statusReserva); reservaService.update(reserva);
-	// Afastamento afastamento = afastamentoService.getByReserva(reserva); if
-	// (afastamento != null) { afastamentoService.delete(afastamento); } }
-	// Integer ano = Integer.valueOf(request.getParameter("ano")); Integer
-	// semestre = Integer.valueOf(request.getParameter("semestre")); Periodo
-	// periodo = periodoService.getPeriodo(ano, semestre); Ranking ranking =
-	// rankingService.getRanking(periodo); int vagas = periodo.getVagas(); for
-	// (TuplaRanking tupla : ranking.getTuplas()) { if
-	// (tupla.getReserva().getAnoInicio().equals(ano) &&
-	// tupla.getReserva().getSemestreInicio().equals(semestre)) { Afastamento
-	// afastamento = afastamentoService.getByReserva(tupla .getReserva()); if
-	// (tupla.getReserva().getStatus().equals(StatusReserva.ACEITO)) { if (vagas
-	// == 0) { for(TuplaRanking tupla : ranking.getTuplas()) {
-	// if(tupla.getReserva().getAnoInicio().equals(ano) &&
-	// tupla.getReserva().getSemestreInicio().equals(semestre)) {
-	//
-	// Afastamento afastamento =
-	// afastamentoService.getByReserva(tupla.getReserva());
-	//
-	// if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
-	// if(vagas == 0) {
-	//
-	// Reserva reserva = tupla.getReserva();
-	// reserva.setStatus(StatusReserva.NAO_ACEITO);
-	// reservaService.update(reserva); } else { if (afastamento == null) {
-	// afastamento = new Afastamento(tupla.getReserva());
-	// afastamentoService.save(afastamento); } vagas--; }
-	//
-	// } else if (tupla.getReserva().getStatus()
-	// .equals(StatusReserva.NAO_ACEITO) && vagas > 0
-	//
-	// && tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) { Reserva reserva
-	// = tupla.getReserva(); reserva.setStatus(StatusReserva.ABERTO);
-	// reservaService.update(reserva); vagas--; if (afastamento == null) {
-	// afastamento = new Afastamento(tupla.getReserva());
-	// afastamentoService.save(afastamento); }
-	//
-	// } else if ((tupla.getReserva().getStatus()
-	// .equals(StatusReserva.CANCELADO) || tupla.getReserva() .getStatus()
-	//
-	// .equals(StatusReserva.CANCELADO_COM_PUNICAO)) && vagas == 0) { Reserva
-	// reserva = tupla.getReserva();
-	// reserva.setStatus(StatusReserva.NAO_ACEITO);
-	// reservaService.update(reserva);
-	//
-	// } else if (tupla.getReserva().getStatus() .equals(StatusReserva.ABERTO)
-	//
-	// && tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) { vagas--;
-	//
-	// } else if (tupla.getReserva().getStatus() .equals(StatusReserva.ABERTO)
-	// && tupla.getStatus() .equals(StatusTupla.DESCLASSIFICADO)) {
-	//
-	// Reserva reserva = tupla.getReserva();
-	// reserva.setStatus(StatusReserva.NAO_ACEITO);
-	// reservaService.update(reserva); }
-	//
-	// } else if (tupla.getReserva().getStatus() .equals(StatusReserva.ACEITO))
-	// { } else
-	// if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
-	//
-	// vagas--; } }
-	//
-	//
-	// try { notificacaoService.notificar(null, Notificacao.RANKING_ATUALIZADO);
-	// } catch (MessagingException e) { // TODO Auto-generated catch block
-	// e.printStackTrace(); }
-	//
-	// redirect.addFlashAttribute(Constants.INFO,
-	// Constants.MSG_RESERVAS_ATUALIZADAS); return
-	// Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS; }
 
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Periodo> periodos() {
@@ -405,7 +299,6 @@ public class AdministracaoController {
 	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
 			RedirectAttributes redirect, HttpSession session) {
 		String[] valor = status.split("-");
-		System.out.println("ID: " + id);
 		if (id != null & status != null && !status.isEmpty()) {
 			Reserva reserva = reservaService.find(Reserva.class, id);
 			reserva.setStatus(StatusReserva.valueOf(valor[1]));
