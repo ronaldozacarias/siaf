@@ -118,6 +118,9 @@
 									<th>Nome</th>
 									<th>Período</th>
 									<th>Programa</th>
+									<th>Status</th>
+									<th></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -128,14 +131,43 @@
 										<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio }
 											a ${tupla.reserva.anoTermino }.${tupla.reserva.semestreTermino }</td>
 										<td class="align-center">${tupla.reserva.programa.descricao }</td>
+
+										<td class="align-center"><c:choose>
+												<c:when
+													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.status != 'CLASSIFICADO' and tupla.status != 'AFASTADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
+													<c:set var="atualizar" value="true"></c:set>
+													<form id="atualizarStatusReserva" action="/siaf/administracao/atualizarStatusReserva"
+														method="POST">
+														<input type="hidden" value="${tupla.reserva.id }" name="idReserva" /> <select
+															id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
+															<option ${tupla.status == 'CANCELADO' ? 'selected' : ''}
+																value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
+															<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''}
+																value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
+															<option ${tupla.status == 'NEGADO' ? 'selected' : ''}
+																value="${tupla.reserva.id }-NEGADO">NEGADO</option>
+														</select>
+												</c:when>
+												<c:otherwise>
+												${tupla.status.descricao }
+											</c:otherwise>
+											</c:choose></td>
+										<td class="align-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+										<td class="align-center"><c:choose>
+												<c:when
+													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.status != 'CLASSIFICADO' and tupla.status != 'AFASTADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
+													<input name="reservar" type="submit" class="btn btn-siaf" value="salvar" />
+												</c:when>
+											</c:choose>
+											</form></td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</c:if>
 					<c:if test="${empty tuplasCanceladasNegadas }">
-						<div id="warning-tuplasCanceladasNegadas" class="alert" role="alert">
-							Não há nenhuma reserva cancelada ou negada para este periodo.</div>
+						<div id="warning-tuplasCanceladasNegadas" class="alert" role="alert">Não há nenhuma
+							reserva cancelada ou negada para este periodo.</div>
 					</c:if>
 				</div>
 		</div>
