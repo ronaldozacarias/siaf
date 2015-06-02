@@ -13,7 +13,7 @@
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
-			<div class="title">Gerenciar reservas :</div>
+			<div class="title"><br></div>
 			<span class="line"></span>
 			<c:if test="${not empty info}">
 				<div class="alert alert-info margin-top" role="alert">

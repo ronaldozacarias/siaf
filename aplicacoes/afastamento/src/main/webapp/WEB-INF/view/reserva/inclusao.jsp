@@ -14,7 +14,7 @@
 	<div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
-			<div class="title"> Inclua sua reserva de afastamento : </div>
+			<div class="title"><br> </div>
 			<span class="line"></span>
 			<form:form id="solicitarAfastamento" commandName="reserva" action="/siaf/reserva/incluir" method="POST" class="form-horizontal">
 				<c:if test="${not empty erro}">
@@ -40,7 +40,7 @@
 					<div class="form-item">
 						<label for="anoInicio" class="col-sm-2 control-label"><span class="obrigatorio">*</span> Início:</label>
 						<div class="col-sm-4">
-							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" placeholder="ano" value="${anoInicio }" required="required"/>
+							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" placeholder="Ano" value="${anoInicio }" required="required"/>
 							<select id="semestreInicio" name="semestreInicio" class="form-control selectpicker">
 								<option value="1" ${semestreInicio == 1 ? 'selected' : ''}>1</option>
 								<option value="2" ${semestreInicio == 2 ? 'selected' : ''}>2</option>
@@ -50,7 +50,7 @@
 					<div class="form-item">
 						<label for="anoTermino" class="col-sm-2 control-label"><span class="obrigatorio">*</span> Término:</label>
 						<div class="col-sm-4">
-							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" placeholder="ano" value="${anoTermino }" required="required"/>
+							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" placeholder="Ano" value="${anoTermino }" required="required"/>
 							<select id="semestreTermino" name="semestreTermino" class="form-control selectpicker">
 								<option value="1" ${semestreTermino == 1 ? 'selected' : ''}>1</option>
 								<option value="2" ${semestreTermino == 2 ? 'selected' : ''}>2</option>
@@ -72,7 +72,7 @@
 					<div class="form-item">
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
-							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19" placeholder="conceito" value="${conceito }"/>
+							<input id="conceito" name="conceito" type=text class="form-control conceito" size="19" placeholder="Conceito" value="${conceito }"/>
 						</div>
 					</div>
 				</div>
@@ -80,7 +80,7 @@
 				<div class="form-group form-item">
 					<label for="instituicao" class="col-sm-2 control-label">Instituição:</label>
 					<div class="col-sm-8">
-						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" placeholder="instituição" style="width: 100% !important"/>
+						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" placeholder="Instituição" style="width: 100% !important"/>
 					</div>
 				</div>
 				

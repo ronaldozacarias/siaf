@@ -375,6 +375,12 @@ $('.editReserva').on('click', function(event) {
 	
 	$(".filtroSemestre").selectpicker('refresh');
 	
+	$(".ano").datepicker({
+        format: " yyyy", 
+           viewMode: "years", 
+           minViewMode: "years",           
+    });
+		
 	
 	$(".data").datepicker({
 		language: 'pt-BR',
@@ -406,10 +412,20 @@ $('.editReserva').on('click', function(event) {
 	$("#anoBuscado").datepicker({
         format: " yyyy", 
            viewMode: "years", 
-           minViewMode: "years"
+           minViewMode: "years",
+           startDate: $('#periodoAtualAno').val()
     });
 	
+	$("#warning-buscar-periodo").hide();
+	$('#anoBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	$('#semestreBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	
 	$('#buscar').click(function(){
+		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
 		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
 		var semestreBuscado = parseInt($('#semestreBuscado').val());
@@ -419,11 +435,12 @@ $('.editReserva').on('click', function(event) {
 		}else if(anoBuscado == periodoAtualAno){
 			if(semestreBuscado >= periodoAtualSemestre){
 				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
+				
 			}else{
-				//Periodo Inválido
+				$("#warning-buscar-periodo").show();
 			}
 		}else{
-			//Periodo Inválido
+			$("#warning-buscar-periodo").show();
 		}
 	});
 	
@@ -552,6 +569,7 @@ $('.editReserva').on('click', function(event) {
 					"sProcessing" : "Processando...",
 					"sZeroRecords" : "Nenhum registro encontrado",
 					"sSearch" : "",
+					"searchPlaceholder": "Pesquisar...",
 					"oPaginate" : {
 						"sNext" : "Próximo",
 						"sPrevious" : "Anterior",
@@ -589,6 +607,7 @@ $('.editReserva').on('click', function(event) {
 		    "sProcessing": "Processando...",
 		    "sZeroRecords": "Nenhum registro encontrado",
 		    "sSearch": "",
+		    "searchPlaceholder": "Pesquisar...",
 		    "oPaginate": {
 		        "sNext": "Próximo",
 		        "sPrevious": "Anterior",
@@ -605,7 +624,7 @@ $('.editReserva').on('click', function(event) {
 	//identificar Opção Menu Selecionado
 	
 	$('select').selectpicker();
-	$('input').attr('placeholder', 'Pesquisar...');
+	
 	$('input').addClass('form-inline form-control');
 	
 	
@@ -711,7 +730,7 @@ function loadRanking(result) {
 }
 
 function loadAfastados(afastados) {
-	$('#count-afastados').text(afastados.length);
+	$('#count-afastados').text('Quantidade de professores afastados: ' + afastados.length);
 	$("#afastados tbody").remove();
 	$('#afastados').append('<tbody>');
 	$.each(afastados, function(i, tupla) {

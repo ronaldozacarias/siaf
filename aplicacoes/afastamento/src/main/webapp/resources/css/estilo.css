@@ -218,6 +218,7 @@ table > tbody > tr.DESCLASSIFICADO {
 	text-align: center;
 }
 
+
 div#legenda label {
 	font-weight: 100;
 }
@@ -480,6 +481,10 @@ footer > img {
 footer > p {
 	margin-bottom: 0;
 	color: #7C7C7C;
+}
+
+#atualizarLista{
+	width: 130px;
 }
 
 .btn-siaf {

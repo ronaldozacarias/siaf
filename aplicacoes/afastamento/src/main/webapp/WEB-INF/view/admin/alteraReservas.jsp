@@ -19,7 +19,7 @@
 
 		<div id="content">
 
-			<div class="title">Reservas em aberto :</div>
+			<div class="title"><br></div>
 			<span class="line"></span>
 
 			<div class="messages">
