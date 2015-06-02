@@ -37,6 +37,7 @@
 				<div>
 					<a href="<c:url value="/reserva/incluir" />" class="btn btn-siaf">Incluir reserva</a>
 				</div>
+				<br>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Nome:</label>
 					<div class="col-sm-4">
