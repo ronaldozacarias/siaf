@@ -301,7 +301,8 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#tablePeriodos').DataTable({
+	$('#tablePeriodos').DataTable({	
+		"bRetrieve": true,
 		 "pageLength": 50,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
 		 "columnDefs": [
@@ -335,9 +336,10 @@ $(document).ready(function() {
 		        "sSortAscending": ": Ordenar colunas de forma ascendente",
 		        "sSortDescending": ": Ordenar colunas de forma descendente"
 		    }
-		}
-	});
+		},
 	
+	});
+	$('#tablePeriodos').dataTable().fnDestroy();
 //____________________________________________________________________________________________________________________________________________________	
 
 		
@@ -374,6 +376,12 @@ $(document).ready(function() {
 	
 	$(".filtroSemestre").selectpicker('refresh');
 	
+	$(".ano").datepicker({
+        format: " yyyy", 
+           viewMode: "years", 
+           minViewMode: "years",           
+    });
+		
 	
 	$(".data").datepicker({
 		language: 'pt-BR',
@@ -405,10 +413,20 @@ $(document).ready(function() {
 	$("#anoBuscado").datepicker({
         format: " yyyy", 
            viewMode: "years", 
-           minViewMode: "years"
+           minViewMode: "years",
+           startDate: $('#periodoAtualAno').val()
     });
 	
+	$("#warning-buscar-periodo").hide();
+	$('#anoBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	$('#semestreBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	
 	$('#buscar').click(function(){
+		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
 		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
 		var semestreBuscado = parseInt($('#semestreBuscado').val());
@@ -418,11 +436,12 @@ $(document).ready(function() {
 		}else if(anoBuscado == periodoAtualAno){
 			if(semestreBuscado >= periodoAtualSemestre){
 				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
+				
 			}else{
-				//Periodo Inválido
+				$("#warning-buscar-periodo").show();
 			}
 		}else{
-			//Periodo Inválido
+			$("#warning-buscar-periodo").show();
 		}
 	});
 	
@@ -517,9 +536,7 @@ $(document).ready(function() {
 
 	
 	//Datable Reserva
-	$('#tableReservas')
-	.DataTable(
-			{
+	$('#tableReservas').DataTable({
 				"pageLength" : 50,
 				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
 				"columnDefs" : [ {
@@ -554,6 +571,7 @@ $(document).ready(function() {
 					"sProcessing" : "Processando...",
 					"sZeroRecords" : "Nenhum registro encontrado",
 					"sSearch" : "",
+					"searchPlaceholder": "Pesquisar...",
 					"oPaginate" : {
 						"sNext" : "Próximo",
 						"sPrevious" : "Anterior",
@@ -591,6 +609,7 @@ $(document).ready(function() {
 		    "sProcessing": "Processando...",
 		    "sZeroRecords": "Nenhum registro encontrado",
 		    "sSearch": "",
+		    "searchPlaceholder": "Pesquisar...",
 		    "oPaginate": {
 		        "sNext": "Próximo",
 		        "sPrevious": "Anterior",
@@ -607,7 +626,7 @@ $(document).ready(function() {
 	//identificar Opção Menu Selecionado
 	
 	$('select').selectpicker();
-	$('input').attr('placeholder', 'Pesquisar...');
+	
 	$('input').addClass('form-inline form-control');
 	
 	
@@ -713,7 +732,7 @@ function loadRanking(result) {
 }
 
 function loadAfastados(afastados) {
-	$('#count-afastados').text(afastados.length);
+	$('#count-afastados').text('Quantidade de professores afastados: ' + afastados.length);
 	$("#afastados tbody").remove();
 	$('#afastados').append('<tbody>');
 	$.each(afastados, function(i, tupla) {
@@ -868,15 +887,17 @@ function messagePeriodo(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +
 				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
 				"<span aria-hidden=\"true\">&times;</span>" +
 				"<span class=\"sr-only\">Close</span>" +
-				"</button><p></p></div>");
-		$(".messages #info p").text(result.info);
-		$(".messages #info").removeClass( "hide" ).addClass('show');
+				"</button><p></p></div>");		
+		$(".messages #infoDiv #info p").text(result.info);
+		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
+		
 	} 
 }
 
@@ -894,6 +915,7 @@ function messageReservaEmAberto(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +

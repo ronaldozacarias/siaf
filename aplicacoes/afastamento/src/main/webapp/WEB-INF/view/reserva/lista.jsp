@@ -34,8 +34,6 @@
 			</c:if>
 
 			<form id="minhasReservas" class="form-horizontal">
-				<div class="title">Suas reservas :</div>
-				<span class="line"></span>
 				<div>
 					<a href="<c:url value="/reserva/incluir" />" class="btn btn-siaf">Incluir reserva</a>
 				</div>

@@ -13,11 +13,12 @@
 	<div class="agroup">
 		<div id="wrapper">
 			<jsp:include page="../modulos/header.jsp" />
-			<div id="content">
-
-				<div class="title">Professores :</div>
-				<span class="line"></span>
-
+			<div id="content">		
+				<div class="controls">
+				
+					<input id= "atualizarLista" name="atualizar" type="submit" class="btn btn-siaf" value="Atualizar Lista"/>
+				</div>
+				<br>
 				<div class="container" id="message">
 					<c:if test="${not empty erro}">
 						<div class="alert alert-danger alert-dismissible margin-top"
@@ -38,7 +39,7 @@
 						</div>
 					</c:if>
 				</div>
-					<div class="container">
+				<div class="container">
 						<table id="professores" class="table table-striped">
 							<thead>
 								<tr class="afas-tr-left">
@@ -46,7 +47,7 @@
 									<th class="afas-tr-left">Siape</th>
 									<th id="orderName">Nome</th>
 									<th>E-mail</th>
-									<th>Admisão</th>
+									<th>Admissão</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -79,13 +80,9 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-						</table>
-						<div class="controls">
-							<input name="atualizar" type="submit" class="btn btn-siaf"
-								value="Atualizar Lista" />
-						</div>
-				
+						</table>													
 		</div>
+			
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>
 

@@ -18,11 +18,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 
 		<div id="content">
-
-			<div class="title">Reservas em aberto :</div>
-			<span class="line"></span>
-
-			<div class="messages">
+		<div class="messages">
 				<div id="erroDiv"></div>
 				<div id="infoDiv"></div>
 			</div>
@@ -53,10 +49,10 @@
 								<td id="con${reserva.id}" class="concept">${reserva.conceitoPrograma}</td>
 
 								<td>
-									<button class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
+									<button title="Editar" class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
 										<i class="fa fa-pencil "></i>
 									</button>
-									<div class="options hide" id="options${reserva.id}" style="width: 105px;" align="right">
+									<div class="options hide" id="options${reserva.id}">
 										<button class="btn salvarReserva btn-primary" data-id="${reserva.id}">salvar</button>
 										<button class="btn cancelReserva btn-danger" data-id="${reserva.id}">
 											<i class="fa fa-times"></i>

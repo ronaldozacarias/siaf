@@ -40,10 +40,11 @@
 				id="anoAnterior" value="${periodoAnterior.ano }" /> <input
 				type="hidden" id="semestreAnterior"
 				value="${periodoAnterior.semestre }" />
-
+			
 			<div id="ranking-full">
-				<div id="wrap-periodo">
-					<div class="row">
+				<div id="wrap-periodo">			
+						<div role="main">
+							<div class="row">
 						<div role="main" class="col-md-6 col-md-push-3">
 							<div id="periodo" class="align-center">
 								<i id="anterior" class="fa fa-arrow-circle-left fa-2x"></i> <label
@@ -60,20 +61,17 @@
 							</div>
 						</div>
 						<div role="complementary" class="col-md-3 col-md-push-2">
-							<form:form id="buscarRanking" commandName="ranking"
-								action="" method="POST" class="form-horizontal">
+							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
 								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
 								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />
+								
 								<div class="row">
 									<div class="form-group">
-										<div class="form-item">
-											<label for="anoInicio" class="col-sm-2 control-label"><span
-												class="obrigatorio" id="msgText">*</span> </label>
-											<div class="col-md-4">
-											<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="form-control ano" size="10" placeholder="ano"
-													value="${periodoAtual.ano }" required="required"/>
+										
+											<div class="col-md-4 col-md-push-2">
+											<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="form-control ano" size="10" 													value="${periodoAtual.ano }" required="required"/>
 											</div>
-											<div class="col-md-3">
+											<div class="col-md-3 col-md-push-2">
 												<select id="semestreBuscado" name="semestreBuscado"
 													class="form-control selectpicker">
 													<option value="1" ${semestre == 1 ? 'selected' : ''}>1</option>
@@ -81,13 +79,14 @@
 												</select>
 												
 											</div>
-											<div class="col-md-3">
-												
+											<div class="col-md-5 col-md-push-2" >												
 													<input id="buscar" name="buscar" type="submit"
-														class="btn btn-siaf" value="Buscar" />
-					
+														class="btn btn-siaf" value="Buscar" />		
+																
 											</div>
-										</div>
+										
+										<br>
+										
 									</div>								
 
 								</div>
@@ -95,13 +94,24 @@
 						</div>
 						<div class="col-md-3 col-md-pull-8"></div>
 					</div>
-
+					
+						</div>
+						
+						<div role="complementary" >
+							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
+								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
+								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />								
+							</form:form>
+						</div>
 				</div>
-
+				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
+														Não é possivel realizar busca por períodos passados.
+										</div>
+				
 				<div class="titulo-ranking title">
 					<a data-toggle="collapse" href="#collapseAfastados"
 						aria-expanded="false" aria-controls="#collapseAfastados">Professores
-						Afastados</a> <span id="count-afastados" class="badge"></span>
+						Afastados</a><br> <span id="count-afastados" class="badge"></span>
 				</div>
 
 				<div class="collapse in" id="collapseAfastados">
@@ -120,13 +130,13 @@
 						Ainda não há nenhum docente com afastamento confirmado para esse
 						período.</div>
 				</div>
-
-				<div class="titulo-ranking title">
+				
+				<div class="titulo-ranking title" role="navigation">
 					<a data-toggle="collapse" href="#collapseRanking"
 						aria-controls="#collapseRanking">Ranking</a><br> <span
 						id="count-ranking" class="badge"></span>
 				</div>
-
+				
 				<div class="collapse in" id="collapseRanking">
 					<label><span class="classificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Classificado</label>
 					<label><span class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Desclassificado</label><br>
