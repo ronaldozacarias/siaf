@@ -50,7 +50,7 @@
 									${reserva.semestreTermino }</td>
 
 								<td id="programa" class="programa">${reserva.programa.descricao}</td>
-								<td id="concept${reserva.id}" class="concept">${reserva.conceitoPrograma}</td>
+								<td id="con${reserva.id}" class="concept">${reserva.conceitoPrograma}</td>
 
 								<td>
 									<button class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
