@@ -298,6 +298,9 @@ public class AdministracaoController {
 	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
 	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
 			RedirectAttributes redirect, HttpSession session) {
+		
+		System.out.println(status);
+		
 		String[] valor = status.split("-");
 		if (id != null & status != null && !status.isEmpty()) {
 			Reserva reserva = reservaService.find(Reserva.class, id);
