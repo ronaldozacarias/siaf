@@ -100,7 +100,6 @@ $(document).ready(function() {
 	});
 	
 	
-	
 	$('#professores').on('click', '.cancel', function() {
 		cancelEdit(this);
 	});
