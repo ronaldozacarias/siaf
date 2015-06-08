@@ -465,13 +465,14 @@ $('.editReserva').on('click', function(event) {
 			if($(this).data('id')){
 				id = $(this).data('id');
 			}
+			var conceito = $('#con'+id ).text();
 			
-			$('#options'+id).attr('data-concept', true);
-	  
-			conceito = $('#concept'+id ).text();
+			$('#options'+id).attr('data-conceito', true);
+			
 			guardaConceito = conceito;
-			$('#concept'+id).empty();
-			$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+			
+			$('#con'+id).empty();
+			$('#con'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
 
 			$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
 			$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
@@ -498,9 +499,9 @@ $('.editReserva').on('click', function(event) {
 	
 	$('.salvarReserva').click(function() {
 		var id = $(this).data('id');
-		var conceito = $('#concept'+id).text();
-		if($('#options' + id).data('concept')){
-			conceito = $('#concept'+id+' input').val();
+		var conceito = $('#con'+id).text();
+		if($('#options' + id).data('conceito')){
+			conceito = $('#con'+id+' input').val();
 		}
 		$.ajax({
 			type: 'POST',
@@ -513,7 +514,7 @@ $('.editReserva').on('click', function(event) {
 			messageReservaEmAberto(result);
 		});
 		
-		$('#concept'+id).empty().text(conceito);
+		$('#con'+id).empty().text(conceito);
 		
 		$('.options').removeClass( "show" ).addClass('hide');
 		$('.editReserva').removeClass( 'hide' ).addClass('show');
@@ -522,15 +523,16 @@ $('.editReserva').on('click', function(event) {
 	$('.cancelReserva').click(function() {
 		var id = $(this).data('id');
 		
-		var conceito = $('#concept'+id+' input').val();
-		$('#concept'+id).empty();
-		$('#concept'+id).text(guardaConceito);
+		var conceito = $('#con'+id+' input').val();
+		$('#con'+id).empty();
+		$('#con'+id).text(guardaConceito);
 		guardaConceito = null;
 		$('#options' + id).removeClass( 'show' ).addClass('hide');
 		$('#editReserva'+id).removeClass( 'hide' ).addClass('show');
 
 		event.stopPropagation();
 	});
+
 
 	
 	//Datable Reserva
