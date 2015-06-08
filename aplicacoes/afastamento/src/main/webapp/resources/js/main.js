@@ -300,7 +300,8 @@ $('.editReserva').on('click', function(event) {
 	});
 	
 	
-	$('#tablePeriodos').DataTable({
+	$('#tablePeriodos').DataTable({	
+		"bRetrieve": true,
 		 "pageLength": 50,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
 		 "columnDefs": [
@@ -334,9 +335,10 @@ $('.editReserva').on('click', function(event) {
 		        "sSortAscending": ": Ordenar colunas de forma ascendente",
 		        "sSortDescending": ": Ordenar colunas de forma descendente"
 		    }
-		}
-	});
+		},
 	
+	});
+	$('#tablePeriodos').dataTable().fnDestroy();
 //____________________________________________________________________________________________________________________________________________________	
 
 		
@@ -373,6 +375,12 @@ $('.editReserva').on('click', function(event) {
 	
 	$(".filtroSemestre").selectpicker('refresh');
 	
+	$(".ano").datepicker({
+        format: " yyyy", 
+           viewMode: "years", 
+           minViewMode: "years",           
+    });
+		
 	
 	$(".data").datepicker({
 		language: 'pt-BR',
@@ -404,10 +412,20 @@ $('.editReserva').on('click', function(event) {
 	$("#anoBuscado").datepicker({
         format: " yyyy", 
            viewMode: "years", 
-           minViewMode: "years"
+           minViewMode: "years",
+           startDate: $('#periodoAtualAno').val()
     });
 	
+	$("#warning-buscar-periodo").hide();
+	$('#anoBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	$('#semestreBuscado').click(function(){
+		$("#warning-buscar-periodo").hide();
+	});
+	
 	$('#buscar').click(function(){
+		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
 		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
 		var semestreBuscado = parseInt($('#semestreBuscado').val());
@@ -417,11 +435,12 @@ $('.editReserva').on('click', function(event) {
 		}else if(anoBuscado == periodoAtualAno){
 			if(semestreBuscado >= periodoAtualSemestre){
 				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
+				
 			}else{
-				//Periodo Inválido
+				$("#warning-buscar-periodo").show();
 			}
 		}else{
-			//Periodo Inválido
+			$("#warning-buscar-periodo").show();
 		}
 	});
 	
@@ -515,9 +534,7 @@ $('.editReserva').on('click', function(event) {
 
 	
 	//Datable Reserva
-	$('#tableReservas')
-	.DataTable(
-			{
+	$('#tableReservas').DataTable({
 				"pageLength" : 50,
 				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
 				"columnDefs" : [ {
@@ -552,6 +569,7 @@ $('.editReserva').on('click', function(event) {
 					"sProcessing" : "Processando...",
 					"sZeroRecords" : "Nenhum registro encontrado",
 					"sSearch" : "",
+					"searchPlaceholder": "Pesquisar...",
 					"oPaginate" : {
 						"sNext" : "Próximo",
 						"sPrevious" : "Anterior",
@@ -589,6 +607,7 @@ $('.editReserva').on('click', function(event) {
 		    "sProcessing": "Processando...",
 		    "sZeroRecords": "Nenhum registro encontrado",
 		    "sSearch": "",
+		    "searchPlaceholder": "Pesquisar...",
 		    "oPaginate": {
 		        "sNext": "Próximo",
 		        "sPrevious": "Anterior",
@@ -605,7 +624,7 @@ $('.editReserva').on('click', function(event) {
 	//identificar Opção Menu Selecionado
 	
 	$('select').selectpicker();
-	$('input').attr('placeholder', 'Pesquisar...');
+	
 	$('input').addClass('form-inline form-control');
 	
 	
@@ -711,7 +730,7 @@ function loadRanking(result) {
 }
 
 function loadAfastados(afastados) {
-	$('#count-afastados').text(afastados.length);
+	$('#count-afastados').text('Quantidade de professores afastados: ' + afastados.length);
 	$("#afastados tbody").remove();
 	$('#afastados').append('<tbody>');
 	$.each(afastados, function(i, tupla) {
@@ -866,15 +885,17 @@ function messagePeriodo(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +
 				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
 				"<span aria-hidden=\"true\">&times;</span>" +
 				"<span class=\"sr-only\">Close</span>" +
-				"</button><p></p></div>");
-		$(".messages #info p").text(result.info);
-		$(".messages #info").removeClass( "hide" ).addClass('show');
+				"</button><p></p></div>");		
+		$(".messages #infoDiv #info p").text(result.info);
+		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
+		
 	} 
 }
 
@@ -892,6 +913,7 @@ function messageReservaEmAberto(result) {
 	} 
 	
 	if(result.info &&  result.info.length > 0){
+		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
 				"class=\"alert alert-info margin-top hide\" " +
 				"role=\"alert\"> " +

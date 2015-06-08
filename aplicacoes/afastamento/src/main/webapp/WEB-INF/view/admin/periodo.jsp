@@ -18,10 +18,6 @@
 		<jsp:include page="../modulos/header.jsp" />
 		
 		<div id="content">
-					
-			<div class="title"> Período : </div>
-			<span class="line"></span>
- 
 		<div class="messages">
 				<div id="erroDiv"></div>
 				<div id="infoDiv"></div>
@@ -50,7 +46,9 @@
 								<td id="vagas${periodo.id}" class="vagas">${periodo.vagas}</td>
 								
 								<td>
-									<button class="btn editPeriodo" id="editPeriodo${periodo.id}" data-id="${periodo.id}"><i class="fa fa-pencil "></i></button>
+								    <c:if test="${periodo.status eq 'ABERTO'}" >  
+								    	<button title="Editar" class="btn editPeriodo" id="editPeriodo${periodo.id}" data-id="${periodo.id}"><i class="fa fa-pencil "></i></button>
+        						    </c:if>  	
 				    	           	<div class="options hide" id="options${periodo.id}">
 						                <button class="btn salvarPeriodo btn-primary" data-id="${periodo.id}">salvar</button>
 					    	           	<button class="btn cancelPeriodo btn-danger" data-id="${periodo.id}"><i class="fa fa-times "></i></button>									
