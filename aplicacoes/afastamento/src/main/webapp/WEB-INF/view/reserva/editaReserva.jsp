@@ -15,10 +15,6 @@
 
 <div id="wrapper">
 		<jsp:include page="../modulos/header.jsp" />
-		
-		
-		
-		
 		<div id="content">
 			<div class="title">Edite sua reserva de afastamento :</div>
 			<span class="line"></span>

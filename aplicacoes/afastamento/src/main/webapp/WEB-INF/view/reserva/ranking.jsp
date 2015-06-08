@@ -40,7 +40,7 @@
 				id="anoAnterior" value="${periodoAnterior.ano }" /> <input
 				type="hidden" id="semestreAnterior"
 				value="${periodoAnterior.semestre }" />
-			<br><br><br>
+			
 			<div id="ranking-full">
 				<div id="wrap-periodo">			
 						<div role="main">
@@ -61,8 +61,7 @@
 							</div>
 						</div>
 						<div role="complementary" class="col-md-3 col-md-push-2">
-							<form:form id="buscarRanking" commandName="ranking"
-								action="" method="POST" class="form-horizontal">
+							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
 								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
 								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />
 								
@@ -99,8 +98,7 @@
 						</div>
 						
 						<div role="complementary" >
-							<form:form id="buscarRanking" commandName="ranking"
-								action="" method="POST" class="form-horizontal">
+							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
 								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
 								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />								
 							</form:form>
@@ -109,7 +107,7 @@
 				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
 														Não é possivel realizar busca por períodos passados.
 										</div>
-				<br>
+				
 				<div class="titulo-ranking title">
 					<a data-toggle="collapse" href="#collapseAfastados"
 						aria-expanded="false" aria-controls="#collapseAfastados">Professores

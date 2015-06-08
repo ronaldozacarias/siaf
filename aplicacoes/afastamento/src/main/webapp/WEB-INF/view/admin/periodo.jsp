@@ -18,10 +18,6 @@
 		<jsp:include page="../modulos/header.jsp" />
 		
 		<div id="content">
-					
-			<div class="title"><br></div>
-			<span class="line"></span>
- 
 		<div class="messages">
 				<div id="erroDiv"></div>
 				<div id="infoDiv"></div>

@@ -13,10 +13,7 @@
 	<div class="agroup">
 		<div id="wrapper">
 			<jsp:include page="../modulos/header.jsp" />
-			<div id="content">
-
-				<div class="title"><br></div>
-				<span class="line"></span>
+			<div id="content">		
 				<div class="controls">
 				
 					<input id= "atualizarLista" name="atualizar" type="submit" class="btn btn-siaf" value="Atualizar Lista"/>
