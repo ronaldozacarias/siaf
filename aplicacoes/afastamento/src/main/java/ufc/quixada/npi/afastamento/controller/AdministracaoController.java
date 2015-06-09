@@ -77,8 +77,8 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 
-	@RequestMapping(value = "/atualizar-professores", method = RequestMethod.POST)
-	public String atualizaProfessores(Model model) {
+	@RequestMapping(value = "/atualizar-professores", method = RequestMethod.GET)
+	public String atualizaProfessores(Model model, RedirectAttributes redirect, HttpSession session) {
 
 		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.AFFILIATION_DOCENTE);
 		for (Usuario usuario : usuarios) {
@@ -98,7 +98,7 @@ public class AdministracaoController {
 		}
 
 		atualizaVagas();
-
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_LISTA_PROFESSORES_ATUALIZADO);
 		return Constants.REDIRECT_PAGINA_LISTAR_PROFESSORES;
 	}
 

@@ -13,12 +13,7 @@
 	<div class="agroup">
 		<div id="wrapper">
 			<jsp:include page="../modulos/header.jsp" />
-			<div id="content">		
-				<div class="controls">
-				
-					<input id= "atualizarLista" name="atualizar" type="submit" class="btn btn-siaf" value="Atualizar Lista"/>
-				</div>
-				<br>
+			<div id="content">						
 				<div class="container" id="message">
 					<c:if test="${not empty erro}">
 						<div class="alert alert-danger alert-dismissible margin-top"
@@ -39,6 +34,10 @@
 						</div>
 					</c:if>
 				</div>
+				<div class="controls">
+					<a id= "atualizarLista" href="<c:url value="/administracao/atualizar-professores" />" class="btn btn-siaf">Atualizar Lista</a>	
+				</div>
+				<br>
 				<div class="container">
 						<table id="professores" class="table table-striped">
 							<thead>
