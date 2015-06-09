@@ -67,7 +67,7 @@ $(document).ready(function() {
 	  
 	    $('input').mask('9999', {placeholder:" "});
 	    $('input').attr("placeholder", "Ano");
-	    
+	   
 	    $('input').val(ano);
 	});	
 
@@ -76,8 +76,11 @@ $(document).ready(function() {
 	    var $btn = $(this);
 
 	    var id = $btn.data("id");
-		var semestre = $( "select option:selected" ).val();
-		var ano = $("input").val();
+		var semestre = $( "select option:selected" ).text();
+		var ano = $("td.editProf input").val();
+		
+		
+		
 		
 		$(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		$btn.closest('tr').find('.editable').editable('hide');
@@ -227,15 +230,16 @@ $(document).ready(function() {
 	$('.salvarPeriodo').click(function() {
 		var id = $(this).data('id');
 
-		var vagas = $('#vagas'+id).text();
-		var encerramento = $('#encerramento'+id).text();
-
+//		var vagas = $('#vagas'+id).text();
+//		var encerramento = $('#encerramento'+id).text();
+		
 		if($('#options' + id).data('encerramento')){
 			encerramento = $('#encerramento'+id+' input').val();
 		}
 		
 		if($('#options' + id).data('vagas')){
 			vagas = $('#vagas'+id+' input').val();
+			alert(vagas);
 		}
 		
 		$.ajax({

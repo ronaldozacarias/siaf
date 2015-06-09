@@ -63,12 +63,12 @@
 										<td>${professor.siape}</td>
 										<td>${professor.nome}</td>
 										<td>${professor.email}</td>
-										<td class="editProf" style="width: 10px;"><span id = "anoAdmissao${professor.id }"
+										<td id="editProf${professor.id }" class="editProf" style="width: 10px;"><span id = "anoAdmissao${professor.id }"
 											class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span id="semestreAdmissao${professor.id }"
 											class="semestreEdit"
 											data-value="${professor.semestreAdmissao}">${professor.semestreAdmissao}</span>
 										</td>
-										<td class="editAcao" style="width: 40px;" align="right">
+										<td id="editAcao${professor.id }" class="editAcao" style="width: 40px;" align="right">
 											<button class="btn edit" data-id="${professor.id}">
 												<i class="fa fa-pencil "></i>
 											</button>
