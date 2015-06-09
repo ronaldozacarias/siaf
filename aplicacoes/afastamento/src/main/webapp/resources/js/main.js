@@ -34,17 +34,22 @@ $(document).ready(function() {
 	    type: 'select',
 	    emptytext : '',
 	    inputclass: 'selectpicker',
-	    value: 1,
+	    value: $('#semestreAdmissao18').text(),
 	    source: [
 	        {value: 1, text: '1'},
 	        {value: 2, text: '2'},
 	    ]
 	});	
 	
+	
 	$('#professores').on('click', '.edit', function(){
 	    var $btn = $(this);
 	    var id = $btn.data("id");
-		$('.options').removeClass( "show" ).addClass('hide');
+	    
+	    var ano = $('#anoAdmissao'+id ).text();
+	    var semestre = $('#semestreAdmissao' +id).text();
+	    
+	    $('.options').removeClass( "show" ).addClass('hide');
 
 	    $("#contentProfessores td.editProf").css("width", "160px");
 		$("#contentProfessores td.editAcao").css("width", "120px");
@@ -55,13 +60,17 @@ $(document).ready(function() {
 	    $(this).hide().siblings('.options' +id).removeClass( "hide" ).addClass('show');
 	    $(this).closest('tr').find('.editable').editable('show');
 	    
-	    $('select').selectpicker({}); 
+	    $('select').selectpicker({});
+	    $('.selectpicker').selectpicker('val', semestre);
+	    
 	    $('input').attr("size", "4");
+	  
 	    $('input').mask('9999', {placeholder:" "});
 	    $('input').attr("placeholder", "Ano");
-	    $('input').val($('#editProf' + id + ' span.anoEdit').text());
 	    
+	    $('input').val(ano);
 	});	
+
 
 	$('#professores').on('click', '.salvar', function() {
 	    var $btn = $(this);
@@ -69,6 +78,7 @@ $(document).ready(function() {
 	    var id = $btn.data("id");
 		var semestre = $( "select option:selected" ).val();
 		var ano = $("input").val();
+		
 		$(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		$btn.closest('tr').find('.editable').editable('hide');
 		
@@ -93,10 +103,15 @@ $(document).ready(function() {
 				}		
 			});
 		}
+		
+		
 		$("#contentProfessores td.editProf").css("width", "50px");
 		$("#contentProfessores td.editAcao").css("width", "40px");
 		
-	    
+		$('#anoAdmissao'+id).empty().text(ano);
+		$('#semestreAdmissao'+id).empty().text(semestre);
+
+		
 	});
 	
 	
@@ -465,13 +480,14 @@ $('.editReserva').on('click', function(event) {
 			if($(this).data('id')){
 				id = $(this).data('id');
 			}
+			var conceito = $('#con'+id ).text();
 			
-			$('#options'+id).attr('data-concept', true);
-	  
-			conceito = $('#concept'+id ).text();
+			$('#options'+id).attr('data-conceito', true);
+			
 			guardaConceito = conceito;
-			$('#concept'+id).empty();
-			$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+			
+			$('#con'+id).empty();
+			$('#con'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
 
 			$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
 			$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
@@ -498,9 +514,9 @@ $('.editReserva').on('click', function(event) {
 	
 	$('.salvarReserva').click(function() {
 		var id = $(this).data('id');
-		var conceito = $('#concept'+id).text();
-		if($('#options' + id).data('concept')){
-			conceito = $('#concept'+id+' input').val();
+		var conceito = $('#con'+id).text();
+		if($('#options' + id).data('conceito')){
+			conceito = $('#con'+id+' input').val();
 		}
 		$.ajax({
 			type: 'POST',
@@ -513,7 +529,7 @@ $('.editReserva').on('click', function(event) {
 			messageReservaEmAberto(result);
 		});
 		
-		$('#concept'+id).empty().text(conceito);
+		$('#con'+id).empty().text(conceito);
 		
 		$('.options').removeClass( "show" ).addClass('hide');
 		$('.editReserva').removeClass( 'hide' ).addClass('show');
@@ -522,15 +538,16 @@ $('.editReserva').on('click', function(event) {
 	$('.cancelReserva').click(function() {
 		var id = $(this).data('id');
 		
-		var conceito = $('#concept'+id+' input').val();
-		$('#concept'+id).empty();
-		$('#concept'+id).text(guardaConceito);
+		var conceito = $('#con'+id+' input').val();
+		$('#con'+id).empty();
+		$('#con'+id).text(guardaConceito);
 		guardaConceito = null;
 		$('#options' + id).removeClass( 'show' ).addClass('hide');
 		$('#editReserva'+id).removeClass( 'hide' ).addClass('show');
 
 		event.stopPropagation();
 	});
+
 
 	
 	//Datable Reserva

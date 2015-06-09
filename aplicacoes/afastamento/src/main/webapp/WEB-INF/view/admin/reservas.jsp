@@ -62,7 +62,7 @@
 								<tr class="${tupla.status }">
 									<td class="align-center">${count.index + 1 }</td>
 									<td>${tupla.professor }</td>
-									<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio }a
+									<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio } a
 										${tupla.reserva.anoTermino }.${tupla.reserva.semestreTermino }</td>
 									<td class="align-center">${tupla.reserva.programa.descricao }</td>
 									<td class="align-center">${tupla.pontuacao }</td>
@@ -75,7 +75,7 @@
 													<input type="hidden" value="${tupla.reserva.id }" name="idReserva" /> <select
 														id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
 														<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''}
-															value="${tupla.reserva.id }-ABERTO">CLASSIFICADO</option>
+															value="${tupla.reserva.id }-ABERTO">ABERTO</option>
 														<option ${tupla.status == 'AFASTADO' ? 'selected' : ''}
 															value="${tupla.reserva.id }-AFASTADO">AFASTADO</option>
 														<option ${tupla.status == 'CANCELADO' ? 'selected' : ''}
@@ -126,7 +126,7 @@
 									<tr class="${tupla.status }">
 										<td class="align-center">${count.index + 1 }</td>
 										<td>${tupla.professor }</td>
-										<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio }
+										<td class="align-center">${tupla.reserva.anoInicio }.${tupla.reserva.semestreInicio } 
 											a ${tupla.reserva.anoTermino }.${tupla.reserva.semestreTermino }</td>
 										<td class="align-center">${tupla.reserva.programa.descricao }</td>
 
@@ -138,6 +138,10 @@
 														method="POST">
 														<input type="hidden" value="${tupla.reserva.id }" name="idReserva" /> <select
 															id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
+															<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''}
+																value="${tupla.reserva.id }-ABERTO">ABERTO</option>
+															<option ${tupla.status == 'AFASTADO' ? 'selected' : ''}
+																value="${tupla.reserva.id }-AFASTADO">AFASTADO</option>
 															<option ${tupla.status == 'CANCELADO' ? 'selected' : ''}
 																value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
 															<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''}
