@@ -47,7 +47,6 @@
 
 								<td id="programa" class="programa">${reserva.programa.descricao}</td>
 								<td id="con${reserva.id}" class="con">${reserva.conceitoPrograma}</td>
-
 								<td>
 									<button title="Editar" class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
 										<i class="fa fa-pencil "></i>

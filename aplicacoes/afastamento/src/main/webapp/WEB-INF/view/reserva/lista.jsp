@@ -95,7 +95,7 @@
 												</button>
 											</a>
 										</c:if> &nbsp;&nbsp; <c:if test="${periodo.status eq 'ABERTO' }">
-											<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar&nbsp;
+										<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar&nbsp;
 												<i class="fa fa-pencil "></i>
 											</a>
 										</c:if>

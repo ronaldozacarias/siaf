@@ -67,7 +67,7 @@ $(document).ready(function() {
 	  
 	    $('input').mask('9999', {placeholder:" "});
 	    $('input').attr("placeholder", "Ano");
-	    
+	   
 	    $('input').val(ano);
 	});	
 
@@ -76,8 +76,11 @@ $(document).ready(function() {
 	    var $btn = $(this);
 
 	    var id = $btn.data("id");
-		var semestre = $( "select option:selected" ).val();
-		var ano = $("input").val();
+		var semestre = $( "select option:selected" ).text();
+		var ano = $("td.editProf input").val();
+		
+		
+		
 		
 		$(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		$btn.closest('tr').find('.editable').editable('hide');
@@ -227,15 +230,16 @@ $(document).ready(function() {
 	$('.salvarPeriodo').click(function() {
 		var id = $(this).data('id');
 
-		var vagas = $('#vagas'+id).text();
-		var encerramento = $('#encerramento'+id).text();
-
+//		var vagas = $('#vagas'+id).text();
+//		var encerramento = $('#encerramento'+id).text();
+		
 		if($('#options' + id).data('encerramento')){
 			encerramento = $('#encerramento'+id+' input').val();
 		}
 		
 		if($('#options' + id).data('vagas')){
 			vagas = $('#vagas'+id+' input').val();
+			alert(vagas);
 		}
 		
 		$.ajax({
@@ -283,18 +287,19 @@ $(document).ready(function() {
 	});
 	
 	var guardaConceito = null;
-$('.editReserva').on('click', function(event) {
+	$('.editReserva').on('click', function(event) {
 		var id = '';
 		if($(this).data('id')){
 			id = $(this).data('id');
 		}
 		
-		$('#options'+id).attr('data-concept', true);
+		$('#options'+id).attr('data-conceito', true);
   
-		conceito = $('#concept'+id ).text();
+		conceito = $('#conceito'+id ).text();
+		
 		guardaConceito = conceito;
-		$('#concept'+id).empty();
-		$('#concept'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
+		$('#conceito'+id).empty();
+		$('#conceito'+id).append('<input name="inputConceito" class="form-control" size="1" value="'+conceito+'" maxlength="1" onKeyUp="validarConceito(this)"/>');
 
 		$('#tableReservas').find('#options' + id).removeClass( 'hide' ).addClass('show');
 		$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
