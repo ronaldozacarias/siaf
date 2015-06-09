@@ -77,6 +77,7 @@ public class Constants {
 	
 	public static final String MSG_STATUS_RESERVA_ATUALIZADO = "Status da reserva atualizado com sucesso.";
 	
+	public static final String MSG_LISTA_PROFESSORES_ATUALIZADO = "Lista de professores atualizada com sucesso.";
 	/** Afiliações */
 
 	public static final String AFFILIATION_DOCENTE = "DOCENTE";

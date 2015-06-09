@@ -17,7 +17,7 @@
     		</li>
     		<sec:authorize ifAnyGranted="ADMIN-SIAF">
 	    		<li id="menu-periodos">
-	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Gerenciar Períodos</span></a>
+	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
 	    		<li id="menu-reservas">
 	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Gerenciar Reservas</span></a>
