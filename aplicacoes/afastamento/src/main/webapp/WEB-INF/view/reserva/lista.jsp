@@ -15,7 +15,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 		<div id="content">
 			<c:if test="${not empty erro}">
-				<br/>
+				<br />
 				<div class="alert alert-danger alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -24,7 +24,7 @@
 				</div>
 			</c:if>
 			<c:if test="${not empty info}">
-				<br/>
+				<br />
 				<div class="alert alert-info alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -95,8 +95,10 @@
 												</button>
 											</a>
 										</c:if> &nbsp;&nbsp; <c:if test="${periodo.status eq 'ABERTO' }">
-											<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar&nbsp; <i class="fa fa-pencil "></i></a>
-								</c:if>
+										<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar&nbsp;
+												<i class="fa fa-pencil "></i>
+											</a>
+										</c:if>
 								</tr>
 							</c:forEach>
 						</tbody>

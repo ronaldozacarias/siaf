@@ -13,12 +13,9 @@
 	<div class="agroup">
 		<div id="wrapper">
 			<jsp:include page="../modulos/header.jsp" />
-			<div id="content">		
-				<div class="controls">
-				
-					<input id= "atualizarLista" name="atualizar" type="submit" class="btn btn-siaf" value="Atualizar Lista"/>
-				</div>
-				<br>
+
+			<div id="content">						
+
 				<div class="container" id="message">
 					<c:if test="${not empty erro}">
 						<div class="alert alert-danger alert-dismissible margin-top"
@@ -39,7 +36,13 @@
 						</div>
 					</c:if>
 				</div>
+
+				<div class="controls">
+					<a id= "atualizarLista" href="<c:url value="/administracao/atualizar-professores" />" class="btn btn-siaf">Atualizar Lista</a>	
+				</div>
+				<br>
 				<div class="container">
+
 						<table id="professores" class="table table-striped">
 							<thead>
 								<tr class="afas-tr-left">
@@ -54,13 +57,14 @@
 							<tbody id="contentProfessores">
 								<c:forEach items="${professores}" var="professor"
 									varStatus="count">
+									<input type="hidden" value="${professor.semestreAdmissao }" id="semestreAdmissao"/>
 									<tr>
 										<td>${count.count}</td>
 										<td>${professor.siape}</td>
 										<td>${professor.nome}</td>
 										<td>${professor.email}</td>
-										<td class="editProf" style="width: 10px;"><span
-											class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span
+										<td class="editProf" style="width: 10px;"><span id = "anoAdmissao${professor.id }"
+											class="anoEdit" data-name="anoAdmissaoEdit">${professor.anoAdmissao}</span>.<span id="semestreAdmissao${professor.id }"
 											class="semestreEdit"
 											data-value="${professor.semestreAdmissao}">${professor.semestreAdmissao}</span>
 										</td>
@@ -80,17 +84,18 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-						</table>													
+						</table>
+
+				
 		</div>
-			
 		<jsp:include page="../modulos/footer.jsp" />
 	</div>
 
+	</div>
+		</div>
 
 	<script type="text/javascript">
 		$('#menu-professores').addClass('active');
 	</script>
-	</div>
 </body>
 </html>
-

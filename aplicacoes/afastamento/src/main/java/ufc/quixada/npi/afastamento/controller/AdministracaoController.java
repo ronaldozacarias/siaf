@@ -77,8 +77,8 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 
-	@RequestMapping(value = "/atualizar-professores", method = RequestMethod.POST)
-	public String atualizaProfessores(Model model) {
+	@RequestMapping(value = "/atualizar-professores", method = RequestMethod.GET)
+	public String atualizaProfessores(Model model, RedirectAttributes redirect, HttpSession session) {
 
 		List<Usuario> usuarios = usuarioService.getByAffiliation(Constants.AFFILIATION_DOCENTE);
 		for (Usuario usuario : usuarios) {
@@ -98,7 +98,7 @@ public class AdministracaoController {
 		}
 
 		atualizaVagas();
-
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_LISTA_PROFESSORES_ATUALIZADO);
 		return Constants.REDIRECT_PAGINA_LISTAR_PROFESSORES;
 	}
 
@@ -298,6 +298,7 @@ public class AdministracaoController {
 	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
 	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
 			RedirectAttributes redirect, HttpSession session) {
+	
 		String[] valor = status.split("-");
 		if (id != null & status != null && !status.isEmpty()) {
 			Reserva reserva = reservaService.find(Reserva.class, id);
