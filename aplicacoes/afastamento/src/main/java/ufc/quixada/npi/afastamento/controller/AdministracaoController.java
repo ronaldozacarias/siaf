@@ -166,18 +166,19 @@ public class AdministracaoController {
 
 		Reserva reserva = new Reserva();
 		reserva.setProfessor(professor);
-		try {
-			notificacaoService.notificar(reserva, Notificacao.ALTERACAO_DADOS_CADASTRAIS);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-
+		
 		List<Professor> professors = professorService.findAtivos();
 		model.addAttribute("professores", professors);
 		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
 		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
+		try {
+			notificacaoService.notificar(reserva, Notificacao.ADMISSAO_ATUALIZADA);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 
@@ -290,6 +291,11 @@ public class AdministracaoController {
 			reservaService.update(reserva);
 			model.addAttribute(Constants.INFO, "Reserva do professor " + reserva.getProfessor().getNome() + " atualizada com sucesso.");
 		}
+		try {
+			notificacaoService.notificar(reserva, Notificacao.ATUALIZACAO_CONCEITO);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("reserva", reserva);
 		return model;
 	}
@@ -304,6 +310,11 @@ public class AdministracaoController {
 			Reserva reserva = reservaService.find(Reserva.class, id);
 			reserva.setStatus(StatusReserva.valueOf(valor[1]));
 			reservaService.update(reserva);
+			try {
+				notificacaoService.notificar(reserva, Notificacao.GERENCIAMENTO_DE_RESERVAS);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
 		}
 		return "redirect:/administracao/reservas";

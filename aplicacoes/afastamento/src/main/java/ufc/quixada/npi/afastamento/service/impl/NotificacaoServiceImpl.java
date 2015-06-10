@@ -35,12 +35,16 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 	private String GERENCIAMENTO_DE_RESERVAS = "email.corpo.gerenciamento_de_reservas";
 	private String ALTERACAO_DADOS_CADASTRAIS = "email.corpo.alteracao_dados_cadastrais";
 	private String LISTA_DOCENTES_ATUALIZADAS = "email.corpo.lista_docentes_atualizadas";
+	private String ATUALIZACAO_CONCEITO = "email.corpo.atualizacao_conceito";
+	private String ADMISSAO_ATUALIZADA = "email.corpo.admissao_atualizada";
 	
 	private String INICIO_PERIODO = "#INICIOPERIODO#";
 	private String TERMINO_PERIODO = "#TERMINOPERIODO#";
 	private String STATUS = "#STATUS#";
 	private String NOME_PROFESSOR= "#PROFESSOR#";
 	private String SIAP = "#SIAP#";
+	private String CONCEITO = "#CONCEITO#";
+	private String ADMISSAO = "#ADMISSAO#";
 	
 	@Override
 	public void notificar(Reserva reserva, Notificacao tipoNotificacao)
@@ -100,6 +104,21 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 				String nomeProfessor = reserva.getProfessor().getNome();
 				String siap = reserva.getProfessor().getSiape();
 				String texto = properties.getProperty(LISTA_DOCENTES_ATUALIZADAS).replaceAll(NOME_PROFESSOR, nomeProfessor).replaceAll(SIAP, siap);
+				email.setText(texto);
+				email.setTo(reserva.getProfessor().getEmail());
+				emailService.sendEmail(email);
+			}else if(tipoNotificacao == Notificacao.ATUALIZACAO_CONCEITO){
+				String inicioPeriodo = reserva.getAnoInicio() + "."	+ reserva.getSemestreInicio();
+				String terminoPeriodo = reserva.getAnoTermino() + "." + reserva.getSemestreTermino();
+				String conceito = String.valueOf(reserva.getConceitoPrograma());
+				String texto = properties.getProperty(ATUALIZACAO_CONCEITO).replaceAll(INICIO_PERIODO, inicioPeriodo)
+						.replaceAll(TERMINO_PERIODO, terminoPeriodo).replaceAll(CONCEITO, conceito);
+				email.setText(texto);
+				email.setTo(reserva.getProfessor().getEmail());
+				emailService.sendEmail(email);
+			}else if(tipoNotificacao == Notificacao.ADMISSAO_ATUALIZADA){
+				String admissao = reserva.getProfessor().getAnoAdmissao() + "." + reserva.getProfessor().getSemestreAdmissao();
+				String texto = properties.getProperty(ADMISSAO_ATUALIZADA).replaceAll(ADMISSAO, admissao);
 				email.setText(texto);
 				email.setTo(reserva.getProfessor().getEmail());
 				emailService.sendEmail(email);
