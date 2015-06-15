@@ -118,6 +118,7 @@ public class AdministracaoController {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {
 			if (periodo != null) {
+				periodo = periodoService.getPeriodoPosterior(periodo);
 				Ranking ranking = new Ranking();
 				ranking.setPeriodo(periodo);
 				ranking.setTuplas(rankingService.visualizarRanking(periodo));
