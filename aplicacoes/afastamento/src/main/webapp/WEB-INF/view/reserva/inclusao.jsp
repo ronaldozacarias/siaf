@@ -73,6 +73,7 @@
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
 							<select id="conceito" name="conceito" class="form-control selectpicker">
+							 <option value="0" ${conceito == 0 ? 'selected' : ''}>0</option>
 							 <option value="3" ${conceito == 3 ? 'selected' : ''}>3</option>
 							 <option value="4" ${conceito == 4 ? 'selected' : ''}>4</option>
 							 <option value="5" ${conceito == 5 ? 'selected' : ''}>5</option>

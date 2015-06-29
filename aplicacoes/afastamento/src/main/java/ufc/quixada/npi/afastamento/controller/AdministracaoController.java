@@ -150,7 +150,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
+	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
 	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano,
 			@RequestParam("semestre") Integer semestre, Model model) {
 
@@ -208,7 +208,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true, beforeInvocation = true)
+	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true, beforeInvocation = true)
 	public Model editarPeriodo(Model model, @RequestParam("id") Long id, @RequestParam("vagas") Integer vagas,
 			@RequestParam("encerramento") String encerramentoString) {
 
@@ -302,7 +302,7 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
+	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor", "professores" }, allEntries = true)
 	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
 			RedirectAttributes redirect, HttpSession session) {
 	

@@ -76,7 +76,7 @@ div#content {
 	float: left;
 	color: #545454;
 	margin-bottom: 50px;
-	margin: 30px;
+	margin: 20px;
 }
 
 div.title {
@@ -271,7 +271,6 @@ input {
 
 .alert {
 	text-align: center;
-	margin-top: 20px;
 }
 
 li ul .dropdown-menu {

@@ -86,19 +86,22 @@
 									<td>${reserva.conceitoPrograma eq 0 ? "-" : reserva.conceitoPrograma}</td>
 									<td>${reserva.instituicao }</td>
 									<td>${reserva.status.descricao }</td>
-									<td><c:if test="${reserva.status eq 'ABERTO'}">
-											<a id="excluir" data-toggle="modal" data-target="#excluir-reserva" href="#"
-												data-href="<c:url value="/reserva/${reserva.id}/excluir"></c:url>"
+									<td>
+									   <c:if test="${reserva.anoInicio - periodo.ano gt 1 or 
+									       (reserva.anoInicio - periodo.ano eq 1 and reserva.semestreInicio - periodo.semestre >= 0)}">
+											<a id="excluir" data-toggle="modal"
+												data-target="#excluir-reserva" href="#"
+												data-href="<c:url value="/reserva/excluir/${reserva.id}"></c:url>"
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
 												<button class="btn btn-danger">
 													Excluir&nbsp;<i class="fa fa-trash-o"></i>
 												</button>
 											</a>
-										</c:if> &nbsp;&nbsp; <c:if test="${periodo.status eq 'ABERTO' }">
-										<a href="<c:url value="/reserva/editar/${reserva.id }" />" class="btn btn-primary">Editar&nbsp;
-												<i class="fa fa-pencil "></i>
-											</a>
-										</c:if>
+											<a href="<c:url value="/reserva/editar/${reserva.id }" />"
+                                                class="btn btn-primary">Editar&nbsp;<i class="fa fa-pencil "></i>
+                                            </a>
+                                        </c:if>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
