@@ -32,86 +32,56 @@
 				</div>
 			</c:if>
 
-			<input type="hidden" id="ano" value="${periodoAtual.ano }" /> <input
-				type="hidden" id="semestre" value="${periodoAtual.semestre }" /> <input
-				type="hidden" id="anoPosterior" value="${periodoPosterior.ano }" />
-			<input type="hidden" id="semestrePosterior"
-				value="${periodoPosterior.semestre }" /> <input type="hidden"
-				id="anoAnterior" value="${periodoAnterior.ano }" /> <input
-				type="hidden" id="semestreAnterior"
-				value="${periodoAnterior.semestre }" />
+			<input type="hidden" id="ano" value="${periodoAtual.ano }" />
+			<input type="hidden" id="semestre" value="${periodoAtual.semestre }" />
+			<input type="hidden" id="anoAtual" value="${periodoAtual.ano }" />
+			<input type="hidden" id="semestreAtual" value="${periodoAtual.semestre }" />
+			<input type="hidden" id="anoPosterior" value="${periodoPosterior.ano }" />
+			<input type="hidden" id="semestrePosterior" value="${periodoPosterior.semestre }" />
+			<input type="hidden" id="anoAnterior" value="${periodoAnterior.ano }" />
+			<input type="hidden" id="semestreAnterior" value="${periodoAnterior.semestre }" />
 			
 			<div id="ranking-full">
 				<div id="wrap-periodo">			
-						<div role="main">
-							<div class="row">
-						<div role="main" class="col-md-6 col-md-push-3">
-							<div id="periodo" class="align-center">
-								<i id="anterior" class="fa fa-arrow-circle-left fa-2x"></i> <label
-									id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
-								<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
-							</div>
-							<div id="dados-periodo" class="align-center">
-								<br> <label>Encerramento: <span id="encerramento"
-									class="value-label"></span></label>&nbsp; <i id="help-encerramento"
-									class="fa fa-question-circle fa-lg" data-toggle="popover"
-									data-placement="right" data-content=""></i><br> <label>Total
-									estimado de vagas: <span id="vagas" class="badge"></span>
-								</label>
-							</div>
-						</div>
-						<div role="complementary" class="col-md-3 col-md-push-2">
-							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
-								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
-								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />
-								
-								<div class="row">
-									<div class="form-group">
-										
-											<div class="col-md-4 col-md-push-2">
-											<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="form-control ano" size="10" 													value="${periodoAtual.ano }" required="required"/>
-											</div>
-											<div class="col-md-3 col-md-push-2">
-												<select id="semestreBuscado" name="semestreBuscado"
-													class="form-control selectpicker">
-													<option value="1" ${semestre == 1 ? 'selected' : ''}>1</option>
-													<option value="2" ${semestre == 2 ? 'selected' : ''}>2</option>
-												</select>
-												
-											</div>
-											<div class="col-md-5 col-md-push-2" >												
-													<input id="buscar" name="buscar" type="submit"
-														class="btn btn-siaf" value="Buscar" />		
-																
-											</div>
-										
-										<br>
-										
-									</div>								
-
+					<div role="main">
+						<div class="row">
+							<div role="main" class="col-md-6 col-md-push-3">
+								<div id="periodo" class="align-center">
+									<i id="anterior" class="fa fa-arrow-circle-left fa-2x"></i>
+									<label id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
+									<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
 								</div>
-							</form:form>
+								<div id="buscarRanking" class="align-center">
+									<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="ano" size="10" value="${periodoAtual.ano }"/>
+									<select id="semestreBuscado" name="semestreBuscado" class="selectpicker">
+										<option value="1" ${periodoAtual.semestre == 1 ? 'selected' : ''}>1</option>
+										<option value="2" ${periodoAtual.semestre == 2 ? 'selected' : ''}>2</option>
+									</select>
+									<input id="buscar" name="buscar" type="submit" class="btn btn-siaf" value="Buscar" />		
+								</div>
+								<div id="dados-periodo" class="align-center">
+									<label>Encerramento: <span id="encerramento" class="value-label"></span></label>&nbsp;
+									<i id="help-encerramento" class="fa fa-question-circle fa-lg" data-toggle="popover" data-placement="right" data-content=""></i><br>
+									<label>Total estimado de vagas: <span id="vagas" class="badge"></span></label>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-3 col-md-pull-8"></div>
 					</div>
-					
-						</div>
-						
-						<div role="complementary" >
-							<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
-								<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
-								<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />								
-							</form:form>
-						</div>
+					<%-- <div role="complementary" >
+						<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
+							<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
+							<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />								
+						</form:form>
+					</div> --%>
 				</div>
 				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
-														Não é possivel realizar busca por períodos passados.
-										</div>
+					Não é possivel realizar busca por períodos passados.
+				</div>
 				
 				<div class="titulo-ranking title">
-					<a data-toggle="collapse" href="#collapseAfastados"
-						aria-expanded="false" aria-controls="#collapseAfastados">Professores
-						Afastados</a><br> <span id="count-afastados" class="badge"></span>
+					<a data-toggle="collapse" href="#collapseAfastados" aria-expanded="false" aria-controls="#collapseAfastados">
+						Professores Afastados</a><br>
+					<span id="count-afastados" class="badge"></span>
 				</div>
 
 				<div class="collapse in" id="collapseAfastados">
@@ -125,10 +95,9 @@
 						</thead>
 					</table>
 
-					<div id="warning-afastados"
-						class="alert alert-warning alert-dismissible" role="alert">
-						Ainda não há nenhum docente com afastamento confirmado para esse
-						período.</div>
+					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
+						Ainda não há nenhum docente com afastamento confirmado para esse período.
+					</div>
 				</div>
 				
 				<div class="titulo-ranking title" role="navigation">

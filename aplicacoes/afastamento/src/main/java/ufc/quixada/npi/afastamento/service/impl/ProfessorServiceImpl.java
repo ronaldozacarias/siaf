@@ -11,8 +11,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
 import br.ufc.quixada.npi.enumeration.QueryType;
@@ -26,7 +24,6 @@ public class ProfessorServiceImpl extends GenericServiceImpl<Professor> implemen
 	private GenericRepository<Professor> professorRepository;
 	
 	@Override
-	@Cacheable("professores")
 	public List<Professor> findAtivos() {
 		List<Professor> professores = professorRepository.find(Professor.class);
 		List<Professor> ativos = new ArrayList<Professor>();

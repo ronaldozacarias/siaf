@@ -45,7 +45,7 @@ public class AfastamentoScheduler {
 	private AfastamentoService afastamentoService;
 	
 	@Scheduled(cron = "0 0 0 1/1 * ?")
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "visualizarRanking", "ranking", "loadProfessor"}, allEntries = true)
 	public void verificaEncerramentoPeriodo() {
 		// Comentado para verificação de como funcionará o fechamento do ranking.
 		

@@ -239,7 +239,6 @@ $(document).ready(function() {
 		
 		if($('#options' + id).data('vagas')){
 			vagas = $('#vagas'+id+' input').val();
-			alert(vagas);
 		}
 		
 		$.ajax({
@@ -320,45 +319,6 @@ $(document).ready(function() {
 	});
 	
 	
-	$('#tablePeriodos').DataTable({	
-		"bRetrieve": true,
-		 "pageLength": 50,
-		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
-		 "columnDefs": [
-		               { "orderable": false, "targets": 0 },
-		               { "orderData": [ 1, 2 ],    "targets": 1 },
-		               { "orderable": false, "targets": 2 },
-		               { "orderable": false, "targets": 3 },
-		               { "orderable": false, "targets": 4 },
-		               { "orderable": false, "targets": 5 },
-		],
-		
-		"language": {
-		    "sEmptyTable": "Nenhum registro encontrado",
-		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-		    "sInfoPostFix": "",
-		    "sInfoThousands": ".",
-		    "sLengthMenu": "resultados por página _MENU_",
-		    "sLoadingRecords": "Carregando...",
-		    "sProcessing": "Processando...",
-		    "sZeroRecords": "Nenhum registro encontrado",
-		    "sSearch": "",
-		    "oPaginate": {
-		        "sNext": "Próximo",
-		        "sPrevious": "Anterior",
-		        "sFirst": "Primeiro",
-		        "sLast": "Último"
-		    },
-		    "oAria": {
-		        "sSortAscending": ": Ordenar colunas de forma ascendente",
-		        "sSortDescending": ": Ordenar colunas de forma descendente"
-		    }
-		},
-	
-	});
-	$('#tablePeriodos').dataTable().fnDestroy();
 //____________________________________________________________________________________________________________________________________________________	
 
 		
@@ -396,9 +356,12 @@ $(document).ready(function() {
 	$(".filtroSemestre").selectpicker('refresh');
 	
 	$(".ano").datepicker({
-        format: " yyyy", 
-           viewMode: "years", 
-           minViewMode: "years",           
+        format: " yyyy",
+        language: 'pt-BR',
+		autoclose: true,
+        viewMode: "years", 
+        minViewMode: "years",
+        startDate: 'today'
     });
 		
 	
@@ -433,7 +396,7 @@ $(document).ready(function() {
         format: " yyyy", 
            viewMode: "years", 
            minViewMode: "years",
-           startDate: $('#periodoAtualAno').val()
+           startDate: $('#ano').val()
     });
 	
 	$("#warning-buscar-periodo").hide();
@@ -447,19 +410,19 @@ $(document).ready(function() {
 	$('#buscar').click(function(){
 		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
-		var periodoAtualAno = parseInt($('#periodoAtualAno').val());
+		var periodoAtualAno = parseInt($('#anoAtual').val());
 		var semestreBuscado = parseInt($('#semestreBuscado').val());
-		var periodoAtualSemestre = parseInt($('#periodoAtualSemestre').val());
-		if(anoBuscado > periodoAtualAno){
+		var periodoAtualSemestre = parseInt($('#semestreAtual').val());
+		if (anoBuscado > periodoAtualAno) {
 			getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());			
-		}else if(anoBuscado == periodoAtualAno){
-			if(semestreBuscado >= periodoAtualSemestre){
+		} else if (anoBuscado == periodoAtualAno) {
+			if (semestreBuscado >= periodoAtualSemestre) {
 				getRanking($('#anoBuscado').val(), $('#semestreBuscado').val());
 				
-			}else{
+			} else {
 				$("#warning-buscar-periodo").show();
 			}
-		}else{
+		} else {
 			$("#warning-buscar-periodo").show();
 		}
 	});
@@ -557,7 +520,7 @@ $(document).ready(function() {
 	
 	//Datable Reserva
 	$('#tableReservas').DataTable({
-				"pageLength" : 50,
+				"pageLength" : 10,
 				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
 				"columnDefs" : [ {
 					"orderable" : false,
@@ -606,7 +569,7 @@ $(document).ready(function() {
 			});
 	
 	$('#tablePeriodos').DataTable({
-		 "pageLength": 50,
+		 "pageLength": 10,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],
 		 "columnDefs": [
 		               { "orderable": false, "targets": 0 },
@@ -676,8 +639,8 @@ function getRanking(ano, semestre) {
 		type: "GET",
 		url: '/siaf/reserva/ranking.json',
 		data: {
-        	ano : ano,
-        	semestre : semestre
+        	ano : ano.trim(),
+        	semestre : semestre.trim()
 		}
 	})
 	.success(function(result) {
@@ -702,6 +665,10 @@ function getRanking(ano, semestre) {
 		
 		$('#ano').val(result.periodoAtual.ano);
 		$('#semestre').val(result.periodoAtual.semestre);
+		
+		$('#anoBuscado').val(result.periodoAtual.ano);
+		$('#semestreBuscado').val(result.periodoAtual.semestre);
+		$('#semestreBuscado').selectpicker('refresh');
 		
 		$('#periodoLabel').text(result.periodoAtual.ano + "." + result.periodoAtual.semestre);
 		$('#vagas').text(result.periodoAtual.vagas);

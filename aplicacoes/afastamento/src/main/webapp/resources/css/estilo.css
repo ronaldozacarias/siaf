@@ -483,6 +483,14 @@ footer > p {
 	color: #7C7C7C;
 }
 
+div#buscarRanking {
+	text-align: center;
+}
+
+input#anoBuscado, input#buscar {
+	width: inherit !important;
+}
+
 #atualizarLista{
 	width: 130px;
 }

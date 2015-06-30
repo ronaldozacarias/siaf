@@ -35,7 +35,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	private ProfessorService professorService;
 
 	@Override
-	@CacheEvict(value = {"default", "reservasByProfessor", "periodo", "visualizarRanking", "loadProfessor", "professores"}, allEntries = true)
+	@CacheEvict(value = {"default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public void salvar(Reserva reserva) {
 		int vagas = professorService.findAtivos().size();
 		for (int ano = reserva.getAnoInicio(); ano <= reserva.getAnoTermino(); ano++) {
@@ -108,8 +108,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	}
 
 	@Override
-	@CacheEvict(value = { "default", "reservasByProfessor", "periodo", "visualizarRanking", "ranking", "loadProfessor",
-			"professores" }, allEntries = true, beforeInvocation = true)
+	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "ranking", "loadProfessor"}, allEntries = true, beforeInvocation = true)
 	public void atualizar(Reserva reserva) {
 		update(reserva);
 	}
