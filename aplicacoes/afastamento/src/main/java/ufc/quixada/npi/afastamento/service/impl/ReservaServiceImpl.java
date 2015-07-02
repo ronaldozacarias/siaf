@@ -130,4 +130,9 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		return reservaRepository.find(QueryType.JPQL, "from Reserva where status = :status and anoInicio <= :ano and semestreInicio <= :semestre order by anoInicio, semestreInicio", params);
 	}
 
+	@Override
+	public List<Reserva> getAllReservas() {
+		return reservaRepository.find(Reserva.class);
+	}
+
 }

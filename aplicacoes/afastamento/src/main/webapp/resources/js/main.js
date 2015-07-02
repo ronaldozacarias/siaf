@@ -519,28 +519,14 @@ $(document).ready(function() {
 
 	
 	//Datable Reserva
-	$('#tableReservas').DataTable({
+	var table = $('#tableReservas').DataTable({
 				"pageLength" : 10,
-				"order" : [ [ 1, 'asc' ], [ 2, 'asc' ] ],
-				"columnDefs" : [ {
-					"orderable" : false,
-					"targets" : 0
-				}, {
-					"orderData" : [ 1, 2 ],
-					"targets" : 1
-				}, {
-					"orderable" : false,
-					"targets" : 2
-				}, {
-					"orderable" : false,
-					"targets" : 3
-				}, {
-					"orderable" : false,
-					"targets" : 4
-				}, {
-					"orderable" : false,
-					"targets" : 5
-				}, ],
+				"order" : [ 3, 'asc' ],
+				"columnDefs" : [ 
+	                {"targets" : 1},
+	                {"targets" : 2, "orderable" : false},
+	                {"targets" : 6, "orderable" : false},
+				],
 
 				"language" : {
 					"sEmptyTable" : "Nenhum registro encontrado",
@@ -549,7 +535,7 @@ $(document).ready(function() {
 					"sInfoFiltered" : "(Filtrados de _MAX_ registros)",
 					"sInfoPostFix" : "",
 					"sInfoThousands" : ".",
-					"sLengthMenu" : "resultados por página _MENU_",
+					"sLengthMenu" : "Resultados por página:  _MENU_",
 					"sLoadingRecords" : "Carregando...",
 					"sProcessing" : "Processando...",
 					"sZeroRecords" : "Nenhum registro encontrado",
@@ -568,6 +554,28 @@ $(document).ready(function() {
 				}
 			});
 	
+	$("#tableReservas tfoot th").each( function ( i ) {
+		if(i == 0 || i == 4 || i == 5) {
+			var select = $('<select class="select-search '+i+'" title=""><option value=""></option></select>')
+	        .appendTo( $(this).empty() )
+	        .on( 'change', function () {
+	            var val = $(this).val();
+	
+	            table.column( i ) //Only the first column
+	                .search( val ? '^'+$(this).val()+'$' : val, true, false )
+	                .draw();
+	        });
+	
+		    table.column( i ).data().unique().sort().each( function ( d, j ) {
+		    	if(i == 0) {
+		    		var t = $.parseHTML( d );
+		    		d = $(t).html();
+		    	}
+		        select.append( '<option value="'+d+'">'+d+'</option>' );
+		    });
+		}
+    } );
+
 	$('#tablePeriodos').DataTable({
 		 "pageLength": 10,
 		 "order": [[ 1, 'asc' ], [ 2, 'asc' ]],

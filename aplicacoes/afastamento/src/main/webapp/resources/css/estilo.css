@@ -102,8 +102,16 @@ form input, .bootstrap-select button {
 	width: auto !important;
 }
 
+.select-search,  .select-search button{
+	width: 100% !important;
+}
+
 .bootstrap-select button:HOVER, .bootstrap-select button:FOCUS {
 	background-color: white !important;
+}
+
+table#tableReservas tbody tr {
+	line-height: 32px;
 }
 
 a, a:hover, a:VISITED, a:ACTIVE {

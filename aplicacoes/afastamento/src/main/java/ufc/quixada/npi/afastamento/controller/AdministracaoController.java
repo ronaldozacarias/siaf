@@ -112,9 +112,9 @@ public class AdministracaoController {
 		}
 	}
 
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	@RequestMapping(value = "/homologacao", method = RequestMethod.GET)
 	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
-	public String getReservas(Model model) {
+	public String getHomologacao(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {
 			if (periodo != null) {
@@ -131,7 +131,7 @@ public class AdministracaoController {
 			}
 		}
 
-		return Constants.PAGINA_GERENCIAR_RESERVAS;
+		return Constants.PAGINA_HOMOLOGAR_RESERVAS;
 	}
 
 	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -273,14 +273,11 @@ public class AdministracaoController {
 		return model;
 	}
 
-	@RequestMapping(value = "/atualizarConceito", method = RequestMethod.GET)
-	public String atualizarConceito(Model model) {
-		List<Reserva> reservas = reservaService.getReservasByStatus(StatusReserva.ABERTO);
-		if (reservas != null) {
-			model.addAttribute("reservas", reservas);
-
-		}
-		return Constants.PAGINA_ALTERAR_RESERVAS_EM_ABERTO;
+	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
+	public String getReservas(Model model) {
+		List<Reserva> reservas = reservaService.getAllReservas();
+		model.addAttribute("reservas", reservas);
+		return Constants.PAGINA_GERENCIAR_RESERVAS;
 	}
 
 	@RequestMapping(value = "/atualizarConceito.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

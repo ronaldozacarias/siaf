@@ -17,7 +17,7 @@ public class Constants {
 	
 	public static final String PAGINA_LISTAR_PROFESSORES = "admin/professores";
 	
-	public static final String PAGINA_GERENCIAR_RESERVAS = "admin/reservas";
+	public static final String PAGINA_HOMOLOGAR_RESERVAS = "admin/homologacao";
 	
 	public static final String PAGINA_LISTAR_PERIODOS = "admin/periodo";
 	
@@ -29,7 +29,7 @@ public class Constants {
 	
 	public static final String PAGINA_LISTAR_RESERVA = "reserva/lista";
 	
-	public static final String PAGINA_ALTERAR_RESERVAS_EM_ABERTO = "admin/alteraReservas";
+	public static final String PAGINA_GERENCIAR_RESERVAS = "admin/reservas";
 	
 	
 	
@@ -37,7 +37,7 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_LISTAR_PROJETO = "redirect:/projeto/listar";
 	
-	public static final String REDIRECT_PAGINA_GERENCIAR_RESERVAS = "redirect:/administracao/reservas";
+	public static final String REDIRECT_PAGINA_HOMOLOGAR_RESERVAS = "redirect:/administracao/homologacao";
 	
 	public static final String REDIRECT_PAGINA_INCLUIR_RESERVAS = "redirect:/reserva/incluir";
 	
