@@ -12,7 +12,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Ranking;
+import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
@@ -37,17 +39,14 @@ public class AfastamentoScheduler {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		Date ontem = calendar.getTime();
-		System.out.println("Ontem: " + ontem);
 		Periodo periodo = periodoService.getPeriodo(new java.sql.Date(ontem.getTime()));
-		System.out.println("Verificando encerramento...");
-		System.out.println(periodo);
 		if(periodo != null) {
-			periodo.setStatus(StatusReserva.ENCERRADO);
+			periodo.setStatus(StatusPeriodo.ENCERRADO);
 			periodoService.update(periodo);
 			
 			Ranking ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
-				if(tupla.getStatus().equals(StatusReserva.ACEITO)) {
+				if(tupla.getStatus().equals(StatusTupla.ACEITO)) {
 					Periodo ultimoPeriodo = periodoService.getPeriodo(tupla.getReserva().getAnoTermino(), tupla.getReserva().getSemestreTermino());
 					if(ultimoPeriodo.equals(periodo)) {
 						tupla.getReserva().setStatus(StatusReserva.ENCERRADO);
@@ -59,10 +58,10 @@ public class AfastamentoScheduler {
 			periodo = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodo));
 			ranking = rankingService.getRanking(periodo);
 			for(TuplaRanking tupla : ranking.getTuplas()) {
-				if(tupla.getStatus().equals(StatusReserva.CLASSIFICADO)) {
+				if(tupla.getStatus().equals(StatusTupla.CLASSIFICADO)) {
 					tupla.getReserva().setStatus(StatusReserva.ACEITO);
 					reservaService.update(tupla.getReserva());
-				} else if(tupla.getStatus().equals(StatusReserva.DESCLASSIFICADO)) {
+				} else if(tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
 					tupla.getReserva().setStatus(StatusReserva.NAO_ACEITO);
 					reservaService.update(tupla.getReserva());
 				}
