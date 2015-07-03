@@ -18,6 +18,7 @@
 		<jsp:include page="../modulos/header.jsp" />
 
 		<div id="content">
+		<div id="chart" style="width:100%; height:400px;"></div>
 		<div class="messages">
 				<div id="erroDiv"></div>
 				<div id="infoDiv"></div>
@@ -28,7 +29,6 @@
 						<tr>
 							<th>Status</th>
 							<th>Professor</th>
-							<th>Instituição</th>
 							<th>Período</th>
 							<th>Programa</th>
 							<th>Conceito</th>
@@ -40,7 +40,6 @@
 						<tr>
 							<th>Status</th>
 							<th>Professor</th>
-							<th>Instituição</th>
 							<th>Período</th>
 							<th>Programa</th>
 							<th>Conceito</th>
@@ -62,12 +61,11 @@
 									</c:choose>
 								</td>
 								<td>${reserva.professor.nome}</td>
-								<td>${reserva.instituicao}</td>
 								<td>${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino }.${reserva.semestreTermino }</td>
 
 								<td id="programa" class="programa">${reserva.programa.descricao}</td>
-								<td id="con${reserva.id}" class="con">${reserva.conceitoPrograma}</td>
-								<td>
+								<td id="con${reserva.id}" class="con dt-body-center">${reserva.conceitoPrograma}</td>
+								<td class="dt-body-center">
 									<c:if test="${reserva.status == 'ABERTO' }">
 										<button title="Editar" class="btn editReserva" id="editReserva${reserva.id}" data-id="${reserva.id}">
 											<i class="fa fa-pencil "></i>
@@ -92,6 +90,7 @@
 
 	<script type="text/javascript">
 		$('#menu-reservasEmAberto').addClass('active');
+		relatorioReservas();
 	</script>
 </body>
 </html>

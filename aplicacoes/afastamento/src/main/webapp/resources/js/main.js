@@ -516,16 +516,12 @@ $(document).ready(function() {
 		event.stopPropagation();
 	});
 
-
-	
 	//Datable Reserva
 	var table = $('#tableReservas').DataTable({
 				"pageLength" : 10,
-				"order" : [ 3, 'asc' ],
+				"order" : [[ 0, 'asc' ], [ 2, 'asc' ]],
 				"columnDefs" : [ 
-	                {"targets" : 1},
-	                {"targets" : 2, "orderable" : false},
-	                {"targets" : 6, "orderable" : false},
+	                {"targets" : 5, "orderable" : false},
 				],
 
 				"language" : {
@@ -555,8 +551,8 @@ $(document).ready(function() {
 			});
 	
 	$("#tableReservas tfoot th").each( function ( i ) {
-		if(i == 0 || i == 4 || i == 5) {
-			var select = $('<select class="select-search '+i+'" title=""><option value=""></option></select>')
+		if(i == 0 || i == 3 || i == 4) {
+			var select = $('<select class="select-search '+i+'" title="TODOS"><option value="">TODOS</option></select>')
 	        .appendTo( $(this).empty() )
 	        .on( 'change', function () {
 	            var val = $(this).val();
@@ -949,5 +945,53 @@ function somenteNumeros(campo){
 			campo.value = campo.value.substring(0,i);
 		}
 	}
+}
+
+function relatorioReservas() {
+	var filtro = {
+			"anoInicio" : 2015,
+			"semestreInicio" : 1,
+			"anoTermino" : 2017,
+			"semestreTermino" : 2
+		};
+		
+		$.ajax({
+			url: '/siaf/administracao/relatorio/reservas-by-periodo.json',
+			type: "POST",
+			dataType: "html",
+			data: filtro,
+			success: function(result) {
+				var obj = $.parseJSON(result);
+				var cat = [];
+				var data = [];
+				for (var key in obj.relatorio) {
+					cat.push(key);
+					data.push(obj.relatorio[key])
+		        }
+				$('#chart').highcharts({
+			        title: {
+			            text: 'Solicitação de Reservas'
+			        },
+			        xAxis: {
+			        	title: {
+			        		text: 'Períodos'
+			        	},
+			            categories: cat
+			        },
+			        yAxis: {
+			            title: {
+			                text: 'Total de Solicitações'
+			            }
+			        },
+			        series: [{
+			            name: 'Reservas',
+			            data: data
+			        }]
+			    });
+			},
+			error: function(error) {
+				alert('erro');
+			}
+		});
 }
 

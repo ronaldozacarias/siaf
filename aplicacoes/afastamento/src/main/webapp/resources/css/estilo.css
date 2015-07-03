@@ -102,6 +102,10 @@ form input, .bootstrap-select button {
 	width: auto !important;
 }
 
+.bootstrap-select .btn:FOCUS {
+	outline: none !important;
+}
+
 .select-search,  .select-search button{
 	width: 100% !important;
 }

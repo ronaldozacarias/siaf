@@ -16,6 +16,8 @@
 <script src="<c:url value="/resources/js/jquery.validate.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.bootgrid.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/highcharts.js" />"></script>
+<script src="<c:url value="/resources/js/exporting.js" />"></script>
 
 <footer>
 	<img id="logo-campus" alt="Campus da UFC em Quixadá" src="<c:url value="/resources/images/logo-npi.png" />">
