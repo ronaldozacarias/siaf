@@ -66,7 +66,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	public List<Reserva> getReservasByProfessor(String siape) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("siape", siape);
-		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.siape = :siape", params);
+		return reservaRepository.find(QueryType.JPQL, "from Reserva where professor.siape = :siape order by anoInicio DESC, semestreInicio DESC", params);
 	}
 
 	@Override
