@@ -6,6 +6,10 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
@@ -15,6 +19,8 @@ import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
 
 @Named
+@Configurable
+@EnableScheduling
 public class AfastamentoScheduler {
 	
 	@Inject
@@ -26,6 +32,7 @@ public class AfastamentoScheduler {
 	@Inject
 	private ReservaService reservaService;
 	
+	@Scheduled(cron = "0 0 0 1/1 * ?")
 	public void verificaEncerramentoPeriodo() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
