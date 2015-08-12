@@ -42,40 +42,34 @@
 			<input type="hidden" id="semestreAnterior" value="${periodoAnterior.semestre }" />
 			
 			<div id="ranking-full">
+				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					Não é possivel realizar busca por períodos passados.
+				</div>
 				<div id="wrap-periodo">			
 					<div role="main">
 						<div class="row">
 							<div role="main" class="col-md-6 col-md-push-3">
-								<div id="periodo" class="align-center">
-									<i id="anterior" class="fa fa-arrow-circle-left fa-2x"></i>
-									<label id="periodoLabel">${periodoAtual.ano }.${periodoAtual.semestre }</label>
-									<i id="posterior" class="fa fa-arrow-circle-right fa-2x"></i>
-								</div>
 								<div id="buscarRanking" class="align-center">
-									<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="ano" size="10" value="${periodoAtual.ano }"/>
+									<i id="anterior" class="fa fa-chevron-circle-left fa-2x" title="Anterior"></i>
+									<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="ano form-control" size="10" value="${periodoAtual.ano }"/>
 									<select id="semestreBuscado" name="semestreBuscado" class="selectpicker">
 										<option value="1" ${periodoAtual.semestre == 1 ? 'selected' : ''}>1</option>
 										<option value="2" ${periodoAtual.semestre == 2 ? 'selected' : ''}>2</option>
 									</select>
-									<input id="buscar" name="buscar" type="submit" class="btn btn-siaf" value="Buscar" />		
+									<input id="buscar" name="buscar" type="submit" class="btn btn-siaf" value="Buscar" />
+									<i id="posterior" class="fa fa-chevron-circle-right fa-2x" title="Próximo"></i>	
 								</div>
 								<div id="dados-periodo" class="align-center">
-									<label>Encerramento: <span id="encerramento" class="value-label"></span></label>&nbsp;
+									<label>Data de encerramento: <span id="encerramento" class="value-label"></span></label>&nbsp;
 									<i id="help-encerramento" class="fa fa-question-circle fa-lg" data-toggle="popover" data-placement="right" data-content=""></i><br>
 									<label>Total estimado de vagas: <span id="vagas" class="badge"></span></label>
 								</div>
 							</div>
 						</div>
 					</div>
-					<%-- <div role="complementary" >
-						<form:form id="buscarRanking" commandName="ranking"	action="" method="POST" class="form-horizontal">
-							<input type="hidden" id="periodoAtualAno"	value="${periodoAtual.ano}" />
-							<input type="hidden" id="periodoAtualSemestre"	value="${periodoAtual.semestre}" />								
-						</form:form>
-					</div> --%>
-				</div>
-				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
-					Não é possivel realizar busca por períodos passados.
 				</div>
 				
 				<div class="titulo-ranking title">
@@ -95,7 +89,7 @@
 						</thead>
 					</table>
 
-					<div id="warning-afastados" class="alert alert-warning alert-dismissible" role="alert">
+					<div id="warning-afastados" class="alert warning alert-warning alert-dismissible" role="alert">
 						Ainda não há nenhum docente com afastamento confirmado para esse período.
 					</div>
 				</div>
@@ -131,10 +125,9 @@
 						</thead>
 					</table>
 
-					<div id="warning-ranking"
-						class="alert alert-warning alert-dismissible" role="alert">
-						Não há nenhuma reserva para esse período.</div>
-				</div>
+					<div id="warning-ranking" class="alert warning alert-warning alert-dismissible" role="alert">
+						Não há nenhuma reserva em aberto para esse período.</div>
+					</div>
 
 				<div id="legenda">
 					<label><span>Fórmula:</span> R = (T – A) / (5 x A + S + P)</label><br />

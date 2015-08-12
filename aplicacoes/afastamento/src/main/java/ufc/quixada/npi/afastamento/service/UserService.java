@@ -5,5 +5,7 @@ import br.ufc.quixada.npi.ldap.model.Usuario;
 public interface UserService {
 	
 	Usuario getByCpf(String cpf);
+	
+	boolean isAdministrador(String cpf);
 
 }

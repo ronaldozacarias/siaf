@@ -16,13 +16,13 @@
     			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
     		</li>
     		<sec:authorize ifAnyGranted="ADMIN-SIAF">
+	    		<li id="menu-homologacao">
+	    			<a class="" href="<c:url value="/administracao/homologacao" />"><span>Homologação</span></a>
+	    		</li>
 	    		<li id="menu-periodos">
 	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
 	    		</li>
 	    		<li id="menu-reservas">
-	    			<a class="" href="<c:url value="/administracao/homologacao" />"><span>Homologação</span></a>
-	    		</li>
-	    		<li id="menu-reservasEmAberto">
 	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Reservas</span></a>
 	    		</li>
 	    		<li id="menu-professores">

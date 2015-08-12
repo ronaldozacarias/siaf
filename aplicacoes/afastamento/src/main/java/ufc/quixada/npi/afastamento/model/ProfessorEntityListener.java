@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.PostLoad;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -18,11 +17,10 @@ public class ProfessorEntityListener implements ApplicationContextAware {
 	private static ApplicationContext context;
 	
 	@PostLoad
-	@Cacheable("loadProfessor")
 	public void loadProfessor(Professor professor) {
 		UsuarioService usuarioService = (UsuarioService) context.getBean(UsuarioService.class);
 		Usuario usuario = usuarioService.getByCpf(professor.getCpf());
-		professor.setNome(usuario.getNome());
+		professor.setNome(usuario.getNome().toUpperCase());
 		professor.setEmail(usuario.getEmail());
 		professor.setDataNascimento(usuario.getNascimento());
 		professor.setSiape(usuario.getSiape());

@@ -165,9 +165,14 @@ div.titulo-ranking a {
 	margin-top: 15px;
 }
 
-div#periodo {
+div#buscarRanking {
 	text-align: center;
 	color: #CF5719;
+}
+
+div#buscarRanking i {
+	margin: 0px 20px;
+	cursor: pointer;
 }
 
 div#dados-periodo {
@@ -231,6 +236,15 @@ table > tbody > tr.DESCLASSIFICADO {
 	text-align: center;
 }
 
+div.warning {
+	display: inline-block;
+	width: 100%;
+	margin-top: 15px;
+}
+
+.table > tbody > tr > td {
+	vertical-align: middle !important;
+}
 
 div#legenda label {
 	font-weight: 100;
@@ -316,6 +330,10 @@ li ul .dropdown-menu {
 table#reservas {
 	margin-top: 30px;
 	text-align: center;
+}
+
+.orange {
+	color: #CF5719;
 }
 
 /* Periodo */
@@ -495,12 +513,13 @@ footer > p {
 	color: #7C7C7C;
 }
 
-div#buscarRanking {
-	text-align: center;
+input#anoBuscado, input#buscar {
+	width: 11%;
 }
 
-input#anoBuscado, input#buscar {
-	width: inherit !important;
+input.data-periodo {
+	width: auto;
+	text-align: center;
 }
 
 #atualizarLista{
@@ -566,8 +585,14 @@ button, input.btn-siaf {
 	font-style: normal !important;
 }
 
-span.obrigatorio {
+.obrigatorio {
+	width: 100%;
+	text-align: left !important;
+}
+
+.obrigatorio span {
 	color: #A94442;
+	
 }
 
 @-webkit-keyframes loading {

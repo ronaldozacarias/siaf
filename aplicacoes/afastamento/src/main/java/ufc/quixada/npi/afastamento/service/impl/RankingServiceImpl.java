@@ -10,8 +10,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Programa;
@@ -37,7 +35,6 @@ public class RankingServiceImpl implements RankingService {
 	private PeriodoService periodoService;
 
 	@Override
-	@Cacheable("visualizarRanking")
 	public List<TuplaRanking> visualizarRanking(Periodo periodo) {
 		List<Periodo> periodos = periodoService.getPeriodoAbertos();
 		Map<Periodo, List<TuplaRanking>> ranking = new HashMap<Periodo, List<TuplaRanking>>();

@@ -11,7 +11,6 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -115,7 +114,6 @@ public class ReservaController {
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public String incluir(@RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
 			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
 			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
@@ -189,7 +187,6 @@ public class ReservaController {
 	
 	
 	@RequestMapping(value = "/atualizar", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public String atualizar(@RequestParam("id")Long id,  @RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
 			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
 			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
@@ -205,11 +202,11 @@ public class ReservaController {
 
 		if (anoInicio == null || anoTermino == null) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
 		}
 		if (anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
 		}
 
 		Periodo periodo = periodoService.getPeriodoAtual();
@@ -217,16 +214,16 @@ public class ReservaController {
 
 		if (diferenca < 2) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
 		}
 		if ((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO)
 				&& calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
 		}
 		if (programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
 		}
 		
 		Reserva reserva = reservaService.find(Reserva.class, id);
@@ -267,7 +264,6 @@ public class ReservaController {
 	}
 
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.GET)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);

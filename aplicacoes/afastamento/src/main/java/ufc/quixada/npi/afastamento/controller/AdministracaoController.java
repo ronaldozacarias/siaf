@@ -2,6 +2,7 @@ package ufc.quixada.npi.afastamento.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,27 +13,25 @@ import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.afastamento.model.Afastamento;
 import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
+import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
 import ufc.quixada.npi.afastamento.model.Reserva;
-import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
+import ufc.quixada.npi.afastamento.service.AfastamentoService;
 import ufc.quixada.npi.afastamento.service.NotificacaoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.ProfessorService;
@@ -63,6 +62,9 @@ public class AdministracaoController {
 
 	@Inject
 	private NotificacaoService notificacaoService;
+	
+	@Inject
+	private AfastamentoService afastamentoService;
 
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
@@ -113,44 +115,75 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/homologacao", method = RequestMethod.GET)
-	@CacheEvict(value = { "ranking", "visualizarRanking" }, beforeInvocation = true)
 	public String getHomologacao(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
 		if (periodo != null) {
-			if (periodo != null) {
-				periodo = periodoService.getPeriodoPosterior(periodo);
-				Ranking ranking = new Ranking();
-				ranking.setPeriodo(periodo);
-				ranking.setTuplas(rankingService.visualizarRanking(periodo));
-
-				List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservaAndPeriodo(
-						Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
-
-				model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
-				model.addAttribute("ranking", ranking);
+			periodo = periodoService.getPeriodoPosterior(periodo);
+			Ranking ranking = new Ranking();
+			ranking.setPeriodo(periodo);
+			List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
+			for(TuplaRanking tupla : rankingService.visualizarRanking(periodo)) {
+				if (tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
+					if(tupla.getReserva().getAnoInicio().equals(periodo.getAno())
+						&& tupla.getReserva().getSemestreInicio().equals(periodo.getSemestre())) {
+						tuplas.add(tupla);
+					}
+				} else {
+					tuplas.add(tupla);
+				}
 			}
+			ranking.setTuplas(tuplas);
+
+			List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservaAndPeriodo(
+					Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
+
+			model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
+			model.addAttribute("ranking", ranking);
 		}
 
 		return Constants.PAGINA_HOMOLOGAR_RESERVAS;
 	}
 
-	@RequestMapping(value = "/periodos.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<Periodo> periodos() {
-		return periodoService.getAll();
-	}
-
 	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodos", periodoService.find(Periodo.class));
+		model.addAttribute("periodoAtual", periodoService.getPeriodoAtual());
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
-
-	private boolean notNull(Object object) {
-		return object != null ? true : false;
+	
+	@RequestMapping(value = "/atualizarPeriodo", method = RequestMethod.POST)
+	public String atualizarPeriodo(@RequestParam("periodoId") Long periodoId, @RequestParam("encerramento") String encerramento, 
+			@RequestParam("vagas") Integer vagas, RedirectAttributes redirect, Model model) {
+		SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);
+		Date dataEncerramento = null;
+		try {
+			if (encerramento != null && !encerramento.isEmpty()) {
+				dataEncerramento = format.parse(encerramento);
+				if(encerramento != null) {
+					Date today = format.parse(format.format(new Date()));
+					if (dataEncerramento.before(today)) {
+						redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_DATA_FUTURA);
+						return Constants.REDIRECT_PAGINA_LISTAR_PERIODOS;
+					}
+				}
+			}
+		} catch (ParseException e) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_ERRO_ATUALIZAR_PERIODO);
+			return Constants.REDIRECT_PAGINA_LISTAR_PERIODOS;
+		}
+		
+		Periodo periodo = periodoService.find(Periodo.class, periodoId);
+		periodo.setEncerramento(dataEncerramento);
+		if (vagas != null) {
+			periodo.setVagas(vagas);
+		}
+		
+		periodoService.update(periodo);
+		
+		return Constants.REDIRECT_PAGINA_LISTAR_PERIODOS;
 	}
 
 	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano,
 			@RequestParam("semestre") Integer semestre, Model model) {
 
@@ -182,33 +215,85 @@ public class AdministracaoController {
 		
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
+	
+	@RequestMapping(value = "/editar-reserva/{id}", method = RequestMethod.GET)
+	public String editarReserva(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.find(Reserva.class, id);
+		if (reserva == null || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+			return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
+		}
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("professor", reserva.getProfessor());
+		model.addAttribute("programa", Programa.values());
+		return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
+	}
+	
+	@RequestMapping(value = "/editar-reserva", method = RequestMethod.POST)
+	public String atualizarReserva(@RequestParam("id")Long id,  @RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
+			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
+			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
+			@RequestParam("instituicao") String instituicao, Model model, RedirectAttributes redirect, HttpSession session) {
+		
+		redirect.addFlashAttribute("anoInicio", anoInicio);
+		redirect.addFlashAttribute("semestreInicio", semestreInicio);
+		redirect.addFlashAttribute("anoTermino", anoTermino);
+		redirect.addFlashAttribute("semestreTermino", semestreTermino);
+		redirect.addFlashAttribute("programaSelecionado", programa);
+		redirect.addFlashAttribute("conceito", conceito);
+		redirect.addFlashAttribute("instituicao", instituicao);
 
-	@RequestMapping(value = "/edit-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Model permissaoEditPeriodo(Model model, @RequestParam("id") Long id) {
-
-		Periodo periodo = periodoService.find(Periodo.class, id);
-		boolean editEncerramento = false;
-		boolean editVagas = false;
-
-		if (periodo.getStatus().equals(StatusPeriodo.ABERTO)) {
-			editEncerramento = true;
+		if (anoInicio == null || anoTermino == null) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		}
+		if (anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
+			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
 		}
 
-		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno() - 1, periodo.getSemestre());
+		Periodo periodo = periodoService.getPeriodoAtual();
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
 
-		if (notNull(periodoSolicitacao))
-			if (periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)) {
-				editVagas = true;
-			}
+		if (diferenca < 2) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
+			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		}
+		if ((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO)
+				&& calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
+			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		}
+		if (programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
+			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		}
+		
+		Reserva reserva = reservaService.find(Reserva.class, id);
+		reserva.setAnoInicio(anoInicio);
+		reserva.setSemestreInicio(semestreInicio);
+		reserva.setAnoTermino(anoTermino);
+		reserva.setSemestreTermino(semestreTermino);
+		reserva.setPrograma(programa);
+		if (conceito == null) {
+			conceito = 0;
+		}
+		reserva.setConceitoPrograma(conceito);
+		reserva.setInstituicao(instituicao);
+		
+		reservaService.update(reserva);
+		try {
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_ATUALIZADA);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 
-		model.addAttribute("editEncerramento", editEncerramento);
-		model.addAttribute("editVagas", editVagas);
-
-		return model;
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_ATUALIZADA);
+		
+		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
 	}
 
-	@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true, beforeInvocation = true)
+	/*@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Model editarPeriodo(Model model, @RequestParam("id") Long id, @RequestParam("vagas") Integer vagas,
 			@RequestParam("encerramento") String encerramentoString) {
 
@@ -271,7 +356,7 @@ public class AdministracaoController {
 
 		model.addAttribute("periodo", periodo);
 		return model;
-	}
+	}*/
 
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	public String getReservas(Model model) {
@@ -299,14 +384,21 @@ public class AdministracaoController {
 	}
 
 	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)
-	@CacheEvict(value = { "default", "reservasByProfessor", "visualizarRanking", "loadProfessor"}, allEntries = true)
 	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
-			RedirectAttributes redirect, HttpSession session) {
+			RedirectAttributes redirect) {
 	
 		String[] valor = status.split("-");
 		if (id != null & status != null && !status.isEmpty()) {
 			Reserva reserva = reservaService.find(Reserva.class, id);
-			reserva.setStatus(StatusReserva.valueOf(valor[1]));
+			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
+			if(reserva.getStatus().equals(StatusReserva.AFASTADO) && !statusReserva.equals(StatusReserva.AFASTADO)) {
+				afastamentoService.delete(afastamentoService.getByReserva(reserva));
+			}
+			if (statusReserva.equals(StatusReserva.AFASTADO) && !reserva.getStatus().equals(StatusReserva.AFASTADO)) {
+				Afastamento afastamento = new Afastamento(reserva);
+				afastamentoService.save(afastamento);
+			}
+			reserva.setStatus(statusReserva);
 			reservaService.update(reserva);
 			try {
 				notificacaoService.notificar(reserva, Notificacao.GERENCIAMENTO_DE_RESERVAS);
@@ -315,7 +407,11 @@ public class AdministracaoController {
 			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
 		}
-		return "redirect:/administracao/reservas";
+		return Constants.REDIRECT_PAGINA_HOMOLOGAR_RESERVAS;
+	}
+	
+	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
+		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
 	}
 
 }

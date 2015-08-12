@@ -91,8 +91,8 @@
 					</div>
 				</div>
 				
-				<div class="form-group col-sm-2 control-label">
-					<span class="obrigatorio">* Campos obrigatórios</span>
+				<div class="form-group col-sm-2 control-label obrigatorio">
+					<span>* Campos obrigatórios</span>
 				</div>
 				
 				<div class="controls">

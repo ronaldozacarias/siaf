@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -17,7 +18,11 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.util.Constants;
 
 public class SimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -26,6 +31,12 @@ public class SimpleUrlAuthenticationSuccessHandler implements AuthenticationSucc
 	
 	@Inject
 	private PeriodoService periodoService;
+	
+	@Inject
+	private RankingService rankingService;
+	
+	@Inject
+	private ReservaService reservaService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -47,9 +58,29 @@ public class SimpleUrlAuthenticationSuccessHandler implements AuthenticationSucc
 	
 	private void verificaEncerramentoPeriodo() {
 		Periodo periodoAtual = periodoService.getPeriodoAtual();
-		if(comparaDatas(new Date(), periodoAtual.getEncerramento()) > 0) {
+		if(periodoAtual.getEncerramento() != null && comparaDatas(new Date(), periodoAtual.getEncerramento()) > 0) {
+			List<TuplaRanking> ranking = rankingService.visualizarRanking(periodoAtual);
+			for (TuplaRanking tupla : ranking) {
+				if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)
+						&& tupla.getReserva().getAnoTermino().equals(periodoAtual.getAno())
+						&& tupla.getReserva().getSemestreTermino().equals(periodoAtual.getSemestre())) {
+					Reserva reserva = tupla.getReserva();
+					reserva.setStatus(StatusReserva.ENCERRADO);
+					reservaService.update(reserva);
+				}
+			}
 			periodoAtual.setStatus(StatusPeriodo.ENCERRADO);
 			periodoService.update(periodoAtual);
+			ranking = rankingService.visualizarRanking(periodoService.getPeriodoPosterior(periodoAtual));
+			for (TuplaRanking tupla : ranking) {
+				if(tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+					Reserva reserva = tupla.getReserva();
+					reserva.setStatus(StatusReserva.NAO_ACEITO);
+					reservaService.update(reserva);
+				}
+			}
+			
+			
 		}
 	}
 	

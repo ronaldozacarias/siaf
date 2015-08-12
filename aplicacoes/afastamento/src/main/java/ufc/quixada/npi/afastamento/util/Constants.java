@@ -13,23 +13,23 @@ public class Constants {
 	
 	/** Páginas */
 	
-	public static final String PAGINA_CADASTRAR_PROJETO = "projeto/cadastrar";
-	
 	public static final String PAGINA_LISTAR_PROFESSORES = "admin/professores";
 	
 	public static final String PAGINA_HOMOLOGAR_RESERVAS = "admin/homologacao";
 	
-	public static final String PAGINA_LISTAR_PERIODOS = "admin/periodo";
+	public static final String PAGINA_LISTAR_PERIODOS = "admin/periodos";
 	
 	public static final String PAGINA_RANKING = "reserva/ranking";
 	
-	public static final String PAGINA_INCLUIR_RESERVA = "reserva/inclusao";
+	public static final String PAGINA_INCLUIR_RESERVA = "reserva/incluir";
 	
-	public static final String PAGINA_EDITAR_RESERVA = "reserva/editaReserva";
+	public static final String PAGINA_EDITAR_RESERVA = "reserva/editar";
 	
-	public static final String PAGINA_LISTAR_RESERVA = "reserva/lista";
+	public static final String PAGINA_LISTAR_RESERVA = "reserva/listar";
 	
 	public static final String PAGINA_GERENCIAR_RESERVAS = "admin/reservas";
+	
+	public static final String PAGINA_ADMIN_EDITAR_RESERVA = "admin/editarReserva";
 	
 	
 	
@@ -43,9 +43,16 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_LISTAR_RESERVAS = "redirect:/reserva/listar";
 	
-	public static final String REDIRECT_PAGINA_LISTAR_PERIODOS = "redirect:/administracao/periodo";
+	public static final String REDIRECT_PAGINA_EDITAR_RESERVAS = "redirect:/reserva/editar";
+	
+	public static final String REDIRECT_PAGINA_LISTAR_PERIODOS = "redirect:/administracao/periodos";
 	
 	public static final String REDIRECT_PAGINA_LISTAR_PROFESSORES = "redirect:/administracao/professores";
+	
+	public static final String REDIRECT_PAGINA_GERENCIAR_RESERVAS = "redirect:/administracao/reservas";
+	
+	public static final String REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA = "redirect:/administracao/editar-reserva";
+	
 	
 	/** Mensagens */
 	
@@ -78,6 +85,8 @@ public class Constants {
 	public static final String MSG_STATUS_RESERVA_ATUALIZADO = "Status da reserva atualizado com sucesso.";
 	
 	public static final String MSG_LISTA_PROFESSORES_ATUALIZADO = "Lista de professores atualizada com sucesso.";
+	
+	
 	/** Afiliações */
 
 	public static final String AFFILIATION_DOCENTE = "DOCENTE";

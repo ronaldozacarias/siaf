@@ -1,6 +1,45 @@
 $(document).ready(function() {
+	
+	// Geral
+//_____________________________________________________________________________________________________
+	
+	$('.ano').mask('9999', {placeholder:" "});
+	$('.conceito').mask('9',{placeholder:" "});
+	
+	$('.selectpicker').selectpicker();
+	
+	$(".ano").datepicker({
+        format: " yyyy",
+        language: 'pt-BR',
+		autoclose: true,
+        viewMode: "years", 
+        minViewMode: "years",
+        startDate: 'today'
+    });
+		
+	
+	$(".data").datepicker({
+		language: 'pt-BR',
+		autoclose: true,
+		format: "dd/mm/yyyy"
+	});
+	
+	$(".file").fileinput({
+		showUpload: false,
+		overwriteInitial: false,
+		initialCaption: "Selecione...",
+		browseLabel: "Buscar",
+		browseClass: "btn btn-default",
+		removeLabel: "Excluir",
+		msgSelected: "{n} arquivos selecionados",
+		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
+	});
+	
+	
+	$("#encerramento").mask("99/99/9999");
+	
 	// Página de Gerenciar Professores
-	var defaults = {
+	/*var defaults = {
 		    mode: 'inline', 
 		    toggle: 'manual',
 		    showbuttons: false,
@@ -11,19 +50,19 @@ $(document).ready(function() {
 		        return false;
 		    }
 		};
-		$.extend($.fn.editable.defaults, defaults);
+		$.extend($.fn.editable.defaults, defaults);*/
 
 		
-	$(document).keyup(function(e) {
+	/*$(document).keyup(function(e) {
 		if (e.keyCode == 27) {
 			$("#contentProfessores td.editProf").css("width", "50px");
 			$("#contentProfessores td.editAcao").css("width", "40px");
 		    $(".options").removeClass( "show" ).addClass('hide').siblings('.edit').show();
 		}
-	});
+	});*/
 	
 	
-	$(".anoEdit ").editable({
+	/*$(".anoEdit ").editable({
 	    title: 'Ano de Admissão',
     	emptytext : '',
 	});
@@ -39,10 +78,10 @@ $(document).ready(function() {
 	        {value: 1, text: '1'},
 	        {value: 2, text: '2'},
 	    ]
-	});	
+	});	*/
 	
 	
-	$('#professores').on('click', '.edit', function(){
+	/*$('#professores').on('click', '.edit', function(){
 	    var $btn = $(this);
 	    var id = $btn.data("id");
 	    
@@ -130,24 +169,25 @@ $(document).ready(function() {
 	    var id = $btn.data("id");
 	    $(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
 	    $btn.closest('tr').find('.editable').editable('hide');
-	}
+	}*/
 	
-	$('[data-toggle="tooltip"]').tooltip();
+	/*$('[data-toggle="tooltip"]').tooltip();
 	
 	$('[data-toggle="popover"]').popover({
 	    trigger: 'hover'
-	});
+	});*/
 	
-	function showMessage(result) {
+	/*function showMessage(result) {
 		$("#wrapper #message").html($(result).find("#wrapper #message"));
-	}
+	}*/
 	
-//____________________________________________________________________________________________________________________________________________________	
+//_____________________________________________________________________________________________________	
 	
 	
 	
-	// Página de Gerenciar Períodos
-	function loadPeriodo(ano, semestre) {
+	
+	
+	/*function loadPeriodo(ano, semestre) {
 		var filtro = {
 			"ano" : ano,
 			"semestre" : semestre,
@@ -165,9 +205,9 @@ $(document).ready(function() {
 				$('viewPeriodos').hide();
 			}
 		});
-	}
+	}*/
 	
-	var editVagas = false;
+	/*var editVagas = false;
 	var editEncerramento = false;
 	var guardaEncerramento = null;
 	var guardaVagas = null;
@@ -209,7 +249,7 @@ $(document).ready(function() {
 				guardaVagas = vagas;
 				
 				$('#vagas'+id).empty();
-				$('#vagas'+id).append('<input name="inputVagas" class="form-control" size="2" value="'+vagas+'"/>');
+				$('#vagas'+id).append('<input name="inputVagas" class="form-control inputVagas" size="2" value="'+vagas+'"/>');
 			}
 			
 			if(result.editEncerramento || result.editVagas){
@@ -225,9 +265,9 @@ $(document).ready(function() {
 	
 		});
 		event.stopPropagation();
-	});
+	});*/
 
-	$('.salvarPeriodo').click(function() {
+	/*$('.salvarPeriodo').click(function() {
 		var id = $(this).data('id');
 
 //		var vagas = $('#vagas'+id).text();
@@ -283,9 +323,9 @@ $(document).ready(function() {
 		$('#editPeriodo'+id).removeClass( 'hide' ).addClass('show');
 
 		event.stopPropagation();
-	});
+	});*/
 	
-	var guardaConceito = null;
+	/*var guardaConceito = null;
 	$('.editReserva').on('click', function(event) {
 		var id = '';
 		if($(this).data('id')){
@@ -304,9 +344,9 @@ $(document).ready(function() {
 		$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
 		
 		event.stopPropagation();
-	});
+	});*/
 
-	$(".filtroSemestre").change(function(event) {
+	/*$(".filtroSemestre").change(function(event) {
 		filtroPeriodo();
 	});
 	
@@ -316,14 +356,14 @@ $(document).ready(function() {
 	    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 	    	filtroPeriodo();
 	    }
-	});
+	});*/
 	
 	
 //____________________________________________________________________________________________________________________________________________________	
 
 		
-	// Página de inclusão de reserva
-	$('#solicitarAfastamento').validate({
+	// Página de inclusão e edição de reserva
+	$('#solicitarAfastamento, #formEditarReserva').validate({
         rules: {
             
         },
@@ -348,42 +388,11 @@ $(document).ready(function() {
         }
     });
 	
-	$('.ano').mask('9999', {placeholder:" "});
-	$('.conceito').mask('9',{placeholder:" "});
-	
-	$('.selectpicker').selectpicker();
-	
-	$(".filtroSemestre").selectpicker('refresh');
-	
-	$(".ano").datepicker({
-        format: " yyyy",
-        language: 'pt-BR',
-		autoclose: true,
-        viewMode: "years", 
-        minViewMode: "years",
-        startDate: 'today'
-    });
-		
-	
-	$(".data").datepicker({
-		language: 'pt-BR',
-		autoclose: true,
-		format: "dd/mm/yyyy"
-	});
-	
-	$(".file").fileinput({
-		showUpload: false,
-		overwriteInitial: false,
-		initialCaption: "Selecione...",
-		browseLabel: "Buscar",
-		browseClass: "btn btn-default",
-		removeLabel: "Excluir",
-		msgSelected: "{n} arquivos selecionados",
-		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
-	});
 	
 	
-	$("#encerramento").mask("99/99/9999");
+	/*$(".filtroSemestre").selectpicker('refresh');*/
+	
+	
 
 	
 	
@@ -437,12 +446,11 @@ $(document).ready(function() {
 	
 	$("#ranking-full").hide();
 	
-	showPeriodoPost();	
-
 //____________________________________________________________________________________________________________________________________________________	
 
-	//Página atualizar Conceito reserva 	
-	var guardaConceito = null;
+	// Página minhas reservas
+	
+	/*var guardaConceito = null;
 	$('.editReserva').on('click', function(event) {
 			var id = '';
 			if($(this).data('id')){
@@ -461,9 +469,9 @@ $(document).ready(function() {
 			$('#editReserva'+id).removeClass( 'show' ).addClass('hide');
 			
 			event.stopPropagation();
-		});
+		});*/
 
-		$(".filtroSemestre").change(function(event) {
+		/*$(".filtroSemestre").change(function(event) {
 			filtroPeriodo();
 		});	
 		
@@ -473,14 +481,29 @@ $(document).ready(function() {
 		    if ( (lengthAno <= maximoDigitosAno || event.keyCode == 13) && !isNaN($(this).val()) ) {
 		    	filtroPeriodo();
 		    }
-		});
+		});*/
 	
 	$('#excluir-reserva').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
-	$('.salvarReserva').click(function() {
+	$('#anoInicioReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+	
+
+	$('#anoTerminoReserva').datepicker({
+        format: " yyyy", 
+   	    viewMode: "years", 
+   	    minViewMode: "years"
+	});
+
+//_____________________________________________________________________________________________________
+	
+	/*$('.salvarReserva').click(function() {
 		var id = $(this).data('id');
 		var conceito = $('#con'+id).text();
 		if($('#options' + id).data('conceito')){
@@ -514,18 +537,19 @@ $(document).ready(function() {
 		$('#editReserva'+id).removeClass( 'hide' ).addClass('show');
 
 		event.stopPropagation();
-	});
+	});*/
 
-	//Datable Reserva
+	// Página gerenciar reservas
+	
 	var table = $('#tableReservas').DataTable({
 				"pageLength" : 10,
-				"order" : [[ 0, 'asc' ], [ 2, 'asc' ]],
+				"order" : [[ 0, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ]],
 				"columnDefs" : [ 
 	                {"targets" : 5, "orderable" : false},
 				],
 
 				"language" : {
-					"sEmptyTable" : "Nenhum registro encontrado",
+					"sEmptyTable" : "Nenhum registro encontrado.",
 					"sInfo" : "Mostrando de _START_ até _END_ de _TOTAL_ registros",
 					"sInfoEmpty" : "Mostrando 0 até 0 de 0 registros",
 					"sInfoFiltered" : "(Filtrados de _MAX_ registros)",
@@ -534,7 +558,7 @@ $(document).ready(function() {
 					"sLengthMenu" : "Resultados por página:  _MENU_",
 					"sLoadingRecords" : "Carregando...",
 					"sProcessing" : "Processando...",
-					"sZeroRecords" : "Nenhum registro encontrado",
+					"sZeroRecords" : "Nenhum registro encontrado.",
 					"sSearch" : "",
 					"searchPlaceholder": "Pesquisar...",
 					"oPaginate" : {
@@ -571,6 +595,10 @@ $(document).ready(function() {
 		    });
 		}
     } );
+	
+//_____________________________________________________________________________________________________
+	
+	// Página gerenciar períodos
 
 	$('#tablePeriodos').DataTable({
 		 "pageLength": 10,
@@ -585,16 +613,16 @@ $(document).ready(function() {
 		],
 		
 		"language": {
-		    "sEmptyTable": "Nenhum registro encontrado",
+		    "sEmptyTable": "Nenhum registro encontrado.",
 		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
 		    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
 		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
 		    "sInfoPostFix": "",
 		    "sInfoThousands": ".",
-		    "sLengthMenu": "resultados por página _MENU_",
+		    "sLengthMenu": "Resultados por página _MENU_",
 		    "sLoadingRecords": "Carregando...",
 		    "sProcessing": "Processando...",
-		    "sZeroRecords": "Nenhum registro encontrado",
+		    "sZeroRecords": "Nenhum registro encontrado.",
 		    "sSearch": "",
 		    "searchPlaceholder": "Pesquisar...",
 		    "oPaginate": {
@@ -610,26 +638,23 @@ $(document).ready(function() {
 		}
 	});
 	
-	//identificar Opção Menu Selecionado
+	$('.salvar-periodo').click(function(){
+		var id = $(this).data("id");
+		$('#periodoId').val(id);
+		$('#encerramento').val($('#encerramento-' + id).val());
+		$('#vagas').val($('#vagas-' + id).val());
+		
+		$('#atualizarPeriodo').submit();
+	});
+
+//_____________________________________________________________________________________________________
 	
+	
+	// Funções
+	
+	$('input').addClass('form-control');
 	$('select').selectpicker();
 	
-	$('input').addClass('form-inline form-control');
-	
-	
-	//Pagina Editar Reserva
-	$('#anoInicioReserva').datepicker({
-        format: " yyyy", 
-   	    viewMode: "years", 
-   	    minViewMode: "years"
-	});
-	
-
-	$('#anoTerminoReserva').datepicker({
-        format: " yyyy", 
-   	    viewMode: "years", 
-   	    minViewMode: "years"
-	});
 	
 	
 		
@@ -756,7 +781,7 @@ function getConceito(conceito) {
 	return conceito;
 }
 
-function filtroPeriodo(){
+/*function filtroPeriodo(){
 	var ano = $("#filtroAno").val();
 	var semestre = $("#filtroSemestre").val();
 
@@ -787,9 +812,9 @@ function loadPeriodo(ano, semestre) {
 			$('viewPeriodos').hide();
 		}
 	});
-}
+}*/
 
-function showPeriodo(result) {
+/*function showPeriodo(result) {
 	$("#viewPeriodo").html($(result).find("#update-periodo"));
 
 	if(isNaN($("#viewPeriodo #update-periodo #chave").val())){
@@ -821,10 +846,10 @@ function showPeriodoPost() {
 		$("#status").selectpicker();
 		$("#viewPeriodo").show();
 	}
-}
+}*/
 
 
-function getPeriodos() {
+/*function getPeriodos() {
 	$.ajax({
 		type: "GET",
 		url: '/siaf/administracao/periodos.json',
@@ -833,9 +858,9 @@ function getPeriodos() {
 		loadPeriodos(result);
 		$("#periodos tbody td").attr("class", "align-center")
 	});
-}
+}*/
 
-function loadPeriodos(result) {
+/*function loadPeriodos(result) {
 	$("#periodos")
 		.bootgrid({
 			labels: {
@@ -861,9 +886,9 @@ function loadPeriodos(result) {
 		.bootgrid("clear")
 		.bootgrid("append", result);
 
-}
+}*/
 
-function messagePeriodo(result) {
+/*function messagePeriodo(result) {
 
 	if(result.erro && result.erro.length > 0){
 		$(".messages #erroDiv").append("<div id=\"info\" " +
@@ -880,7 +905,7 @@ function messagePeriodo(result) {
 	if(result.info &&  result.info.length > 0){
 		$('.messages #infoDiv').empty();
 		$(".messages #infoDiv").append("<div id=\"info\" " +
-				"class=\"alert alert-info margin-top hide\" " +
+				"class=\"alert alert-info hide\" " +
 				"role=\"alert\"> " +
 				"<button type=\"button\" class=\"close\" data-dismiss=\"alert\">" +
 				"<span aria-hidden=\"true\">&times;</span>" +
@@ -890,9 +915,9 @@ function messagePeriodo(result) {
 		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
 		
 	} 
-}
+}*/
 
-function messageReservaEmAberto(result) {
+/*function messageReservaEmAberto(result) {
 
 	if(result.erro && result.erro.length > 0){
 		$(".messages #erroDiv").append("<div id=\"info\" " +
@@ -917,9 +942,9 @@ function messageReservaEmAberto(result) {
 		$(".messages #infoDiv #info p").text(result.info);
 		$(".messages #infoDiv #info").removeClass( "hide" ).addClass('show');
 	} 
-}
+}*/
 
-function validarConceito(campo){
+/*function validarConceito(campo){
 	var numero="34567"; //variáveis aceitas na função.
 	var campo_temporario; //váriavel responsável pela verificação dos dados.
 	for (var i=0;i<campo.value.length;i++){ 
@@ -931,9 +956,9 @@ function validarConceito(campo){
 			campo.value = campo.value.substring(0,i);
 		}
 	}
-}
+}*/
 
-function somenteNumeros(campo){
+/*function somenteNumeros(campo){
 	var numero="0123456789"; //variáveis aceitas na função.
 	var campo_temporario; //váriavel responsável pela verificação dos dados.
 	for (var i=0;i<campo.value.length;i++){ 
@@ -945,7 +970,9 @@ function somenteNumeros(campo){
 			campo.value = campo.value.substring(0,i);
 		}
 	}
-}
+}*/
+
+// Teste
 
 function relatorioReservas() {
 	var filtro = {
@@ -990,7 +1017,6 @@ function relatorioReservas() {
 			    });
 			},
 			error: function(error) {
-				alert('erro');
 			}
 		});
 }
