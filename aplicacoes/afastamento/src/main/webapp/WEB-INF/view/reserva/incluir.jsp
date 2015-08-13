@@ -40,20 +40,20 @@
 					<div class="form-item">
 						<label for="anoInicio" class="col-sm-2 control-label"><span class="obrigatorio">*</span> Início:</label>
 						<div class="col-sm-4">
-							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" placeholder="ano" value="${anoInicio }" required="required"/>
+							<input id="anoInicio" name="anoInicio" type="text" class="form-control ano" size="10" placeholder="ano" value="${reserva.anoInicio }" required="required"/>
 							<select id="semestreInicio" name="semestreInicio" class="form-control selectpicker">
-								<option value="1" ${semestreInicio == 1 ? 'selected' : ''}>1</option>
-								<option value="2" ${semestreInicio == 2 ? 'selected' : ''}>2</option>
+								<option value="1" ${reserva.semestreInicio == 1 ? 'selected' : ''}>1</option>
+								<option value="2" ${reserva.semestreInicio == 2 ? 'selected' : ''}>2</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-item">
 						<label for="anoTermino" class="col-sm-2 control-label"><span class="obrigatorio">*</span> Término:</label>
 						<div class="col-sm-4">
-							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" placeholder="ano" value="${anoTermino }" required="required"/>
+							<input id="anoTermino" type="text" name="anoTermino" class="form-control ano" size="10" placeholder="ano" value="${reserva.anoTermino }" required="required"/>
 							<select id="semestreTermino" name="semestreTermino" class="form-control selectpicker">
-								<option value="1" ${semestreTermino == 1 ? 'selected' : ''}>1</option>
-								<option value="2" ${semestreTermino == 2 ? 'selected' : ''}>2</option>
+								<option value="1" ${reserva.semestreTermino == 1 ? 'selected' : ''}>1</option>
+								<option value="2" ${reserva.semestreTermino == 2 ? 'selected' : ''}>2</option>
 							</select>
 						</div>
 					</div>
@@ -64,7 +64,7 @@
 						<div class="col-sm-4">
 							<select id="programa" name="programa" class="form-control selectpicker">
 								<c:forEach items="${programa}" var="prog">
-									<option value="${prog }" ${programaSelecionado == prog ? 'selected' : ''}>${prog.descricao }</option>
+									<option value="${prog }" ${reserva.programa == prog ? 'selected' : ''}>${prog.descricao }</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -72,13 +72,13 @@
 					<div class="form-item">
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
-							<select id="conceito" name="conceito" class="form-control selectpicker">
-							 <option value="0" ${conceito == 0 ? 'selected' : ''}>0</option>
-							 <option value="3" ${conceito == 3 ? 'selected' : ''}>3</option>
-							 <option value="4" ${conceito == 4 ? 'selected' : ''}>4</option>
-							 <option value="5" ${conceito == 5 ? 'selected' : ''}>5</option>
-							 <option value="6" ${conceito == 6 ? 'selected' : ''}>6</option>
-							 <option value="7" ${conceito == 7 ? 'selected' : ''}>7</option>
+							<select id="conceito" name="conceitoPrograma" class="form-control selectpicker">
+							 <option value="0" ${reserva.conceitoPrograma == 0 ? 'selected' : ''}>0</option>
+							 <option value="3" ${reserva.conceitoPrograma == 3 ? 'selected' : ''}>3</option>
+							 <option value="4" ${reserva.conceitoPrograma == 4 ? 'selected' : ''}>4</option>
+							 <option value="5" ${reserva.conceitoPrograma == 5 ? 'selected' : ''}>5</option>
+							 <option value="6" ${reserva.conceitoPrograma == 6 ? 'selected' : ''}>6</option>
+							 <option value="7" ${reserva.conceitoPrograma == 7 ? 'selected' : ''}>7</option>
 							</select>
 						</div>
 					</div>
@@ -87,7 +87,7 @@
 				<div class="form-group form-item">
 					<label for="instituicao" class="col-sm-2 control-label">Instituição:</label>
 					<div class="col-sm-8">
-						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${instituicao }" placeholder="instituição" style="width: 100% !important"/>
+						<input id="instituicao" name="instituicao" type="text" class="form-control" value="${reserva.instituicao }" placeholder="instituição" style="width: 100% !important"/>
 					</div>
 				</div>
 				

@@ -81,9 +81,21 @@
 								<td class="align-center">${reserva.conceitoPrograma}</td>
 								<td>
 									<c:if test="${reserva.status == 'ABERTO' }">
+										<a title="Detalhes" href="<c:url value="/administracao/detalhe-reserva/${reserva.id }" />" class="btn btn-primary">
+											<i class="fa fa-info-circle"></i>
+                                        </a>
 										<a title="Editar" href="<c:url value="/administracao/editar-reserva/${reserva.id }" />" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
                                         </a>
+                                        <a id="excluir" title="Excluir" data-toggle="modal"
+											data-target="#admin-excluir-reserva" href="#"
+											data-href="<c:url value="/administracao/excluir-reserva/${reserva.id}"></c:url>"
+											data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}"
+											data-professor="${reserva.professor.nome}">
+											<button class="btn btn-danger">
+												<i class="fa fa-trash-o"></i>
+											</button>
+										</a>
 									</c:if>
 								</td>
 							</tr>
@@ -94,10 +106,29 @@
 		</div>
 	</div>
 	<jsp:include page="../modulos/footer.jsp" />
-	<%-- <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script> --%>
+	
+	<!-- Modal Excluir Reserva -->
+	<div class="modal fade" id="admin-excluir-reserva" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="excluirModalLabel">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<a href="#" class="btn btn-danger">Excluir</a>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script type="text/javascript">
-		$('#menu-reservasEmAberto').addClass('active');
+		$('#menu-reservas').addClass('active');
 		relatorioReservas();
 	</script>
 </body>

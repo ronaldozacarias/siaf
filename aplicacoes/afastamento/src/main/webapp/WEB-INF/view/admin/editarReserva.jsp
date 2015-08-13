@@ -83,7 +83,8 @@
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
 							
-							<select id="conceito" name="conceito" class="form-control selectpicker">
+							<select id="conceito" name="conceitoPrograma" class="form-control selectpicker">
+								<option value="0" ${reserva.conceitoPrograma  == 0 ? 'selected' : ''}>0</option>
 								<option value="3" ${reserva.conceitoPrograma  == 3 ? 'selected' : ''}>3</option>
 								<option value="4" ${reserva.conceitoPrograma  == 4 ? 'selected' : ''}>4</option>
 								<option value="5" ${reserva.conceitoPrograma  == 5 ? 'selected' : ''}>5</option>

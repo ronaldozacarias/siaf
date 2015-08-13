@@ -18,7 +18,7 @@
 		<div id="content">
 			<div class="title">Edite sua reserva de afastamento :</div>
 			<span class="line"></span>
-			<form:form id="formEditarReserva" commandName="reserva" action="/siaf/reserva/atualizar"
+			<form:form id="formEditarReserva" commandName="reserva" action="/siaf/reserva/editar"
 				method="POST"  class="form-horizontal">
 				<input type="hidden" id="id" name="id" value="${reserva.id }"/>
 				
@@ -60,7 +60,7 @@
 							Término:</label>
 						<div class="col-sm-4">
 							<input id="anoTerminoReserva" type="text" name="anoTermino"  class="form-control" size="10"
-								placeholder="ano" value="${reserva.anoTermino }" required="required" onKeyUp="somenteNumeros(this)" /> <select
+								placeholder="ano" value="${reserva.anoTermino }" required="required"/> <select
 								id="semestreTermino" name="semestreTermino" class="form-control selectpicker">
 								<option value="1" ${reserva.semestreTermino == 1 ? 'selected' : ''}>1</option>
 								<option value="2" ${reserva.semestreTermino == 2 ? 'selected' : ''}>2</option>
@@ -83,7 +83,8 @@
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
 							
-							<select id="conceito" name="conceito" class="form-control selectpicker">
+							<select id="conceito" name="conceitoPrograma" class="form-control selectpicker">
+								<option value="0" ${reserva.conceitoPrograma  == 0 ? 'selected' : ''}>0</option>
 								<option value="3" ${reserva.conceitoPrograma  == 3 ? 'selected' : ''}>3</option>
 								<option value="4" ${reserva.conceitoPrograma  == 4 ? 'selected' : ''}>4</option>
 								<option value="5" ${reserva.conceitoPrograma  == 5 ? 'selected' : ''}>5</option>

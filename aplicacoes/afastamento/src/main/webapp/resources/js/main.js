@@ -16,6 +16,14 @@ $(document).ready(function() {
         minViewMode: "years",
         startDate: 'today'
     });
+	
+	$(".ano-all").datepicker({
+        format: " yyyy",
+        language: 'pt-BR',
+		autoclose: true,
+        viewMode: "years", 
+        minViewMode: "years",
+    });
 		
 	
 	$(".data").datepicker({
@@ -38,148 +46,44 @@ $(document).ready(function() {
 	
 	$("#encerramento").mask("99/99/9999");
 	
+//_____________________________________________________________________________________________________	
+	
 	// Página de Gerenciar Professores
-	/*var defaults = {
-		    mode: 'inline', 
-		    toggle: 'manual',
-		    showbuttons: false,
-		    onblur: 'ignore',
-		    inputclass: 'input-small',
-		    savenochange: true,
-		    success: function() {
-		        return false;
-		    }
-		};
-		$.extend($.fn.editable.defaults, defaults);*/
+	$('#tableProfessores').DataTable({
+		"pageLength" : 10,
+		"order" : [[ 1, 'asc' ]],
+		"columnDefs" : [ 
+            {"targets" : 0, "orderable" : false},
+            {"targets" : 2, "orderable" : false},
+            {"targets" : 4, "orderable" : false},
+		],
 
-		
-	/*$(document).keyup(function(e) {
-		if (e.keyCode == 27) {
-			$("#contentProfessores td.editProf").css("width", "50px");
-			$("#contentProfessores td.editAcao").css("width", "40px");
-		    $(".options").removeClass( "show" ).addClass('hide').siblings('.edit').show();
+		"language" : {
+			"sEmptyTable" : "Nenhum registro encontrado.",
+			"sInfo" : "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+			"sInfoEmpty" : "Mostrando 0 até 0 de 0 registros",
+			"sInfoFiltered" : "(Filtrados de _MAX_ registros)",
+			"sInfoPostFix" : "",
+			"sInfoThousands" : ".",
+			"sLengthMenu" : "Resultados por página:  _MENU_",
+			"sLoadingRecords" : "Carregando...",
+			"sProcessing" : "Processando...",
+			"sZeroRecords" : "Nenhum registro encontrado.",
+			"sSearch" : "",
+			"searchPlaceholder": "Pesquisar...",
+			"oPaginate" : {
+				"sNext" : "Próximo",
+				"sPrevious" : "Anterior",
+				"sFirst" : "Primeiro",
+				"sLast" : "Último"
+			},
+			"oAria" : {
+				"sSortAscending" : ": Ordenar colunas de forma ascendente",
+				"sSortDescending" : ": Ordenar colunas de forma descendente"
+			}
 		}
-	});*/
-	
-	
-	/*$(".anoEdit ").editable({
-	    title: 'Ano de Admissão',
-    	emptytext : '',
-	});
-
-	
-	$(".semestreEdit" ).editable({
-	    title: 'Semestre de Admissão',
-	    type: 'select',
-	    emptytext : '',
-	    inputclass: 'selectpicker',
-	    value: $('#semestreAdmissao18').text(),
-	    source: [
-	        {value: 1, text: '1'},
-	        {value: 2, text: '2'},
-	    ]
-	});	*/
-	
-	
-	/*$('#professores').on('click', '.edit', function(){
-	    var $btn = $(this);
-	    var id = $btn.data("id");
-	    
-	    var ano = $('#anoAdmissao'+id ).text();
-	    var semestre = $('#semestreAdmissao' +id).text();
-	    
-	    $('.options').removeClass( "show" ).addClass('hide');
-
-	    $("#contentProfessores td.editProf").css("width", "160px");
-		$("#contentProfessores td.editAcao").css("width", "120px");
-
-	    $('#professores').find('.editable-open').editable('hide');
-	    $('#professores').find('.options' +id).removeClass( "show" ).addClass('hide');
-	    $('#professores').find('.edit').show();
-	    $(this).hide().siblings('.options' +id).removeClass( "hide" ).addClass('show');
-	    $(this).closest('tr').find('.editable').editable('show');
-	    
-	    $('select').selectpicker({});
-	    $('.selectpicker').selectpicker('val', semestre);
-	    
-	    $('input').attr("size", "4");
-	  
-	    $('input').mask('9999', {placeholder:" "});
-	    $('input').attr("placeholder", "Ano");
-	   
-	    $('input').val(ano);
-	});	
-
-
-	$('#professores').on('click', '.salvar', function() {
-	    var $btn = $(this);
-
-	    var id = $btn.data("id");
-		var semestre = $( "select option:selected" ).text();
-		var ano = $("td.editProf input").val();
-		
-		
-		
-		
-		$(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
-		$btn.closest('tr').find('.editable').editable('hide');
-		
-		if(ano != '') {
-			$.ajax({
-				url: '/siaf/administracao/admissao',
-				type: "POST",
-				dataType: "html",
-				data : {
-					"id" : id,
-					"ano" : ano,
-					"semestre" : semestre,
-				},
-				success: function(result) {
-					showMessage(result);
-					$('#editProf' + id + ' span.anoEdit').text(ano);
-					$('#editProf' + id + ' span.anoEdit').data("value", ano);
-					$('#editProf' + id + ' span.semestreEdit').text(semestre);
-					$('#editProf' + id + ' span.semestreEdit').data("value", semestre);
-				},
-				error: function(error) {
-				}		
-			});
-		}
-		
-		
-		$("#contentProfessores td.editProf").css("width", "50px");
-		$("#contentProfessores td.editAcao").css("width", "40px");
-		
-		$('#anoAdmissao'+id).empty().text(ano);
-		$('#semestreAdmissao'+id).empty().text(semestre);
-
-		
 	});
 	
-	
-	
-	$('#professores').on('click', '.cancel', function() {
-		cancelEdit(this);
-	});
-	
-	function cancelEdit(e){
-		$("#contentProfessores td.editProf").css("width", "50px");
-		$("#contentProfessores td.editAcao").css("width", "40px");
-	    var $btn = $(e);
-	    var id = $btn.data("id");
-	    $(".options" +id).removeClass( "show" ).addClass('hide').siblings('.edit').show();
-	    $btn.closest('tr').find('.editable').editable('hide');
-	}*/
-	
-	/*$('[data-toggle="tooltip"]').tooltip();
-	
-	$('[data-toggle="popover"]').popover({
-	    trigger: 'hover'
-	});*/
-	
-	/*function showMessage(result) {
-		$("#wrapper #message").html($(result).find("#wrapper #message"));
-	}*/
 	
 //_____________________________________________________________________________________________________	
 	
@@ -363,7 +267,7 @@ $(document).ready(function() {
 
 		
 	// Página de inclusão e edição de reserva
-	$('#solicitarAfastamento, #formEditarReserva').validate({
+	$('#solicitarAfastamento, #formEditarReserva, #formEditarAdmissao').validate({
         rules: {
             
         },
@@ -594,7 +498,12 @@ $(document).ready(function() {
 		        select.append( '<option value="'+d+'">'+d+'</option>' );
 		    });
 		}
-    } );
+    });
+	
+	$('#admin-excluir-reserva').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva de ' + $(e.relatedTarget).data('professor') + ' para o período \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});
 	
 //_____________________________________________________________________________________________________
 	

@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -13,9 +11,9 @@ import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,14 +66,7 @@ public class AdministracaoController {
 
 	@RequestMapping(value = "/professores", method = RequestMethod.GET)
 	public String listarProfessores(Model model) {
-		List<Professor> professores = professorService.findAtivos();
-		Collections.sort(professores, new Comparator<Professor>() {
-			@Override
-			public int compare(Professor professor1, Professor professor2) {
-				return professor1.getNome().compareTo(professor2.getNome());
-			}
-		});
-		model.addAttribute("professores", professores);
+		model.addAttribute("professores", professorService.findAtivos());
 		return Constants.PAGINA_LISTAR_PROFESSORES;
 	}
 
@@ -182,14 +173,26 @@ public class AdministracaoController {
 		
 		return Constants.REDIRECT_PAGINA_LISTAR_PERIODOS;
 	}
+	
+	@RequestMapping(value = "/editar-admissao/{id}", method = RequestMethod.GET)
+	public String editarAdmissao(@PathVariable("id") Long id, Model model) {
+		Professor professor = professorService.find(Professor.class, id);
+		if(professor == null) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+			model.addAttribute("professores", professorService.findAtivos());
+			return Constants.PAGINA_LISTAR_PROFESSORES;
+		}
+		model.addAttribute("professor", professor);
+		return Constants.PAGINA_EDITAR_ADMISSAO;
+	}
 
-	@RequestMapping(value = "/admissao", method = RequestMethod.POST)
-	public String atualizaAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano,
+	@RequestMapping(value = "/editar-admissao", method = RequestMethod.POST)
+	public String editarAdmissao(@RequestParam("id") Long id, @RequestParam("ano") Integer ano,
 			@RequestParam("semestre") Integer semestre, Model model) {
 
 		if (id == null || ano == null || semestre == null) {
-			model.addAttribute(Constants.ERRO, "Dados inválidos");
-			return Constants.PAGINA_LISTAR_PROFESSORES;
+			model.addAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.PAGINA_EDITAR_ADMISSAO;
 		}
 
 		Professor professor = professorService.find(Professor.class, id);
@@ -198,16 +201,12 @@ public class AdministracaoController {
 
 		professorService.update(professor);
 
-		Reserva reserva = new Reserva();
-		reserva.setProfessor(professor);
-		
-		List<Professor> professors = professorService.findAtivos();
-		model.addAttribute("professores", professors);
-		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
-
+		model.addAttribute("professores", professorService.findAtivos());
 		model.addAttribute("info", "Data de admissão do(a) Prof(a) " + professor.getNome() + " atualizada com sucesso.");
 
 		try {
+			Reserva reserva = new Reserva();
+			reserva.setProfessor(professor);
 			notificacaoService.notificar(reserva, Notificacao.ADMISSAO_ATUALIZADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -230,58 +229,45 @@ public class AdministracaoController {
 	}
 	
 	@RequestMapping(value = "/editar-reserva", method = RequestMethod.POST)
-	public String atualizarReserva(@RequestParam("id")Long id,  @RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
-			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
-			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
-			@RequestParam("instituicao") String instituicao, Model model, RedirectAttributes redirect, HttpSession session) {
+	public String editarReserva(@ModelAttribute("reserva") Reserva reserva, Model model, RedirectAttributes redirect, HttpSession session) {
 		
-		redirect.addFlashAttribute("anoInicio", anoInicio);
-		redirect.addFlashAttribute("semestreInicio", semestreInicio);
-		redirect.addFlashAttribute("anoTermino", anoTermino);
-		redirect.addFlashAttribute("semestreTermino", semestreTermino);
-		redirect.addFlashAttribute("programaSelecionado", programa);
-		redirect.addFlashAttribute("conceito", conceito);
-		redirect.addFlashAttribute("instituicao", instituicao);
+		Reserva reservaAtual = reservaService.find(Reserva.class, reserva.getId());
+		reserva.setProfessor(reservaAtual.getProfessor());
+		reserva.setStatus(reservaAtual.getStatus());
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("programa", Programa.values());
 
-		if (anoInicio == null || anoTermino == null) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
-			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		if (reserva.getAnoInicio() == null || reserva.getAnoTermino() == null) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
-		if (anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
-			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		if (reserva.getAnoTermino() < reserva.getAnoInicio() || (reserva.getAnoInicio().equals(reserva.getAnoTermino()) 
+				&& reserva.getSemestreTermino() < reserva.getSemestreInicio())) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
+			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
 
 		Periodo periodo = periodoService.getPeriodoAtual();
-		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), reserva.getAnoInicio(), reserva.getSemestreInicio());
 
 		if (diferenca < 2) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
-			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+			model.addAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
+			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
-		if ((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO)
-				&& calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
-			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		if ((reserva.getPrograma() == Programa.MESTRADO || reserva.getPrograma() == Programa.POS_DOUTORADO)
+				&& calculaSemestres(reserva.getAnoInicio(), reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 4) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
+			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
-		if (programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
-			return Constants.REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA + "/" + id;
+		if (reserva.getPrograma() == Programa.DOUTORADO && calculaSemestres(reserva.getAnoInicio(), 
+				reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 8) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
+			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
 		
-		Reserva reserva = reservaService.find(Reserva.class, id);
-		reserva.setAnoInicio(anoInicio);
-		reserva.setSemestreInicio(semestreInicio);
-		reserva.setAnoTermino(anoTermino);
-		reserva.setSemestreTermino(semestreTermino);
-		reserva.setPrograma(programa);
-		if (conceito == null) {
-			conceito = 0;
-		}
-		reserva.setConceitoPrograma(conceito);
-		reserva.setInstituicao(instituicao);
-		
+		reserva.setDataSolicitacao(new Date());
 		reservaService.update(reserva);
+		
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_ATUALIZADA);
 		} catch (MessagingException e) {
@@ -292,95 +278,40 @@ public class AdministracaoController {
 		
 		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
 	}
-
-	/*@RequestMapping(value = "/editar-periodo.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Model editarPeriodo(Model model, @RequestParam("id") Long id, @RequestParam("vagas") Integer vagas,
-			@RequestParam("encerramento") String encerramentoString) {
-
-		boolean permitirUpdateEncerramento = false;
-		boolean permitirUpdateVagas = false;
-
-		Periodo periodo = periodoService.find(Periodo.class, id);
-
-		Date encerramento = null;
-
-		if (encerramentoString != null && !encerramentoString.isEmpty()) {
-			if (periodo.getStatus().equals(StatusPeriodo.ABERTO)) {
-
-				try {
-					DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-					DateTime date = dateTimeFormatter.parseDateTime(encerramentoString);
-					encerramento = date.toDate();
-
-					SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);
-					Date today;
-					today = format.parse(format.format(new Date()));
-
-					if (encerramento.before(today)) {
-						model.addAttribute(Constants.ERRO, Constants.MSG_DATA_FUTURA);
-						model.addAttribute("periodo", periodo);
-						return model;
-					}
-
-					permitirUpdateEncerramento = true;
-				} catch (ParseException e) {
-					model.addAttribute(Constants.ERRO, Constants.MSG_ERRO_ATUALIZAR_PERIODO);
-					return model;
-				}
+	
+	@RequestMapping(value = "/excluir-reserva/{id}", method = RequestMethod.GET)
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.getReservaById(id);
+		if (reserva == null || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+		} else {
+			reservaService.delete(reserva);
+			try {
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
+			} catch (MessagingException e) {
+				e.printStackTrace();
 			}
+			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
-
-		if (vagas == null) {
-			vagas = 0;
+		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
+	}
+	
+	@RequestMapping(value = "/detalhe-reserva/{id}", method = RequestMethod.GET)
+	public String verDetalhes(@PathVariable("id") Long id, Model model) {
+		Reserva reserva = reservaService.getReservaById(id);
+		if (reserva == null) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+		} else {
+			model.addAttribute("reserva", reserva);
 		}
-
-		Periodo periodoSolicitacao = periodoService.getPeriodo(periodo.getAno() - 1, periodo.getSemestre());
-		if (periodoSolicitacao.getStatus().equals(StatusPeriodo.ABERTO)) {
-			permitirUpdateVagas = true;
-		}
-
-		if (permitirUpdateEncerramento) {
-			periodo.setEncerramento(encerramento);
-		}
-
-		if (permitirUpdateVagas) {
-			periodo.setVagas(vagas);
-		}
-
-		if (permitirUpdateEncerramento || permitirUpdateVagas) {
-			periodoService.update(periodo);
-
-			model.addAttribute(Constants.INFO, "Período " + periodo.getAno() + "." + periodo.getSemestre() + " atualizado com sucesso.");
-
-		}
-
-		model.addAttribute("periodo", periodo);
-		return model;
-	}*/
+		return Constants.PAGINA_DETALHE_RESERVA;
+	}
 
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	public String getReservas(Model model) {
 		List<Reserva> reservas = reservaService.getAllReservas();
 		model.addAttribute("reservas", reservas);
 		return Constants.PAGINA_GERENCIAR_RESERVAS;
-	}
-
-	@RequestMapping(value = "/atualizarConceito.json", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Model atualizarConceito(Model model, @RequestParam("id") Long id, @RequestParam("conceito") Integer conceitoPrograma) {
-		Reserva reserva = reservaService.find(Reserva.class, id);
-
-		if (conceitoPrograma != null) {
-			reserva.setConceitoPrograma(conceitoPrograma);
-			reservaService.update(reserva);
-			model.addAttribute(Constants.INFO, "Reserva do professor " + reserva.getProfessor().getNome() + " atualizada com sucesso.");
-		}
-		try {
-			notificacaoService.notificar(reserva, Notificacao.ATUALIZACAO_CONCEITO);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-		model.addAttribute("reserva", reserva);
-		return model;
 	}
 
 	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)

@@ -15,10 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -114,62 +114,42 @@ public class ReservaController {
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.POST)
-	public String incluir(@RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
-			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
-			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
-			@RequestParam("instituicao") String instituicao, Model model, RedirectAttributes redirect, HttpSession session) {
+	public String incluir(@ModelAttribute("reserva") Reserva reserva, Model model, RedirectAttributes redirect, HttpSession session) {
 
-		redirect.addFlashAttribute("anoInicio", anoInicio);
-		redirect.addFlashAttribute("semestreInicio", semestreInicio);
-		redirect.addFlashAttribute("anoTermino", anoTermino);
-		redirect.addFlashAttribute("semestreTermino", semestreTermino);
-		redirect.addFlashAttribute("programaSelecionado", programa);
-		redirect.addFlashAttribute("conceito", conceito);
-		redirect.addFlashAttribute("instituicao", instituicao);
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("professor", getProfessorLogado(session));
+		model.addAttribute("programa", Programa.values());
 
-		if (anoInicio == null || anoTermino == null) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+		if (reserva.getAnoInicio() == null || reserva.getAnoTermino() == null) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
-		if (anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+		if (reserva.getAnoTermino() < reserva.getAnoInicio() || (reserva.getAnoInicio().equals(reserva.getAnoTermino()) 
+				&& reserva.getSemestreTermino() < reserva.getSemestreInicio())) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
+			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
 
 		Periodo periodo = periodoService.getPeriodoAtual();
-		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), reserva.getAnoInicio(), reserva.getSemestreInicio());
+
 		if (diferenca < 2) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+			model.addAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
+			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
-		if ((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO)
-				&& calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+		if ((reserva.getPrograma() == Programa.MESTRADO || reserva.getPrograma() == Programa.POS_DOUTORADO)
+				&& calculaSemestres(reserva.getAnoInicio(), reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 4) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
+			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
-		if (programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
+		if (reserva.getPrograma() == Programa.DOUTORADO && calculaSemestres(reserva.getAnoInicio(), 
+				reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 8) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
+			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
-
-		if (reservaService.hasReservaEmAberto(getProfessorLogado(session))) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_RESERVA_EM_ABERTO);
-			return Constants.REDIRECT_PAGINA_INCLUIR_RESERVAS;
-		}
-
-		Reserva reserva = new Reserva();
-		reserva.setAnoInicio(anoInicio);
-		reserva.setSemestreInicio(semestreInicio);
-		reserva.setAnoTermino(anoTermino);
-		reserva.setSemestreTermino(semestreTermino);
+		
 		reserva.setDataSolicitacao(new Date());
-		reserva.setPrograma(programa);
-		if (conceito == null) {
-			conceito = 0;
-		}
-		reserva.setConceitoPrograma(conceito);
 		reserva.setProfessor(getProfessorLogado(session));
-		reserva.setInstituicao(instituicao);
 		reserva.setStatus(StatusReserva.ABERTO);
 
 		reservaService.salvar(reserva);
@@ -185,62 +165,59 @@ public class ReservaController {
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
-	
-	@RequestMapping(value = "/atualizar", method = RequestMethod.POST)
-	public String atualizar(@RequestParam("id")Long id,  @RequestParam("anoInicio") Integer anoInicio, @RequestParam("semestreInicio") Integer semestreInicio,
-			@RequestParam("anoTermino") Integer anoTermino, @RequestParam("semestreTermino") Integer semestreTermino,
-			@RequestParam("programa") Programa programa, @RequestParam("conceito") Integer conceito,
-			@RequestParam("instituicao") String instituicao, Model model, RedirectAttributes redirect, HttpSession session) {
-		
-		redirect.addFlashAttribute("anoInicio", anoInicio);
-		redirect.addFlashAttribute("semestreInicio", semestreInicio);
-		redirect.addFlashAttribute("anoTermino", anoTermino);
-		redirect.addFlashAttribute("semestreTermino", semestreTermino);
-		redirect.addFlashAttribute("programaSelecionado", programa);
-		redirect.addFlashAttribute("conceito", conceito);
-		redirect.addFlashAttribute("instituicao", instituicao);
-
-		if (anoInicio == null || anoTermino == null) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
-			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
+	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
+	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.find(Reserva.class, id);
+		Professor professor = getProfessorLogado(session);
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 		}
-		if (anoTermino < anoInicio || (anoInicio.equals(anoTermino) && semestreTermino < semestreInicio)) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
-			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("programa", Programa.values());
+		return Constants.PAGINA_EDITAR_RESERVA;
+	}	
+	
+	@RequestMapping(value = "/editar", method = RequestMethod.POST)
+	public String editar(@ModelAttribute("reserva") Reserva reserva, Model model, RedirectAttributes redirect, HttpSession session) {
+		
+		Reserva reservaAtual = reservaService.find(Reserva.class, reserva.getId());
+		reserva.setProfessor(reservaAtual.getProfessor());
+		reserva.setStatus(reservaAtual.getStatus());
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("programa", Programa.values());
+
+		if (reserva.getAnoInicio() == null || reserva.getAnoTermino() == null) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
+			return Constants.PAGINA_EDITAR_RESERVA;
+		}
+		if (reserva.getAnoTermino() < reserva.getAnoInicio() || (reserva.getAnoInicio().equals(reserva.getAnoTermino()) 
+				&& reserva.getSemestreTermino() < reserva.getSemestreInicio())) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
+			return Constants.PAGINA_EDITAR_RESERVA;
 		}
 
 		Periodo periodo = periodoService.getPeriodoAtual();
-		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), anoInicio, semestreInicio);
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), reserva.getAnoInicio(), reserva.getSemestreInicio());
 
 		if (diferenca < 2) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
-			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
+			model.addAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
+			return Constants.PAGINA_EDITAR_RESERVA;
 		}
-		if ((programa == Programa.MESTRADO || programa == Programa.POS_DOUTORADO)
-				&& calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 4) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
-			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
+		if ((reserva.getPrograma() == Programa.MESTRADO || reserva.getPrograma() == Programa.POS_DOUTORADO)
+				&& calculaSemestres(reserva.getAnoInicio(), reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 4) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
+			return Constants.PAGINA_EDITAR_RESERVA;
 		}
-		if (programa == Programa.DOUTORADO && calculaSemestres(anoInicio, semestreInicio, anoTermino, semestreTermino) + 1 > 8) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
-			return Constants.REDIRECT_PAGINA_EDITAR_RESERVAS + "/" + id;
+		if (reserva.getPrograma() == Programa.DOUTORADO && calculaSemestres(reserva.getAnoInicio(), 
+				reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 8) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
+			return Constants.PAGINA_EDITAR_RESERVA;
 		}
 		
-		Reserva reserva = reservaService.find(Reserva.class, id);
-		reserva.setAnoInicio(anoInicio);
-		reserva.setSemestreInicio(semestreInicio);
-		reserva.setAnoTermino(anoTermino);
-		reserva.setSemestreTermino(semestreTermino);
-		reserva.setPrograma(programa);
-		if (conceito == null) {
-			conceito = 0;
-		}
-		reserva.setConceitoPrograma(conceito);
-		reserva.setProfessor(getProfessorLogado(session));
-		reserva.setInstituicao(instituicao);
-		
-		
+		reserva.setDataSolicitacao(new Date());
 		reservaService.update(reserva);
+		
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_ATUALIZADA);
 		} catch (MessagingException e) {
@@ -279,20 +256,6 @@ public class ReservaController {
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
-	}
-
-	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
-	public String editar(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
-		Reserva reserva = reservaService.find(Reserva.class, id);
-		Professor professor = getProfessorLogado(session);
-		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
-			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
-			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
-		}
-		model.addAttribute("reserva", reserva);
-		model.addAttribute("professor", reserva.getProfessor());
-		model.addAttribute("programa", Programa.values());
-		return Constants.PAGINA_EDITAR_RESERVA;
 	}
 
 	private String getUsuarioLogado(HttpSession session) {
