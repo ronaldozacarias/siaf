@@ -21,6 +21,8 @@ public class Constants {
 	
 	public static final String PAGINA_RANKING = "reserva/ranking";
 	
+	public static final String PAGINA_SIMULADOR = "reserva/simulador";
+	
 	public static final String PAGINA_INCLUIR_RESERVA = "reserva/incluir";
 	
 	public static final String PAGINA_EDITAR_RESERVA = "reserva/editar";

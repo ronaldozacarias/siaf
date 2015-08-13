@@ -64,14 +64,23 @@ public class ReservaController {
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
 		return Constants.PAGINA_RANKING;
 	}
+	
+	@RequestMapping(value = "/simulador", method = RequestMethod.GET)
+	public String getSimulador(Model model, HttpSession session) {
+		Periodo periodoAtual = periodoService.getPeriodoAtual();
+		model.addAttribute("periodoAtual", periodoAtual);
+		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
+		return Constants.PAGINA_SIMULADOR;
+	}
 
-	@RequestMapping(value = "/ranking.json", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = {"/ranking.json"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model ranking(HttpServletRequest request, Model model) {
 		Ranking ranking = new Ranking();
+		boolean simulador = Boolean.valueOf(request.getParameter("simulador"));
 		ranking.setPeriodo(periodoService.getPeriodo(Integer.valueOf(request.getParameter("ano")),
 				Integer.valueOf(request.getParameter("semestre"))));
 
-		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo()));
+		ranking.setTuplas(rankingService.visualizarRanking(ranking.getPeriodo(), simulador));
 
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		List<TuplaRanking> afastados = new ArrayList<TuplaRanking>();
@@ -150,7 +159,7 @@ public class ReservaController {
 		
 		reserva.setDataSolicitacao(new Date());
 		reserva.setProfessor(getProfessorLogado(session));
-		reserva.setStatus(StatusReserva.ABERTO);
+		reserva.setStatus(StatusReserva.EM_ESPERA);
 
 		reservaService.salvar(reserva);
 
@@ -169,7 +178,7 @@ public class ReservaController {
 	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
 		Professor professor = getProfessorLogado(session);
-		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().isAberto()) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 		}
@@ -244,7 +253,7 @@ public class ReservaController {
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);
-		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().isAberto()) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);

@@ -18,7 +18,6 @@
 		<jsp:include page="../modulos/header.jsp" />
 
 		<div id="content">
-		<!-- <div id="chart" style="width:100%; height:400px;"></div> -->
 			<c:if test="${not empty erro}">
 				<br />
 				<div class="alert alert-danger alert-dismissible" role="alert">
@@ -67,7 +66,7 @@
 								<fmt:formatDate value="${reserva.dataSolicitacao}" pattern="dd/MM/yyyy" var="data" />
 								<td class="align-center">
 									<c:choose>
-										<c:when test="${reserva.status == 'ABERTO'}"><span class="label label-success">${reserva.status.descricao}</span></c:when>
+										<c:when test="${reserva.status == 'ABERTO' or reserva.status == 'EM_ESPERA'}"><span class="label label-success">${reserva.status.descricao}</span></c:when>
 										<c:when test="${reserva.status == 'ENCERRADO'}"><span class="label label-default">${reserva.status.descricao}</span></c:when>
 										<c:when test="${reserva.status == 'AFASTADO'}"><span class="label label-primary">${reserva.status.descricao}</span></c:when>
 										<c:when test="${reserva.status == 'NAO_ACEITO'}"><span class="label label-warning">${reserva.status.descricao}</span></c:when>
@@ -79,11 +78,11 @@
 
 								<td class="align-center">${reserva.programa.descricao}</td>
 								<td class="align-center">${reserva.conceitoPrograma}</td>
-								<td>
-									<c:if test="${reserva.status == 'ABERTO' }">
-										<a title="Detalhes" href="<c:url value="/administracao/detalhe-reserva/${reserva.id }" />" class="btn btn-primary">
-											<i class="fa fa-info-circle"></i>
-                                        </a>
+								<td class="align-center">
+									<a title="Detalhes" href="<c:url value="/administracao/detalhe-reserva/${reserva.id }" />" class="btn btn-primary">
+										<i class="fa fa-info-circle"></i>
+                                    </a>
+									<c:if test="${reserva.status == 'ABERTO' or reserva.status == 'EM_ESPERA'}">
 										<a title="Editar" href="<c:url value="/administracao/editar-reserva/${reserva.id }" />" class="btn btn-default">
 											<i class="fa fa-pencil"></i>
                                         </a>

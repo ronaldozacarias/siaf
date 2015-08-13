@@ -10,8 +10,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Periodo;
+import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
+import ufc.quixada.npi.afastamento.model.StatusReserva;
+import ufc.quixada.npi.afastamento.model.StatusTupla;
+import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
+import ufc.quixada.npi.afastamento.service.RankingService;
+import ufc.quixada.npi.afastamento.service.ReservaService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -21,6 +27,12 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 
 	@Inject
 	private GenericRepository<Periodo> periodoRepository;
+	
+	@Inject
+	private RankingService rankingService;
+	
+	@Inject
+	private ReservaService reservaService;
 
 	@Override
 	public Periodo getPeriodo(Integer ano, Integer semestre) {
@@ -94,6 +106,36 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	@Override
 	public List<Periodo> getPeriodoAbertos() {
 		return periodoRepository.find(QueryType.JPQL, "from Periodo p where status = '" + StatusPeriodo.ABERTO + "' order by ano ASC, semestre ASC", null);
+	}
+
+	@Override
+	public void encerrarPeriodo(Periodo periodo) {
+		List<TuplaRanking> ranking = rankingService.visualizarRanking(periodo, false);
+		for (TuplaRanking tupla : ranking) {
+			if(tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)
+					&& tupla.getReserva().getAnoTermino().equals(periodo.getAno())
+					&& tupla.getReserva().getSemestreTermino().equals(periodo.getSemestre())) {
+				Reserva reserva = tupla.getReserva();
+				reserva.setStatus(StatusReserva.ENCERRADO);
+				reservaService.update(reserva);
+			}
+		}
+		periodo.setStatus(StatusPeriodo.ENCERRADO);
+		this.update(periodo);
+		ranking = rankingService.visualizarRanking(this.getPeriodoPosterior(periodo), false);
+		for (TuplaRanking tupla : ranking) {
+			if(tupla.getStatus().equals(StatusTupla.DESCLASSIFICADO)) {
+				Reserva reserva = tupla.getReserva();
+				reserva.setStatus(StatusReserva.NAO_ACEITO);
+				reservaService.update(reserva);
+			}
+		}
+		List<Reserva> reservasEmEspera = reservaService.getReservasByStatus(StatusReserva.EM_ESPERA);
+		for(Reserva reserva : reservasEmEspera) {
+			reserva.setStatus(StatusReserva.ABERTO);
+			reservaService.update(reserva);
+		}
+		
 	}
 
 }

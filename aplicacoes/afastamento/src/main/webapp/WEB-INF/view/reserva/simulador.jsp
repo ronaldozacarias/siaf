@@ -9,7 +9,7 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Ranking</title>
+<title>Simulador</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -41,6 +41,11 @@
 			<input type="hidden" id="anoAnterior" value="${periodoAnterior.ano }" />
 			<input type="hidden" id="semestreAnterior" value="${periodoAnterior.semestre }" />
 			
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				ATENÇÃO: essa simulação respresenta como ficaria o ranking se o mesmo fosse encerrado hoje.
+				Os dados apresentados não são garantias de classificação ou não no ranking.
+			</div>
+			
 			<div id="ranking-full">
 				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert">
@@ -53,14 +58,14 @@
 						<div class="row">
 							<div role="main" class="col-md-6 col-md-push-3">
 								<div id="buscarRanking" class="align-center">
-									<i id="anterior" class="fa fa-chevron-circle-left fa-2x" title="Anterior"></i>
+									<i id="anterior-simulador" class="fa fa-chevron-circle-left fa-2x" title="Anterior"></i>
 									<input id="anoBuscado" name="anoBuscado" type="text" name="ano" class="ano form-control" size="10" value="${periodoAtual.ano }"/>
 									<select id="semestreBuscado" name="semestreBuscado" class="selectpicker">
 										<option value="1" ${periodoAtual.semestre == 1 ? 'selected' : ''}>1</option>
 										<option value="2" ${periodoAtual.semestre == 2 ? 'selected' : ''}>2</option>
 									</select>
-									<input id="buscar" name="buscar" type="submit" class="btn btn-siaf" value="Buscar" />
-									<i id="posterior" class="fa fa-chevron-circle-right fa-2x" title="Próximo"></i>	
+									<input id="buscar-simulador" name="buscar" type="submit" class="btn btn-siaf" value="Buscar" />
+									<i id="posterior-simulador" class="fa fa-chevron-circle-right fa-2x" title="Próximo"></i>	
 								</div>
 								<div id="dados-periodo" class="align-center">
 									<label>Data de encerramento: <span id="encerramento" class="value-label" data-toggle="popover" data-placement="right" data-content=""></span></label>
@@ -73,7 +78,7 @@
 				
 				<div class="titulo-ranking title" role="navigation">
 					<a data-toggle="collapse" href="#collapseRanking"
-						aria-controls="#collapseRanking">Ranking</a><br> <span
+						aria-controls="#collapseRanking">Ranking Simulado</a><br> <span
 						id="count-ranking" class="badge"></span>
 				</div>
 				
@@ -169,8 +174,8 @@
 </body>
 <script type="text/javascript">
 	$('i#anterior').hide();
-	getRanking($('#ano').val(), $('#semestre').val());
-	$('#menu-ranking').addClass('active');
+	getRanking($('#ano').val(), $('#semestre').val(), true);
+	$('#menu-simulador').addClass('active');
 </script>
 </html>
 

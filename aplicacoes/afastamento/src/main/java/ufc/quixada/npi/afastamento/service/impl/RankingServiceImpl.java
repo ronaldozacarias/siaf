@@ -35,7 +35,7 @@ public class RankingServiceImpl implements RankingService {
 	private PeriodoService periodoService;
 
 	@Override
-	public List<TuplaRanking> visualizarRanking(Periodo periodo) {
+	public List<TuplaRanking> visualizarRanking(Periodo periodo, boolean simulador) {
 		List<Periodo> periodos = periodoService.getPeriodoAbertos();
 		Map<Periodo, List<TuplaRanking>> ranking = new HashMap<Periodo, List<TuplaRanking>>();
 		for (Periodo p : periodos) {
@@ -46,6 +46,9 @@ public class RankingServiceImpl implements RankingService {
 		List<Reserva> reservas = new ArrayList<Reserva>();
 		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.AFASTADO));
 		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.ABERTO));
+		if(simulador) {
+			reservas.addAll(reservaService.getReservasByStatus(StatusReserva.EM_ESPERA));
+		}
 
 		tuplas.addAll(calculaPontuacao(reservas, periodo));
 

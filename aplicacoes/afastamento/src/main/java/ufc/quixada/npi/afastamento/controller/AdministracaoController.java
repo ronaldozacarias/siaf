@@ -113,7 +113,7 @@ public class AdministracaoController {
 			Ranking ranking = new Ranking();
 			ranking.setPeriodo(periodo);
 			List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
-			for(TuplaRanking tupla : rankingService.visualizarRanking(periodo)) {
+			for(TuplaRanking tupla : rankingService.visualizarRanking(periodo, false)) {
 				if (tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
 					if(tupla.getReserva().getAnoInicio().equals(periodo.getAno())
 						&& tupla.getReserva().getSemestreInicio().equals(periodo.getSemestre())) {
@@ -135,7 +135,7 @@ public class AdministracaoController {
 		return Constants.PAGINA_HOMOLOGAR_RESERVAS;
 	}
 
-	@RequestMapping(value = "/periodo", method = RequestMethod.GET)
+	@RequestMapping(value = "/periodos", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
 		model.addAttribute("periodos", periodoService.find(Periodo.class));
 		model.addAttribute("periodoAtual", periodoService.getPeriodoAtual());
@@ -218,7 +218,7 @@ public class AdministracaoController {
 	@RequestMapping(value = "/editar-reserva/{id}", method = RequestMethod.GET)
 	public String editarReserva(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
-		if (reserva == null || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		if (reserva == null || (!reserva.getStatus().isAberto())) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 			return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
 		}
@@ -282,7 +282,7 @@ public class AdministracaoController {
 	@RequestMapping(value = "/excluir-reserva/{id}", method = RequestMethod.GET)
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
-		if (reserva == null || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+		if (reserva == null || !reserva.getStatus().isAberto()) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);

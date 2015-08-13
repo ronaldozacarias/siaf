@@ -9,6 +9,6 @@ import ufc.quixada.npi.afastamento.model.TuplaRanking;
 
 public interface RankingService {
 
-	List<TuplaRanking> visualizarRanking(Periodo periodo);
+	List<TuplaRanking> visualizarRanking(Periodo periodo, boolean simulador);
 	List<TuplaRanking> visualizarRankingByStatusReservaAndPeriodo(List<StatusReserva> status, Periodo periodo);
 }

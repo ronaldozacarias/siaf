@@ -12,6 +12,9 @@
     		<li id="menu-ranking">
     			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
+    		<li id="menu-simulador">
+    			<a class="" href="<c:url value="/reserva/simulador" />"><span>Simulador</span></a>
+    		</li>
     		<li id="menu-minhas-reservas">
     			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
     		</li>
@@ -20,7 +23,7 @@
 	    			<a class="" href="<c:url value="/administracao/homologacao" />"><span>Homologação</span></a>
 	    		</li>
 	    		<li id="menu-periodos">
-	    			<a class="" href="<c:url value="/administracao/periodo" />"><span>Períodos</span></a>
+	    			<a class="" href="<c:url value="/administracao/periodos" />"><span>Períodos</span></a>
 	    		</li>
 	    		<li id="menu-reservas">
 	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Reservas</span></a>

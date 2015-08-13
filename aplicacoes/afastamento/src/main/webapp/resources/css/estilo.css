@@ -513,8 +513,12 @@ footer > p {
 	color: #7C7C7C;
 }
 
-input#anoBuscado, input#buscar {
+input#anoBuscado, input#buscar, input#buscar-simulador {
 	width: 11%;
+}
+
+#encerramento {
+	text-decoration: underline;
 }
 
 input.data-periodo {
