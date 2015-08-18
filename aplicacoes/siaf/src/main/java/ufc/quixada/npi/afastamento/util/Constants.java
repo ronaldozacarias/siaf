@@ -21,15 +21,15 @@ public class Constants {
 	
 	public static final String PAGINA_RANKING = "reserva/ranking";
 	
-	public static final String PAGINA_SIMULADOR = "reserva/simulador";
+	public static final String PAGINA_PREVIA_RANKING = "reserva/previaRanking";
 	
 	public static final String PAGINA_INCLUIR_RESERVA = "reserva/incluir";
 	
 	public static final String PAGINA_EDITAR_RESERVA = "reserva/editar";
 	
-	public static final String PAGINA_LISTAR_RESERVA = "reserva/listar";
+	public static final String PAGINA_MINHAS_RESERVAS = "reserva/minhasReservas";
 	
-	public static final String PAGINA_GERENCIAR_RESERVAS = "admin/reservas";
+	public static final String PAGINA_LISTAR_RESERVAS = "reserva/lista";
 	
 	public static final String PAGINA_ADMIN_EDITAR_RESERVA = "admin/editarReserva";
 	
@@ -47,7 +47,7 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_INCLUIR_RESERVAS = "redirect:/reserva/incluir";
 	
-	public static final String REDIRECT_PAGINA_LISTAR_RESERVAS = "redirect:/reserva/listar";
+	public static final String REDIRECT_PAGINA_MINHAS_RESERVAS = "redirect:/reserva/minhas-reservas";
 	
 	public static final String REDIRECT_PAGINA_EDITAR_RESERVAS = "redirect:/reserva/editar";
 	
@@ -55,7 +55,7 @@ public class Constants {
 	
 	public static final String REDIRECT_PAGINA_LISTAR_PROFESSORES = "redirect:/administracao/professores";
 	
-	public static final String REDIRECT_PAGINA_GERENCIAR_RESERVAS = "redirect:/administracao/reservas";
+	public static final String REDIRECT_PAGINA_LISTAR_RESERVAS = "redirect:/reserva/listar";
 	
 	public static final String REDIRECT_PAGINA_ADMIN_EDITAR_RESERVA = "redirect:/administracao/editar-reserva";
 	
@@ -93,6 +93,8 @@ public class Constants {
 	public static final String MSG_STATUS_RESERVA_ATUALIZADO = "Status da reserva atualizado com sucesso.";
 	
 	public static final String MSG_LISTA_PROFESSORES_ATUALIZADO = "Lista de professores atualizada com sucesso.";
+	
+	public static final String MSG_CANCELAMENTO_AUTOMATICO = "Cancelamento automático feito pelo sistema.";
 	
 	
 	/** Afiliações */

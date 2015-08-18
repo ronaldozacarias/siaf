@@ -12,11 +12,11 @@
     		<li id="menu-ranking">
     			<a class="" href="<c:url value="/reserva/ranking" />"><span>Ranking</span></a>
     		</li>
-    		<li id="menu-simulador">
-    			<a class="" href="<c:url value="/reserva/simulador" />"><span>Simulador</span></a>
-    		</li>
     		<li id="menu-minhas-reservas">
-    			<a class="" href="<c:url value="/reserva/listar" />"><span>Minhas Reservas</span></a>
+    			<a class="" href="<c:url value="/reserva/minhas-reservas" />"><span>Minhas Reservas</span></a>
+    		</li>
+    		<li id="menu-reservas">
+    			<a class="" href="<c:url value="/reserva/listar" />"><span>Reservas</span></a>
     		</li>
     		<sec:authorize ifAnyGranted="ADMIN-SIAF">
 	    		<li id="menu-homologacao">
@@ -24,9 +24,6 @@
 	    		</li>
 	    		<li id="menu-periodos">
 	    			<a class="" href="<c:url value="/administracao/periodos" />"><span>Períodos</span></a>
-	    		</li>
-	    		<li id="menu-reservas">
-	    			<a class="" href="<c:url value="/administracao/reservas" />"><span>Reservas</span></a>
 	    		</li>
 	    		<li id="menu-professores">
 	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>

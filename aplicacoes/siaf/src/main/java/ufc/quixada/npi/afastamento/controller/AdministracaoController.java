@@ -220,7 +220,7 @@ public class AdministracaoController {
 		Reserva reserva = reservaService.find(Reserva.class, id);
 		if (reserva == null || (!reserva.getStatus().equals(StatusReserva.ABERTO) && !reserva.getStatus().equals(StatusReserva.EM_ESPERA))) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
-			return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 		}
 		model.addAttribute("reserva", reserva);
 		model.addAttribute("professor", reserva.getProfessor());
@@ -276,7 +276,7 @@ public class AdministracaoController {
 
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_ATUALIZADA);
 		
-		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
 	@RequestMapping(value = "/excluir-reserva/{id}", method = RequestMethod.GET)
@@ -293,7 +293,7 @@ public class AdministracaoController {
 			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
-		return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
 	@RequestMapping(value = "/detalhe-reserva/{id}", method = RequestMethod.GET)
@@ -305,13 +305,6 @@ public class AdministracaoController {
 			model.addAttribute("reserva", reserva);
 		}
 		return Constants.PAGINA_DETALHE_RESERVA;
-	}
-
-	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
-	public String getReservas(Model model) {
-		List<Reserva> reservas = reservaService.getAllReservas();
-		model.addAttribute("reservas", reservas);
-		return Constants.PAGINA_GERENCIAR_RESERVAS;
 	}
 
 	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)

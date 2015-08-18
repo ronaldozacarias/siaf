@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -65,12 +66,12 @@ public class ReservaController {
 		return Constants.PAGINA_RANKING;
 	}
 	
-	@RequestMapping(value = "/simulador", method = RequestMethod.GET)
+	@RequestMapping(value = "/previa-ranking", method = RequestMethod.GET)
 	public String getSimulador(Model model, HttpSession session) {
 		Periodo periodoAtual = periodoService.getPeriodoAtual();
 		model.addAttribute("periodoAtual", periodoAtual);
 		model.addAttribute("periodoPosterior", periodoService.getPeriodoPosterior(periodoAtual));
-		return Constants.PAGINA_SIMULADOR;
+		return Constants.PAGINA_PREVIA_RANKING;
 	}
 
 	@RequestMapping(value = {"/ranking.json"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -178,7 +179,7 @@ public class ReservaController {
 
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_INCLUIDA);
 
-		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
 	}
 	
 	/*@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
@@ -245,7 +246,7 @@ public class ReservaController {
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}*/
 
-	@RequestMapping(value = "/listar", method = RequestMethod.GET)
+	@RequestMapping(value = "/minhas-reservas", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {
 		Professor professor = getProfessorLogado(session);
 		Periodo periodo = periodoService.getPeriodoAtual();
@@ -253,7 +254,14 @@ public class ReservaController {
 		model.addAttribute("periodo", periodo);
 		model.addAttribute("reservas", reservaService.getReservasByProfessor(professor));
 		model.addAttribute("professor", professor);
-		return Constants.PAGINA_LISTAR_RESERVA;
+		return Constants.PAGINA_MINHAS_RESERVAS;
+	}
+	
+	@RequestMapping(value = "/listar", method = RequestMethod.GET)
+	public String getReservas(Model model) {
+		List<Reserva> reservas = reservaService.getAllReservas();
+		model.addAttribute("reservas", reservas);
+		return Constants.PAGINA_LISTAR_RESERVAS;
 	}
 
 	@RequestMapping(value = "/excluir/{id}", method = RequestMethod.GET)
@@ -271,17 +279,19 @@ public class ReservaController {
 			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
-		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
 	}
 	
-	@RequestMapping(value = "/cancelar/{id}", method = RequestMethod.GET)
-	public String cancelar(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
+	@RequestMapping(value = "/cancelar", method = RequestMethod.POST)
+	public String cancelar(@RequestParam("id") Long id, @RequestParam("motivo") String motivo, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);
 		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reserva.setStatus(StatusReserva.CANCELADO);
+			reserva.setDataCancelamento(new Date());
+			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
 			try {
 				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
@@ -290,7 +300,7 @@ public class ReservaController {
 			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_CANCELADA);
 		}
-		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
 	}
 
 	private String getUsuarioLogado(HttpSession session) {

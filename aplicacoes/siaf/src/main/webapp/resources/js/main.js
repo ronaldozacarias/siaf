@@ -92,7 +92,7 @@ $(document).ready(function() {
 		
 	// Página de inclusão e edição de reserva
 	
-	$('#solicitarAfastamento, #formEditarReserva, #formEditarAdmissao').validate({
+	$('#solicitarAfastamento, #formEditarReserva, #formEditarAdmissao, #formCancelarReserva').validate({
         rules: {
             
         },
@@ -112,6 +112,9 @@ $(document).ready(function() {
                 required:"Campo obrigatório",
             },
             anoTermino:{
+                required:"Campo obrigatório",
+            },
+            motivo:{
                 required:"Campo obrigatório",
             }
         }
@@ -207,16 +210,16 @@ $(document).ready(function() {
 	});
 	
 	$('#cancelar-reserva').on('show.bs.modal', function(e) {
-		$(this).find('.modal-body').text('Tem certeza de que deseja cancelar a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
-		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+		$(this).find('#reservaId').val($(e.relatedTarget).data('id'));
 	});
+	
+	
 	
 	$('#anoInicioReserva').datepicker({
         format: " yyyy", 
    	    viewMode: "years", 
    	    minViewMode: "years"
 	});
-	
 
 	$('#anoTerminoReserva').datepicker({
         format: " yyyy", 

@@ -90,10 +90,9 @@
 									<td>${reserva.status.descricao }</td>
 									<td>
 									   <c:if test="${reserva.status eq 'ABERTO' }">
-											<a id="cancelar" title="Cancelar" data-toggle="modal"
+											<a id="cancelar-${reserva.id }" title="Cancelar" data-toggle="modal"
 												data-target="#cancelar-reserva" href="#"
-												data-href="<c:url value="/reserva/cancelar/${reserva.id}"></c:url>"
-												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
+												data-id="${reserva.id }">
 												<button class="btn btn-danger">
 													<i class="fa fa-ban"></i>
 												</button>
@@ -149,11 +148,22 @@
 						</button>
 						<h4 class="modal-title" id="cancelarModalLabel">Cancelar</h4>
 					</div>
-					<div class="modal-body"></div>
-					<div class="modal-footer">
-						<a href="#" class="btn btn-danger">Sim</a>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-					</div>
+					<form id="formCancelarReserva" action="/siaf/reserva/cancelar" method="POST">
+						<div class="modal-body">
+							Tem certeza de que deseja cancelar essa reserva?<br/><br/>
+							<input type="hidden" id="reservaId" name="id" value=""/>
+							<div class="form-group">
+								<div class="form-item">
+									<label class="control-label" for="motivo">Motivo:</label>
+									<textarea class="form-control" id="motivo" name="motivo" required="required"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Sim</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

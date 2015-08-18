@@ -9,7 +9,7 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Simulador</title>
+<title>Prévia do Ranking</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -175,7 +175,7 @@
 <script type="text/javascript">
 	$('i#anterior').hide();
 	getRanking($('#ano').val(), $('#semestre').val(), true);
-	$('#menu-simulador').addClass('active');
+	$('#menu-minhas-reservas').addClass('active');
 </script>
 </html>
 

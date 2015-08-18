@@ -2,6 +2,7 @@ package ufc.quixada.npi.afastamento.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,6 +29,11 @@ public class Reserva {
 	private Integer semestreTermino;
 	
 	private Date dataSolicitacao;
+	
+	private Date dataCancelamento;
+	
+	@Column(columnDefinition="TEXT")
+	private String motivoCancelamento;
 	
 	@Enumerated(EnumType.STRING)
 	private Programa programa;
@@ -129,6 +135,22 @@ public class Reserva {
 
 	public void setInstituicao(String instituicao) {
 		this.instituicao = instituicao;
+	}
+	
+	public Date getDataCancelamento() {
+		return dataCancelamento;
+	}
+
+	public void setDataCancelamento(Date dataCancelamento) {
+		this.dataCancelamento = dataCancelamento;
+	}
+
+	public String getMotivoCancelamento() {
+		return motivoCancelamento;
+	}
+
+	public void setMotivoCancelamento(String motivoCancelamento) {
+		this.motivoCancelamento = motivoCancelamento;
 	}
 
 	@Override

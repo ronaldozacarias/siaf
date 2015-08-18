@@ -18,6 +18,7 @@ import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
+import ufc.quixada.npi.afastamento.util.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -136,7 +137,10 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		for (Reserva reservaEspera : reservasEmEspera) {
 			for (Reserva reservaAberto : reservasEmAberto) {
 				if (reservaEspera.getProfessor().equals(reservaAberto.getProfessor())) {
-					reservaService.delete(reservaAberto);
+					reservaAberto.setStatus(StatusReserva.CANCELADO);
+					reservaAberto.setDataCancelamento(new java.util.Date());
+					reservaAberto.setMotivoCancelamento(Constants.MSG_CANCELAMENTO_AUTOMATICO);
+					reservaService.update(reservaAberto);
 					break;
 				}
 			}
