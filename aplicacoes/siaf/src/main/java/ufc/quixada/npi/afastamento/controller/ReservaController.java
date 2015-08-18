@@ -114,6 +114,19 @@ public class ReservaController {
 		
 		return model;
 	}
+	
+	@RequestMapping(value = {"/detalhes.json"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Model detalhesJson(HttpServletRequest request, HttpSession session, Model model) {
+		Reserva reserva = reservaService.getReservaById(Long.valueOf(request.getParameter("id")));
+		if (reserva == null || !reserva.getProfessor().equals(getProfessorLogado(session))) {
+			model.addAttribute("status", Constants.ERRO);
+			return model;
+		}
+		model.addAttribute("status", Constants.SUCESSO);
+		model.addAttribute("professor", reserva.getProfessor().getNome());
+		model.addAttribute("reserva", reserva);
+		return model;
+	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.GET)
 	public String incluirForm(Model model, HttpSession session) {

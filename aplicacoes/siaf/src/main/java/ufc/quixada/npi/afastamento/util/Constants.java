@@ -10,6 +10,8 @@ public class Constants {
 	
 	public static final String ERRO = "erro";
 	
+	public static final String SUCESSO = "sucesso";
+	
 	
 	/** Páginas */
 	

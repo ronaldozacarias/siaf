@@ -87,10 +87,24 @@
 									<td>${reserva.conceitoPrograma eq 0 ? "-" : reserva.conceitoPrograma}</td>
 									<td>${reserva.instituicao }</td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${reserva.dataSolicitacao }" /></td>
-									<td>${reserva.status.descricao }</td>
+									<td>
+										<c:choose>
+											<c:when test="${reserva.status eq 'CANCELADO' or reserva.status eq 'CANCELADO_COM_PUNICAO' or reserva.status eq 'NEGADO'}">
+												<a id="detalhes" title="Detalhes" data-toggle="modal"
+													data-target="#detalhes-reserva" href="#"
+													data-id="${reserva.id }">
+													${reserva.status.descricao }
+												</a>
+											</c:when>
+											<c:otherwise>
+												${reserva.status.descricao }
+											</c:otherwise>
+										</c:choose>
+										
+									</td>
 									<td>
 									   <c:if test="${reserva.status eq 'ABERTO' }">
-											<a id="cancelar-${reserva.id }" title="Cancelar" data-toggle="modal"
+											<a id="cancelar" title="Cancelar" data-toggle="modal"
 												data-target="#cancelar-reserva" href="#"
 												data-id="${reserva.id }">
 												<button class="btn btn-danger">
@@ -132,6 +146,65 @@
 					<div class="modal-footer">
 						<a href="#" class="btn btn-danger">Sim</a>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Modal Detalhes Reserva -->
+		<div class="modal fade" id="detalhes-reserva" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="excluirModalLabel">Detalhes</h4>
+					</div>
+					<div class="modal-body">
+						<div id="load-siaf">
+							<div class=loading-siaf></div>
+							<div class="load-s"></div>
+						</div>
+						<div id="detalhes" class="form-horizontal" style="display: none">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Professor:</label>
+								<div class="col-sm-8">
+									<label id="detalhe-professor" class="control-label value-label"></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Período:</label>
+								<div class="col-sm-8">
+									<label id="detalhe-periodo" class="control-label value-label"></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Status:</label>
+								<div class="col-sm-8">
+									<label id="detalhe-status" class="control-label value-label"></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Cancelamento:</label>
+								<div class="col-sm-8">
+									<label id="detalhe-data-cancelamento" class="control-label value-label"></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Motivo:</label>
+								<div class="col-sm-8">
+									<label id="detalhe-motivo" class="control-label value-label"></label>
+								</div>
+							</div>
+						</div>
+						<div id="detalhe-erro" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
+							Ocorreu um erro ao buscar os detalhes da reserva.
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
 					</div>
 				</div>
 			</div>

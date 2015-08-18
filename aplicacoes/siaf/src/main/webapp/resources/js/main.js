@@ -213,7 +213,34 @@ $(document).ready(function() {
 		$(this).find('#reservaId').val($(e.relatedTarget).data('id'));
 	});
 	
-	
+	$('#detalhes-reserva').on('shown.bs.modal', function(e) {
+		$.ajax({
+			type: "GET",
+			url: '/siaf/reserva/detalhes.json',
+			data: {
+	        	id : $(e.relatedTarget).data('id')
+			}
+		})
+		.success(function(result) {
+			if (result.status == 'sucesso') {
+				$('#detalhes-reserva').find('#load-siaf').css('display', 'none');
+				$('#detalhes-reserva').find('#detalhe-professor').text(result.professor);
+				$('#detalhes-reserva').find('#detalhe-periodo').text(
+						result.reserva.anoInicio + '.' + result.reserva.semestreInicio + ' a ' 
+						+ result.reserva.anoTermino + '.' + result.reserva.semestreTermino);
+				$('#detalhes-reserva').find('#detalhe-status').text(getStatus(result.reserva.status));
+				$('#detalhes-reserva').find('#detalhe-data-cancelamento').text(moment(result.reserva.dataCancelamento).format('DD/MM/YYYY'));
+				$('#detalhes-reserva').find('#detalhe-motivo').text(result.reserva.motivoCancelamento);
+				$('#detalhes-reserva').find('#detalhes').css('display', 'block');
+			} else {
+				$('#detalhes-reserva').find('#detalhe-erro').css('display', 'block');
+			}
+		})
+		.error(function(error) {
+			$('#detalhes-reserva').find('#load-siaf').css('display', 'none');
+			$('#detalhes-reserva').find('#detalhe-erro').css('display', 'block');
+		});
+	});
 	
 	$('#anoInicioReserva').datepicker({
         format: " yyyy", 
@@ -465,6 +492,17 @@ function getPrograma(programa) {
 		return "PÓS DOUTORADO";
 	}
 	return programa;
+}
+
+function getStatus(reserva) {
+	if(reserva == 'EM_ESPERA') {
+		return "EM ESPERA";
+	} else if(reserva == 'NAO_ACEITO') {
+		return "NÃO ACEITO";
+	} else if(reserva == 'CANCELADO_COM_PUNICAO') {
+		return "CANCELADO COM PUNIÇÃO";
+	}
+	return reserva;
 }
 
 function getConceito(conceito) {

@@ -95,6 +95,7 @@ form input, .bootstrap-select button {
 
 .value-label {
 	color: #CF5719;
+	text-align: left !important;
 }
 
 .bootstrap-select {
