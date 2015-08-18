@@ -89,16 +89,22 @@
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${reserva.dataSolicitacao }" /></td>
 									<td>${reserva.status.descricao }</td>
 									<td>
-									   <c:if test="${reserva.anoInicio - periodo.ano gt 1 or 
-									       (reserva.anoInicio - periodo.ano eq 1 and reserva.semestreInicio - periodo.semestre >= 0)}">
-											<a title="Editar" href="<c:url value="/reserva/editar/${reserva.id }" />"
-                                                class="btn btn-default"><i class="fa fa-pencil "></i>
-                                            </a>
+									   <c:if test="${reserva.status eq 'ABERTO' }">
+											<a id="cancelar" title="Cancelar" data-toggle="modal"
+												data-target="#cancelar-reserva" href="#"
+												data-href="<c:url value="/reserva/cancelar/${reserva.id}"></c:url>"
+												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
+												<button class="btn btn-danger">
+													<i class="fa fa-ban"></i>
+												</button>
+											</a>
+                                        </c:if>
+                                        <c:if test="${reserva.status eq 'EM_ESPERA' }">
 											<a id="excluir" title="Excluir" data-toggle="modal"
 												data-target="#excluir-reserva" href="#"
 												data-href="<c:url value="/reserva/excluir/${reserva.id}"></c:url>"
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}">
-												<button class="btn btn-danger">
+												<button class="btn btn-warning">
 													<i class="fa fa-trash-o"></i>
 												</button>
 											</a>
@@ -108,12 +114,6 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<div id="legenda">
-						<label><span class="afastado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Afastado</label> <label><span
-							class="desclassificado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não classificado</label> <label><span
-							class="encerrado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerrado</label> <label><span
-							class="cancelado">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Cancelado</label><br />
-					</div>
 				</c:if>
 			</form>
 		</div>
@@ -131,8 +131,28 @@
 					</div>
 					<div class="modal-body"></div>
 					<div class="modal-footer">
-						<a href="#" class="btn btn-danger">Excluir</a>
-						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<a href="#" class="btn btn-danger">Sim</a>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Modal Cancelar Reserva -->
+		<div class="modal fade" id="cancelar-reserva" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="cancelarModalLabel">Cancelar</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-danger">Sim</a>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
 					</div>
 				</div>
 			</div>

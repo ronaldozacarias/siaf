@@ -206,6 +206,11 @@ $(document).ready(function() {
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
+	$('#cancelar-reserva').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja cancelar a reserva para o período \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
+	});
+	
 	$('#anoInicioReserva').datepicker({
         format: " yyyy", 
    	    viewMode: "years", 

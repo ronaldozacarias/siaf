@@ -157,6 +157,13 @@ public class ReservaController {
 			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
 		
+		List<Reserva> reservas = reservaService
+				.getReservasByStatusReservaAndProfessor(StatusReserva.EM_ESPERA, getProfessorLogado(session));
+		
+		if (reservas != null && !reservas.isEmpty()) {
+			model.addAttribute(Constants.ERRO, Constants.MSG_RESERVA_EM_ESPERA);
+			return Constants.PAGINA_INCLUIR_RESERVA;
+		}
 		reserva.setDataSolicitacao(new Date());
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setStatus(StatusReserva.EM_ESPERA);
@@ -174,7 +181,7 @@ public class ReservaController {
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
 	
-	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
 	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
 		Professor professor = getProfessorLogado(session);
@@ -236,10 +243,10 @@ public class ReservaController {
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_ATUALIZADA);
 		
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
-	}
+	}*/
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
-	public String getReservas(Model model, HttpSession session) {
+	public String listar(Model model, HttpSession session) {
 		Professor professor = getProfessorLogado(session);
 		Periodo periodo = periodoService.getPeriodoAtual();
 
@@ -253,7 +260,7 @@ public class ReservaController {
 	public String excluir(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
 		Professor professor = getProfessorLogado(session);
-		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().isAberto()) {
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.EM_ESPERA)) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);
@@ -263,6 +270,25 @@ public class ReservaController {
 				e.printStackTrace();
 			}
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
+		}
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
+	}
+	
+	@RequestMapping(value = "/cancelar/{id}", method = RequestMethod.GET)
+	public String cancelar(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.getReservaById(id);
+		Professor professor = getProfessorLogado(session);
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+		} else {
+			reserva.setStatus(StatusReserva.CANCELADO);
+			reservaService.update(reserva);
+			try {
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_CANCELADA);
 		}
 		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}

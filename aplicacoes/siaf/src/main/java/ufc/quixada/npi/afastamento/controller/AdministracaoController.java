@@ -218,7 +218,7 @@ public class AdministracaoController {
 	@RequestMapping(value = "/editar-reserva/{id}", method = RequestMethod.GET)
 	public String editarReserva(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
-		if (reserva == null || (!reserva.getStatus().isAberto())) {
+		if (reserva == null || (!reserva.getStatus().equals(StatusReserva.ABERTO) && !reserva.getStatus().equals(StatusReserva.EM_ESPERA))) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 			return Constants.REDIRECT_PAGINA_GERENCIAR_RESERVAS;
 		}
@@ -282,7 +282,7 @@ public class AdministracaoController {
 	@RequestMapping(value = "/excluir-reserva/{id}", method = RequestMethod.GET)
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.getReservaById(id);
-		if (reserva == null || !reserva.getStatus().isAberto()) {
+		if (reserva == null || !reserva.getStatus().equals(StatusReserva.EM_ESPERA)) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);

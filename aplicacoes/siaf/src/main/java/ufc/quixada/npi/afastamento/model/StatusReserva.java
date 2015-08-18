@@ -15,8 +15,4 @@ public enum StatusReserva {
 		return this.descricao;
 	}
 	
-	public boolean isAberto() {
-		return this == ABERTO || this == EM_ESPERA;
-	}
-	
 }

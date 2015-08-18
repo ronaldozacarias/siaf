@@ -131,6 +131,17 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 			}
 		}
 		List<Reserva> reservasEmEspera = reservaService.getReservasByStatus(StatusReserva.EM_ESPERA);
+		List<Reserva> reservasEmAberto = reservaService.getReservasByStatus(StatusReserva.ABERTO);
+		
+		for (Reserva reservaEspera : reservasEmEspera) {
+			for (Reserva reservaAberto : reservasEmAberto) {
+				if (reservaEspera.getProfessor().equals(reservaAberto.getProfessor())) {
+					reservaService.delete(reservaAberto);
+					break;
+				}
+			}
+		}
+		
 		for(Reserva reserva : reservasEmEspera) {
 			reserva.setStatus(StatusReserva.ABERTO);
 			reservaService.update(reserva);

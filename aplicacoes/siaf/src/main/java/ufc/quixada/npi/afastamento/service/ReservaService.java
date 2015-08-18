@@ -27,4 +27,6 @@ public interface ReservaService extends GenericService<Reserva> {
 	List<Reserva> getReservasByStatusReservaAndPeriodo(StatusReserva statusReserva, Periodo periodo);
 	
 	List<Reserva> getAllReservas();
+	
+	List<Reserva> getReservasByStatusReservaAndProfessor(StatusReserva statusReserva, Professor professor);
 }

@@ -205,7 +205,7 @@ table {
 	background-color: #BBD4E1;
 }
 
-table > tbody > tr.DESCLASSIFICADO {
+table > tbody > tr.DESCLASSIFICADO, .table > tbody > tr.NAO_ACEITO {
 	background-color: #F2BF7C;
 }
 
@@ -217,14 +217,7 @@ table > tbody > tr.DESCLASSIFICADO {
 	background-color: #95CF9E;
 }
 
-.table > tbody > tr.NAO_ACEITO {
-	background-color: #F0D1D1;
-}
-
-.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO {
-	background-color: #FFBEA9;
-}
-.table > tbody > tr.NEGADO {
+.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO, .table > tbody > tr.NEGADO {
 	background-color: #FFBEA9;
 }
 

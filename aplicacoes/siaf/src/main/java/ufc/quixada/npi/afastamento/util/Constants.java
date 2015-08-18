@@ -70,6 +70,8 @@ public class Constants {
 	
 	public static final String MSG_RESERVA_EXCLUIDA = "Reserva excluída com sucesso.";
 	
+	public static final String MSG_RESERVA_CANCELADA = "Reserva cancelada com sucesso.";
+	
 	public static final String MSG_CAMPOS_OBRIGATORIOS = "É necessário preencher todas as informações.";
 	
 	public static final String MSG_PERIODO_INVALIDO = "O período de término do afastamento deve ser posterior ao período de início.";
@@ -80,7 +82,7 @@ public class Constants {
 	
 	public static final String MSG_TEMPO_MAXIMO_DOUTORADO = "O tempo máximo para doutorado é de 8 semestres.";
 	
-	public static final String MSG_RESERVA_EM_ABERTO = "Já há uma solicitação de reserva em aberto.";
+	public static final String MSG_RESERVA_EM_ESPERA = "Já há uma solicitação de reserva em espera.";
 	
 	public static final String MSG_PERMISSAO_NEGADA = "Você não tem permissão para executar essa ação.";
 	

@@ -76,7 +76,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cpf", professor.getCpf());
 		return reservaRepository.find(QueryType.JPQL,
-				"from Reserva where professor.cpf = :cpf order by anoInicio DESC, semestreInicio DESC", params);
+				"from Reserva where professor.cpf = :cpf order by dataSolicitacao DESC", params);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 
 	@Override
 	public List<Reserva> getReservasByStatus(StatusReserva status) {
-			Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("status", status);
 		return reservaRepository.find(QueryType.JPQL,
 				"from Reserva where status = :status order by anoInicio DESC, semestreInicio DESC", params);
@@ -127,6 +127,16 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 	@Override
 	public List<Reserva> getAllReservas() {
 		return reservaRepository.find(Reserva.class);
+	}
+
+	@Override
+	public List<Reserva> getReservasByStatusReservaAndProfessor(
+			StatusReserva statusReserva, Professor professor) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", statusReserva);
+		params.put("id", professor.getId());
+		return reservaRepository.find(QueryType.JPQL,
+				"from Reserva where professor.id = :id and status = :status", params);
 	}
 
 }
