@@ -195,13 +195,13 @@ public class ReservaController {
 		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
 	}
 	
-	/*@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/editar/{id}", method = RequestMethod.GET)
 	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		Reserva reserva = reservaService.find(Reserva.class, id);
 		Professor professor = getProfessorLogado(session);
-		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().isAberto()) {
+		if (reserva == null || !reserva.getProfessor().equals(professor) || !reserva.getStatus().equals(StatusReserva.EM_ESPERA)) {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
-			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
+			return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
 		}
 		model.addAttribute("reserva", reserva);
 		model.addAttribute("programa", Programa.values());
@@ -256,8 +256,8 @@ public class ReservaController {
 
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_ATUALIZADA);
 		
-		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
-	}*/
+		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
+	}
 
 	@RequestMapping(value = "/minhas-reservas", method = RequestMethod.GET)
 	public String listar(Model model, HttpSession session) {

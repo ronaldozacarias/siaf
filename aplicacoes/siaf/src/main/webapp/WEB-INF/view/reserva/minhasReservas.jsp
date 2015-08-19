@@ -109,11 +109,14 @@
 												data-target="#cancelar-reserva" href="#"
 												data-id="${reserva.id }">
 												<button class="btn btn-danger">
-													<i class="fa fa-ban"></i>
+													<i class="fa fa-times"></i>
 												</button>
 											</a>
                                         </c:if>
                                         <c:if test="${reserva.status eq 'EM_ESPERA' }">
+											<a id="editar" class="btn btn-default" title="Editar" href="<c:url value="/reserva/editar/${reserva.id }"/>">
+												<i class="fa fa-pencil"></i>
+											</a>
 											<a id="excluir" title="Excluir" data-toggle="modal"
 												data-target="#excluir-reserva" href="#"
 												data-href="<c:url value="/reserva/excluir/${reserva.id}"></c:url>"
