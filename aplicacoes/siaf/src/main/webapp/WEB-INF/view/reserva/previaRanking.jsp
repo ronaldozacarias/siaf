@@ -41,9 +41,9 @@
 			<input type="hidden" id="anoAnterior" value="${periodoAnterior.ano }" />
 			<input type="hidden" id="semestreAnterior" value="${periodoAnterior.semestre }" />
 			
-			<div class="alert alert-warning alert-dismissible" role="alert">
-				ATENÇÃO: essa simulação respresenta como ficaria o ranking se o mesmo fosse encerrado hoje.
-				Os dados apresentados não são garantias de classificação ou não no ranking.
+			<div style="display: inline-block; width: 100%">
+				<div class="title"> Visualizar Prévia do Ranking : </div>
+				<span class="line"></span>
 			</div>
 			
 			<div id="ranking-full">
@@ -78,7 +78,7 @@
 				
 				<div class="titulo-ranking title" role="navigation">
 					<a data-toggle="collapse" href="#collapseRanking"
-						aria-controls="#collapseRanking">Ranking Simulado</a><br> <span
+						aria-controls="#collapseRanking">Prévia do Ranking</a><br> <span
 						id="count-ranking" class="badge"></span>
 				</div>
 				

@@ -44,9 +44,18 @@ public class RankingServiceImpl implements RankingService {
 
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		List<Reserva> reservas = new ArrayList<Reserva>();
+		List<Reserva> reservasEmAberto = reservaService.getReservasByStatus(StatusReserva.ABERTO);
 		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.AFASTADO));
-		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.ABERTO));
+		reservas.addAll(reservasEmAberto);
 		if(simulador) {
+			List<Reserva> reservasEmEspera = reservaService.getReservasByStatus(StatusReserva.EM_ESPERA);
+			for (Reserva reservaEspera : reservasEmEspera) {
+				for (Reserva reservaAberta : reservasEmAberto) {
+					if (reservaAberta.getProfessor().equals(reservaEspera.getProfessor())) {
+						reservas.remove(reservaAberta);
+					}
+				}
+			}
 			reservas.addAll(reservaService.getReservasByStatus(StatusReserva.EM_ESPERA));
 		}
 
