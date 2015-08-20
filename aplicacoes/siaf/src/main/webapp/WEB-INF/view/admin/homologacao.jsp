@@ -57,7 +57,6 @@
 						</thead>
 						<tbody>
 							<c:forEach items="${ranking.tuplas }" var="tupla" varStatus="count">
-								<form id="atualizarStatusReserva-${tupla.reserva.id }" action="/siaf/administracao/atualizarStatusReserva" method="POST">
 									<tr class="${tupla.status }">
 										<td class="align-center">${count.index + 1 }</td>
 										<td>${tupla.professor }</td>
@@ -70,19 +69,21 @@
 												<c:when
 													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
 													<c:set var="atualizar" value="true"></c:set>
-														<input type="hidden" value="${tupla.reserva.id }" name="idReserva" />
-														<select id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
+													<form id="homologar-reserva-${tupla.reserva.id }" action="/siaf/administracao/homologar-reserva" method="POST">
+														<input id="idReserva" type="hidden" value="${tupla.reserva.id }" name="idReserva" />
+														<select id="status-${tupla.reserva.id }" name="status" class="form-control selectpicker">
 															<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-ABERTO">ABERTO</option>
+																value="ABERTO">ABERTO</option>
 															<option ${tupla.status == 'AFASTADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-AFASTADO">AFASTADO</option>
+																value="AFASTADO">AFASTADO</option>
 															<option ${tupla.status == 'CANCELADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
+																value="CANCELADO">CANCELADO</option>
 															<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
+																value="CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
 															<option ${tupla.status == 'NEGADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-NEGADO">NEGADO</option>
+																value="NEGADO">NEGADO</option>
 														</select>
+													</form>
 												</c:when>
 												<c:otherwise>
 													${tupla.status.descricao }
@@ -93,12 +94,11 @@
 											<c:choose>
 												<c:when
 													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
-													<input name="reservar" type="submit" class="btn btn-siaf" value="salvar" />
+													<input data-id="${tupla.reserva.id }" name="reservar" type="button" class="btn btn-siaf homologar" value="salvar" />
 												</c:when>
 											</c:choose>
 											</td>
 									</tr>
-								</form>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -123,7 +123,6 @@
 							</thead>
 							<tbody>
 								<c:forEach items="${tuplasCanceladasNegadas }" var="tupla" varStatus="count">
-									<form id="atualizarStatusReserva" action="/siaf/administracao/atualizarStatusReserva" method="POST">
 									<tr class="${tupla.status }">
 										<td class="align-center">${count.index + 1 }</td>
 										<td>${tupla.professor }</td>
@@ -135,20 +134,22 @@
 											<c:choose>
 												<c:when
 													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.status != 'CLASSIFICADO' and tupla.status != 'AFASTADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
-													<c:set var="atualizar" value="true"></c:set>
-														<input type="hidden" value="${tupla.reserva.id }" name="idReserva" /> <select
-															id="${tupla.reserva.id }" name="status" class="form-control selectpicker">
+													<form id="homologar-reserva-${tupla.reserva.id }" action="/siaf/administracao/homologar-reserva" method="POST">
+														<c:set var="atualizar" value="true"></c:set>
+														<input type="hidden" value="${tupla.reserva.id }" name="idReserva" />
+														<select id="status-${tupla.reserva.id }" name="status" class="form-control selectpicker">
 															<option ${tupla.status == 'CLASSIFICADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-ABERTO">ABERTO</option>
+																value="ABERTO">ABERTO</option>
 															<option ${tupla.status == 'AFASTADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-AFASTADO">AFASTADO</option>
+																value="AFASTADO">AFASTADO</option>
 															<option ${tupla.status == 'CANCELADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-CANCELADO">CANCELADO</option>
+																value="CANCELADO">CANCELADO</option>
 															<option ${tupla.status == 'CANCELADO_COM_PUNICAO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
+																value="CANCELADO_COM_PUNICAO">CANCELADO COM PUNIÇÃO</option>
 															<option ${tupla.status == 'NEGADO' ? 'selected' : ''}
-																value="${tupla.reserva.id }-NEGADO">NEGADO</option>
+																value="NEGADO">NEGADO</option>
 														</select>
+													</form>
 												</c:when>
 												<c:otherwise>
 													${tupla.status.descricao }
@@ -159,12 +160,11 @@
 											<c:choose>
 												<c:when
 													test="${tupla.status != 'DESCLASSIFICADO' and tupla.status != 'NAO_ACEITO' and tupla.status != 'CLASSIFICADO' and tupla.status != 'AFASTADO' and tupla.reserva.anoInicio == ranking.periodo.ano and tupla.reserva.semestreInicio == ranking.periodo.semestre}">
-													<input name="reservar" type="submit" class="btn btn-siaf" value="salvar" />
+													<input data-id="${tupla.reserva.id }" name="reservar" type="button" class="btn btn-siaf homologar" value="salvar" />
 												</c:when>
 											</c:choose>
 										</td>
 									</tr>
-									</form>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -176,6 +176,38 @@
 					</c:if>
 				</div>
 			</c:if>
+		</div>
+		
+		<!-- Modal Cancelar Reserva -->
+		<div class="modal fade" id="cancelar-reserva" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="cancelarModalLabel">Cancelar</h4>
+					</div>
+					<form id="formCancelarReserva" action="/siaf/administracao/homologar-reserva" method="POST">
+						<div class="modal-body">
+							Tem certeza de que deseja cancelar essa reserva?<br/><br/>
+							<input type="hidden" id="idReserva" name="idReserva" value=""/>
+							<input type="hidden" id="status" name="status" value=""/>
+							<div class="form-group">
+								<div class="form-item">
+									<label class="control-label" for="motivo">Motivo:</label>
+									<textarea class="form-control" id="motivo" name="motivo" required="required"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Sim</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 
 		<jsp:include page="../modulos/footer.jsp" />

@@ -85,6 +85,26 @@ $(document).ready(function() {
 			}
 		}
 	});
+
+//_____________________________________________________________________________________________________		
+	
+	
+	// Página de homologação de reserva
+	$('.homologar').click(function(){
+		var idReserva = $(this).data('id');
+		var status = $('#homologar-reserva-' + idReserva).find('#status-' + idReserva).val();
+		if (status.contains('CANCELADO') || status.contains('NEGADO')) {
+			$('#cancelar-reserva').modal('show');
+			$('#cancelar-reserva').find('#status').val(status);
+			$('#cancelar-reserva').find('#idReserva').val(idReserva);
+		} else {
+			$('#homologar-reserva-' + $(this).data('id')).submit();
+		}
+	});
+	/*$('.form-homologar').submit(function(){
+		alert($(this).find('#idReserva').toSource());
+		return false;
+	});*/
 	
 	
 //_____________________________________________________________________________________________________	
@@ -213,7 +233,25 @@ $(document).ready(function() {
 		$(this).find('#reservaId').val($(e.relatedTarget).data('id'));
 	});
 	
+	$('#detalhes-reserva').on('hide.bs.modal', function(e) {
+		$('#detalhes-reserva').find('#motivo').hide();
+		$('#detalhes-reserva').find('.data-cancelamento').hide();
+		$('#detalhes-reserva').find('#detalhes').css('display', 'none');
+		$('#detalhes-reserva').find('#load-siaf').css('display', 'block');
+		$('#detalhes-reserva').find('#detalhe-professor').text('');
+		$('#detalhes-reserva').find('#detalhe-periodo').text('');
+		$('#detalhes-reserva').find('#detalhe-status').text('');
+		$('#detalhes-reserva').find('#detalhe-data-cancelamento').text('');
+		$('#detalhes-reserva').find('#detalhe-motivo').text('');
+		$('#detalhes-reserva').find('#detalhe-solicitacao').text('');
+		$('#detalhes-reserva').find('#detalhe-programa').text('');
+		$('#detalhes-reserva').find('#detalhe-conceito').text('');
+		$('#detalhes-reserva').find('#detalhe-instituicao').text('');
+	});
+	
 	$('#detalhes-reserva').on('shown.bs.modal', function(e) {
+		$('#detalhes-reserva').find('#motivo').hide();
+		$('#detalhes-reserva').find('.data-cancelamento').hide();
 		$.ajax({
 			type: "GET",
 			url: '/siaf/reserva/detalhes.json',
@@ -223,6 +261,10 @@ $(document).ready(function() {
 		})
 		.success(function(result) {
 			if (result.status == 'sucesso') {
+				if (result.reserva.dataCancelamento != null) {
+					$('#detalhes-reserva').find('#motivo').show();
+					$('#detalhes-reserva').find('.data-cancelamento').show();
+				}
 				$('#detalhes-reserva').find('#load-siaf').css('display', 'none');
 				$('#detalhes-reserva').find('#detalhe-professor').text(result.professor);
 				$('#detalhes-reserva').find('#detalhe-periodo').text(
@@ -231,6 +273,14 @@ $(document).ready(function() {
 				$('#detalhes-reserva').find('#detalhe-status').text(getStatus(result.reserva.status));
 				$('#detalhes-reserva').find('#detalhe-data-cancelamento').text(moment(result.reserva.dataCancelamento).format('DD/MM/YYYY'));
 				$('#detalhes-reserva').find('#detalhe-motivo').text(result.reserva.motivoCancelamento);
+				$('#detalhes-reserva').find('#detalhe-solicitacao').text(moment(result.reserva.dataSolicitacao).format('DD/MM/YYYY'));
+				$('#detalhes-reserva').find('#detalhe-programa').text(getPrograma(result.reserva.programa));
+				$('#detalhes-reserva').find('#detalhe-conceito').text(result.reserva.conceitoPrograma);
+				if (result.reserva.instituicao != null) {
+					$('#detalhes-reserva').find('#detalhe-instituicao').text(result.reserva.instituicao);
+				} else {
+					$('#detalhes-reserva').find('#detalhe-instituicao').text('-');
+				}
 				$('#detalhes-reserva').find('#detalhes').css('display', 'block');
 			} else {
 				$('#detalhes-reserva').find('#detalhe-erro').css('display', 'block');
@@ -260,7 +310,7 @@ $(document).ready(function() {
 	
 	var table = $('#tableReservas').DataTable({
 				"pageLength" : 10,
-				"order" : [[ 0, 'asc' ], [ 2, 'asc' ], [ 1, 'asc' ]],
+				"order" : [[ 0, 'asc' ], [ 2, 'asc' ]],
 				"columnDefs" : [ 
 	                {"targets" : 5, "orderable" : false},
 				],

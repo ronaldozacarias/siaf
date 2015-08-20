@@ -15,6 +15,10 @@ body {
 	width: 100%;
 }
 
+.modal-details {
+	width: 70% !important;
+}
+
 .brand {
 	float: left;
 }

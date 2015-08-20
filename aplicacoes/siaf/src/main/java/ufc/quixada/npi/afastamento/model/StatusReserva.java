@@ -15,4 +15,8 @@ public enum StatusReserva {
 		return this.descricao;
 	}
 	
+	public boolean isCancelado() {
+		return this.equals(CANCELADO) || this.equals(CANCELADO_COM_PUNICAO) || this.equals(NEGADO);
+	}
+	
 }

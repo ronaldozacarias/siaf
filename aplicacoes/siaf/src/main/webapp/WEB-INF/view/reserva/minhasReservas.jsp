@@ -158,7 +158,7 @@
 		<!-- Modal Detalhes Reserva -->
 		<div class="modal fade" id="detalhes-reserva" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-details">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -173,31 +173,29 @@
 						</div>
 						<div id="detalhes" class="form-horizontal" style="display: none">
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Professor:</label>
+								<label class="col-sm-2 control-label">Professor:</label>
 								<div class="col-sm-8">
 									<label id="detalhe-professor" class="control-label value-label"></label>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Período:</label>
-								<div class="col-sm-8">
+								<label class="col-sm-2 control-label">Período:</label>
+								<div class="col-sm-4">
 									<label id="detalhe-periodo" class="control-label value-label"></label>
 								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Status:</label>
-								<div class="col-sm-8">
+								<label class="col-sm-2 control-label">Status:</label>
+								<div class="col-sm-4">
 									<label id="detalhe-status" class="control-label value-label"></label>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Cancelamento:</label>
+								<label class="col-sm-2 control-label">Cancelamento:</label>
 								<div class="col-sm-8">
 									<label id="detalhe-data-cancelamento" class="control-label value-label"></label>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Motivo:</label>
+								<label class="col-sm-2 control-label">Motivo:</label>
 								<div class="col-sm-8">
 									<label id="detalhe-motivo" class="control-label value-label"></label>
 								</div>

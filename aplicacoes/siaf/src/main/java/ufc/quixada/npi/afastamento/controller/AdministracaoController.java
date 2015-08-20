@@ -134,6 +134,39 @@ public class AdministracaoController {
 
 		return Constants.PAGINA_HOMOLOGAR_RESERVAS;
 	}
+	
+	@RequestMapping(value = "/homologar-reserva", method = RequestMethod.POST)
+	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, 
+			@RequestParam(value = "motivo", required = false) String motivo, Model model, RedirectAttributes redirect) {
+	
+		Reserva reserva = reservaService.find(Reserva.class, id);
+		StatusReserva statusReserva = StatusReserva.valueOf(status);
+		if(reserva.getStatus().equals(StatusReserva.AFASTADO) && !statusReserva.equals(StatusReserva.AFASTADO)) {
+			afastamentoService.delete(afastamentoService.getByReserva(reserva));
+		}
+		if (statusReserva.equals(StatusReserva.AFASTADO) && !reserva.getStatus().equals(StatusReserva.AFASTADO)) {
+			Afastamento afastamento = new Afastamento(reserva);
+			afastamentoService.save(afastamento);
+		}
+		if (reserva.getStatus().isCancelado()) {
+			reserva.setDataCancelamento(null);
+			reserva.setMotivoCancelamento(null);
+		}
+		if(statusReserva.isCancelado()) {
+			reserva.setDataCancelamento(new Date());
+			reserva.setMotivoCancelamento(motivo);
+		}
+		reserva.setStatus(statusReserva);
+		reservaService.update(reserva);
+		try {
+			notificacaoService.notificar(reserva, Notificacao.GERENCIAMENTO_DE_RESERVAS);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
+		return Constants.REDIRECT_PAGINA_HOMOLOGAR_RESERVAS;
+	}
+	
 
 	@RequestMapping(value = "/periodos", method = RequestMethod.GET)
 	public String listarPeriodos(Model model) {
@@ -142,7 +175,7 @@ public class AdministracaoController {
 		return Constants.PAGINA_LISTAR_PERIODOS;
 	}
 	
-	@RequestMapping(value = "/atualizarPeriodo", method = RequestMethod.POST)
+	@RequestMapping(value = "/atualizar-periodo", method = RequestMethod.POST)
 	public String atualizarPeriodo(@RequestParam("periodoId") Long periodoId, @RequestParam("encerramento") String encerramento, 
 			@RequestParam("vagas") Integer vagas, RedirectAttributes redirect, Model model) {
 		SimpleDateFormat format = new SimpleDateFormat(br.ufc.quixada.npi.ldap.model.Constants.FORMATO_DATA_NASCIMENTO);
@@ -223,7 +256,6 @@ public class AdministracaoController {
 			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 		}
 		model.addAttribute("reserva", reserva);
-		model.addAttribute("professor", reserva.getProfessor());
 		model.addAttribute("programa", Programa.values());
 		return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 	}
@@ -265,7 +297,6 @@ public class AdministracaoController {
 			return Constants.PAGINA_ADMIN_EDITAR_RESERVA;
 		}
 		
-		reserva.setDataSolicitacao(new Date());
 		reservaService.update(reserva);
 		
 		try {
@@ -306,34 +337,27 @@ public class AdministracaoController {
 		}
 		return Constants.PAGINA_DETALHE_RESERVA;
 	}
-
-	@RequestMapping(value = "/atualizarStatusReserva", method = RequestMethod.POST)
-	public String atualizarStatusReserva(@RequestParam("idReserva") Long id, @RequestParam("status") String status, Model model,
-			RedirectAttributes redirect) {
 	
-		String[] valor = status.split("-");
-		if (id != null & status != null && !status.isEmpty()) {
-			Reserva reserva = reservaService.find(Reserva.class, id);
-			StatusReserva statusReserva = StatusReserva.valueOf(valor[1]);
-			if(reserva.getStatus().equals(StatusReserva.AFASTADO) && !statusReserva.equals(StatusReserva.AFASTADO)) {
-				afastamentoService.delete(afastamentoService.getByReserva(reserva));
-			}
-			if (statusReserva.equals(StatusReserva.AFASTADO) && !reserva.getStatus().equals(StatusReserva.AFASTADO)) {
-				Afastamento afastamento = new Afastamento(reserva);
-				afastamentoService.save(afastamento);
-			}
-			reserva.setStatus(statusReserva);
+	@RequestMapping(value = "/cancelar-reserva", method = RequestMethod.POST)
+	public String cancelar(@RequestParam("id") Long id, @RequestParam("motivo") String motivo, HttpSession session, RedirectAttributes redirect) {
+		Reserva reserva = reservaService.getReservaById(id);
+		if (reserva == null || !reserva.getStatus().equals(StatusReserva.ABERTO)) {
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+		} else {
+			reserva.setStatus(StatusReserva.CANCELADO);
+			reserva.setDataCancelamento(new Date());
+			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
 			try {
-				notificacaoService.notificar(reserva, Notificacao.GERENCIAMENTO_DE_RESERVAS);
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
+			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_CANCELADA);
 		}
-		return Constants.REDIRECT_PAGINA_HOMOLOGAR_RESERVAS;
+		return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 	}
-	
+
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
 	}

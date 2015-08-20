@@ -118,7 +118,7 @@ public class ReservaController {
 	@RequestMapping(value = {"/detalhes.json"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Model detalhesJson(HttpServletRequest request, HttpSession session, Model model) {
 		Reserva reserva = reservaService.getReservaById(Long.valueOf(request.getParameter("id")));
-		if (reserva == null || !reserva.getProfessor().equals(getProfessorLogado(session))) {
+		if (reserva == null) {
 			model.addAttribute("status", Constants.ERRO);
 			return model;
 		}
