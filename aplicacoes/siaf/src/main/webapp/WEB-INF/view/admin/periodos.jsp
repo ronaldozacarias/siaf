@@ -10,13 +10,13 @@
 <jsp:include page="../modulos/header-estrutura.jsp" />
 <link href="<c:url value="/resources/css/jquery.dataTables.min.css" />" rel="stylesheet" />
 
-<title>SiAf - Períodos</title>
+<title>Períodos</title>
 </head>
 <body>
 
 	<div id="wrapper" class="container">
 		<jsp:include page="../modulos/header.jsp" />
-		<form id="atualizarPeriodo" action="/siaf/administracao/atualizarPeriodo" method="POST">
+		<form id="atualizarPeriodo" action="/siaf/administracao/atualizar-periodo" method="POST">
 			<input id="periodoId" type="hidden" name="periodoId" value="" />
 			<input id="encerramento" type="hidden" name="encerramento" value="" />
 			<input id="vagas" type="hidden" name="vagas" value="" />

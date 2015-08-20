@@ -51,13 +51,29 @@ $(document).ready(function() {
 	
 	// Página de Gerenciar Professores
 	
+	$('.editar-admissao').click(function(e){
+		e.preventDefault();
+		$('#editar-admissao').modal('show');
+		$('#editar-admissao').find('#id').val($(this).data('id'));
+		$('#editar-admissao').find('#professor').text($(this).data('nome'));
+		if($(this).data('ano') != '') {
+			$('#editar-admissao').find('#ano').val($(this).data('ano'));
+			$('#editar-admissao').find('#semestre').val($(this).data('semestre'));
+			$('#div-semestre').find('.bootstrap-select .filter-option').text($('#editar-admissao').find('#semestre').val());
+		} else {
+			$('#editar-admissao').find('#ano').val('');
+		}
+		
+	});
+	
 	$('#tableProfessores').DataTable({
 		"pageLength" : 10,
 		"order" : [[ 1, 'asc' ]],
 		"columnDefs" : [ 
             {"targets" : 0, "orderable" : false},
             {"targets" : 2, "orderable" : false},
-            {"targets" : 4, "orderable" : false},
+            {"targets" : 3, "orderable" : false},
+            {"targets" : 5, "orderable" : false},
 		],
 
 		"language" : {
@@ -90,7 +106,9 @@ $(document).ready(function() {
 	
 	
 	// Página de homologação de reserva
-	$('.homologar').click(function(){
+	
+	$('.homologar').click(function(e){
+		e.preventDefault();
 		var idReserva = $(this).data('id');
 		var status = $('#homologar-reserva-' + idReserva).find('#status-' + idReserva).val();
 		if (status.contains('CANCELADO') || status.contains('NEGADO')) {
@@ -101,10 +119,6 @@ $(document).ready(function() {
 			$('#homologar-reserva-' + $(this).data('id')).submit();
 		}
 	});
-	/*$('.form-homologar').submit(function(){
-		alert($(this).find('#idReserva').toSource());
-		return false;
-	});*/
 	
 	
 //_____________________________________________________________________________________________________	
@@ -112,7 +126,7 @@ $(document).ready(function() {
 		
 	// Página de inclusão e edição de reserva
 	
-	$('#solicitarAfastamento, #formEditarReserva, #formEditarAdmissao, #formCancelarReserva').validate({
+	$('#solicitarAfastamento, #formEditarReserva, #formEditarAdmissao, #formCancelarReserva, #formEditarAdmissao').validate({
         rules: {
             
         },
@@ -136,6 +150,9 @@ $(document).ready(function() {
             },
             motivo:{
                 required:"Campo obrigatório",
+            },
+            ano:{
+                required:"Campo obrigatório",
             }
         }
     });
@@ -153,14 +170,17 @@ $(document).ready(function() {
     });
 	
 	$("#warning-buscar-periodo").hide();
-	$('#anoBuscado').click(function(){
+	$('#anoBuscado').click(function(e){
+		e.preventDefault();
 		$("#warning-buscar-periodo").hide();
 	});
-	$('#semestreBuscado').click(function(){
+	$('#semestreBuscado').click(function(e){
+		e.preventDefault();
 		$("#warning-buscar-periodo").hide();
 	});
 	
-	$('#buscar').click(function(){
+	$('#buscar').click(function(e){
+		e.preventDefault();
 		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
 		var periodoAtualAno = parseInt($('#anoAtual').val());
@@ -180,11 +200,13 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#anterior').click(function(){
+	$('#anterior').click(function(e){
+		e.preventDefault();
 		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val(), false);
 	});
 	
-	$('#posterior').click(function(){
+	$('#posterior').click(function(e){
+		e.preventDefault();
 		getRanking($('#anoPosterior').val(), $('#semestrePosterior').val(), false);
 	});
 	
@@ -192,7 +214,8 @@ $(document).ready(function() {
 	
 	// Simulador
 	
-	$('#buscar-simulador').click(function(){
+	$('#buscar-simulador').click(function(e){
+		e.preventDefault();
 		$("#warning-buscar-periodo").hide();
 		var anoBuscado = parseInt($('#anoBuscado').val());
 		var periodoAtualAno = parseInt($('#anoAtual').val());
@@ -212,11 +235,13 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#anterior-simulador').click(function(){
+	$('#anterior-simulador').click(function(e){
+		e.preventDefault();
 		getRanking($('#anoAnterior').val(), $('#semestreAnterior').val(), true);
 	});
 	
-	$('#posterior-simulador').click(function(){
+	$('#posterior-simulador').click(function(e){
+		e.preventDefault();
 		getRanking($('#anoPosterior').val(), $('#semestrePosterior').val(), true);
 	});
 	
@@ -364,6 +389,7 @@ $(document).ready(function() {
     });
 	
 	$('#admin-excluir-reserva').on('show.bs.modal', function(e) {
+		e.preventDefault();
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir a reserva de ' + $(e.relatedTarget).data('professor') + ' para o período \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
@@ -391,7 +417,7 @@ $(document).ready(function() {
 		    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
 		    "sInfoPostFix": "",
 		    "sInfoThousands": ".",
-		    "sLengthMenu": "Resultados por página _MENU_",
+		    "sLengthMenu": "Resultados por página: _MENU_",
 		    "sLoadingRecords": "Carregando...",
 		    "sProcessing": "Processando...",
 		    "sZeroRecords": "Nenhum registro encontrado.",
@@ -410,7 +436,8 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.salvar-periodo').click(function(){
+	$('.salvar-periodo').click(function(e){
+		e.preventDefault();
 		var id = $(this).data("id");
 		$('#periodoId').val(id);
 		$('#encerramento').val($('#encerramento-' + id).val());
@@ -474,7 +501,7 @@ function getRanking(ano, semestre, simulador) {
 		if(result.periodoAtual.encerramento != null) {
 			$('#encerramento').text(moment(result.periodoAtual.encerramento, 'YYYY-MM-DD').format('DD/MM/YYYY'));
 		} else {
-			$('#encerramento').text('-');
+			$('#encerramento').text('a definir');
 		}
 		$('#encerramento').attr('data-content', 'Data limite para solicitação de afastamento com início para o período ' + (result.periodoAtual.ano + 1) + '.' + result.periodoAtual.semestre);
 		
