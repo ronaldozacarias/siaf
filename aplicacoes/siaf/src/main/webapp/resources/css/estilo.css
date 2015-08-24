@@ -21,6 +21,7 @@ body {
 
 .brand {
 	float: left;
+	height: 100px;
 }
 
 .brand img {
@@ -29,10 +30,10 @@ body {
 }
 
 .menuTop {
-	float: right;
+	float: left;
 	width: 900px;
 	height: 67px;
-	margin-top: 83px;
+	margin-top: 40px;
 }
 
 .menuTop ul {

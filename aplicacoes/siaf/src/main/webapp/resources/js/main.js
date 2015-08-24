@@ -513,6 +513,9 @@ function getRanking(ano, semestre, simulador) {
 	    });
 		$("#ranking-full").show();
 		
+	})
+	.error(function(error) {
+		window.location.replace("/siaf/login");
 	});
 }
 
