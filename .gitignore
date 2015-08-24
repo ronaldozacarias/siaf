@@ -1,8 +1,8 @@
-aplicacoes/afastamento/.metadata
-aplicacoes/afastamento/.settings
-aplicacoes/afastamento/.classpath
-aplicacoes/afastamento/.project
-aplicacoes/afastamento/target
+aplicacoes/siaf/.metadata
+aplicacoes/siaf/.settings
+aplicacoes/siaf/.classpath
+aplicacoes/siaf/.project
+aplicacoes/siaf/target
 *.class
 *.jar
 *.war
