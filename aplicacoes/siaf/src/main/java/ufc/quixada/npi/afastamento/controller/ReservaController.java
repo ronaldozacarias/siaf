@@ -249,7 +249,7 @@ public class ReservaController {
 		reservaService.update(reserva);
 		
 		try {
-			notificacaoService.notificar(reserva, Notificacao.RESERVA_ATUALIZADA);
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_ALTERADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -307,7 +307,7 @@ public class ReservaController {
 			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
 			try {
-				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA);
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}

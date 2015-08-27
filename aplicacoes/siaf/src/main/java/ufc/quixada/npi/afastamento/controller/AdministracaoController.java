@@ -82,11 +82,6 @@ public class AdministracaoController {
 				professorService.save(professor);
 				Reserva reserva = new Reserva();
 				reserva.setProfessor(professor);
-				try {
-					notificacaoService.notificar(reserva, Notificacao.LISTA_DOCENTES_ATUALIZADAS);
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 
@@ -159,7 +154,7 @@ public class AdministracaoController {
 		reserva.setStatus(statusReserva);
 		reservaService.update(reserva);
 		try {
-			notificacaoService.notificar(reserva, Notificacao.GERENCIAMENTO_DE_RESERVAS);
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_HOMOLOGADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -240,7 +235,7 @@ public class AdministracaoController {
 		try {
 			Reserva reserva = new Reserva();
 			reserva.setProfessor(professor);
-			notificacaoService.notificar(reserva, Notificacao.ADMISSAO_ATUALIZADA);
+			notificacaoService.notificar(reserva, Notificacao.ADMISSAO_ALTERADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -300,7 +295,7 @@ public class AdministracaoController {
 		reservaService.update(reserva);
 		
 		try {
-			notificacaoService.notificar(reserva, Notificacao.RESERVA_ATUALIZADA);
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_ALTERADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -349,7 +344,7 @@ public class AdministracaoController {
 			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
 			try {
-				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
+				notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA);
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
