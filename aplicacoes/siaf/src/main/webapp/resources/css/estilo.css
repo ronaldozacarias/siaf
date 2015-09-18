@@ -593,7 +593,7 @@ button, input.btn-siaf {
 	text-align: left !important;
 }
 
-.obrigatorio span {
+.obrigatorio span, .msg-alert {
 	color: #A94442;
 	
 }
