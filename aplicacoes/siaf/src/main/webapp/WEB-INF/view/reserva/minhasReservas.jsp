@@ -225,6 +225,7 @@
 					</div>
 					<form id="formCancelarReserva" action="/siaf/reserva/cancelar" method="POST">
 						<div class="modal-body">
+							<span class="msg-alert">ATENÇÃO: essa ação não poderá ser desfeita!</span><br/>
 							Tem certeza de que deseja cancelar essa reserva?<br/><br/>
 							<input type="hidden" id="reservaId" name="id" value=""/>
 							<div class="form-group">
