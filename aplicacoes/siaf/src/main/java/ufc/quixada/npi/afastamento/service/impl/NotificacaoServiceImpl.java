@@ -39,7 +39,6 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 	private String PROGRAMA = "#PROGRAMA#";
 	private String CONCEITO = "#CONCEITO#";
 	private String INSTITUICAO = "#INSTITUICAO#";
-	private String SOLICITACAO = "#SOLICITACAO#";
 	private String EXCLUSAO = "#EXCLUSAO#";
 	private String STATUS = "#STATUS#";
 	private String ANO_ADMISSAO = "#ANO_ADMISSAO#";
@@ -71,8 +70,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 				String texto = properties.getProperty(RESERVA_INCLUIDA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
 						.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
 						.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString());
 				if (reserva.getInstituicao() != null) {
 					texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
 				} else {
@@ -86,7 +84,6 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 						.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
 						.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
 						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()))
 						.replaceAll(EXCLUSAO, dateFormat.format(new Date()));
 				if (reserva.getInstituicao() != null) {
 					texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
@@ -100,8 +97,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 				String texto = properties.getProperty(RESERVA_CANCELADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
 						.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
 						.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString());
 				if (reserva.getInstituicao() != null) {
 					texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
 				} else {
@@ -129,7 +125,6 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 						.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
 						.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
 						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()))
 						.replaceAll(STATUS, reserva.getStatus().getDescricao());
 				if (reserva.getInstituicao() != null) {
 					texto.replaceAll(INSTITUICAO, reserva.getInstituicao());

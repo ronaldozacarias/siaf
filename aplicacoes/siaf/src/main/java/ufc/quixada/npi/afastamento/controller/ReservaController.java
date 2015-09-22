@@ -3,7 +3,6 @@ package ufc.quixada.npi.afastamento.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -178,7 +177,6 @@ public class ReservaController {
 			model.addAttribute(Constants.ERRO, Constants.MSG_RESERVA_EM_ESPERA);
 			return Constants.PAGINA_INCLUIR_RESERVA;
 		}
-		reserva.setDataSolicitacao(new Date());
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setStatus(StatusReserva.EM_ESPERA);
 
@@ -246,7 +244,6 @@ public class ReservaController {
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
 		
-		reserva.setDataSolicitacao(new Date());
 		reservaService.atualizar(reserva);
 		reservaService.salvarHistorico(reserva, Acao.EDICAO, AutorAcao.PROFESSOR, null);
 		

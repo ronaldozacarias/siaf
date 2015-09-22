@@ -1,6 +1,5 @@
 package ufc.quixada.npi.afastamento.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -29,8 +28,6 @@ public class Reserva {
 	private Integer anoTermino;
 	
 	private Integer semestreTermino;
-	
-	private Date dataSolicitacao;
 	
 	@Enumerated(EnumType.STRING)
 	private Programa programa;
@@ -88,14 +85,6 @@ public class Reserva {
 
 	public void setSemestreTermino(Integer semestreTermino) {
 		this.semestreTermino = semestreTermino;
-	}
-
-	public Date getDataSolicitacao() {
-		return dataSolicitacao;
-	}
-
-	public void setDataSolicitacao(Date dataSolicitacao) {
-		this.dataSolicitacao = dataSolicitacao;
 	}
 
 	public Programa getPrograma() {
