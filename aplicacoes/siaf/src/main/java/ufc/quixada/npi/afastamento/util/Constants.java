@@ -31,11 +31,11 @@ public class Constants {
 	
 	public static final String PAGINA_MINHAS_RESERVAS = "reserva/minhasReservas";
 	
-	public static final String PAGINA_LISTAR_RESERVAS = "reserva/lista";
+	public static final String PAGINA_LISTAR_RESERVAS = "reserva/listar";
 	
 	public static final String PAGINA_ADMIN_EDITAR_RESERVA = "admin/editarReserva";
 	
-	public static final String PAGINA_DETALHE_RESERVA = "admin/detalheReserva";
+	public static final String PAGINA_DETALHE_RESERVA = "reserva/detalhes";
 	
 	public static final String PAGINA_EDITAR_ADMISSAO = "admin/editarAdmissao";
 	
@@ -92,7 +92,9 @@ public class Constants {
 	
 	public static final String MSG_ERRO_ATUALIZAR_PERIODO = "Ocorreu um erro na atualização do período.";
 	
-	public static final String MSG_STATUS_RESERVA_ATUALIZADO = "Status da reserva atualizado com sucesso.";
+	public static final String MSG_RESERVA_HOMOLOGADA = "Reserva homologada com sucesso.";
+	
+	public static final String MSG_PERIODO_ATUALIZADO = "Período atualizado com sucesso.";
 	
 	public static final String MSG_LISTA_PROFESSORES_ATUALIZADO = "Lista de professores atualizada com sucesso.";
 	

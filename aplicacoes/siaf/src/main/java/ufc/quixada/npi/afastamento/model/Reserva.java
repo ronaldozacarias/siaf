@@ -1,8 +1,9 @@
 package ufc.quixada.npi.afastamento.model;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -30,11 +32,6 @@ public class Reserva {
 	
 	private Date dataSolicitacao;
 	
-	private Date dataCancelamento;
-	
-	@Column(columnDefinition="TEXT")
-	private String motivoCancelamento;
-	
 	@Enumerated(EnumType.STRING)
 	private Programa programa;
 	
@@ -48,6 +45,10 @@ public class Reserva {
 	
 	@Enumerated(EnumType.STRING)
 	private StatusReserva status;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "reserva", cascade = CascadeType.REMOVE)
+	private List<Historico> historicos;
 
 	public Long getId() {
 		return id;
@@ -137,20 +138,12 @@ public class Reserva {
 		this.instituicao = instituicao;
 	}
 	
-	public Date getDataCancelamento() {
-		return dataCancelamento;
+	public List<Historico> getHistoricos() {
+		return historicos;
 	}
 
-	public void setDataCancelamento(Date dataCancelamento) {
-		this.dataCancelamento = dataCancelamento;
-	}
-
-	public String getMotivoCancelamento() {
-		return motivoCancelamento;
-	}
-
-	public void setMotivoCancelamento(String motivoCancelamento) {
-		this.motivoCancelamento = motivoCancelamento;
+	public void setHistoricos(List<Historico> historicos) {
+		this.historicos = historicos;
 	}
 
 	@Override

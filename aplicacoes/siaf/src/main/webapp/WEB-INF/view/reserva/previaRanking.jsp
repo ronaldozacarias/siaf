@@ -47,10 +47,7 @@
 			</div>
 			
 			<div id="ranking-full">
-				<div id="warning-buscar-periodo"class="alert alert-warning alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
+				<div id="warning-buscar-periodo" class="alert alert-warning" role="alert">
 					Não é possivel realizar busca por períodos passados.
 				</div>
 				<div id="wrap-periodo">			

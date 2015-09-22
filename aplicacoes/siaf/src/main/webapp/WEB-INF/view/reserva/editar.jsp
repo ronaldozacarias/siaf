@@ -82,7 +82,6 @@
 					<div class="form-item">
 						<label for="conceito" class="col-sm-2 control-label">Conceito do Programa:</label>
 						<div class="col-sm-4">
-							
 							<select id="conceito" name="conceitoPrograma" class="form-control selectpicker">
 								<option value="0" ${reserva.conceitoPrograma  == 0 ? 'selected' : ''}>0</option>
 								<option value="3" ${reserva.conceitoPrograma  == 3 ? 'selected' : ''}>3</option>
@@ -91,7 +90,6 @@
 								<option value="6" ${reserva.conceitoPrograma  == 6 ? 'selected' : ''}>6</option>
 								<option value="7" ${reserva.conceitoPrograma  == 7 ? 'selected' : ''}>7</option>
 							</select>
-						
 						</div>
 					</div>
 				</div>
@@ -110,6 +108,7 @@
 
 				<div class="controls">
 					<input name="atualizar" type="submit" class="btn btn-siaf" value="Atualizar" />
+					<a href="<c:url value="/reserva/minhas-reservas" />" class="btn btn-default">Cancelar</a>
 				</div>
 			</form:form>
 		</div>
