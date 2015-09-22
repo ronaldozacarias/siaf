@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ufc.quixada.npi.afastamento.model.Acao;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
@@ -18,7 +20,6 @@ import ufc.quixada.npi.afastamento.model.TuplaRanking;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
-import ufc.quixada.npi.afastamento.util.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -119,6 +120,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 				Reserva reserva = tupla.getReserva();
 				reserva.setStatus(StatusReserva.ENCERRADO);
 				reservaService.update(reserva);
+				reservaService.salvarHistorico(reserva, Acao.ENCERRAMENTO, AutorAcao.SISTEMA, null);
 			}
 		}
 		periodo.setStatus(StatusPeriodo.ENCERRADO);
@@ -129,6 +131,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 				Reserva reserva = tupla.getReserva();
 				reserva.setStatus(StatusReserva.NAO_ACEITO);
 				reservaService.update(reserva);
+				reservaService.salvarHistorico(reserva, Acao.NAO_ACEITACAO, AutorAcao.SISTEMA, null);
 			}
 		}
 		List<Reserva> reservasEmEspera = reservaService.getReservasByStatus(StatusReserva.EM_ESPERA);
@@ -138,9 +141,8 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 			for (Reserva reservaAberto : reservasEmAberto) {
 				if (reservaEspera.getProfessor().equals(reservaAberto.getProfessor())) {
 					reservaAberto.setStatus(StatusReserva.CANCELADO);
-					reservaAberto.setDataCancelamento(new java.util.Date());
-					reservaAberto.setMotivoCancelamento(Constants.MSG_CANCELAMENTO_AUTOMATICO);
 					reservaService.update(reservaAberto);
+					reservaService.salvarHistorico(reservaAberto, Acao.CANCELAMENTO, AutorAcao.SISTEMA, "Reserva foi cancelada pelo sistema para inclusão de reserva em espera.");
 					break;
 				}
 			}
@@ -149,6 +151,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 		for(Reserva reserva : reservasEmEspera) {
 			reserva.setStatus(StatusReserva.ABERTO);
 			reservaService.update(reserva);
+			reservaService.salvarHistorico(reserva, Acao.INCLUSAO_RANKING, AutorAcao.SISTEMA, null);
 		}
 		
 	}

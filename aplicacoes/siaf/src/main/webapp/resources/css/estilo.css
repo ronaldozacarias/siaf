@@ -120,10 +120,6 @@ form input, .bootstrap-select button {
 	background-color: white !important;
 }
 
-table#tableReservas tbody tr {
-	line-height: 32px;
-}
-
 a, a:hover, a:VISITED, a:ACTIVE {
 	outline: none !important;
 	outline-offset:0 !important;
@@ -537,11 +533,11 @@ input.data-periodo {
 
 .btn-siaf:HOVER {
 	color: #FFF;
-	background-color: #CF5719;
-	border-color: #CF5719;
+	background-color: #AC3717;
+	border-color: #AC3717;
 }
 
-button, input.btn-siaf {
+button, input.btn {
 	outline: none !important;
 	outline-offset:0 !important;
 }
@@ -596,6 +592,16 @@ button, input.btn-siaf {
 .obrigatorio span, .msg-alert {
 	color: #A94442;
 	
+}
+
+/* #tableHistorico tbody tr td {
+	font-size: 17px;
+	text-align: center;
+	width: 10%;
+} */
+
+#tableHistorico tbody tr td span {
+	font-size: 12px;
 }
 
 @-webkit-keyframes loading {

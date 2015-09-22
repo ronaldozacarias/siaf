@@ -79,35 +79,33 @@
 								<td class="align-center">${reserva.programa.descricao}</td>
 								<td class="align-center">${reserva.conceitoPrograma}</td>
 								<td class="align-center">
-									<a id="detalhes" title="Detalhes" data-toggle="modal"
-										data-target="#detalhes-reserva" href="#"
-										data-id="${reserva.id }">
-										<button class="btn btn-primary">
+									<a href="<c:url value="/reserva/detalhes/${reserva.id }"/>" title="Detalhes">
+										<button class="btn btn-primary btn-sm">
 											<i class="fa fa-info-circle"></i>
 										</button>
 									</a>
                                     <sec:authorize ifAnyGranted="ADMIN-SIAF">
                                    		<c:if test="${reserva.status eq 'ABERTO' or reserva.status == 'EM_ESPERA'}">
-	                                   		<a title="Editar" href="<c:url value="/administracao/editar-reserva/${reserva.id }" />" class="btn btn-default">
+	                                   		<a title="Editar" href="<c:url value="/administracao/editar-reserva/${reserva.id }" />" class="btn btn-default btn-sm">
 												<i class="fa fa-pencil"></i>
 	                                        </a>
                                         </c:if>
                                     	<c:if test="${reserva.status eq 'ABERTO' }">
-											<a id="cancelar" title="Cancelar" data-toggle="modal"
+											<a title="Cancelar" data-toggle="modal"
 												data-target="#cancelar-reserva" href="#"
 												data-id="${reserva.id }">
-												<button class="btn btn-danger">
+												<button class="btn btn-danger btn-sm">
 													<i class="fa fa-times"></i>
 												</button>
 											</a>
                                         </c:if>
                                     	<c:if test="${reserva.status == 'EM_ESPERA'}">
-	                                        <a id="excluir" title="Excluir" data-toggle="modal"
+	                                        <a title="Excluir" data-toggle="modal"
 												data-target="#admin-excluir-reserva" href="#"
 												data-href="<c:url value="/administracao/excluir-reserva/${reserva.id}"></c:url>"
 												data-name="${reserva.anoInicio}.${reserva.semestreInicio} a ${reserva.anoTermino}.${reserva.semestreTermino}"
 												data-professor="${reserva.professor.nome}">
-												<button class="btn btn-danger">
+												<button class="btn btn-warning btn-sm">
 													<i class="fa fa-trash-o"></i>
 												</button>
 											</a>
@@ -156,7 +154,7 @@
 				</div>
 				<form id="formCancelarReserva" action="/siaf/administracao/cancelar-reserva" method="POST">
 					<div class="modal-body">
-						<span class="msg-alert">ATENÇÃO: essa ação não poderá ser desfeita!</span>
+						<span class="msg-alert">ATENÇÃO: essa ação não poderá ser desfeita!</span><br/>
 						Tem certeza de que deseja cancelar essa reserva?<br/><br/>
 						<input type="hidden" id="reservaId" name="id" value=""/>
 						<div class="form-group">
@@ -175,83 +173,6 @@
 		</div>
 	</div>
 	
-	<!-- Modal Detalhes Reserva -->
-	<div class="modal fade" id="detalhes-reserva" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-details">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="excluirModalLabel">Detalhes</h4>
-				</div>
-				<div class="modal-body">
-					<div id="load-siaf">
-						<div class=loading-siaf></div>
-						<div class="load-s"></div>
-					</div>
-					<div id="detalhes" class="form-horizontal" style="display: none">
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Professor:</label>
-							<div class="col-sm-8">
-								<label id="detalhe-professor" class="control-label value-label"></label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Período:</label>
-							<div class="col-sm-4">
-								<label id="detalhe-periodo" class="control-label value-label"></label>
-							</div>
-							<label class="col-sm-2 control-label">Status:</label>
-							<div class="col-sm-4">
-								<label id="detalhe-status" class="control-label value-label"></label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Programa:</label>
-							<div class="col-sm-4">
-								<label id="detalhe-programa" class="control-label value-label"></label>
-							</div>
-							<label class="col-sm-2 control-label">Conceito:</label>
-							<div class="col-sm-4">
-								<label id="detalhe-conceito" class="control-label value-label"></label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Instituição:</label>
-							<div class="col-sm-8">
-								<label id="detalhe-instituicao" class="control-label value-label"></label>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Solicitação:</label>
-							<div class="col-sm-4">
-								<label id="detalhe-solicitacao" class="control-label value-label"></label>
-							</div>
-							<label class="col-sm-2 control-label data-cancelamento">Cancelamento:</label>
-							<div class="col-sm-4 data-cancelamento">
-								<label id="detalhe-data-cancelamento" class="control-label value-label"></label>
-							</div>
-						</div>
-						<div id="motivo" class="form-group">
-							<label class="col-sm-2 control-label">Motivo:</label>
-							<div class="col-sm-8">
-								<label id="detalhe-motivo" class="control-label value-label"></label>
-							</div>
-						</div>
-					</div>
-					<div id="detalhe-erro" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
-						Ocorreu um erro ao buscar os detalhes da reserva.
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<script type="text/javascript">
 		$('#menu-reservas').addClass('active');
 	</script>

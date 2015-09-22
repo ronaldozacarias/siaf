@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.afastamento.model.Acao;
 import ufc.quixada.npi.afastamento.model.Afastamento;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
 import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
@@ -90,16 +92,6 @@ public class AdministracaoController {
 		return Constants.REDIRECT_PAGINA_LISTAR_PROFESSORES;
 	}
 
-	private void atualizaVagas() {
-		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual()));
-		List<Periodo> periodos = periodoService.getPeriodosPosteriores(periodoAtual);
-		int vagas = (int) (professorService.findAtivos().size() * 0.15);
-		for (Periodo periodo : periodos) {
-			periodo.setVagas(vagas);
-			periodoService.update(periodo);
-		}
-	}
-
 	@RequestMapping(value = "/homologacao", method = RequestMethod.GET)
 	public String getHomologacao(Model model) {
 		Periodo periodo = periodoService.getPeriodoAtual();
@@ -143,22 +135,19 @@ public class AdministracaoController {
 			Afastamento afastamento = new Afastamento(reserva);
 			afastamentoService.save(afastamento);
 		}
-		if (reserva.getStatus().isCancelado()) {
-			reserva.setDataCancelamento(null);
-			reserva.setMotivoCancelamento(null);
-		}
-		if(statusReserva.isCancelado()) {
-			reserva.setDataCancelamento(new Date());
-			reserva.setMotivoCancelamento(motivo);
-		}
+		
 		reserva.setStatus(statusReserva);
 		reservaService.update(reserva);
+		Acao acao = Acao.getByStatusReserva(statusReserva);
+		if (acao != null) {
+			reservaService.salvarHistorico(reserva, acao, AutorAcao.ADMINISTRADOR, motivo);
+		}
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_HOMOLOGADA);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_STATUS_RESERVA_ATUALIZADO);
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_HOMOLOGADA);
 		return Constants.REDIRECT_PAGINA_HOMOLOGAR_RESERVAS;
 	}
 	
@@ -198,6 +187,7 @@ public class AdministracaoController {
 		}
 		
 		periodoService.update(periodo);
+		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_PERIODO_ATUALIZADO);
 		
 		return Constants.REDIRECT_PAGINA_LISTAR_PERIODOS;
 	}
@@ -293,6 +283,7 @@ public class AdministracaoController {
 		}
 		
 		reservaService.update(reserva);
+		reservaService.salvarHistorico(reserva, Acao.EDICAO, AutorAcao.ADMINISTRADOR, null);
 		
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_ALTERADA);
@@ -340,9 +331,8 @@ public class AdministracaoController {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reserva.setStatus(StatusReserva.CANCELADO);
-			reserva.setDataCancelamento(new Date());
-			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
+			reservaService.salvarHistorico(reserva, Acao.CANCELAMENTO, AutorAcao.ADMINISTRADOR, motivo);
 			try {
 				notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA);
 			} catch (MessagingException e) {
@@ -355,6 +345,16 @@ public class AdministracaoController {
 
 	private Integer calculaSemestres(Integer anoInicio, Integer semestreInicio, Integer anoTermino, Integer semestreTermino) {
 		return ((anoTermino - anoInicio) * 2) + (semestreTermino - semestreInicio);
+	}
+	
+	private void atualizaVagas() {
+		Periodo periodoAtual = periodoService.getPeriodoPosterior(periodoService.getPeriodoPosterior(periodoService.getPeriodoAtual()));
+		List<Periodo> periodos = periodoService.getPeriodosPosteriores(periodoAtual);
+		int vagas = (int) (professorService.findAtivos().size() * 0.15);
+		for (Periodo periodo : periodos) {
+			periodo.setVagas(vagas);
+			periodoService.update(periodo);
+		}
 	}
 
 }

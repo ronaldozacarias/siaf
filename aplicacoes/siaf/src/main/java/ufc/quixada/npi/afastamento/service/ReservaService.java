@@ -2,6 +2,8 @@ package ufc.quixada.npi.afastamento.service;
 
 import java.util.List;
 
+import ufc.quixada.npi.afastamento.model.Acao;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
@@ -29,4 +31,6 @@ public interface ReservaService extends GenericService<Reserva> {
 	List<Reserva> getAllReservas();
 	
 	List<Reserva> getReservasByStatusReservaAndProfessor(StatusReserva statusReserva, Professor professor);
+	
+	void salvarHistorico(Reserva reserva, Acao acao, AutorAcao autor, String comentario);
 }

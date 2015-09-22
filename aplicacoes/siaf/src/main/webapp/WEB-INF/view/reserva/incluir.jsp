@@ -97,6 +97,7 @@
 				
 				<div class="controls">
 					<input name="reservar" type="submit" class="btn btn-siaf" value="Reservar" />
+					<button name="cancelar" class="btn btn-default" onclick="window.history.back();">Cancelar</button>
 				</div>
 			</form:form>
 		</div>

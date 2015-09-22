@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.afastamento.model.Acao;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
 import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
@@ -115,17 +117,15 @@ public class ReservaController {
 		return model;
 	}
 	
-	@RequestMapping(value = {"/detalhes.json"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Model detalhesJson(HttpServletRequest request, HttpSession session, Model model) {
-		Reserva reserva = reservaService.getReservaById(Long.valueOf(request.getParameter("id")));
+	@RequestMapping(value = {"/detalhes/{id}"}, method = RequestMethod.GET)
+	public String detalhes(@PathVariable("id") Long id, RedirectAttributes redirect, Model model) {
+		Reserva reserva = reservaService.find(Reserva.class, id);
 		if (reserva == null) {
-			model.addAttribute("status", Constants.ERRO);
-			return model;
+			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
+			return Constants.REDIRECT_PAGINA_LISTAR_RESERVAS;
 		}
-		model.addAttribute("status", Constants.SUCESSO);
-		model.addAttribute("professor", reserva.getProfessor().getNome());
 		model.addAttribute("reserva", reserva);
-		return model;
+		return Constants.PAGINA_DETALHE_RESERVA;
 	}
 
 	@RequestMapping(value = "/incluir", method = RequestMethod.GET)
@@ -183,6 +183,7 @@ public class ReservaController {
 		reserva.setStatus(StatusReserva.EM_ESPERA);
 
 		reservaService.salvar(reserva);
+		reservaService.salvarHistorico(reserva, Acao.CRIACAO, AutorAcao.PROFESSOR, null);
 
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_INCLUIDA);
@@ -246,7 +247,8 @@ public class ReservaController {
 		}
 		
 		reserva.setDataSolicitacao(new Date());
-		reservaService.update(reserva);
+		reservaService.atualizar(reserva);
+		reservaService.salvarHistorico(reserva, Acao.EDICAO, AutorAcao.PROFESSOR, null);
 		
 		try {
 			notificacaoService.notificar(reserva, Notificacao.RESERVA_ALTERADA);
@@ -303,9 +305,8 @@ public class ReservaController {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reserva.setStatus(StatusReserva.CANCELADO);
-			reserva.setDataCancelamento(new Date());
-			reserva.setMotivoCancelamento(motivo);
 			reservaService.update(reserva);
+			reservaService.salvarHistorico(reserva, Acao.CANCELAMENTO, AutorAcao.PROFESSOR, motivo);
 			try {
 				notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA);
 			} catch (MessagingException e) {

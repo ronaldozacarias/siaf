@@ -191,6 +191,7 @@
 					</div>
 					<form id="formCancelarReserva" action="/siaf/administracao/homologar-reserva" method="POST">
 						<div class="modal-body">
+							<span class="msg-alert">ATENÇÃO: essa ação não poderá ser desfeita!</span><br/>
 							Tem certeza de que deseja cancelar essa reserva?<br/><br/>
 							<input type="hidden" id="idReserva" name="idReserva" value=""/>
 							<input type="hidden" id="status" name="status" value=""/>

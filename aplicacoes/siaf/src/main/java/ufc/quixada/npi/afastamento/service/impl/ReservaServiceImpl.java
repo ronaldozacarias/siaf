@@ -1,5 +1,6 @@
 package ufc.quixada.npi.afastamento.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ufc.quixada.npi.afastamento.model.Acao;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
+import ufc.quixada.npi.afastamento.model.Historico;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Reserva;
@@ -30,6 +34,9 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 
 	@Inject
 	private ProfessorService professorService;
+	
+	@Inject
+	private GenericRepository<Historico> historicoRepository;
 
 	@Override
 	public void salvar(Reserva reserva) {
@@ -68,7 +75,6 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 			}
 		}
 		reservaRepository.save(reserva);
-
 	}
 
 	@Override
@@ -104,7 +110,7 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 
 	@Override
 	public void atualizar(Reserva reserva) {
-		update(reserva);
+		reservaRepository.update(reserva);
 	}
 
 	@Override
@@ -137,6 +143,19 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		params.put("id", professor.getId());
 		return reservaRepository.find(QueryType.JPQL,
 				"from Reserva where professor.id = :id and status = :status", params);
+	}
+
+	@Override
+	public void salvarHistorico(Reserva reserva, Acao acao, AutorAcao autor, String comentario) {
+		Historico historico = new Historico();
+		historico.setAcao(acao);
+		historico.setComentario(comentario);
+		historico.setData(new Date());
+		historico.setAutor(autor);
+		historico.setReserva(reserva);
+		
+		historicoRepository.save(historico);
+		
 	}
 
 }

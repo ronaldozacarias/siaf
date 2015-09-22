@@ -30,7 +30,6 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 	private String RESERVA_INCLUIDA = "email.corpo.reserva_incluida";
 	private String RESERVA_EXCLUIDA = "email.corpo.reserva_excluida";
 	private String RESERVA_CANCELADA = "email.corpo.reserva_cancelada";
-	private String RESERVA_ALTERADA = "email.corpo.reserva_alterada";
 	private String RESERVA_HOMOLOGADA = "email.corpo.reserva_homologada";
 	private String ADMISSAO_ALTERADA = "email.corpo.admissao_alterada";
 	
@@ -42,8 +41,6 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 	private String INSTITUICAO = "#INSTITUICAO#";
 	private String SOLICITACAO = "#SOLICITACAO#";
 	private String EXCLUSAO = "#EXCLUSAO#";
-	private String CANCELAMENTO = "#CANCELAMENTO#";
-	private String MOTIVO = "#MOTIVO#";
 	private String STATUS = "#STATUS#";
 	private String ANO_ADMISSAO = "#ANO_ADMISSAO#";
 	private String SEMESTRE_ADMISSAO = "#SEMESTRE_ADMISSAO#";
@@ -104,9 +101,7 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 						.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
 						.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
 						.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()))
-						.replaceAll(CANCELAMENTO, dateFormat.format(reserva.getDataCancelamento()))
-						.replaceAll(MOTIVO, reserva.getMotivoCancelamento());
+						.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
 				if (reserva.getInstituicao() != null) {
 					texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
 				} else {
