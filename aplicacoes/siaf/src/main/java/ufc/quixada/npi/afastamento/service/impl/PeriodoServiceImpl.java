@@ -11,15 +11,18 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.afastamento.model.Acao;
 import ufc.quixada.npi.afastamento.model.AutorAcao;
+import ufc.quixada.npi.afastamento.model.Notificacao;
 import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusPeriodo;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.StatusTupla;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
+import ufc.quixada.npi.afastamento.service.NotificacaoService;
 import ufc.quixada.npi.afastamento.service.PeriodoService;
 import ufc.quixada.npi.afastamento.service.RankingService;
 import ufc.quixada.npi.afastamento.service.ReservaService;
+import ufc.quixada.npi.afastamento.util.Constants;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
 import br.ufc.quixada.npi.service.impl.GenericServiceImpl;
@@ -35,6 +38,9 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 	
 	@Inject
 	private ReservaService reservaService;
+	
+	@Inject
+	private NotificacaoService notificacaoService;
 
 	@Override
 	public Periodo getPeriodo(Integer ano, Integer semestre) {
@@ -142,7 +148,8 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 				if (reservaEspera.getProfessor().equals(reservaAberto.getProfessor())) {
 					reservaAberto.setStatus(StatusReserva.CANCELADO);
 					reservaService.update(reservaAberto);
-					reservaService.salvarHistorico(reservaAberto, Acao.CANCELAMENTO, AutorAcao.SISTEMA, "Reserva foi cancelada pelo sistema para inclusão de reserva em espera.");
+					reservaService.salvarHistorico(reservaAberto, Acao.CANCELAMENTO, AutorAcao.SISTEMA, Constants.MSG_CANCELAMENTO_AUTOMATICO);
+					notificacaoService.notificar(reservaAberto, Notificacao.RESERVA_CANCELADA, AutorAcao.SISTEMA);
 					break;
 				}
 			}
@@ -152,6 +159,7 @@ public class PeriodoServiceImpl extends GenericServiceImpl<Periodo> implements P
 			reserva.setStatus(StatusReserva.ABERTO);
 			reservaService.update(reserva);
 			reservaService.salvarHistorico(reserva, Acao.INCLUSAO_RANKING, AutorAcao.SISTEMA, null);
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_INCLUIDA_RANKING, AutorAcao.SISTEMA);
 		}
 		
 	}

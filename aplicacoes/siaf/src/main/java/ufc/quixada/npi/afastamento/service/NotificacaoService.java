@@ -1,12 +1,11 @@
 package ufc.quixada.npi.afastamento.service;
 
-import javax.mail.MessagingException;
-
-import ufc.quixada.npi.afastamento.model.Reserva;
+import ufc.quixada.npi.afastamento.model.AutorAcao;
 import ufc.quixada.npi.afastamento.model.Notificacao;
+import ufc.quixada.npi.afastamento.model.Reserva;
 
 public interface NotificacaoService {
 
-	void notificar(Reserva reserva, Notificacao tipoNotificacao) throws MessagingException;
+	void notificar(Reserva reserva, Notificacao tipoNotificacao, AutorAcao autor);
 
 }
