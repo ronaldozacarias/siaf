@@ -36,7 +36,8 @@ public class RankingServiceImpl implements RankingService {
 
 	@Override
 	public List<TuplaRanking> visualizarRanking(Periodo periodo, boolean simulador) {
-		List<Periodo> periodos = periodoService.getPeriodoAbertos();
+		//List<Periodo> periodos = periodoService.getPeriodoAbertos();
+		List<Periodo> periodos = periodoService.find(Periodo.class);
 		Map<Periodo, List<TuplaRanking>> ranking = new HashMap<Periodo, List<TuplaRanking>>();
 		for (Periodo p : periodos) {
 			ranking.put(p, new ArrayList<TuplaRanking>());
@@ -45,8 +46,8 @@ public class RankingServiceImpl implements RankingService {
 		List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
 		List<Reserva> reservas = new ArrayList<Reserva>();
 		List<Reserva> reservasEmAberto = reservaService.getReservasByStatus(StatusReserva.ABERTO);
-		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.AFASTADO));
 		reservas.addAll(reservasEmAberto);
+		reservas.addAll(reservaService.getReservasByStatus(StatusReserva.AFASTADO));
 		if(simulador) {
 			List<Reserva> reservasEmEspera = reservaService.getReservasByStatus(StatusReserva.EM_ESPERA);
 			for (Reserva reservaEspera : reservasEmEspera) {
@@ -110,7 +111,7 @@ public class RankingServiceImpl implements RankingService {
 		}
 
 		for (TuplaRanking tupla : tuplas) {
-			if (!tupla.getReserva().getStatus().equals(StatusReserva.AFASTADO)) {
+			if (tupla.getReserva().getStatus().equals(StatusReserva.ABERTO) || tupla.getReserva().getStatus().equals(StatusReserva.EM_ESPERA)) {
 				boolean classificado = true;
 				Periodo periodoInicio = periodoService
 						.getPeriodo(tupla.getReserva().getAnoInicio(), tupla.getReserva().getSemestreInicio());
@@ -140,6 +141,8 @@ public class RankingServiceImpl implements RankingService {
 					tuplaPeriodo.add(tupla);
 					ranking.put(periodoInicio, tuplaPeriodo);
 				}
+			} else {
+				
 			}
 		}
 

@@ -63,7 +63,6 @@
 					<tbody id="bodyReservas">
 						<c:forEach items="${reservas}" var="reserva" varStatus="cont">
 							<tr id="reserva${reserva.id}">
-								<fmt:formatDate value="${reserva.dataSolicitacao}" pattern="dd/MM/yyyy" var="data" />
 								<td class="align-center">
 									<c:choose>
 										<c:when test="${reserva.status == 'ABERTO' or reserva.status == 'EM_ESPERA'}"><span class="label label-success">${reserva.status.descricao}</span></c:when>

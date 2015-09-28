@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reservas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="31da49c1-e1ef-43a6-998a-34730c10d8d3">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="emissao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="79" uuid="04701bd4-4699-4133-b417-05c1c82a3bad"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="87" y="13" width="378" height="26" uuid="4a1a639d-5db9-40e8-9d34-d401e2603b04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDADE FEDERAL DO CEARÁ - CAMPUS QUIXADÁ
+SISTEMA DE AFASTAMENTO DOCENTE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="488" y="13" width="52" height="36" uuid="0367b829-8a1a-4212-85b9-5ac5d763094e"/>
+				<imageExpression><![CDATA["C:\\Users\\Admin\\Documents\\NPI\\Projetos\\Siaf\\Logo\\logo-siaf.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="20" y="13" width="38" height="40" uuid="a0b964e0-93b3-4b4b-9a0a-05175c5c578b"/>
+				<imageExpression><![CDATA["C:\\Users\\Admin\\Desktop\\brasao.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="87" y="49" width="378" height="20" uuid="1779c0ed-ddae-4320-93d5-1250a23baeb8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{emissao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

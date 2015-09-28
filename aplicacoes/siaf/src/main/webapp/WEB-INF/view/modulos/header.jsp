@@ -28,6 +28,9 @@
 	    		<li id="menu-professores">
 	    			<a class="" href="<c:url value="/administracao/professores" />"><span>Professores</span></a>
 	    		</li>
+	    		<li id="menu-relatorios">
+	    			<a class="" href="<c:url value="/administracao/relatorio" />"><span>Relatórios</span></a>
+	    		</li>
     		</sec:authorize>
     		
     		

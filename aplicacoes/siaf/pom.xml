@@ -291,6 +291,13 @@
 		    <artifactId>quartz</artifactId>
 		    <version>${quartz.version}</version>
 		</dependency>
+		
+		<!-- Jasper Resports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.1.1</version>
+		</dependency>
 
 	</dependencies>
 	<build>
