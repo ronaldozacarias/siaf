@@ -3,10 +3,10 @@ package ufc.quixada.npi.afastamento.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -179,15 +179,12 @@ public class ReservaController {
 		}
 		reserva.setProfessor(getProfessorLogado(session));
 		reserva.setStatus(StatusReserva.EM_ESPERA);
+		reserva.setDataSolicitacao(new Date());
 
 		reservaService.salvar(reserva);
 		reservaService.salvarHistorico(reserva, Acao.CRIACAO, AutorAcao.PROFESSOR, null);
 
-		try {
-			notificacaoService.notificar(reserva, Notificacao.RESERVA_INCLUIDA);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		notificacaoService.notificar(reserva, Notificacao.RESERVA_INCLUIDA, AutorAcao.PROFESSOR);
 
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_INCLUIDA);
 
@@ -211,47 +208,49 @@ public class ReservaController {
 	public String editar(@ModelAttribute("reserva") Reserva reserva, Model model, RedirectAttributes redirect, HttpSession session) {
 		
 		Reserva reservaAtual = reservaService.find(Reserva.class, reserva.getId());
-		reserva.setProfessor(reservaAtual.getProfessor());
-		reserva.setStatus(reservaAtual.getStatus());
-		model.addAttribute("reserva", reserva);
+		reservaAtual.setAnoInicio(reserva.getAnoInicio());
+		reservaAtual.setSemestreInicio(reserva.getSemestreInicio());
+		reservaAtual.setAnoTermino(reserva.getAnoTermino());
+		reservaAtual.setSemestreTermino(reserva.getSemestreTermino());
+		reservaAtual.setConceitoPrograma(reserva.getConceitoPrograma());
+		reservaAtual.setInstituicao(reserva.getInstituicao());
+		reservaAtual.setPrograma(reserva.getPrograma());
+		
+		model.addAttribute("reserva", reservaAtual);
 		model.addAttribute("programa", Programa.values());
 
-		if (reserva.getAnoInicio() == null || reserva.getAnoTermino() == null) {
+		if (reservaAtual.getAnoInicio() == null || reservaAtual.getAnoTermino() == null) {
 			model.addAttribute(Constants.ERRO, Constants.MSG_CAMPOS_OBRIGATORIOS);
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
-		if (reserva.getAnoTermino() < reserva.getAnoInicio() || (reserva.getAnoInicio().equals(reserva.getAnoTermino()) 
-				&& reserva.getSemestreTermino() < reserva.getSemestreInicio())) {
+		if (reservaAtual.getAnoTermino() < reservaAtual.getAnoInicio() || (reservaAtual.getAnoInicio().equals(reservaAtual.getAnoTermino()) 
+				&& reservaAtual.getSemestreTermino() < reservaAtual.getSemestreInicio())) {
 			model.addAttribute(Constants.ERRO, Constants.MSG_PERIODO_INVALIDO);
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
 
 		Periodo periodo = periodoService.getPeriodoAtual();
-		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), reserva.getAnoInicio(), reserva.getSemestreInicio());
+		Integer diferenca = calculaSemestres(periodo.getAno(), periodo.getSemestre(), reservaAtual.getAnoInicio(), reservaAtual.getSemestreInicio());
 
 		if (diferenca < 2) {
 			model.addAttribute(Constants.ERRO, Constants.MSG_SOLICITACAO_FORA_DO_PRAZO);
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
-		if ((reserva.getPrograma() == Programa.MESTRADO || reserva.getPrograma() == Programa.POS_DOUTORADO)
-				&& calculaSemestres(reserva.getAnoInicio(), reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 4) {
+		if ((reservaAtual.getPrograma() == Programa.MESTRADO || reservaAtual.getPrograma() == Programa.POS_DOUTORADO)
+				&& calculaSemestres(reservaAtual.getAnoInicio(), reservaAtual.getSemestreInicio(), reservaAtual.getAnoTermino(), reservaAtual.getSemestreTermino()) + 1 > 4) {
 			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_MESTRADO);
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
-		if (reserva.getPrograma() == Programa.DOUTORADO && calculaSemestres(reserva.getAnoInicio(), 
-				reserva.getSemestreInicio(), reserva.getAnoTermino(), reserva.getSemestreTermino()) + 1 > 8) {
+		if (reservaAtual.getPrograma() == Programa.DOUTORADO && calculaSemestres(reservaAtual.getAnoInicio(), 
+				reservaAtual.getSemestreInicio(), reservaAtual.getAnoTermino(), reservaAtual.getSemestreTermino()) + 1 > 8) {
 			model.addAttribute(Constants.ERRO, Constants.MSG_TEMPO_MAXIMO_DOUTORADO);
 			return Constants.PAGINA_EDITAR_RESERVA;
 		}
 		
-		reservaService.atualizar(reserva);
-		reservaService.salvarHistorico(reserva, Acao.EDICAO, AutorAcao.PROFESSOR, null);
+		reservaService.atualizar(reservaAtual);
+		reservaService.salvarHistorico(reservaAtual, Acao.EDICAO, AutorAcao.PROFESSOR, null);
 		
-		try {
-			notificacaoService.notificar(reserva, Notificacao.RESERVA_ALTERADA);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		notificacaoService.notificar(reservaAtual, Notificacao.RESERVA_ALTERADA, AutorAcao.PROFESSOR);
 
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_ATUALIZADA);
 		
@@ -284,11 +283,7 @@ public class ReservaController {
 			redirect.addFlashAttribute(Constants.ERRO, Constants.MSG_PERMISSAO_NEGADA);
 		} else {
 			reservaService.delete(reserva);
-			try {
-				notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_EXCLUIDA, AutorAcao.PROFESSOR);
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_EXCLUIDA);
 		}
 		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;
@@ -304,11 +299,7 @@ public class ReservaController {
 			reserva.setStatus(StatusReserva.CANCELADO);
 			reservaService.update(reserva);
 			reservaService.salvarHistorico(reserva, Acao.CANCELAMENTO, AutorAcao.PROFESSOR, motivo);
-			try {
-				notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
+			notificacaoService.notificar(reserva, Notificacao.RESERVA_CANCELADA, AutorAcao.PROFESSOR);
 			redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_CANCELADA);
 		}
 		return Constants.REDIRECT_PAGINA_MINHAS_RESERVAS;

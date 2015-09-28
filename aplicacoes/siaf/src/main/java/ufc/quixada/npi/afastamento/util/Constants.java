@@ -98,7 +98,7 @@ public class Constants {
 	
 	public static final String MSG_LISTA_PROFESSORES_ATUALIZADO = "Lista de professores atualizada com sucesso.";
 	
-	public static final String MSG_CANCELAMENTO_AUTOMATICO = "Cancelamento automático feito pelo sistema.";
+	public static final String MSG_CANCELAMENTO_AUTOMATICO = "Existia uma reserva em espera para ser incluída no ranking. Só é permitido ter uma única reserva no ranking.";
 	
 	
 	/** Afiliações */

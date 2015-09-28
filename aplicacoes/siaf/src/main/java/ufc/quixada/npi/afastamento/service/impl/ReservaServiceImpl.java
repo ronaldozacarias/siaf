@@ -158,4 +158,13 @@ public class ReservaServiceImpl extends GenericServiceImpl<Reserva> implements R
 		
 	}
 
+	@Override
+	public Historico getUltimaAcao(Reserva reserva, Acao acao) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", reserva.getId());
+		params.put("acao", acao);
+		return historicoRepository.findFirst(QueryType.JPQL,
+				"from Historico where reserva.id = :id and acao = :acao order by data desc", params, 0);
+	}
+
 }
