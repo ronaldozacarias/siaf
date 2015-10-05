@@ -61,159 +61,173 @@ public class NotificacaoServiceImpl implements NotificacaoService {
 	private String MOTIVO = "#MOTIVO#";
 	
 	@Override
-	public void notificar(Reserva reserva, Notificacao tipoNotificacao, AutorAcao autor) {
+	public void notificar(Reserva res, Notificacao notificacao, AutorAcao autorAcao) {
 		
+		Resource resource = new ClassPathResource("/email.properties");
 		try {
-			Resource resource = new ClassPathResource("/email.properties");
-			Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+			final Properties properties = PropertiesLoaderUtils.loadProperties(resource);
 		
+			final Reserva reserva = res;
+			final Notificacao tipoNotificacao = notificacao;
+			final AutorAcao autor = autorAcao;
+	
 			if (properties.getProperty("email.ativo").equals("true")) {
 				
-				Email email = new Email();
-				email.setFrom("naoresponda@siaf.com");
-				email.setSubject(properties.getProperty(ASSUNTO));
+				Runnable enviarEmail = new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Email email = new Email();
+							email.setFrom("naoresponda@siaf.com");
+							email.setSubject(properties.getProperty(ASSUNTO));
+							
+							String inicioPeriodo = reserva.getAnoInicio() + "."	+ reserva.getSemestreInicio();
+							String terminoPeriodo = reserva.getAnoTermino() + "." + reserva.getSemestreTermino();
+							SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				
-				String inicioPeriodo = reserva.getAnoInicio() + "."	+ reserva.getSemestreInicio();
-				String terminoPeriodo = reserva.getAnoTermino() + "." + reserva.getSemestreTermino();
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	
-				if (tipoNotificacao == Notificacao.RESERVA_INCLUIDA) {
-					String texto = properties.getProperty(RESERVA_INCLUIDA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.RESERVA_EXCLUIDA) {
-					String texto = properties.getProperty(RESERVA_EXCLUIDA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(EXCLUSAO, dateFormat.format(new Date()))
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					if(autor.equals(AutorAcao.PROFESSOR)) {
-						texto = texto.replaceAll(AUTOR, "Você");
-					} else {
-						texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
-					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.RESERVA_ALTERADA) {
-					String texto = properties.getProperty(RESERVA_ALTERADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(ALTERACAO, dateFormat.format(new Date()))
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					if(autor.equals(AutorAcao.PROFESSOR)) {
-						texto = texto.replaceAll(AUTOR, "Você");
-					} else {
-						texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
-					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.RESERVA_INCLUIDA_RANKING) {
-					Historico historico = reservaService.getUltimaAcao(reserva, Acao.INCLUSAO_RANKING);
-					String texto = properties.getProperty(RESERVA_INCLUIDA_RANKING).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(INCLUSAO, dateFormat.format(historico.getData()))
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.RESERVA_CANCELADA) {
-					Historico historico = reservaService.getUltimaAcao(reserva, Acao.CANCELAMENTO);
-					String texto = properties.getProperty(RESERVA_CANCELADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(CANCELAMENTO, dateFormat.format(historico.getData()))
-							.replaceAll(MOTIVO, historico.getComentario())
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					if(autor.equals(AutorAcao.PROFESSOR)) {
-						texto = texto.replaceAll(AUTOR, "Você");
-					} else if(autor.equals(AutorAcao.SISTEMA)) {
-						texto = texto.replaceAll(AUTOR, "O sistema");
-					} else {
-						texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
-					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.RESERVA_HOMOLOGADA) {
-					String texto = properties.getProperty(RESERVA_HOMOLOGADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
-							.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
-							.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
-							.replaceAll(STATUS, reserva.getStatus().getDescricao())
-							.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
-					if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
-						texto = texto.replaceAll(INSTITUICAO, "-");
-					} else {
-						texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
-					}
-					if (reserva.getStatus().isCancelado()) {
-						Acao acao = Acao.CANCELAMENTO;
-						if(reserva.getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
-							acao = Acao.CANCELAMENTO_COM_PUNICAO;
-						} else if (reserva.getStatus().equals(StatusReserva.NEGADO)) {
-							acao = Acao.NEGACAO;
+							if (tipoNotificacao == Notificacao.RESERVA_INCLUIDA) {
+								String texto = properties.getProperty(RESERVA_INCLUIDA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.RESERVA_EXCLUIDA) {
+								String texto = properties.getProperty(RESERVA_EXCLUIDA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(EXCLUSAO, dateFormat.format(new Date()))
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								if(autor.equals(AutorAcao.PROFESSOR)) {
+									texto = texto.replaceAll(AUTOR, "Você");
+								} else {
+									texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.RESERVA_ALTERADA) {
+								String texto = properties.getProperty(RESERVA_ALTERADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(ALTERACAO, dateFormat.format(new Date()))
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								if(autor.equals(AutorAcao.PROFESSOR)) {
+									texto = texto.replaceAll(AUTOR, "Você");
+								} else {
+									texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.RESERVA_INCLUIDA_RANKING) {
+								Historico historico = reservaService.getUltimaAcao(reserva, Acao.INCLUSAO_RANKING);
+								String texto = properties.getProperty(RESERVA_INCLUIDA_RANKING).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(INCLUSAO, dateFormat.format(historico.getData()))
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.RESERVA_CANCELADA) {
+								Historico historico = reservaService.getUltimaAcao(reserva, Acao.CANCELAMENTO);
+								String texto = properties.getProperty(RESERVA_CANCELADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(CANCELAMENTO, dateFormat.format(historico.getData()))
+										.replaceAll(MOTIVO, historico.getComentario())
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								if(autor.equals(AutorAcao.PROFESSOR)) {
+									texto = texto.replaceAll(AUTOR, "Você");
+								} else if(autor.equals(AutorAcao.SISTEMA)) {
+									texto = texto.replaceAll(AUTOR, "O sistema");
+								} else {
+									texto = texto.replaceAll(AUTOR, "O Administrador do sistema");
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.RESERVA_HOMOLOGADA) {
+								String texto = properties.getProperty(RESERVA_HOMOLOGADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(INICIO_PERIODO, inicioPeriodo).replaceAll(TERMINO_PERIODO, terminoPeriodo)
+										.replaceAll(PROGRAMA, reserva.getPrograma().getDescricao())
+										.replaceAll(CONCEITO, reserva.getConceitoPrograma().toString())
+										.replaceAll(STATUS, reserva.getStatus().getDescricao())
+										.replaceAll(SOLICITACAO, dateFormat.format(reserva.getDataSolicitacao()));
+								if (reserva.getInstituicao() == null || reserva.getInstituicao().isEmpty()) {
+									texto = texto.replaceAll(INSTITUICAO, "-");
+								} else {
+									texto = texto.replaceAll(INSTITUICAO, reserva.getInstituicao());
+								}
+								if (reserva.getStatus().isCancelado()) {
+									Acao acao = Acao.CANCELAMENTO;
+									if(reserva.getStatus().equals(StatusReserva.CANCELADO_COM_PUNICAO)) {
+										acao = Acao.CANCELAMENTO_COM_PUNICAO;
+									} else if (reserva.getStatus().equals(StatusReserva.NEGADO)) {
+										acao = Acao.NEGACAO;
+									}
+									Historico historico = reservaService.getUltimaAcao(reserva, acao);
+									texto = texto.replaceAll(CANCELAMENTO, "<p>Data de cancelamento: " + 
+											dateFormat.format(historico.getData()) + "</p>" +
+											"<p>Motivo do cancelamento: " + historico.getComentario() + "</p>");
+								} else {
+									texto = texto.replaceAll(CANCELAMENTO, "");
+								}
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							} else if (tipoNotificacao == Notificacao.ADMISSAO_ALTERADA) {
+								String texto = properties.getProperty(ADMISSAO_ALTERADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
+										.replaceAll(ANO_ADMISSAO, reserva.getProfessor().getAnoAdmissao().toString())
+										.replaceAll(SEMESTRE_ADMISSAO, reserva.getProfessor().getSemestreAdmissao().toString());
+								email.setText(texto);
+								email.setTo(reserva.getProfessor().getEmail());
+								emailService.sendEmail(email);
+							}
+						} catch (MessagingException e) {
+							e.printStackTrace();
 						}
-						Historico historico = reservaService.getUltimaAcao(reserva, acao);
-						texto = texto.replaceAll(CANCELAMENTO, "<p>Data de cancelamento: " + 
-								dateFormat.format(historico.getData()) + "</p>" +
-								"<p>Motivo do cancelamento: " + historico.getComentario() + "</p>");
-					} else {
-						texto = texto.replaceAll(CANCELAMENTO, "");
 					}
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				} else if (tipoNotificacao == Notificacao.ADMISSAO_ALTERADA) {
-					String texto = properties.getProperty(ADMISSAO_ALTERADA).replaceAll(PROFESSOR, reserva.getProfessor().getNome())
-							.replaceAll(ANO_ADMISSAO, reserva.getProfessor().getAnoAdmissao().toString())
-							.replaceAll(SEMESTRE_ADMISSAO, reserva.getProfessor().getSemestreAdmissao().toString());
-					email.setText(texto);
-					email.setTo(reserva.getProfessor().getEmail());
-					emailService.sendEmail(email);
-				}
+				};
+				Thread threadEnviarEmail = new Thread(enviarEmail);
+				threadEnviarEmail.start();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+		
 	}
 
 }
