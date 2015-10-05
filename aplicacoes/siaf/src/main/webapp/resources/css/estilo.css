@@ -509,7 +509,8 @@ footer > p {
 }
 
 input#anoBuscado, input#buscar, input#buscar-simulador {
-	width: 11%;
+	width: 12%;
+	padding-top: 2px;
 }
 
 #encerramento {
