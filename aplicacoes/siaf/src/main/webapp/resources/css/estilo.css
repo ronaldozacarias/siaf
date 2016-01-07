@@ -617,6 +617,23 @@ div.dataTables_wrapper {
 	text-align: left !important;
 }
 
+table {display: inline-table}
+
+@media print {
+	.menuTop {
+		display: none;
+	}
+	#wrapper, #tableRelatorio_wrapper {
+		width: 100%;
+	}
+	footer {
+		display: none;
+	}
+	a[href]:after {
+    	content: none !important;
+  }
+}
+
 @-webkit-keyframes loading {
    from { transform:	rotate(0deg); 	}
      to { transform:	rotate(360deg); }

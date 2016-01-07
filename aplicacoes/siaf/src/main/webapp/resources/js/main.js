@@ -122,7 +122,6 @@ $(document).ready(function() {
 	
 	/*$('#tableRelatorio').DataTable({
 		 "order": [ 0, 'asc' ],
-		 "scrollX": true,
 		  "paging": false,
 		  "searching": false,
 		"language": {
