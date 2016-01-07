@@ -25,7 +25,6 @@ body {
 }
 
 .brand img {
-	width: 100%;
 	height: 100%;
 }
 
@@ -203,32 +202,28 @@ table {
 	background-color: #BBD4E1;
 }
 
-.table > tbody > tr.AFASTADO {
-	background-color: #BBD4E1;
+table > tbody > tr.AFASTADO {
+	background-color: #BBD4E1 !important;
 }
 
-table > tbody > tr.DESCLASSIFICADO, .table > tbody > tr.NAO_ACEITO {
-	background-color: #F2BF7C;
+table > tbody > tr.DESCLASSIFICADO, table > tbody > tr.NAO_ACEITO {
+	background-color: #F2BF7C !important;
 }
 
-.table > tbody > tr.ENCERRADO {
+table > tbody > tr.ENCERRADO {
 	background-color: #C5C5C5;
 }
 
-.table > tbody > tr.CLASSIFICADO {
-	background-color: #95CF9E;
+table > tbody > tr.CLASSIFICADO {
+	background-color: #95CF9E !important;
 }
 
-.table > tbody > tr.CANCELADO, .table > tbody > tr.CANCELADO_COM_PUNICAO, .table > tbody > tr.NEGADO {
+table > tbody > tr.CANCELADO, table > tbody > tr.CANCELADO_COM_PUNICAO, table > tbody > tr.NEGADO {
 	background-color: #FFBEA9;
 }
 
-.table > tbody > tr > td.pontuacao {
+table > tbody > tr > td.pontuacao {
 	font-weight: bold;
-}
-
-.align-center {
-	text-align: center;
 }
 
 div.warning {
@@ -595,6 +590,11 @@ button, input.btn {
 	
 }
 
+div.dataTables_wrapper {
+    width: 1140px;
+    margin: 0 auto;
+}
+
 /* #tableHistorico tbody tr td {
 	font-size: 17px;
 	text-align: center;
@@ -603,6 +603,18 @@ button, input.btn {
 
 #tableHistorico tbody tr td span {
 	font-size: 12px;
+}
+
+#tableRelatorio_wrapper th, #tableRelatorio td {
+	text-align: center;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.align-left {
+	text-align: left !important;
 }
 
 @-webkit-keyframes loading {

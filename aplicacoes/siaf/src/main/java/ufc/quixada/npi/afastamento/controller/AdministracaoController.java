@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -27,6 +28,7 @@ import ufc.quixada.npi.afastamento.model.Periodo;
 import ufc.quixada.npi.afastamento.model.Professor;
 import ufc.quixada.npi.afastamento.model.Programa;
 import ufc.quixada.npi.afastamento.model.Ranking;
+import ufc.quixada.npi.afastamento.model.RelatorioPeriodo;
 import ufc.quixada.npi.afastamento.model.Reserva;
 import ufc.quixada.npi.afastamento.model.StatusReserva;
 import ufc.quixada.npi.afastamento.model.TuplaRanking;
@@ -90,6 +92,17 @@ public class AdministracaoController {
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_LISTA_PROFESSORES_ATUALIZADO);
 		return Constants.REDIRECT_PAGINA_LISTAR_PROFESSORES;
 	}
+	
+	@RequestMapping(value = "/relatorio", method = RequestMethod.GET)
+	public String getRelatorio(Model model) {
+		Periodo periodo = periodoService.getPeriodoAtual();
+		if (periodo != null) {
+			Map<TuplaRanking, List<RelatorioPeriodo>> relatorio = rankingService.getRelatorio(periodo);
+			model.addAttribute("relatorio", relatorio);
+			model.addAttribute("periodos", periodoService.getPeriodoAbertos());
+		}
+		return "admin/relatorio";
+	}
 
 	@RequestMapping(value = "/homologacao", method = RequestMethod.GET)
 	public String getHomologacao(Model model) {
@@ -99,7 +112,7 @@ public class AdministracaoController {
 			Ranking ranking = new Ranking();
 			ranking.setPeriodo(periodo);
 			List<TuplaRanking> tuplas = new ArrayList<TuplaRanking>();
-			for(TuplaRanking tupla : rankingService.visualizarRanking(periodo, false)) {
+			for(TuplaRanking tupla : rankingService.getRanking(periodo, false)) {
 				if (tupla.getReserva().getStatus().equals(StatusReserva.ABERTO)) {
 					if(tupla.getReserva().getAnoInicio().equals(periodo.getAno())
 						&& tupla.getReserva().getSemestreInicio().equals(periodo.getSemestre())) {
@@ -111,7 +124,7 @@ public class AdministracaoController {
 			}
 			ranking.setTuplas(tuplas);
 
-			List<TuplaRanking> tuplasCanceladasNegadas = rankingService.visualizarRankingByStatusReservaAndPeriodo(
+			List<TuplaRanking> tuplasCanceladasNegadas = rankingService.getTuplas(
 					Arrays.asList(StatusReserva.CANCELADO, StatusReserva.CANCELADO_COM_PUNICAO, StatusReserva.NEGADO), periodo);
 
 			model.addAttribute("tuplasCanceladasNegadas", tuplasCanceladasNegadas);
@@ -145,6 +158,8 @@ public class AdministracaoController {
 		redirect.addFlashAttribute(Constants.INFO, Constants.MSG_RESERVA_HOMOLOGADA);
 		return Constants.REDIRECT_PAGINA_HOMOLOGAR_RESERVAS;
 	}
+	
+	
 	
 
 	@RequestMapping(value = "/periodos", method = RequestMethod.GET)
